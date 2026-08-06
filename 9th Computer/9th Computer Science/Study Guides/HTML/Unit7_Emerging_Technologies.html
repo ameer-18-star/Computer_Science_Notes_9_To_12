@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNIT 7: Emerging Technologies in Computer Science</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">UNIT 7: Emerging Technologies in Computer Science</div>
+</div>
+
+<h1 id="unit-7-emerging-technologies-in-computer-science">UNIT 7: Emerging Technologies in Computer Science</h1>
+<hr>
+<blockquote><p><strong>"The best way to predict the future is to invent it."</strong><br>
+— Alan Kay, Computer Scientist</p></blockquote>
+<hr>
+<h2 id="student-learning-outcomes">Student Learning Outcomes</h2>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Define <strong>Artificial Intelligence (AI)</strong> in plain, simple words</li>
+<li>Identify AI applications in healthcare, education, gaming, finance, and more</li>
+<li>Explain AI subfields: Machine Learning, Deep Learning, NLP, Computer Vision, and Robotics</li>
+<li>Distinguish between <strong>Whitebox (Explainable)</strong> and <strong>Blackbox (Unexplainable)</strong> AI algorithms</li>
+<li>Define the <strong>Internet of Things (IoT)</strong> and explain why it matters</li>
+<li>Describe the key components of an IoT system: sensors, actuators, devices, networks, and data analysis</li>
+<li>Explore IoT applications in smart homes, healthcare, and transportation</li>
+<li>Discuss <strong>security and privacy</strong> challenges in IoT</li>
+<li>Think critically about the ethical challenges that come with AI and IoT</li>
+</ul>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<h3 id="story-mode-the-day-your-city-woke-up">🎬 Story Mode: The Day Your City Woke Up</h3>
+<p>Imagine you are walking to school one morning. The streetlights turn off automatically as the sun rises. The traffic signal ahead turns green just as your school bus arrives — it "saw" the bus coming. Your smart water bottle reminds you to drink water. Inside your classroom, the air conditioner adjusts to the right temperature without anyone touching it.</p>
+<p>None of this is magic. None of this requires a human to press a button.</p>
+<p>This is the world of <strong>Artificial Intelligence (AI)</strong> and the <strong>Internet of Things (IoT)</strong> — two technologies that are quietly, powerfully changing everything around us.</p>
+<p>In this chapter, you will not just learn definitions. You will understand <em>how</em> these technologies work, <em>where</em> they are already being used, and — most importantly — <em>how someone like you</em> could one day build them.</p>
+<p>Let's begin.</p>
+<hr>
+<h2 id="71-introduction-to-artificial-intelligence-ai">7.1 Introduction to Artificial Intelligence (AI)</h2>
+<h3 id="story-mode-the-first-thinking-machine">🎬 Story Mode: The First "Thinking" Machine</h3>
+<p>The year is <strong>1955</strong>. Two scientists, <strong>Allen Newell</strong> and <strong>Herbert A. Simon</strong>, sit in a lab at Carnegie Mellon University. They have a wild idea: <em>Can a computer solve problems the way a human brain does?</em></p>
+<p>They write a program called the <strong>Logic Theorist</strong>. It is the very first AI program in history. It can prove mathematical theorems — problems that usually require human reasoning. The world is amazed.</p>
+<p>Fast forward to today. AI can diagnose diseases, drive cars, beat world champions at chess, and write poetry. But at its heart, the goal is still the same: <strong>make machines think like humans</strong>.</p>
+<hr>
+<h3 id="what-is-artificial-intelligence">What Is Artificial Intelligence?</h3>
+<p><strong>Artificial Intelligence (AI)</strong> means giving a computer the ability to <strong>think, learn, and make decisions</strong> — the way a human does.</p>
+<p>Think of it this way:</p>
+<ul>
+<li>A regular calculator can add 2 + 2 and give you 4. But it cannot <em>learn</em> from mistakes. It cannot <em>improve</em> over time.</li>
+<li>An AI system, on the other hand, can look at thousands of X-ray images, <em>learn</em> what a tumour looks like, and then <em>identify</em> tumours in new images — without a doctor telling it what to do each time.</li>
+</ul>
+<blockquote><p><strong>In one sentence:</strong> AI is the science of making computers smart enough to do tasks that normally need a human brain.</p></blockquote>
+<hr>
+<h3 id="711-applications-of-ai-in-different-domains">7.1.1 Applications of AI in Different Domains</h3>
+<p>AI is not just one technology in one place. It is everywhere. Let's explore where it is already changing lives.</p>
+<hr>
+<h4 id="healthcare">🏥 Healthcare</h4>
+<p>AI is helping doctors save lives.</p>
+<ul>
+<li>It analyses <strong>medical images</strong> (like X-rays and MRI scans) to detect diseases early</li>
+<li>It <strong>predicts</strong> which patients might get sicker before it happens</li>
+<li>It <strong>personalises</strong> treatment plans — figuring out which medicine works best for <em>this specific patient</em></li>
+</ul>
+<blockquote><p><strong>Real Example:</strong> In Pakistan, AI-assisted robotic systems are being used to perform precise medical operations that reduce human error.</p></blockquote>
+<hr>
+<h4 id="education">🎓 Education</h4>
+<p>AI is making learning more personal.</p>
+<ul>
+<li>It tracks <strong>how a student is learning</strong> and adjusts difficulty accordingly</li>
+<li>It <strong>automates</strong> routine tasks like marking attendance or grading multiple-choice tests</li>
+<li>AI tutoring tools can explain concepts in different ways until the student understands</li>
+</ul>
+<hr>
+<h4 id="gaming">🎮 Gaming</h4>
+<p>AI makes games feel alive.</p>
+<ul>
+<li>Enemy characters in video games <strong>think</strong> and <strong>react</strong> — they are controlled by AI</li>
+<li>AI can <strong>generate entire game worlds</strong> automatically</li>
+<li>It studies your playing style and <strong>adapts</strong> the game to challenge you better</li>
+</ul>
+<hr>
+<h4 id="transportation-automobiles">🚗 Transportation &amp; Automobiles</h4>
+<p>AI is on the road.</p>
+<ul>
+<li><strong>Self-driving cars</strong> use AI to see the road, understand traffic rules, and drive safely</li>
+<li><strong>Advanced Driver Assistance Systems (ADAS)</strong> warn drivers about dangers</li>
+<li>AI <strong>optimises fuel efficiency</strong> and predicts when a car needs maintenance before it breaks down</li>
+</ul>
+<hr>
+<h4 id="finance">💰 Finance</h4>
+<p>AI is managing money.</p>
+<ul>
+<li>It <strong>detects fraud</strong> — if your bank card is used in an unusual way, AI flags it instantly</li>
+<li>It makes <strong>personalised investment recommendations</strong></li>
+<li>It performs <strong>algorithmic trading</strong> — buying and selling stocks in milliseconds based on patterns</li>
+</ul>
+<hr>
+<h4 id="social-media">📱 Social Media</h4>
+<p>AI decides what you see.</p>
+<ul>
+<li>The <strong>"For You" feed</strong> on TikTok, Instagram Reels, or YouTube is powered entirely by AI</li>
+<li>AI analyses what you like, watch, and share — then <strong>predicts</strong> what you will want to see next</li>
+<li>It also detects and removes harmful content automatically</li>
+</ul>
+<hr>
+<h4 id="agriculture">🌾 Agriculture</h4>
+<p>AI is helping farmers.</p>
+<ul>
+<li><strong>Sensors and cameras</strong> scan crops to detect diseases or pest attacks early</li>
+<li>AI predicts <strong>crop yields</strong> based on weather, soil, and historical data</li>
+<li><strong>Automated irrigation systems</strong> water only the areas that actually need it — saving water</li>
+</ul>
+<hr>
+<h4 id="e-commerce">🛒 E-Commerce</h4>
+<p>AI is your personal shopping assistant.</p>
+<ul>
+<li>When you open an app like Daraz or Amazon, the <strong>product recommendations</strong> are AI</li>
+<li><strong>Chatbots</strong> answer your customer service questions instantly — 24/7</li>
+<li>AI <strong>detects fraudulent orders</strong> and protects shoppers</li>
+</ul>
+<hr>
+<h3 id="visual-summary-ai-domains-at-a-glance">📊 Visual Summary: AI Domains at a Glance</h3>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│               ARTIFICIAL INTELLIGENCE               │
+│                                                     │
+│  Healthcare   Education   Gaming   Transportation   │
+│     🏥           🎓         🎮          🚗           │
+│                                                     │
+│  Finance    Social Media   Agriculture   E-Commerce │
+│     💰          📱            🌾            🛒       │
+└─────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="pause-think-1">✋ Pause &amp; Think #1</h3>
+<blockquote><p>Look at the list of AI domains above. Pick <strong>one domain</strong> that you use or see every day. Write down:<br>
+1. What task does the AI do?<br>
+2. What would happen if the AI made a mistake in that domain?<br>
+3. Is this AI application helpful, harmful, or both? Why?</p></blockquote>
+<p>Discuss with a partner. There is no wrong answer here — thinking critically is the goal.</p>
+<hr>
+<h3 id="712-subfields-of-ai">7.1.2 Subfields of AI</h3>
+<p>AI is a huge field. Scientists have divided it into <strong>smaller areas of focus</strong>, each solving a different type of problem.</p>
+<hr>
+<h4 id="machine-learning-ml">🤖 Machine Learning (ML)</h4>
+<p><strong>Machine Learning</strong> is a type of AI where computers <strong>learn from experience</strong>.</p>
+<p>Instead of a programmer writing every rule, the computer is shown <strong>thousands of examples</strong> and it figures out the patterns on its own.</p>
+<blockquote><p><strong>Analogy:</strong> Imagine you are learning to recognise cats. At first, someone shows you photos of cats and says, "Cat. Not a cat. Cat. Cat. Not a cat." After seeing enough examples, you can identify a cat in any photo — even one you have never seen before. Machine learning works exactly like this.</p></blockquote>
+<p><strong>How it works (Step by Step):</strong></p>
+<ol>
+<li><strong>Collect Data</strong> → Gather thousands of examples (e.g., photos of cats and dogs)</li>
+<li><strong>Train the Model</strong> → Show the computer all the examples so it can find patterns</li>
+<li><strong>Test the Model</strong> → Show it new examples it has never seen before</li>
+<li><strong>Improve</strong> → Correct its mistakes so it gets better over time</li>
+</ol>
+<hr>
+<h4 id="deep-learning">🧠 Deep Learning</h4>
+<p><strong>Deep Learning</strong> is a more powerful type of machine learning. It uses structures called <strong>neural networks</strong> — which are inspired by the human brain.</p>
+<p>Think of it like layers of thinking:</p>
+<pre><code>Input (Image) → Layer 1 (Detect edges) → Layer 2 (Detect shapes) → Layer 3 (Recognise face) → Output
+</code></pre>
+<p>Each layer learns something slightly more complex than the one before it. Deep learning is what powers face recognition on your phone and real-time translation apps.</p>
+<hr>
+<h4 id="natural-language-processing-nlp">💬 Natural Language Processing (NLP)</h4>
+<p><strong>Natural Language Processing (NLP)</strong> teaches computers to <strong>understand human language</strong> — reading, writing, and speaking.</p>
+<blockquote><p><strong>Examples you already use:</strong><br>
+- Asking <strong>Siri, Alexa, or Google Assistant</strong> a question → They use NLP to understand you<br>
+- Your phone <strong>autocompleting your text messages</strong> → That's NLP predicting your next word<br>
+- <strong>Google Translate</strong> converting Urdu to English → NLP at work</p></blockquote>
+<p>NLP is hard because human language is messy. "I saw the man with the telescope" — did you use the telescope, or did the man have it? Humans figure this out easily. Teaching a computer to do the same is a massive challenge.</p>
+<hr>
+<h4 id="computer-vision">👁️ Computer Vision</h4>
+<p><strong>Computer Vision</strong> gives computers the ability to <strong>see and understand images and videos</strong>.</p>
+<blockquote><p><strong>Examples:</strong><br>
+- Face unlock on your smartphone<br>
+- Security cameras that detect suspicious behaviour automatically<br>
+- Self-driving cars "seeing" traffic signs and pedestrians<br>
+- Medical AI analysing X-ray images for tumours</p></blockquote>
+<hr>
+<h4 id="robotics">🦾 Robotics</h4>
+<p><strong>Robotics</strong> is the science of designing, building, and programming <strong>robots</strong> — machines that can move and perform physical tasks.</p>
+<p>Some robots follow fixed instructions (like a factory robot that paints cars). Advanced robots use AI to <strong>sense</strong> their environment, <strong>make decisions</strong>, and <strong>adapt</strong> to new situations.</p>
+<blockquote><p><strong>Did You Know?</strong> In Pakistan, robotics and AI-powered machines are being used in medical operations with greater precision than the human hand alone can achieve.</p></blockquote>
+<hr>
+<h3 id="visual-subfields-of-ai-the-ai-family-tree">📊 Visual: Subfields of AI — The AI Family Tree</h3>
+<pre><code>                    ARTIFICIAL INTELLIGENCE
+                           │
+        ┌──────────────────┼──────────────────┐
+        │                  │                  │
+  Machine Learning   Natural Language    Computer Vision
+        │             Processing (NLP)        │
+        │                                 (Seeing &amp;
+  Deep Learning                        Understanding
+  (Neural Networks)                      Images)
+        │
+  Powers: Face ID,
+  Speech Recognition,
+  Medical Diagnosis
+</code></pre>
+<hr>
+<h3 id="grab-a-partner-2">✋ Grab a Partner #2</h3>
+<blockquote><p>With a classmate, read these 5 scenarios. Decide which <strong>subfield of AI</strong> each one belongs to:</p><ol>
+<li>A phone app that translates your spoken Urdu sentence into written English</li>
+<li>A robot arm that picks ripe tomatoes from a plant without damaging them</li>
+<li>A system that watches CCTV footage and automatically flags people not wearing helmets</li>
+<li>An app that reads thousands of customer reviews and says if they are "positive" or "negative"</li>
+<li>A model that learns your music taste and creates a personalised playlist for you</li>
+</ol><p>Write down your answers and check them at the end of the chapter!<br>
+<em>(Answers: 1-NLP, 2-Robotics, 3-Computer Vision, 4-NLP, 5-Machine Learning)</em></p></blockquote>
+<hr>
+<h3 id="quick-recap-section-71">⚡ Quick Recap: Section 7.1</h3>
+<ul>
+<li><strong>AI</strong> = making computers think and learn like humans</li>
+<li>AI is used in healthcare, education, gaming, finance, agriculture, and much more</li>
+<li>AI has subfields: <strong>ML, Deep Learning, NLP, Computer Vision, Robotics</strong></li>
+<li>Each subfield solves a different type of problem</li>
+</ul>
+<blockquote><p><strong>One-sentence takeaway:</strong> AI is not one technology — it is a whole family of technologies, each teaching computers a different kind of human skill.</p></blockquote>
+<hr>
+<h2 id="72-ai-algorithms-and-techniques">7.2 AI Algorithms and Techniques</h2>
+<h3 id="story-mode-the-judge-you-cant-question">🎬 Story Mode: The Judge You Can't Question</h3>
+<p>Imagine you apply for a scholarship. A month later, you receive a letter: <strong>"Application Rejected."</strong> No reason. No explanation. You ask the admissions office why. They say: <em>"The computer decided."</em></p>
+<p>You feel frustrated. You cannot argue with a decision you do not understand.</p>
+<p>Now imagine a different situation. The admissions officer says: <em>"Your application was rejected because your grade in Mathematics was below the minimum threshold of 75%, and the scholarship requires applicants from cities with less than 500,000 population."</em> You understand. You can improve. You can even appeal.</p>
+<p>This difference — between a decision you can understand and one you cannot — is exactly what separates <strong>Whitebox (Explainable)</strong> AI from <strong>Blackbox (Unexplainable)</strong> AI.</p>
+<hr>
+<h3 id="what-is-an-ai-algorithm">What Is an AI Algorithm?</h3>
+<p>An <strong>algorithm</strong> is a set of step-by-step instructions that a computer follows to solve a problem.</p>
+<p>An <strong>AI algorithm</strong> is a special kind of algorithm that allows computers to <strong>learn from data</strong> and <strong>make decisions</strong> — often without being explicitly told what to do every step.</p>
+<blockquote><p><strong>Analogy:</strong> A regular recipe is an algorithm — follow steps A, B, C and you get a cake. An AI algorithm is different — you show the computer 10,000 photos of cakes and non-cakes, and it <em>figures out the recipe on its own.</em></p></blockquote>
+<hr>
+<h3 id="721-types-of-ai-algorithms">7.2.1 Types of AI Algorithms</h3>
+<p>All AI algorithms can be classified into two broad categories based on one important question:</p>
+<blockquote><p><strong>Can a human understand WHY the AI made a particular decision?</strong></p></blockquote>
+<ul>
+<li>If <strong>YES</strong> → it is a <strong>Whitebox (Explainable)</strong> algorithm</li>
+<li>If <strong>NO</strong> → it is a <strong>Blackbox (Unexplainable)</strong> algorithm</li>
+</ul>
+<hr>
+<h3 id="722-explainable-whitebox-algorithms">7.2.2 Explainable (Whitebox) Algorithms</h3>
+<p><strong>Whitebox algorithms</strong> are transparent. You can look inside and see exactly why the AI made a decision. Every step of the decision process is visible and understandable.</p>
+<blockquote><p><strong>Analogy:</strong> Think of a whitebox algorithm like a glass box. You can see everything happening inside.</p></blockquote>
+<h4 id="example-a-decision-tree">🌳 Example: A Decision Tree</h4>
+<p>A <strong>decision tree</strong> is one of the most common whitebox algorithms. It makes decisions by asking a series of yes/no questions.</p>
+<p><strong>Example: Should I carry an umbrella today?</strong></p>
+<pre><code>                    Is it raining?
+                   /              \
+                 YES               NO
+                 /                  \
+         Take umbrella        Is rain forecast?
+                              /              \
+                            YES               NO
+                             /                 \
+                     Take umbrella       Leave umbrella home
+</code></pre>
+<p>Every decision is traceable. You can follow the path and understand <em>exactly why</em> the AI said "take an umbrella." This is the power of a whitebox algorithm.</p>
+<hr>
+<h4 id="other-examples-of-whitebox-algorithms">Other Examples of Whitebox Algorithms</h4>
+<ul>
+<li><strong>Linear Regression</strong> — predicts a number based on a straight-line formula (e.g., predicting house prices)</li>
+<li><strong>Rule-Based Systems</strong> — a set of IF-THEN rules written by humans (e.g., "IF temperature &gt; 39°C THEN flag as fever")</li>
+<li><strong>Decision Trees</strong> — the example above</li>
+</ul>
+<hr>
+<h4 id="when-is-whitebox-important">When Is Whitebox Important?</h4>
+<p>In high-stakes decisions — like <strong>medical diagnosis</strong>, <strong>loan approvals</strong>, or <strong>court judgments</strong> — it is critical that humans can <em>explain</em> and <em>audit</em> why the AI made a decision. In these cases, whitebox algorithms are preferred.</p>
+<hr>
+<h3 id="723-unexplainable-blackbox-algorithms">7.2.3 Unexplainable (Blackbox) Algorithms</h3>
+<p><strong>Blackbox algorithms</strong> are the opposite. They are powerful — often <em>more accurate</em> than whitebox algorithms — but their decision-making process is hidden and difficult to understand, even for the scientists who built them.</p>
+<blockquote><p><strong>Analogy:</strong> Think of a blackbox algorithm like a sealed black box. You put in an input. An answer comes out. But what happened <em>inside</em> the box? Nobody is entirely sure.</p></blockquote>
+<hr>
+<h4 id="example-neural-networks">🧠 Example: Neural Networks</h4>
+<p>A <strong>neural network</strong> is a blackbox AI that is inspired by the human brain.</p>
+<p>The human brain has billions of <strong>neurons</strong> (brain cells) connected to each other. When you learn something, connections between neurons grow stronger. Neural networks in AI work similarly.</p>
+<p><strong>How a Neural Network is Structured:</strong></p>
+<pre><code>   INPUT LAYER          HIDDEN LAYERS           OUTPUT LAYER
+   (Raw Data)          (Pattern Finder)          (Decision)
+
+  ●  ●  ●  ●     →→→    ●  ●  ●           →→→      ●
+                    →→→    ●  ●  ●           →→→
+                    →→→    ●  ●  ●
+
+  (e.g., pixels       (Detects edges,       (Says: &quot;This is
+   of an image)        shapes, features)      a cat.&quot;)
+</code></pre>
+<p><strong>Each layer learns something more complex:</strong></p>
+<ol>
+<li><strong>Input Layer</strong> → Receives raw data (e.g., pixel values of an image)</li>
+<li><strong>Hidden Layer 1</strong> → Detects basic patterns (edges, colours)</li>
+<li><strong>Hidden Layer 2</strong> → Recognises shapes (eyes, ears)</li>
+<li><strong>Hidden Layer 3</strong> → Identifies objects (a cat's face)</li>
+<li><strong>Output Layer</strong> → Gives the final answer ("It's a cat — 97% confident")</li>
+</ol>
+<p><strong>Why is it a blackbox?</strong> Because with millions of numbers inside those hidden layers, no human can trace exactly <em>which</em> pattern caused the AI to say "cat." The AI knows, in a mathematical sense — but it cannot explain it in human words.</p>
+<hr>
+<h4 id="real-world-blackbox-ai-examples">Real-World Blackbox AI Examples</h4>
+<ul>
+<li><strong>Deep Learning models</strong> used in facial recognition</li>
+<li><strong>Language models</strong> (like the ones powering AI assistants and chatbots)</li>
+<li><strong>AlphaGo</strong> — Google DeepMind's AI that defeated the world champion of the game <em>Go</em> in 2016. This was considered nearly impossible because Go has more possible moves than there are atoms in the universe. Even AlphaGo's creators could not fully explain every move it made.</li>
+</ul>
+<hr>
+<h3 id="whitebox-vs-blackbox-a-side-by-side-comparison">📊 Whitebox vs Blackbox: A Side-by-Side Comparison</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Whitebox (Explainable)</th>
+<th>Blackbox (Unexplainable)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transparency</strong></td>
+<td>High — you can see every step</td>
+<td>Low — decisions are hidden</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Moderate</td>
+<td>Often very high</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Decision Trees, Linear Regression</td>
+<td>Neural Networks, Deep Learning</td>
+</tr>
+<tr>
+<td><strong>Best used when</strong></td>
+<td>Accountability matters (medical, legal)</td>
+<td>Pure performance matters (image recognition)</td>
+</tr>
+<tr>
+<td><strong>Can you explain it?</strong></td>
+<td>Yes, easily</td>
+<td>No, very difficult</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="pause-think-3">✋ Pause &amp; Think #3</h3>
+<blockquote><p>Classify each of the following as <strong>Whitebox</strong> or <strong>Blackbox</strong> AI. Then explain your reasoning in one sentence.</p><ol>
+<li>A bank's AI that rejects a loan because: <em>"Income &lt; PKR 30,000/month AND credit score &lt; 600"</em></li>
+<li>A deep learning system that recognises your face to unlock your phone</li>
+<li>A medical AI that says: <em>"Patient has fever. Rule: Fever + Cough = possible flu."</em></li>
+<li>A music streaming AI that recommends songs using a neural network with 50 hidden layers</li>
+</ol><p><em>(Answers: 1-Whitebox, 2-Blackbox, 3-Whitebox, 4-Blackbox)</em></p></blockquote>
+<hr>
+<h3 id="ethical-corner-the-bias-problem">🤔 Ethical Corner: The Bias Problem</h3>
+<p>Here is something important to think about. AI algorithms — both whitebox and blackbox — learn from <strong>data</strong>. But what if the data is <strong>biased</strong>?</p>
+<blockquote><p><strong>Example:</strong> If an AI is trained only on photos of doctors who are male, it may learn to associate "doctor" with "male." Later, when it sees a female doctor, it might misclassify her as a nurse.</p></blockquote>
+<p>This is called <strong>algorithmic bias</strong>. It is not a reason to fear AI. It is an engineering problem — and the solution is to use <strong>diverse, fair, and representative data</strong>.</p>
+<p>As a future tech creator, you will be responsible for building AI that is fair for everyone.</p>
+<hr>
+<h3 id="quick-recap-section-72">⚡ Quick Recap: Section 7.2</h3>
+<ul>
+<li>An <strong>AI algorithm</strong> learns from data to make decisions</li>
+<li><strong>Whitebox algorithms</strong> = transparent, explainable, traceable (e.g., Decision Trees)</li>
+<li><strong>Blackbox algorithms</strong> = powerful but hard to explain (e.g., Neural Networks, Deep Learning)</li>
+<li>Both types have strengths and weaknesses — the right choice depends on the situation</li>
+<li>AI can be <strong>biased</strong> if trained on unfair data — this is a human responsibility to fix</li>
+</ul>
+<blockquote><p><strong>One-sentence takeaway:</strong> Whitebox AI shows its work like a student writing out every step; Blackbox AI gives the right answer but cannot show you how it got there.</p></blockquote>
+<hr>
+<h2 id="73-introduction-to-internet-of-things-iot">7.3 Introduction to Internet of Things (IoT)</h2>
+<h3 id="story-mode-the-farm-that-thinks-for-itself">🎬 Story Mode: The Farm That Thinks for Itself</h3>
+<p>It is 3:00 AM. A farmer in rural Punjab is asleep. Back on his farm, a small sensor is buried in the soil. It notices that the soil moisture level has dropped below a critical level. It sends a signal — through a wireless network — to a central system. The system checks the weather forecast online: no rain predicted. So it sends a command to the water pump. The pump switches on automatically and waters the crops for exactly 22 minutes. Then it turns off.</p>
+<p>The farmer wakes up at 7:00 AM and checks his phone. A notification reads: <em>"Crops watered at 3:12 AM. Water used: 450 litres. Soil moisture: Optimal."</em></p>
+<p>The farmer saved water. He saved time. He got a better night's sleep.</p>
+<p>This is the <strong>Internet of Things (IoT)</strong> — and it is already changing farming, healthcare, homes, and cities across Pakistan and the world.</p>
+<hr>
+<h3 id="731-understanding-iot-definition-and-significance">7.3.1 Understanding IoT: Definition and Significance</h3>
+<h4 id="what-is-iot">What Is IoT?</h4>
+<p>The <strong>Internet of Things (IoT)</strong> is a network of <strong>physical objects</strong> — everyday things — that are connected to the internet. These objects have sensors and software inside them. They collect data, share it, and sometimes act on it — <strong>automatically</strong>, without a human pressing a button.</p>
+<p>The word <strong>"Things"</strong> here means any physical object: a water sensor, a smartwatch, a streetlight, a hospital bed, a car — anything.</p>
+<blockquote><p><strong>In one sentence:</strong> IoT means connecting everyday objects to the internet so they can collect, share, and act on data intelligently.</p><p><strong>Historical Note:</strong> The term "Internet of Things" was coined by <strong>Kevin Ashton</strong> in <strong>1999</strong> while working at Procter &amp; Gamble. He used it to describe a system where physical objects were tagged and connected to the internet to track them automatically.</p></blockquote>
+<hr>
+<h4 id="why-does-iot-matter">Why Does IoT Matter?</h4>
+<p>Before IoT, the physical world and the digital world were separate. If you wanted to know the temperature in a warehouse, a human had to go there and read a thermometer. If you wanted to turn off a light at home while you were away, you had to call someone.</p>
+<p>IoT <strong>bridges the gap</strong> between the physical world and the digital world.</p>
+<p>This means:<br>
+- <strong>Better efficiency</strong> — machines manage themselves, reducing waste<br>
+- <strong>Better safety</strong> — systems detect dangers and alert humans instantly<br>
+- <strong>Better decisions</strong> — constant data from the real world helps humans and AI make smarter choices<br>
+- <strong>New services</strong> — things that were impossible before become routine</p>
+<blockquote><p><strong>Scale:</strong> By the year 2020, there were already <strong>over 20 billion IoT devices</strong> in use worldwide. That number keeps growing every year.</p></blockquote>
+<hr>
+<h3 id="732-components-of-iot-systems">7.3.2 Components of IoT Systems</h3>
+<p>An IoT system always has the same basic building blocks. Let's understand each one.</p>
+<hr>
+<h4 id="the-iot-data-flow-a-step-by-step-picture">📊 The IoT Data Flow: A Step-by-Step Picture</h4>
+<p>Here is how an IoT system works, from start to finish:</p>
+<pre><code>PHYSICAL WORLD                    DIGITAL WORLD
+      │                                 │
+   SENSORS          NETWORK         DATA ANALYSIS
+  (Collect)    →→ (Transmit) →→   (Process &amp; Decide)
+      │                                 │
+ ACTUATORS                         DEVICES / USER
+  (Act / Do)   ←← (Command)  ←←  (App, Dashboard,
+                                   Notification)
+</code></pre>
+<p>Now let's look at each component individually.</p>
+<hr>
+<h4 id="1-sensors-the-eyes-and-ears-of-iot">1. 🌡️ Sensors — "The Eyes and Ears of IoT"</h4>
+<p>A <strong>sensor</strong> is a device that <strong>detects and measures</strong> something in the physical world and converts it into a digital signal.</p>
+<p><strong>What can sensors measure?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Sensor Type</th>
+<th>What It Measures</th>
+<th>Example Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temperature sensor</td>
+<td>How hot or cold it is</td>
+<td>Smart thermostat, fever monitor</td>
+</tr>
+<tr>
+<td>Humidity sensor</td>
+<td>Moisture in the air</td>
+<td>Smart farm, warehouse climate control</td>
+</tr>
+<tr>
+<td>Motion sensor</td>
+<td>Whether something is moving</td>
+<td>Smart security camera, automatic door</td>
+</tr>
+<tr>
+<td>Light sensor</td>
+<td>How bright the light is</td>
+<td>Automatic streetlights, phone screen brightness</td>
+</tr>
+<tr>
+<td>Heart rate sensor</td>
+<td>Your pulse</td>
+<td>Smartwatch, hospital patient monitor</td>
+</tr>
+<tr>
+<td>Soil moisture sensor</td>
+<td>Water in soil</td>
+<td>Smart irrigation system</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><p><strong>Key idea:</strong> A sensor only <em>measures</em>. It does not act. It collects data and passes it on.</p></blockquote>
+<hr>
+<h4 id="2-actuators-the-hands-of-iot">2. ⚙️ Actuators — "The Hands of IoT"</h4>
+<p>An <strong>actuator</strong> is a device that <strong>does something physical</strong> based on a command it receives.</p>
+<p>If a sensor is the "input" side of IoT, the actuator is the "output" side.</p>
+<p><strong>Examples of actuators:</strong></p>
+<ul>
+<li>A <strong>motor</strong> that opens or closes a valve (e.g., turning on a water pump)</li>
+<li>A <strong>relay switch</strong> that turns a light on or off</li>
+<li>A <strong>speaker</strong> that plays an alarm sound</li>
+<li>A <strong>door lock mechanism</strong> that locks or unlocks a door</li>
+</ul>
+<blockquote><p><strong>Key idea:</strong> When the sensor says "soil moisture is too low," the actuator (water pump motor) acts on that information by switching on.</p></blockquote>
+<hr>
+<h4 id="3-devices-the-smart-objects">3. 📱 Devices — "The Smart Objects"</h4>
+<p><strong>Devices</strong> are the physical objects that are connected to the internet. They contain sensors and/or actuators and can communicate digitally.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>Smartwatch (sensor: heart rate; device: the watch itself)</li>
+<li>Smart refrigerator (sensor: temperature inside; actuator: cooling motor)</li>
+<li>Smart traffic light (sensors detect car density; actuators change the signal timing)</li>
+<li>Connected car (thousands of sensors for speed, fuel, safety — all talking to a central system)</li>
+</ul>
+<hr>
+<h4 id="4-networks-the-roads-of-iot">4. 📡 Networks — "The Roads of IoT"</h4>
+<p>A <strong>network</strong> is the communication pathway that connects all IoT devices to each other and to the internet.</p>
+<p>Without a network, devices are isolated. With a network, they become part of a connected system.</p>
+<p><strong>Types of IoT Networks:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Examples</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Wi-Fi</strong></td>
+<td>Home routers</td>
+<td>Smart homes, indoor devices</td>
+</tr>
+<tr>
+<td><strong>Bluetooth</strong></td>
+<td>Phone to smartwatch</td>
+<td>Short-range, low power</td>
+</tr>
+<tr>
+<td><strong>Cellular (4G/5G)</strong></td>
+<td>SIM cards in devices</td>
+<td>Remote locations, vehicles</td>
+</tr>
+<tr>
+<td><strong>LoRaWAN</strong></td>
+<td>Long-range, low-power signals</td>
+<td>Smart farms, rural sensors</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="5-data-analysis-the-brain-of-iot">5. 📊 Data Analysis — "The Brain of IoT"</h4>
+<p><strong>Data analysis</strong> is the process of <strong>making sense of the data</strong> that sensors collect.</p>
+<p>Raw sensor data (e.g., "soil moisture = 18%") is just a number. Data analysis adds meaning: "18% is below the safe threshold of 30% — trigger irrigation."</p>
+<p>Data analysis can happen in three places:</p>
+<ol>
+<li><strong>On the device itself</strong> (Edge Computing) — fast, no internet needed</li>
+<li><strong>In the cloud</strong> (Cloud Computing) — powerful, can process huge amounts of data</li>
+<li><strong>On a central server</strong> — a middle ground, used in hospitals and factories</li>
+</ol>
+<hr>
+<h3 id="full-iot-system-putting-it-all-together-smart-farm-example">📊 Full IoT System — Putting It All Together (Smart Farm Example)</h3>
+<pre><code>┌───────────────────────────────────────────────────────────────┐
+│                     SMART FARM IoT SYSTEM                     │
+│                                                               │
+│  1. SENSOR          2. NETWORK          3. DATA ANALYSIS      │
+│  Soil moisture  →→  WiFi/LoRaWAN   →→  Cloud checks:         │
+│  sensor reads       sends reading       &quot;Moisture &lt; 30%       │
+│  &quot;Moisture: 18%&quot;    to cloud            → Water needed&quot;       │
+│                                                               │
+│  6. FARMER          5. DEVICE           4. ACTUATOR           │
+│  Gets phone     ←←  App shows:     ←←  Water pump            │
+│  notification       &quot;Crops watered&quot;     switches ON           │
+│  at 7 AM            successfully        for 22 minutes        │
+└───────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="grab-a-partner-4">✋ Grab a Partner #4</h3>
+<blockquote><p>Think about your own home. Identify <strong>3 everyday objects</strong> that could be made "smart" by adding sensors, a network connection, and an actuator.</p><p>For each one, fill in this table:</p><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Object</th>
+<th>What sensor would it need?</th>
+<th>What actuator would it control?</th>
+<th>What problem would it solve?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Example: Water tap</td>
+<td>Water flow sensor</td>
+<td>Motor to close the tap</td>
+<td>Stop water wastage when tap is left running</td>
+</tr>
+<tr>
+<td>1.</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2.</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3.</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div><p>Share your ideas with the class. You might be designing the next great IoT product!</p></blockquote>
+<hr>
+<h3 id="733-iot-applications">7.3.3 IoT Applications</h3>
+<p>Let's explore where IoT is already making a real difference.</p>
+<hr>
+<h4 id="smart-homes">🏠 Smart Homes</h4>
+<p>A <strong>smart home</strong> is a house where everyday appliances are connected to the internet and can be controlled remotely or automatically.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Smart thermostat</strong> → learns your temperature preferences and adjusts automatically, saving energy</li>
+<li><strong>Smart lighting</strong> → turns off lights in empty rooms, saving electricity</li>
+<li><strong>Smart security camera</strong> → detects motion, sends alerts to your phone, records footage</li>
+<li><strong>Smart door lock</strong> → you can unlock your front door from anywhere using your phone</li>
+<li><strong>Smart refrigerator</strong> → tracks food items and tells you when something is about to expire</li>
+</ul>
+<blockquote><p><strong>Did You Know?</strong> Smart home devices can cut your electricity bills significantly by automatically turning off appliances when they are not needed.</p></blockquote>
+<hr>
+<h4 id="healthcare-iot">🏥 Healthcare IoT</h4>
+<p>IoT is saving lives in hospitals and homes.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>A patient in a hospital wears a wearable sensor on their wrist</li>
+<li>The sensor continuously monitors heart rate, blood oxygen, temperature, and blood pressure</li>
+<li>Data is sent wirelessly to a central nursing station</li>
+<li>If any reading goes outside the safe range, an <strong>alarm triggers automatically</strong></li>
+<li>A nurse is alerted <em>before</em> the patient's condition becomes dangerous</li>
+</ol>
+<p><strong>Other healthcare IoT examples:</strong></p>
+<ul>
+<li><strong>Smart pill bottles</strong> that remind patients to take their medication and alert family if a dose is missed</li>
+<li><strong>Remote patient monitoring</strong> for patients recovering at home after surgery</li>
+<li><strong>Smart hospital beds</strong> that detect if a patient has fallen or moved out of position</li>
+</ul>
+<blockquote><p><strong>Safety Tip:</strong> Always use devices from trusted manufacturers and protect your health data with strong passwords.</p></blockquote>
+<hr>
+<h4 id="transportation-iot">🚗 Transportation IoT</h4>
+<p>IoT is making roads smarter and safer.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Smart traffic lights</strong> → sensors count cars at intersections and adjust signal timing to reduce traffic jams</li>
+<li><strong>Vehicle-to-Vehicle (V2V) communication</strong> → cars talk to each other wirelessly to warn about sudden braking or accidents ahead</li>
+<li><strong>Predictive vehicle maintenance</strong> → sensors inside cars detect when a part is about to fail and alert the driver <em>before</em> a breakdown occurs</li>
+<li><strong>Real-time bus tracking</strong> → passengers can see exactly where their bus is using an app</li>
+</ul>
+<hr>
+<h4 id="activity-design-your-smart-school">✋ Activity: Design Your Smart School</h4>
+<blockquote><p>Think about your school. Imagine you are the principal and you have an unlimited IoT budget.</p><p>Answer these questions:</p><ol>
+<li>What sensor would you put in the library to track available seats?</li>
+<li>How would you use IoT to save electricity in classrooms?</li>
+<li>How would you use IoT to make the school bus safer?</li>
+<li>What data would your smart school collect every day?</li>
+</ol><p>Draw a simple diagram of your <strong>IoT-enabled school</strong> showing:<br>
+- At least 4 sensors<br>
+- The network connecting them<br>
+- Where the data goes<br>
+- At least 2 actuators</p><p>Present your design to the class!</p></blockquote>
+<hr>
+<h3 id="734-security-and-privacy-considerations-in-iot-deployments">7.3.4 Security and Privacy Considerations in IoT Deployments</h3>
+<h3 id="story-mode-the-unlocked-front-door">🎬 Story Mode: The Unlocked Front Door</h3>
+<p>In 2016, hackers took control of <strong>millions of IoT devices</strong> — security cameras, smart routers, and even baby monitors — all because the device owners had never changed the factory default password. The hackers used these devices together like an army to attack major websites. This became known as the <strong>Mirai Botnet Attack</strong> — one of the largest cyberattacks in history.</p>
+<p>Nobody had been careful. Nobody had changed their passwords. And everyday home devices became weapons.</p>
+<p>This is the serious side of IoT. <strong>More connected devices = more entry points for hackers.</strong></p>
+<hr>
+<h4 id="why-is-iot-security-so-important">Why Is IoT Security So Important?</h4>
+<p>Every IoT device that connects to the internet is a potential <strong>entry point</strong> for a cyberattack. Unlike computers and phones (which get regular security updates and have strong antivirus software), many IoT devices are:</p>
+<ul>
+<li>Small and low-power, with limited security features</li>
+<li>Running old software that is never updated</li>
+<li>Shipped from factories with default passwords that users never change</li>
+<li>Connected to networks 24 hours a day, 7 days a week</li>
+</ul>
+<hr>
+<h4 id="common-iot-security-threats">Common IoT Security Threats</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>What It Means</th>
+<th>Real Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unauthorised Access</strong></td>
+<td>A hacker logs into your device</td>
+<td>Hacker watching through your home CCTV camera</td>
+</tr>
+<tr>
+<td><strong>Data Interception</strong></td>
+<td>Hacker reads data being transmitted</td>
+<td>Stealing health data from a patient monitor</td>
+</tr>
+<tr>
+<td><strong>Device Hijacking</strong></td>
+<td>Hacker takes control of your device</td>
+<td>Using your smart speaker to spy on you</td>
+</tr>
+<tr>
+<td><strong>Botnet Attack</strong></td>
+<td>Hacker uses your device to attack others</td>
+<td>Mirai Botnet — millions of hacked IoT devices</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="how-to-protect-your-iot-devices-security-best-practices">✅ How to Protect Your IoT Devices — Security Best Practices</h4>
+<hr>
+<p><strong>1. 🔑 Use Strong, Unique Passwords</strong></p>
+<p>Every IoT device needs a strong password. A strong password:</p>
+<ul>
+<li>Has at least 12 characters</li>
+<li>Includes uppercase letters, lowercase letters, numbers, and symbols</li>
+<li>Is different for every device</li>
+<li>Is NEVER the factory default (e.g., never keep "admin/admin")</li>
+</ul>
+<blockquote><p><strong>Bad password:</strong> 1234, admin, password<br>
+<strong>Good password:</strong> Pk$m@rt2024#ioT</p></blockquote>
+<hr>
+<p><strong>2. 🔄 Keep Software Updated Regularly</strong></p>
+<p>Manufacturers release <strong>firmware updates</strong> to fix security vulnerabilities. If you do not update your device, old vulnerabilities remain open for hackers to exploit.</p>
+<blockquote><p><strong>Rule:</strong> When your IoT device says "Update Available" — update it immediately.</p></blockquote>
+<hr>
+<p><strong>3. 🔒 Use Encryption</strong></p>
+<p><strong>Encryption</strong> converts data into a coded format so that even if a hacker intercepts it, they cannot read it.</p>
+<blockquote><p><strong>Analogy:</strong> Imagine writing a letter and putting it in a locked box. Even if someone steals the box, they cannot read the letter without the key.</p></blockquote>
+<p>Make sure your IoT devices transmit data over <strong>encrypted connections</strong> (look for HTTPS, TLS, or WPA2/WPA3 for Wi-Fi).</p>
+<hr>
+<p><strong>4. 📶 Use a Secure, Separate Network</strong></p>
+<p>Connect your IoT devices to a <strong>separate Wi-Fi network</strong> (called a "guest network" or "IoT network"), away from your main computer and phone. This way, if a hacker compromises an IoT device, they cannot access your personal files.</p>
+<hr>
+<p><strong>5. 🏭 Buy from Reputable Manufacturers</strong></p>
+<p>Choose IoT devices made by known, trusted companies that take security seriously. Cheap, unknown-brand devices often skip security features to reduce costs.</p>
+<hr>
+<h3 id="privacy-who-is-watching-your-data">🔒 Privacy: Who Is Watching Your Data?</h3>
+<p>IoT devices collect enormous amounts of data about you:</p>
+<ul>
+<li>Your <strong>home temperature preferences</strong> (smart thermostat)</li>
+<li>Your <strong>location at all times</strong> (smartwatch, connected car)</li>
+<li>Your <strong>health metrics</strong> (fitness band, hospital monitor)</li>
+<li>Your <strong>daily routines</strong> (when you wake up, when you leave home)</li>
+</ul>
+<p><strong>Who can see this data?</strong></p>
+<ul>
+<li>The device manufacturer</li>
+<li>The cloud service provider</li>
+<li>Potentially, government agencies (in some countries)</li>
+<li>Hackers (if the system is not secured)</li>
+</ul>
+<p><strong>Your rights as a user:</strong></p>
+<ul>
+<li>Read the <strong>privacy policy</strong> before using any IoT device</li>
+<li>Turn off data collection features you do not need</li>
+<li>Use devices from companies with clear, transparent data policies</li>
+</ul>
+<hr>
+<h3 id="pause-think-5">✋ Pause &amp; Think #5</h3>
+<blockquote><p>Read the following scenario and answer the questions:</p><p><em>Ayesha's school installs smart cameras in every classroom. The cameras use AI to detect if students are paying attention, looking at their phones, or falling asleep. The data is sent to a server that the school administration can access.</em></p><ol>
+<li>What are <strong>two benefits</strong> of this system?</li>
+<li>What are <strong>two serious privacy concerns</strong> this raises?</li>
+<li>Do you think this is fair? Would you want cameras like this in your classroom?</li>
+<li>What rules would you put in place if you were the school principal?</li>
+</ol><p>There is no single right answer. This is a real ethical debate happening in schools around the world right now.</p></blockquote>
+<hr>
+<h3 id="quick-recap-section-73">⚡ Quick Recap: Section 7.3</h3>
+<ul>
+<li><strong>IoT</strong> connects everyday physical objects to the internet so they can collect and share data</li>
+<li>An IoT system has 5 key components: <strong>Sensors, Actuators, Devices, Networks, Data Analysis</strong></li>
+<li>IoT applications include <strong>smart homes, healthcare, transportation, agriculture</strong></li>
+<li>IoT faces serious <strong>security threats</strong> — unauthorised access, data interception, device hijacking</li>
+<li>Protect IoT devices with <strong>strong passwords, regular updates, encryption, and secure networks</strong></li>
+</ul>
+<blockquote><p><strong>One-sentence takeaway:</strong> IoT makes everyday objects smart by connecting them to the internet — but every connected device is also a responsibility to keep secure.</p></blockquote>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>Let's bring everything together.</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│              UNIT 7: EMERGING TECHNOLOGIES — BIG PICTURE        │
+│                                                                 │
+│  ARTIFICIAL INTELLIGENCE (AI)                                   │
+│  ├── Makes computers THINK and LEARN like humans                │
+│  ├── Applied in: Healthcare, Education, Finance, Gaming, etc.   │
+│  ├── Subfields: ML, Deep Learning, NLP, Computer Vision,        │
+│  │              Robotics                                        │
+│  └── Algorithms:                                                │
+│       ├── Whitebox (Explainable) → Decision Trees               │
+│       └── Blackbox (Unexplainable) → Neural Networks            │
+│                                                                 │
+│  INTERNET OF THINGS (IoT)                                       │
+│  ├── Connects physical objects to the internet                  │
+│  ├── Components: Sensors → Network → Data Analysis              │
+│  │               → Actuators → Devices                          │
+│  ├── Applications: Smart Homes, Healthcare, Transportation,     │
+│  │                 Agriculture                                  │
+│  └── Security: Strong passwords, Updates, Encryption            │
+│                                                                 │
+│  SHARED CHALLENGES:                                             │
+│  ├── Data Privacy → Who owns your data?                         │
+│  ├── Algorithmic Bias → Is the AI fair to everyone?             │
+│  └── Security Risks → More connections = more vulnerabilities   │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="exercises">Exercises</h2>
+<h3 id="multiple-choice-questions">Multiple Choice Questions</h3>
+<p>Circle the best answer:</p>
+<p><strong>1.</strong> Which of the following is NOT a subfield of AI?</p>
+<ul>
+<li>a) Machine Learning</li>
+<li>b) Natural Language Processing</li>
+<li>c) Computer Vision</li>
+<li><strong>d) DBMS</strong></li>
+</ul>
+<p><strong>2.</strong> Which of these is a security concern in IoT deployments?</p>
+<ul>
+<li>a) Device vulnerability</li>
+<li>b) Data privacy</li>
+<li>c) Lack of standardisation</li>
+<li><strong>d) All of the above</strong></li>
+</ul>
+<p><strong>3.</strong> Which of the following is an application of AI in healthcare?</p>
+<ul>
+<li>a) Personalised drug development</li>
+<li>b) Automated diagnosis</li>
+<li>c) Remote patient monitoring</li>
+<li><strong>d) All of the above</strong></li>
+</ul>
+<p><strong>4.</strong> What is the primary purpose of using AI techniques in machine learning models?</p>
+<ul>
+<li>a) To improve accuracy</li>
+<li>b) To enhance interpretability</li>
+<li>c) To reduce computational complexity</li>
+<li><strong>d) All of the above</strong></li>
+</ul>
+<p><strong>5.</strong> What is the key difference between explainable (whitebox) and unexplainable (blackbox) AI models?</p>
+<ul>
+<li>a) The complexity of the model</li>
+<li><strong>b) The ability to understand the decision-making process</strong></li>
+<li>c) The performance of the model</li>
+<li>d) The training data used</li>
+</ul>
+<p><strong>6.</strong> Which of the following is an application of IoT in the transportation domain?</p>
+<ul>
+<li>a) Smart traffic management</li>
+<li>b) Vehicle-to-Vehicle (V2V) communication</li>
+<li>c) Predictive maintenance of vehicles</li>
+<li><strong>d) All of the above</strong></li>
+</ul>
+<hr>
+<h3 id="short-answer-questions">Short Answer Questions</h3>
+<p>Answer each question in 3–5 sentences:</p>
+<p><strong>1.</strong> Define Artificial Intelligence (AI).</p>
+<p><strong>2.</strong> Provide two examples of AI applications in healthcare. For each example, explain the benefit it brings to patients.</p>
+<p><strong>3.</strong> Explain the role of AI techniques in advancing machine learning models. How does "learning from data" make a model better over time?</p>
+<p><strong>4.</strong> Define the Internet of Things (IoT). Use a real-world example from Pakistan to explain your definition.</p>
+<p><strong>5.</strong> Describe the significance of IoT in connecting devices and systems. Why does this matter for everyday life?</p>
+<p><strong>6.</strong> Describe three specific applications of IoT in the transportation domain. For each one, explain what problem it solves.</p>
+<hr>
+<h3 id="critical-thinking-questions">Critical Thinking Questions</h3>
+<p>These questions have no single right answer. Think carefully and write your opinion with reasons:</p>
+<p><strong>7.</strong> A hospital wants to use a blackbox AI to diagnose cancer from X-rays. The AI is 96% accurate — more accurate than most human doctors. But no one can explain <em>how</em> it makes its decisions. Should the hospital use it? What safeguards would you put in place?</p>
+<p><strong>8.</strong> Your city wants to install IoT sensors on every street corner to monitor air quality, noise levels, and foot traffic. This data would help city planners design better roads and parks. But the sensors could also track where you go every day. Is this a good idea? What privacy rules should govern it?</p>
+<hr>
+<h3 id="activity-iot-system-design-challenge">Activity: IoT System Design Challenge</h3>
+<p>Design a complete IoT system for <strong>one of the following scenarios</strong>. Draw a diagram and label every component:</p>
+<ul>
+<li><strong>Scenario A:</strong> A smart classroom that automatically adjusts lighting, temperature, and records attendance</li>
+<li><strong>Scenario B:</strong> A smart water tank for a home that monitors water level and automatically refills from a pump</li>
+<li><strong>Scenario C:</strong> A smart school bus that tracks location, monitors student boarding/departure, and alerts parents</li>
+</ul>
+<p>Your diagram must include:</p>
+<ol>
+<li>At least <strong>3 sensors</strong> (label what each one measures)</li>
+<li>The <strong>network</strong> type you would use and why</li>
+<li>Where <strong>data analysis</strong> happens (device, cloud, or server)</li>
+<li>At least <strong>2 actuators</strong> (label what each one does)</li>
+<li>How the <strong>user</strong> (student, parent, teacher, etc.) receives information or control</li>
+</ol>
+<hr>
+<h2 id="glossary-of-key-terms">Glossary of Key Terms</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Simple Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Artificial Intelligence (AI)</strong></td>
+<td>Technology that allows computers to think, learn, and make decisions like humans</td>
+</tr>
+<tr>
+<td><strong>Machine Learning (ML)</strong></td>
+<td>A type of AI where computers learn from examples and data, without being programmed for every step</td>
+</tr>
+<tr>
+<td><strong>Deep Learning</strong></td>
+<td>A powerful type of ML that uses neural networks — layers of calculations inspired by the human brain</td>
+</tr>
+<tr>
+<td><strong>Neural Network</strong></td>
+<td>An AI system modelled after the human brain, with layers that each learn something more complex</td>
+</tr>
+<tr>
+<td><strong>Natural Language Processing (NLP)</strong></td>
+<td>AI technology that allows computers to understand and generate human language</td>
+</tr>
+<tr>
+<td><strong>Computer Vision</strong></td>
+<td>AI technology that enables computers to see, interpret, and understand images and videos</td>
+</tr>
+<tr>
+<td><strong>Robotics</strong></td>
+<td>The science of designing, building, and programming robots that can perform physical tasks</td>
+</tr>
+<tr>
+<td><strong>Whitebox Algorithm</strong></td>
+<td>An AI algorithm whose decision-making process is transparent and understandable</td>
+</tr>
+<tr>
+<td><strong>Blackbox Algorithm</strong></td>
+<td>An AI algorithm whose decision-making process is hidden and difficult to explain</td>
+</tr>
+<tr>
+<td><strong>Decision Tree</strong></td>
+<td>A whitebox AI model that makes decisions through a series of yes/no questions</td>
+</tr>
+<tr>
+<td><strong>Algorithmic Bias</strong></td>
+<td>When an AI makes unfair decisions because it was trained on incomplete or biased data</td>
+</tr>
+<tr>
+<td><strong>Internet of Things (IoT)</strong></td>
+<td>A network of physical objects connected to the internet, capable of collecting and sharing data</td>
+</tr>
+<tr>
+<td><strong>Sensor</strong></td>
+<td>A device that detects and measures physical properties (temperature, light, motion)</td>
+</tr>
+<tr>
+<td><strong>Actuator</strong></td>
+<td>A device that performs a physical action (opening a valve, switching on a motor) in response to a command</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>Converting data into a coded format so that only authorised parties can read it</td>
+</tr>
+<tr>
+<td><strong>Firmware</strong></td>
+<td>Built-in software on a device that controls its hardware functions</td>
+</tr>
+<tr>
+<td><strong>Edge Computing</strong></td>
+<td>Processing IoT data directly on the device, without sending it to the cloud</td>
+</tr>
+<tr>
+<td><strong>Botnet</strong></td>
+<td>A network of hacked devices controlled by an attacker to carry out cyberattacks</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="partner-activity-answers-check-your-work">Partner Activity Answers (Check Your Work!)</h2>
+<p><strong>Grab a Partner #2 Answers:</strong></p>
+<ol>
+<li>A phone app that translates spoken Urdu into written English → <strong>NLP</strong></li>
+<li>A robot arm that picks ripe tomatoes → <strong>Robotics</strong></li>
+<li>A system that watches CCTV and flags people without helmets → <strong>Computer Vision</strong></li>
+<li>An app that reads reviews and classifies them as positive/negative → <strong>NLP</strong></li>
+<li>A model that learns your music taste and creates playlists → <strong>Machine Learning</strong></li>
+</ol>
+<p><strong>Pause &amp; Think #3 Answers:</strong></p>
+<ol>
+<li>"Income &lt; PKR 30,000/month AND credit score &lt; 600" → <strong>Whitebox</strong> (clear rules)</li>
+<li>Face recognition using deep learning → <strong>Blackbox</strong> (neural network)</li>
+<li>"Fever + Cough = possible flu" → <strong>Whitebox</strong> (rule-based)</li>
+<li>Music recommendation using 50-layer neural network → <strong>Blackbox</strong> (deep learning)</li>
+</ol>
+<hr>
+<p><em>End of Unit 7: Emerging Technologies in Computer Science</em></p>
+<hr>
+<blockquote><p><strong>A Final Word from Your Teacher:</strong><br>
+You just completed one of the most important chapters in modern computer science. AI and IoT are not distant future concepts — they are happening right now, in Pakistan and across the world. The engineers, designers, policymakers, and thinkers who will shape these technologies are sitting in classrooms exactly like yours. Maybe one of them is you.</p><p>Keep asking questions. Keep thinking critically. And never stop being curious.</p></blockquote>
+
+</body>
+</html>

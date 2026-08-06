@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 2: System Design and Troubleshooting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 2: System Design and Troubleshooting</div>
+</div>
+
+<h1 id="unit-2-system-design-and-troubleshooting">Unit 2: System Design and Troubleshooting</h1>
+<h2 id="mcqs-and-short-questions-exam-practice">MCQs and Short Questions — Exam Practice</h2>
+<hr>
+<h2 id="section-a-multiple-choice-questions">Section A: Multiple Choice Questions</h2>
+<p><em>Circle the correct answer. Each question has one correct answer.</em></p>
+<hr>
+<h3 id="topic-analog-and-digital-signals-adc-dac">Topic: Analog and Digital Signals / ADC / DAC</h3>
+<p><strong>1.</strong> Which of the following is an example of an analog signal?</p>
+<ul>
+<li>a) Binary data stored in a computer</li>
+<li>b) <strong>Sound waves (voice signal)</strong></li>
+<li>c) Data transmitted over a digital network</li>
+<li>d) Pixels on a computer screen</li>
+</ul>
+<hr>
+<p><strong>2.</strong> Which of the following best describes a digital signal?</p>
+<ul>
+<li>a) A signal that changes smoothly and continuously</li>
+<li>b) A signal with infinite possible values</li>
+<li>c) <strong>A signal that has only two values: 0 and 1</strong></li>
+<li>d) A signal that can only be used in radios</li>
+</ul>
+<hr>
+<p><strong>3.</strong> What does ADC stand for?</p>
+<ul>
+<li>a) Analog Data Computing</li>
+<li>b) <strong>Analog to Digital Converter</strong></li>
+<li>c) Automatic Digital Circuit</li>
+<li>d) Advanced Data Conversion</li>
+</ul>
+<hr>
+<p><strong>4.</strong> What is the purpose of a DAC?</p>
+<ul>
+<li>a) To convert digital signals to binary</li>
+<li>b) To convert analog signals to digital signals</li>
+<li>c) <strong>To convert digital signals back to analog signals</strong></li>
+<li>d) To store data in digital format</li>
+</ul>
+<hr>
+<p><strong>5.</strong> Why is ADC and DAC conversion important?</p>
+<ul>
+<li>a) It makes computers run faster</li>
+<li>b) It reduces the cost of electronic devices</li>
+<li>c) <strong>It enables data processing, storage, and transmission with less noise</strong></li>
+<li>d) It increases the number of bits in a signal</li>
+</ul>
+<hr>
+<p><strong>6.</strong> Which device uses DAC to produce output that humans can hear?</p>
+<ul>
+<li>a) Microphone</li>
+<li>b) Keyboard</li>
+<li>c) Scanner</li>
+<li>d) <strong>Speaker</strong></li>
+</ul>
+<hr>
+<p><strong>7.</strong> When a person speaks into a microphone, which conversion takes place?</p>
+<ul>
+<li>a) DAC — Digital to Analog</li>
+<li>b) <strong>ADC — Analog to Digital</strong></li>
+<li>c) Binary to Hexadecimal</li>
+<li>d) Decimal to Octal</li>
+</ul>
+<hr>
+<p><strong>8.</strong> Which of the following is a characteristic of an analog signal?</p>
+<ul>
+<li>a) Discrete values only</li>
+<li>b) Only two possible values</li>
+<li>c) <strong>Continuous and smooth variation over time</strong></li>
+<li>d) Represented using 0s and 1s</li>
+</ul>
+<hr>
+<h3 id="topic-boolean-algebra-and-or-not">Topic: Boolean Algebra — AND, OR, NOT</h3>
+<p><strong>9.</strong> Which of the following Boolean expressions represents the AND operation?</p>
+<ul>
+<li>a) A + B</li>
+<li>b) Ā</li>
+<li>c) <strong>A · B</strong></li>
+<li>d) A ⊕ B</li>
+</ul>
+<hr>
+<p><strong>10.</strong> Which of the following Boolean expressions represents the OR operation?</p>
+<ul>
+<li>a) A · B</li>
+<li>b) Ā</li>
+<li>c) <strong>A + B</strong></li>
+<li>d) A ⊕ B</li>
+</ul>
+<hr>
+<p><strong>11.</strong> What is the output of the AND operation when A = 1 and B = 0?</p>
+<ul>
+<li>a) 1</li>
+<li>b) <strong>0</strong></li>
+<li>c) Undefined</li>
+<li>d) 2</li>
+</ul>
+<hr>
+<p><strong>12.</strong> What is the output of the OR operation when A = 0 and B = 0?</p>
+<ul>
+<li>a) 1</li>
+<li>b) Undefined</li>
+<li>c) 2</li>
+<li>d) <strong>0</strong></li>
+</ul>
+<hr>
+<p><strong>13.</strong> What is the output of the OR operation when A = 1 and B = 1?</p>
+<ul>
+<li>a) 0</li>
+<li>b) 2</li>
+<li>c) <strong>1</strong></li>
+<li>d) Undefined</li>
+</ul>
+<hr>
+<p><strong>14.</strong> What is the result of the NOT operation when A = 0?</p>
+<ul>
+<li>a) 0</li>
+<li>b) <strong>1</strong></li>
+<li>c) 2</li>
+<li>d) Undefined</li>
+</ul>
+<hr>
+<p><strong>15.</strong> How many inputs does the NOT gate accept?</p>
+<ul>
+<li>a) Two</li>
+<li>b) Three</li>
+<li>c) Zero</li>
+<li>d) <strong>One</strong></li>
+</ul>
+<hr>
+<p><strong>16.</strong> In Boolean algebra, what is the result of 1 + 1 in the OR operation?</p>
+<ul>
+<li>a) 2</li>
+<li>b) 0</li>
+<li>c) 10</li>
+<li>d) <strong>1</strong></li>
+</ul>
+<hr>
+<p><strong>17.</strong> The AND operation gives an output of 1 only when:</p>
+<ul>
+<li>a) At least one input is 1</li>
+<li>b) Both inputs are 0</li>
+<li>c) <strong>Both inputs are 1</strong></li>
+<li>d) Neither input is 1</li>
+</ul>
+<hr>
+<p><strong>18.</strong> The OR operation gives an output of 0 only when:</p>
+<ul>
+<li>a) Both inputs are 1</li>
+<li>b) At least one input is 1</li>
+<li>c) One input is 1 and the other is 0</li>
+<li>d) <strong>Both inputs are 0</strong></li>
+</ul>
+<hr>
+<p><strong>19.</strong> Which symbol is used to represent the AND operation in Boolean algebra?</p>
+<ul>
+<li>a) +</li>
+<li>b) ⊕</li>
+<li>c) –</li>
+<li>d) <strong>·  (dot)</strong></li>
+</ul>
+<hr>
+<p><strong>20.</strong> Which symbol is used to represent the OR operation in Boolean algebra?</p>
+<ul>
+<li>a) ·</li>
+<li>b) ⊕</li>
+<li>c) <strong>+</strong></li>
+<li>d) ×</li>
+</ul>
+<hr>
+<h3 id="topic-logic-gates">Topic: Logic Gates</h3>
+<p><strong>21.</strong> Which logic gate outputs true only when both inputs are true?</p>
+<ul>
+<li>a) OR gate</li>
+<li>b) XOR gate</li>
+<li>c) NOT gate</li>
+<li>d) <strong>AND gate</strong></li>
+</ul>
+<hr>
+<p><strong>22.</strong> Which logic gate outputs true when at least one input is true?</p>
+<ul>
+<li>a) AND gate</li>
+<li>b) NOT gate</li>
+<li>c) <strong>OR gate</strong></li>
+<li>d) NAND gate</li>
+</ul>
+<hr>
+<p><strong>23.</strong> The NAND gate is a combination of which two gates?</p>
+<ul>
+<li>a) OR gate + NOT gate</li>
+<li>b) XOR gate + NOT gate</li>
+<li>c) <strong>AND gate + NOT gate</strong></li>
+<li>d) OR gate + AND gate</li>
+</ul>
+<hr>
+<p><strong>24.</strong> What does the NAND gate output when both inputs are 1?</p>
+<ul>
+<li>a) 1</li>
+<li>b) Undefined</li>
+<li>c) 2</li>
+<li>d) <strong>0</strong></li>
+</ul>
+<hr>
+<p><strong>25.</strong> The XOR gate outputs true only when:</p>
+<ul>
+<li>a) Both inputs are true</li>
+<li>b) Both inputs are false</li>
+<li>c) <strong>Exactly one input is true</strong></li>
+<li>d) Neither input is true</li>
+</ul>
+<hr>
+<p><strong>26.</strong> What is the output of a XOR gate when A = 1 and B = 1?</p>
+<ul>
+<li>a) 1</li>
+<li>b) Undefined</li>
+<li>c) 2</li>
+<li>d) <strong>0</strong></li>
+</ul>
+<hr>
+<p><strong>27.</strong> What is the output of a XOR gate when A = 1 and B = 0?</p>
+<ul>
+<li>a) 0</li>
+<li>b) <strong>1</strong></li>
+<li>c) 2</li>
+<li>d) Undefined</li>
+</ul>
+<hr>
+<p><strong>28.</strong> Which gate is known as the universal gate because it can implement any Boolean function?</p>
+<ul>
+<li>a) OR gate</li>
+<li>b) XOR gate</li>
+<li>c) AND gate</li>
+<li>d) <strong>NAND gate</strong></li>
+</ul>
+<hr>
+<p><strong>29.</strong> A NOT gate is also called:</p>
+<ul>
+<li>a) Buffer</li>
+<li>b) XOR gate</li>
+<li>c) <strong>Inverter</strong></li>
+<li>d) Multiplexer</li>
+</ul>
+<hr>
+<p><strong>30.</strong> Which logic gate would you use to implement the Boolean function F = A · B?</p>
+<ul>
+<li>a) OR gate</li>
+<li>b) NOT gate</li>
+<li>c) XOR gate</li>
+<li>d) <strong>AND gate</strong></li>
+</ul>
+<hr>
+<h3 id="topic-boolean-functions-and-truth-tables">Topic: Boolean Functions and Truth Tables</h3>
+<p><strong>31.</strong> What is a truth table used for?</p>
+<ul>
+<li>a) To store binary data</li>
+<li>b) To convert decimal to binary</li>
+<li>c) <strong>To show the output of a Boolean function for all possible input combinations</strong></li>
+<li>d) To draw logic diagrams</li>
+</ul>
+<hr>
+<p><strong>32.</strong> How many rows does a truth table for two binary variables (A and B) have?</p>
+<ul>
+<li>a) 2</li>
+<li>b) 3</li>
+<li>c) <strong>4</strong></li>
+<li>d) 8</li>
+</ul>
+<hr>
+<p><strong>33.</strong> How many rows does a truth table for three binary variables (A, B, C) have?</p>
+<ul>
+<li>a) 4</li>
+<li>b) 6</li>
+<li>c) 3</li>
+<li>d) <strong>8</strong></li>
+</ul>
+<hr>
+<p><strong>34.</strong> For the Boolean function F(A, B) = A · B, what is the output when A = 1 and B = 1?</p>
+<ul>
+<li>a) 0</li>
+<li>b) <strong>1</strong></li>
+<li>c) 2</li>
+<li>d) Undefined</li>
+</ul>
+<hr>
+<p><strong>35.</strong> For the Boolean function F(A, B) = A + B, what is the output when A = 0 and B = 1?</p>
+<ul>
+<li>a) 0</li>
+<li>b) <strong>1</strong></li>
+<li>c) 2</li>
+<li>d) Undefined</li>
+</ul>
+<hr>
+<p><strong>36.</strong> Who invented Boolean algebra?</p>
+<ul>
+<li>a) Alan Turing</li>
+<li>b) John von Neumann</li>
+<li>c) Charles Babbage</li>
+<li>d) <strong>George Boole</strong></li>
+</ul>
+<hr>
+<p><strong>37.</strong> Where was George Boole born?</p>
+<ul>
+<li>a) London, England</li>
+<li>b) Manchester, England</li>
+<li>c) <strong>Lincoln, England</strong></li>
+<li>d) Birmingham, England</li>
+</ul>
+<hr>
+<p><strong>38.</strong> Boolean algebra uses how many values?</p>
+<ul>
+<li>a) Ten (0–9)</li>
+<li>b) Sixteen (0–F)</li>
+<li>c) <strong>Two (True and False)</strong></li>
+<li>d) Eight (0–7)</li>
+</ul>
+<hr>
+<h3 id="topic-boolean-simplification-laws">Topic: Boolean Simplification Laws</h3>
+<p><strong>39.</strong> According to the Identity Law, what is the result of A + 0?</p>
+<ul>
+<li>a) 0</li>
+<li>b) 1</li>
+<li>c) <strong>A</strong></li>
+<li>d) Ā</li>
+</ul>
+<hr>
+<p><strong>40.</strong> According to the Identity Law, what is the result of A · 1?</p>
+<ul>
+<li>a) 0</li>
+<li>b) 1</li>
+<li>c) Ā</li>
+<li>d) <strong>A</strong></li>
+</ul>
+<hr>
+<p><strong>41.</strong> According to the Null Law, what is the result of A + 1?</p>
+<ul>
+<li>a) A</li>
+<li>b) 0</li>
+<li>c) Ā</li>
+<li>d) <strong>1</strong></li>
+</ul>
+<hr>
+<p><strong>42.</strong> According to the Null Law, what is the result of A · 0?</p>
+<ul>
+<li>a) A</li>
+<li>b) 1</li>
+<li>c) Ā</li>
+<li>d) <strong>0</strong></li>
+</ul>
+<hr>
+<p><strong>43.</strong> According to the Complement Law, what is the result of A + Ā?</p>
+<ul>
+<li>a) 0</li>
+<li>b) A</li>
+<li>c) Ā</li>
+<li>d) <strong>1</strong></li>
+</ul>
+<hr>
+<p><strong>44.</strong> According to the Complement Law, what is the result of A · Ā?</p>
+<ul>
+<li>a) 1</li>
+<li>b) A</li>
+<li>c) Ā</li>
+<li>d) <strong>0</strong></li>
+</ul>
+<hr>
+<p><strong>45.</strong> According to the Double Negation Law, what is the result of NOT(NOT A)?</p>
+<ul>
+<li>a) 0</li>
+<li>b) 1</li>
+<li>c) Ā</li>
+<li>d) <strong>A</strong></li>
+</ul>
+<hr>
+<p><strong>46.</strong> De Morgan's first theorem states that A + B is equal to:</p>
+<ul>
+<li>a) A + B</li>
+<li>b) <strong>Ā · B̄</strong></li>
+<li>c) A · B</li>
+<li>d) Ā + B̄</li>
+</ul>
+<hr>
+<p><strong>47.</strong> De Morgan's second theorem states that A · B is equal to:</p>
+<ul>
+<li>a) Ā · B̄</li>
+<li>b) A + B</li>
+<li>c) <strong>Ā + B̄</strong></li>
+<li>d) A · B</li>
+</ul>
+<hr>
+<p><strong>48.</strong> The Idempotent Law states that A + A equals:</p>
+<ul>
+<li>a) 0</li>
+<li>b) 1</li>
+<li>c) 2A</li>
+<li>d) <strong>A</strong></li>
+</ul>
+<hr>
+<p><strong>49.</strong> The Absorption Law states that A + (A · B) equals:</p>
+<ul>
+<li>a) B</li>
+<li>b) A · B</li>
+<li>c) A + B</li>
+<li>d) <strong>A</strong></li>
+</ul>
+<hr>
+<p><strong>50.</strong> The Distributive Law states that A · (B + C) equals:</p>
+<ul>
+<li>a) A · B + C</li>
+<li>b) <strong>(A · B) + (A · C)</strong></li>
+<li>c) A + B · C</li>
+<li>d) A · B · C</li>
+</ul>
+<hr>
+<h3 id="topic-troubleshooting">Topic: Troubleshooting</h3>
+<p><strong>51.</strong> What is the first step in the systematic process of troubleshooting?</p>
+<ul>
+<li>a) Establish a Theory of Probable Cause</li>
+<li>b) Implement the Solution</li>
+<li>c) <strong>Identify the Problem</strong></li>
+<li>d) Document Findings, Actions, and Outcomes</li>
+</ul>
+<hr>
+<p><strong>52.</strong> Which step involves coming up with a theory about what might be causing a problem?</p>
+<ul>
+<li>a) Test the Theory to Determine the Cause</li>
+<li>b) <strong>Establish a Theory of Probable Cause</strong></li>
+<li>c) Implement the Solution</li>
+<li>d) Verify Full System Functionality</li>
+</ul>
+<hr>
+<p><strong>53.</strong> After implementing a solution, what is the next step in the troubleshooting process?</p>
+<ul>
+<li>a) Document Findings, Actions, and Outcomes</li>
+<li>b) Test the Theory to Determine the Cause</li>
+<li>c) <strong>Verify Full System Functionality</strong></li>
+<li>d) Establish a Plan of Action to Resolve the Problem</li>
+</ul>
+<hr>
+<p><strong>54.</strong> What is the last step in the systematic troubleshooting process?</p>
+<ul>
+<li>a) Verify Full System Functionality</li>
+<li>b) Implement the Solution</li>
+<li>c) Establish a Theory of Probable Cause</li>
+<li>d) <strong>Document Findings, Actions, and Outcomes</strong></li>
+</ul>
+<hr>
+<p><strong>55.</strong> How many steps are in the systematic troubleshooting process?</p>
+<ul>
+<li>a) 5</li>
+<li>b) 6</li>
+<li>c) <strong>7</strong></li>
+<li>d) 8</li>
+</ul>
+<hr>
+<p><strong>56.</strong> Why is effective troubleshooting important for maintaining systems?</p>
+<ul>
+<li>a) It helps save money on repairs</li>
+<li>b) It prevents the need for professional help</li>
+<li>c) <strong>It ensures systems operate smoothly and efficiently</strong></li>
+<li>d) It allows for more frequent system updates</li>
+</ul>
+<hr>
+<p><strong>57.</strong> What does "downtime" mean in the context of computing?</p>
+<ul>
+<li>a) When a computer runs slowly</li>
+<li>b) When a computer needs an update</li>
+<li>c) When a computer screen dims</li>
+<li>d) <strong>When a computer system is not operational</strong></li>
+</ul>
+<hr>
+<p><strong>58.</strong> Which of the following is a common cause of computer overheating?</p>
+<ul>
+<li>a) Too many software applications installed</li>
+<li>b) Weak internet connection</li>
+<li>c) <strong>Poor ventilation around the computer</strong></li>
+<li>d) Low screen brightness</li>
+</ul>
+<hr>
+<p><strong>59.</strong> Which tool is used to diagnose RAM failures?</p>
+<ul>
+<li>a) CrystalDiskInfo</li>
+<li>b) SMART</li>
+<li>c) Disk Cleanup</li>
+<li>d) <strong>MemTest86</strong></li>
+</ul>
+<hr>
+<p><strong>60.</strong> Which tool is used to monitor hard drive health?</p>
+<ul>
+<li>a) MemTest86</li>
+<li>b) Windows Memory Diagnostic</li>
+<li>c) <strong>CrystalDiskInfo</strong></li>
+<li>d) Task Manager</li>
+</ul>
+<hr>
+<p><strong>61.</strong> A Blue Screen of Death (BSOD) is commonly associated with which hardware issue?</p>
+<ul>
+<li>a) Overheating processor</li>
+<li>b) Loose cable connections</li>
+<li>c) <strong>Faulty RAM</strong></li>
+<li>d) Disconnected keyboard</li>
+</ul>
+<hr>
+<p><strong>62.</strong> What should you do before replacing a hard drive?</p>
+<ul>
+<li>a) Format the new drive first</li>
+<li>b) Reinstall the operating system</li>
+<li>c) <strong>Back up your data</strong></li>
+<li>d) Update device drivers</li>
+</ul>
+<hr>
+<p><strong>63.</strong> Which of the following best describes "data integrity"?</p>
+<ul>
+<li>a) Keeping data stored in binary format</li>
+<li>b) Encrypting all data files</li>
+<li>c) <strong>Ensuring data is accurate and reliable</strong></li>
+<li>d) Compressing data to save space</li>
+</ul>
+<hr>
+<p><strong>64.</strong> The WannaCry ransomware attack in 2017 exploited which vulnerability?</p>
+<ul>
+<li>a) Weak passwords on user accounts</li>
+<li>b) Outdated antivirus software</li>
+<li>c) <strong>Unpatched older Windows systems</strong></li>
+<li>d) Slow internet connections</li>
+</ul>
+<hr>
+<p><strong>65.</strong> What is the quickest first fix to try when a computer is not responding?</p>
+<ul>
+<li>a) Replace the RAM</li>
+<li>b) Reinstall the operating system</li>
+<li>c) Format the hard drive</li>
+<li>d) <strong>Restart the computer</strong></li>
+</ul>
+<hr>
+<p><strong>66.</strong> Which of the following is an example of system maintenance software?</p>
+<ul>
+<li>a) Microsoft Word</li>
+<li>b) Google Chrome</li>
+<li>c) <strong>Antivirus software</strong></li>
+<li>d) VLC Media Player</li>
+</ul>
+<hr>
+<p><strong>67.</strong> What is the purpose of installing software patches?</p>
+<ul>
+<li>a) To add new features to games</li>
+<li>b) To increase RAM capacity</li>
+<li>c) <strong>To fix bugs and protect against security vulnerabilities</strong></li>
+<li>d) To speed up internet connection</li>
+</ul>
+<hr>
+<p><strong>68.</strong> Which of the following is a symptom of a failing hard drive?</p>
+<ul>
+<li>a) Screen flickering</li>
+<li>b) Keyboard not responding</li>
+<li>c) Mouse cursor moving erratically</li>
+<li>d) <strong>Strange clicking noises from the drive</strong></li>
+</ul>
+<hr>
+<p><strong>69.</strong> What does SMART stand for in hard drive diagnostics?</p>
+<ul>
+<li>a) System Monitoring and Recovery Tool</li>
+<li>b) <strong>Self-Monitoring, Analysis, and Reporting Technology</strong></li>
+<li>c) Standard Memory and RAM Testing</li>
+<li>d) Software Maintenance and Repair Toolkit</li>
+</ul>
+<hr>
+<p><strong>70.</strong> Troubleshooting helps improve computer security by:</p>
+<ul>
+<li>a) Installing more RAM</li>
+<li>b) Replacing old keyboards</li>
+<li>c) <strong>Identifying weaknesses and security breaches</strong></li>
+<li>d) Increasing screen resolution</li>
+</ul>
+<hr>
+<h2 id="section-b-short-questions">Section B: Short Questions</h2>
+<p><em>Answer each question in 2–4 sentences in your own words.</em></p>
+<hr>
+<h3 id="topic-analog-and-digital-signals-adc-dac_1">Topic: Analog and Digital Signals / ADC / DAC</h3>
+<ol>
+<li>
+<p>Define an analog signal. Give two examples from daily life.</p>
+</li>
+<li>
+<p>Define a digital signal. How is it different from an analog signal?</p>
+</li>
+<li>
+<p>What is ADC? Why is it needed in computing?</p>
+</li>
+<li>
+<p>What is DAC? Give one real-world example of where DAC is used.</p>
+</li>
+<li>
+<p>Why are digital signals preferred over analog signals for transmitting information over long distances?</p>
+</li>
+<li>
+<p>Describe what happens when a person speaks into a microphone and the sound reaches another person through a speaker. Which conversions take place?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-boolean-algebra-and-or-not_1">Topic: Boolean Algebra — AND, OR, NOT</h3>
+<ol start="7">
+<li>
+<p>Define a Boolean function.</p>
+</li>
+<li>
+<p>What are binary variables? What values can they take?</p>
+</li>
+<li>
+<p>Explain the AND operation in Boolean algebra. When does it output 1?</p>
+</li>
+<li>
+<p>Explain the OR operation in Boolean algebra. When does it output 0?</p>
+</li>
+<li>
+<p>Explain the NOT operation. How many inputs does it take?</p>
+</li>
+<li>
+<p>Draw the truth table for the AND operation with two inputs A and B.</p>
+</li>
+<li>
+<p>Draw the truth table for the OR operation with two inputs A and B.</p>
+</li>
+<li>
+<p>Draw the truth table for the NOT operation with one input A.</p>
+</li>
+<li>
+<p>Write the Boolean expression for the AND operation between variables A and B.</p>
+</li>
+<li>
+<p>Write the Boolean expression for the OR operation between variables A and B.</p>
+</li>
+<li>
+<p>What is the significance of a truth table in digital logic?</p>
+</li>
+<li>
+<p>Construct the truth table for F(A, B, C) = A · B + Ā · C. Show all intermediate columns.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-logic-gates_1">Topic: Logic Gates</h3>
+<ol start="19">
+<li>
+<p>What is a logic gate? What is its relationship to Boolean operations?</p>
+</li>
+<li>
+<p>Describe the function of an AND gate. What must be true for its output to be 1?</p>
+</li>
+<li>
+<p>Describe the function of an OR gate with its truth table.</p>
+</li>
+<li>
+<p>Describe the function of a NOT gate with its truth table.</p>
+</li>
+<li>
+<p>What is a NAND gate? How is it formed? Write its truth table.</p>
+</li>
+<li>
+<p>What is an XOR gate? How does it differ from the OR gate?</p>
+</li>
+<li>
+<p>Write the truth table for the XOR gate.</p>
+</li>
+<li>
+<p>Give a real-life example that illustrates the working of an AND gate.</p>
+</li>
+<li>
+<p>Give a real-life example that illustrates the working of a NAND gate.</p>
+</li>
+<li>
+<p>Give a real-life example that illustrates the working of an XOR gate.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-boolean-functions-and-logic-diagrams">Topic: Boolean Functions and Logic Diagrams</h3>
+<ol start="29">
+<li>
+<p>What is a Boolean function? What types of values can its inputs and outputs take?</p>
+</li>
+<li>
+<p>Construct the truth table for F(A, B) = A · B and explain each row.</p>
+</li>
+<li>
+<p>Construct the truth table for F(A, B) = A + B and explain each row.</p>
+</li>
+<li>
+<p>How is a Boolean function used in the Arithmetic Logic Unit (ALU) of a CPU?</p>
+</li>
+<li>
+<p>List three uses of Boolean functions in computers.</p>
+</li>
+<li>
+<p>What is a logic diagram? What does it represent?</p>
+</li>
+<li>
+<p>What are the steps to create a logic diagram from a Boolean function?</p>
+</li>
+<li>
+<p>Who invented Boolean algebra and in what year was he born?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-boolean-simplification">Topic: Boolean Simplification</h3>
+<ol start="37">
+<li>
+<p>State the Identity Laws of Boolean algebra.</p>
+</li>
+<li>
+<p>State the Null Laws of Boolean algebra.</p>
+</li>
+<li>
+<p>State the Idempotent Laws of Boolean algebra.</p>
+</li>
+<li>
+<p>State the Complement Laws of Boolean algebra.</p>
+</li>
+<li>
+<p>State De Morgan's Theorems and explain what they mean.</p>
+</li>
+<li>
+<p>State the Absorption Laws of Boolean algebra.</p>
+</li>
+<li>
+<p>State the Double Negation Law and give an example.</p>
+</li>
+<li>
+<p>State the Distributive Laws of Boolean algebra.</p>
+</li>
+<li>
+<p>Why is simplification of Boolean functions important in digital circuit design?</p>
+</li>
+<li>
+<p>Simplify the Boolean expression: F = A · A.</p>
+</li>
+<li>
+<p>Simplify the Boolean expression: F = A + 1.</p>
+</li>
+<li>
+<p>Simplify the Boolean expression: F = A + (A · B) using the Absorption Law.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-system-troubleshooting">Topic: System Troubleshooting</h3>
+<ol start="49">
+<li>
+<p>What is troubleshooting? Why is it important?</p>
+</li>
+<li>
+<p>List the seven steps of the systematic troubleshooting process in order.</p>
+</li>
+<li>
+<p>What is the first step in the systematic process of troubleshooting?</p>
+</li>
+<li>
+<p>After identifying a problem, what is the next step in troubleshooting?</p>
+</li>
+<li>
+<p>Describe the importance of testing a theory during the troubleshooting process.</p>
+</li>
+<li>
+<p>Explain what the "Implement the Solution" step means in troubleshooting.</p>
+</li>
+<li>
+<p>Why is it necessary to verify full system functionality after implementing a solution?</p>
+</li>
+<li>
+<p>Why is it important to document findings, actions, and outcomes after troubleshooting?</p>
+</li>
+<li>
+<p>What is downtime? How does effective troubleshooting help prevent it?</p>
+</li>
+<li>
+<p>What is data integrity? How can troubleshooting help protect it?</p>
+</li>
+<li>
+<p>How does troubleshooting help improve computer security?</p>
+</li>
+<li>
+<p>How can regular troubleshooting extend the life of computer equipment?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-hardware-issues-and-maintenance">Topic: Hardware Issues and Maintenance</h3>
+<ol start="61">
+<li>
+<p>What are three common hardware issues that can affect a computer system?</p>
+</li>
+<li>
+<p>What is the recommended solution for preventing computer overheating?</p>
+</li>
+<li>
+<p>List two common symptoms of RAM failure.</p>
+</li>
+<li>
+<p>List two common symptoms of hard drive failure.</p>
+</li>
+<li>
+<p>What is MemTest86 used for?</p>
+</li>
+<li>
+<p>What is CrystalDiskInfo used for?</p>
+</li>
+<li>
+<p>What does SMART stand for? What is it used for?</p>
+</li>
+<li>
+<p>What steps should you follow when replacing a RAM module?</p>
+</li>
+<li>
+<p>What steps should you follow when replacing a hard drive?</p>
+</li>
+<li>
+<p>Why is it important to back up data before replacing a hard drive?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-software-maintenance-and-security">Topic: Software Maintenance and Security</h3>
+<ol start="71">
+<li>
+<p>Why is it important to keep software up to date?</p>
+</li>
+<li>
+<p>What is a software patch? Why are patches important?</p>
+</li>
+<li>
+<p>What is a software conflict? How can it be resolved?</p>
+</li>
+<li>
+<p>How can you create a strong password? What should it include?</p>
+</li>
+<li>
+<p>What was the WannaCry ransomware attack? What lesson does it teach about software updates?</p>
+</li>
+</ol>
+<hr>
+<p><em>End of Unit 2 MCQs and Short Questions</em></p>
+
+</body>
+</html>

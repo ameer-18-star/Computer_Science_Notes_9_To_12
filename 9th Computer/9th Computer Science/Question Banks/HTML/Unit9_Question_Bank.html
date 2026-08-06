@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 9 · Question Bank</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 9 · Question Bank</div>
+</div>
+
+<h1 id="unit-9-question-bank">Unit 9 · Question Bank</h1>
+<h2 id="entrepreneurship-in-the-digital-age">Entrepreneurship in the Digital Age</h2>
+<p><em>Computer Science · Comprehensive Practice Questions</em></p>
+<p><strong>40 MCQs · 25 Short Questions · 15 Long Questions</strong></p>
+<hr>
+<h2 id="multiple-choice-questions-40-questions">Multiple Choice Questions (40 Questions)</h2>
+<p><strong>Q1.</strong> <em>(9.1 Entrepreneurship)</em> What is entrepreneurship?<br>
+- A. The process of starting a new business or organization ✅<br>
+- B. The process of buying and selling stocks<br>
+- C. The process of working for a large company<br>
+- D. The process of creating a marketing campaign</p>
+<p><strong>Q2.</strong> <em>(9.1 Entrepreneurship)</em> What is a key characteristic of entrepreneurs?<br>
+- A. Avoiding risks<br>
+- B. Seeking job security<br>
+- C. Innovation ✅<br>
+- D. Following established methods only</p>
+<p><strong>Q3.</strong> <em>(9.1 Entrepreneurship)</em> The word "entrepreneur" originates from which language?<br>
+- A. Latin<br>
+- B. French ✅<br>
+- C. German<br>
+- D. Spanish</p>
+<p><strong>Q4.</strong> <em>(9.1 Entrepreneurship)</em> Which of the following is NOT a characteristic of a successful entrepreneur?<br>
+- A. Innovation<br>
+- B. Risk-taking<br>
+- C. Fear of failure ✅<br>
+- D. Problem-solving</p>
+<p><strong>Q5.</strong> <em>(9.1 Entrepreneurship)</em> Walt Disney started his company in which location?<br>
+- A. His basement<br>
+- B. His uncle's garage ✅<br>
+- C. A rented office<br>
+- D. A university lab</p>
+<p><strong>Q6.</strong> <em>(9.1 Entrepreneurship)</em> Entrepreneurship drives economic growth by:<br>
+- A. Reducing competition in the market<br>
+- B. Creating jobs and providing new products and services ✅<br>
+- C. Increasing government control of businesses<br>
+- D. Limiting access to innovation</p>
+<p><strong>Q7.</strong> <em>(9.1 Entrepreneurship)</em> Which of the following is an example of a tech startup founded by entrepreneurs?<br>
+- A. A neighborhood bakery<br>
+- B. A government ministry<br>
+- C. Facebook ✅<br>
+- D. A public school</p>
+<p><strong>Q8.</strong> <em>(9.1 Entrepreneurship)</em> Pakistan ranks among the top countries globally in which entrepreneurship-related field?<br>
+- A. Manufacturing exports<br>
+- B. Freelancing growth ✅<br>
+- C. Stock market activity<br>
+- D. Agricultural entrepreneurship</p>
+<p><strong>Q9.</strong> <em>(9.2 Digital Landscape)</em> An example of a digital technology used by modern entrepreneurs is:<br>
+- A. Newspaper advertisements<br>
+- B. Television commercials<br>
+- C. Mobile apps ✅<br>
+- D. Door-to-door sales</p>
+<p><strong>Q10.</strong> <em>(9.2 Digital Landscape)</em> Cloud computing allows businesses to:<br>
+- A. Store physical products in warehouses<br>
+- B. Store data and run applications over the Internet ✅<br>
+- C. Print marketing materials efficiently<br>
+- D. Manage employees' attendance offline</p>
+<p><strong>Q11.</strong> <em>(9.2 Digital Landscape)</em> Which digital tool helps businesses understand market trends and customer behavior?<br>
+- A. Cloud computing<br>
+- B. Social media<br>
+- C. Mobile apps<br>
+- D. Big data analytics ✅</p>
+<p><strong>Q12.</strong> <em>(9.2 Digital Marketing)</em> SEO stands for:<br>
+- A. Social Engagement Optimization<br>
+- B. Search Engine Optimization ✅<br>
+- C. Sales and E-commerce Operations<br>
+- D. Secure Email Outreach</p>
+<p><strong>Q13.</strong> <em>(9.2 Digital Marketing)</em> Which platform is used to create and manage online stores with ease?<br>
+- A. Zendesk<br>
+- B. PayPal<br>
+- C. Shopify ✅<br>
+- D. Google Analytics</p>
+<p><strong>Q14.</strong> <em>(9.2 Digital Marketing)</em> Which platform provides customer service solutions for handling inquiries and support?<br>
+- A. Shopify<br>
+- B. PayPal<br>
+- C. Zendesk ✅<br>
+- D. Instagram</p>
+<p><strong>Q15.</strong> <em>(9.2 Digital Marketing)</em> Pakistan's e-commerce market size was estimated to be approximately how much in 2021?<br>
+- A. $1 billion<br>
+- B. $2 billion<br>
+- C. $4 billion ✅<br>
+- D. $8 billion</p>
+<p><strong>Q16.</strong> <em>(9.2 Digital Marketing)</em> Content marketing involves:<br>
+- A. Cold-calling potential customers<br>
+- B. Creating valuable content like blogs and videos to attract customers ✅<br>
+- C. Paying search engines to display your website<br>
+- D. Setting up physical store displays</p>
+<p><strong>Q17.</strong> <em>(9.2 Digital Marketing)</em> Which of the following is NOT a digital marketing strategy?<br>
+- A. Search Engine Optimization<br>
+- B. Email Marketing<br>
+- C. Social Media Marketing<br>
+- D. Billboard advertising ✅</p>
+<p><strong>Q18.</strong> <em>(9.2 E-commerce)</em> E-commerce refers to:<br>
+- A. Electronic communication between employees<br>
+- B. Buying and selling goods online ✅<br>
+- C. Managing electronic records of transactions<br>
+- D. Advertising products on television</p>
+<p><strong>Q19.</strong> <em>(9.3 Idea Generation)</em> Which of the following is NOT a technique for identifying market needs?<br>
+- A. Surveys and Questionnaires<br>
+- B. Market Research<br>
+- C. Observation<br>
+- D. Brainstorming ✅</p>
+<p><strong>Q20.</strong> <em>(9.3 Design Thinking)</em> The first step in the design thinking process is:<br>
+- A. Prototyping<br>
+- B. Testing<br>
+- C. Empathizing ✅<br>
+- D. Defining</p>
+<p><strong>Q21.</strong> <em>(9.3 Design Thinking)</em> The correct order of the design thinking process is:<br>
+- A. Define → Empathize → Ideate → Prototype → Test<br>
+- B. Empathize → Define → Ideate → Prototype → Test ✅<br>
+- C. Ideate → Define → Empathize → Test → Prototype<br>
+- D. Prototype → Test → Empathize → Define → Ideate</p>
+<p><strong>Q22.</strong> <em>(9.3 Design Thinking)</em> Design thinking is best described as a:<br>
+- A. Financial planning strategy<br>
+- B. Solution-focused approach to creative problem-solving ✅<br>
+- C. Marketing technique for online businesses<br>
+- D. Method for managing business finances</p>
+<p><strong>Q23.</strong> <em>(9.3 Idea Generation)</em> Which step of design thinking involves creating simple models of solutions?<br>
+- A. Empathizing<br>
+- B. Ideating<br>
+- C. Prototyping ✅<br>
+- D. Defining</p>
+<p><strong>Q24.</strong> <em>(9.4 Business Plans)</em> The primary purpose of creating a business plan is:<br>
+- A. To attract investors only<br>
+- B. To outline strategies for growth and serve as a roadmap ✅<br>
+- C. To study market trends<br>
+- D. To implement digital marketing strategies</p>
+<p><strong>Q25.</strong> <em>(9.4 Business Plans)</em> What does market analysis involve?<br>
+- A. Calculating revenue forecasts only<br>
+- B. Researching competitors and understanding customer needs ✅<br>
+- C. Developing pricing strategies<br>
+- D. Implementing digital marketing campaigns</p>
+<p><strong>Q26.</strong> <em>(9.4 Business Plans)</em> A revenue model outlines:<br>
+- A. The hiring process for a company<br>
+- B. Marketing channels to be used<br>
+- C. How a business will generate income ✅<br>
+- D. The company's legal structure</p>
+<p><strong>Q27.</strong> <em>(9.4 Business Plans)</em> Iteration in prototyping refers to:<br>
+- A. Creating the first version of a product<br>
+- B. Launching the final product to market<br>
+- C. Making improvements based on feedback ✅<br>
+- D. Designing packaging for products</p>
+<p><strong>Q28.</strong> <em>(9.4 Business Plans)</em> Which of the following is a component of a comprehensive business plan?<br>
+- A. Employee performance reviews<br>
+- B. Market analysis ✅<br>
+- C. IT security policies<br>
+- D. Customer complaint records</p>
+<p><strong>Q29.</strong> <em>(9.5 Ethics &amp; SDGs)</em> Which Sustainable Development Goal (SDG) focuses on affordable and clean energy?<br>
+- A. SDG 5<br>
+- B. SDG 7 ✅<br>
+- C. SDG 12<br>
+- D. SDG 17</p>
+<p><strong>Q30.</strong> <em>(9.5 Ethics &amp; SDGs)</em> Ethical entrepreneurship includes which of the following principles?<br>
+- A. Profit maximization at any cost<br>
+- B. Honesty, integrity, fairness, and respect ✅<br>
+- C. Minimizing employee wages<br>
+- D. Avoiding transparency with customers</p>
+<p><strong>Q31.</strong> <em>(9.5 Ethics &amp; SDGs)</em> Sustainable growth focuses on:<br>
+- A. Maximizing profits in the short term<br>
+- B. Reducing the size of the business<br>
+- C. Meeting present needs without compromising future generations ✅<br>
+- D. Expanding into international markets quickly</p>
+<p><strong>Q32.</strong> <em>(9.5 Ethics &amp; SDGs)</em> How many Sustainable Development Goals (SDGs) were established by the United Nations?<br>
+- A. 10<br>
+- B. 12<br>
+- C. 17 ✅<br>
+- D. 20</p>
+<p><strong>Q33.</strong> <em>(9.5 Ethics &amp; SDGs)</em> Environmental sustainability in business means:<br>
+- A. Increasing production regardless of pollution<br>
+- B. Reducing carbon footprints and minimizing waste ✅<br>
+- C. Using only fossil fuels for energy<br>
+- D. Expanding physical infrastructure</p>
+<p><strong>Q34.</strong> <em>(9.5 Ethics &amp; SDGs)</em> A Pakistani startup focusing on solar energy contributes to which SDG?<br>
+- A. SDG 1 (No Poverty)<br>
+- B. SDG 4 (Quality Education)<br>
+- C. SDG 7 (Affordable and Clean Energy) ✅<br>
+- D. SDG 9 (Industry, Innovation and Infrastructure)</p>
+<p><strong>Q35.</strong> <em>(9.1 Entrepreneurship)</em> Innovation in entrepreneurship refers to:<br>
+- A. Copying successful business models<br>
+- B. Creating something new or improving something that already exists ✅<br>
+- C. Reducing business expenses<br>
+- D. Following traditional business approaches</p>
+<p><strong>Q36.</strong> <em>(9.2 Digital Landscape)</em> Which of the following best describes digital entrepreneurship?<br>
+- A. Running a business without using any technology<br>
+- B. Leveraging the power of the Internet and digital platforms to create and run businesses ✅<br>
+- C. Selling only physical products through traditional stores<br>
+- D. Managing government digital projects</p>
+<p><strong>Q37.</strong> <em>(9.2 Digital Landscape)</em> Which platform is used to integrate payment gateways for secure transactions?<br>
+- A. Shopify<br>
+- B. PayPal ✅<br>
+- C. Zendesk<br>
+- D. Facebook</p>
+<p><strong>Q38.</strong> <em>(9.3 Idea Generation)</em> The "Defining" step in design thinking involves:<br>
+- A. Building a physical prototype<br>
+- B. Interviewing potential customers<br>
+- C. Clearly stating the problem to be solved ✅<br>
+- D. Testing solutions with users</p>
+<p><strong>Q39.</strong> <em>(9.5 Ethics &amp; SDGs)</em> Social sustainability in a business context includes:<br>
+- A. Ensuring fair labour practices and supporting community development ✅<br>
+- B. Maximizing shareholder profits<br>
+- C. Reducing employee benefits<br>
+- D. Avoiding investment in education</p>
+<p><strong>Q40.</strong> <em>(9.2 Digital Marketing)</em> Compared to traditional marketing, digital marketing is advantageous because it:<br>
+- A. Requires larger budgets<br>
+- B. Can only reach local audiences<br>
+- C. Can reach a global audience at a fraction of the cost and is easily measurable ✅<br>
+- D. Does not require any technical knowledge</p>
+<hr>
+<h2 id="short-questions-25-questions">Short Questions (25 Questions)</h2>
+<ol>
+<li>What is the meaning of the word "entrepreneur" and from which language does it originate?</li>
+<li>Define entrepreneurship and explain what entrepreneurs do.</li>
+<li>List any three key characteristics of successful entrepreneurs.</li>
+<li>How do digital technologies help entrepreneurs reach a global audience?</li>
+<li>What is an e-commerce platform? Give two examples.</li>
+<li>Why is it important to identify market needs when generating a business idea?</li>
+<li>What is the main purpose of using design thinking in creative problem-solving?</li>
+<li>Define SEO and explain how it benefits an online business.</li>
+<li>Write the importance of market analysis in a business plan.</li>
+<li>What is cloud computing and how does it benefit entrepreneurs?</li>
+<li>How can businesses contribute to environmental sustainability according to the Sustainable Development Goals?</li>
+<li>Define big data analytics and state its role in entrepreneurship.</li>
+<li>What is a revenue model? What does it include?</li>
+<li>Briefly explain the concept of prototyping and iteration in business development.</li>
+<li>What are the Sustainable Development Goals (SDGs) and who established them?</li>
+<li>What is social media marketing and which platforms are commonly used for it?</li>
+<li>List any four principles of ethics in business.</li>
+<li>How does entrepreneurship contribute to economic growth?</li>
+<li>What is email marketing? How does it help businesses build customer relationships?</li>
+<li>Describe any two techniques for identifying market needs.</li>
+<li>What role do mobile apps play in digital entrepreneurship?</li>
+<li>Differentiate between digital marketing and e-commerce.</li>
+<li>Why is risk-taking considered an important characteristic of an entrepreneur?</li>
+<li>What is economic sustainability in the context of SDGs?</li>
+<li>What is the significance of Pakistan's freelancing community in the context of entrepreneurship?</li>
+</ol>
+<hr>
+<h2 id="long-questions-15-questions">Long Questions (15 Questions)</h2>
+<ol>
+<li>Explain why entrepreneurship is important for economic growth and innovation. Support your answer with real-world examples.</li>
+<li>Explain how market research tools, online marketing tools, and e-commerce platforms can work together to help a business succeed in the digital world.</li>
+<li>Choose a local business in Pakistan and discuss how it aligns with one or more Sustainable Development Goals (SDGs). Explain how the business contributes to social, environmental, or economic sustainability.</li>
+<li>Explain digital entrepreneurship. Also write the principles of ethics in business and describe why each principle is important.</li>
+<li>Write down all the components of a Business Plan and explain each component in detail.</li>
+<li>Describe the design thinking process in detail. Explain each of its five steps and provide a practical example of how it can be applied to solve a real problem in Pakistan.</li>
+<li>What is digital transformation? Discuss in detail how digital technologies such as social media, cloud computing, mobile apps, and big data analytics have changed the way entrepreneurs run their businesses.</li>
+<li>Describe the various digital marketing strategies available to entrepreneurs. Explain SEO, social media marketing, content marketing, and email marketing with examples.</li>
+<li>Discuss the concept of ethical and sustainable entrepreneurship. Why is it important for businesses to balance profit with social responsibility? Support your answer with relevant examples.</li>
+<li>Explain the process of generating a business idea. Discuss problem identification techniques and creative problem-solving methods, including design thinking and brainstorming.</li>
+<li>Discuss the key characteristics of successful entrepreneurs. Why are innovation and risk-taking especially important in the modern digital age?</li>
+<li>What is the role of e-commerce in modern business? Explain how platforms like Shopify, PayPal, and Zendesk help entrepreneurs set up and manage online businesses.</li>
+<li>How can aligning a business with the United Nations Sustainable Development Goals (SDGs) benefit both the company and society? Give examples relevant to Pakistan.</li>
+<li>Compare traditional entrepreneurship with digital entrepreneurship. What are the advantages of running a business in the digital age compared to traditional methods?</li>
+<li>Explain how data-driven decision-making helps entrepreneurs. What tools and techniques are used to collect and analyze data, and how does this information lead to better business outcomes?</li>
+</ol>
+<hr>
+<p><em>Unit 9 · Entrepreneurship in the Digital Age · Question Bank</em></p>
+
+</body>
+</html>

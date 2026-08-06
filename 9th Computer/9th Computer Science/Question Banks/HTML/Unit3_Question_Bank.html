@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 3: Computer Networks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 3: Computer Networks</div>
+</div>
+
+<h1 id="unit-3-computer-networks">Unit 3: Computer Networks</h1>
+<h2 id="complete-exam-question-bank-mcqs-short-questions-long-questions">Complete Exam Question Bank — MCQs, Short Questions &amp; Long Questions</h2>
+<hr>
+<h2 id="section-a-multiple-choice-questions">Section A: Multiple Choice Questions</h2>
+<p><em>Each question has one correct answer. The correct answer is in </em><em>bold</em><em>.</em></p>
+<hr>
+<h3 id="topic-network-as-a-system">Topic: Network as a System</h3>
+<p><strong>1.</strong> A computer network is best defined as:</p>
+<ul>
+<li>a) A single computer with multiple monitors</li>
+<li>b) <strong>A system of linked devices that can exchange data and operate together</strong></li>
+<li>c) A collection of software programs on one computer</li>
+<li>d) A storage device that holds large amounts of data</li>
+</ul>
+<hr>
+<p><strong>2.</strong> The primary objective of a computer network is:</p>
+<ul>
+<li>a) To increase the processing speed of a single computer</li>
+<li>b) To enhance graphic capabilities of devices</li>
+<li>c) <strong>To enable resource sharing, data communication, and collaboration</strong></li>
+<li>d) To improve software development tools</li>
+</ul>
+<hr>
+<p><strong>3.</strong> Which of the following is the largest network in the world?</p>
+<ul>
+<li>a) LAN</li>
+<li>b) MAN</li>
+<li>c) WAN</li>
+<li>d) <strong>The Internet</strong></li>
+</ul>
+<hr>
+<p><strong>4.</strong> The Internet is often called the:</p>
+<ul>
+<li>a) Global computing system</li>
+<li>b) World Wide Web</li>
+<li>c) <strong>Network of networks</strong></li>
+<li>d) Universal server</li>
+</ul>
+<hr>
+<p><strong>5.</strong> Which of the following is an example of resource sharing in a computer network?</p>
+<ul>
+<li>a) One computer downloading music</li>
+<li>b) A student watching a video offline</li>
+<li>c) <strong>Multiple computers sharing a single printer</strong></li>
+<li>d) A computer running two programs at once</li>
+</ul>
+<hr>
+<p><strong>6.</strong> Which component of a network refers to any device connected to it, such as a computer or printer?</p>
+<ul>
+<li>a) Link</li>
+<li>b) Router</li>
+<li>c) Switch</li>
+<li>d) <strong>Node</strong></li>
+</ul>
+<hr>
+<p><strong>7.</strong> Which component of a network refers to the connection between nodes?</p>
+<ul>
+<li>a) Node</li>
+<li>b) Router</li>
+<li>c) <strong>Link</strong></li>
+<li>d) Protocol</li>
+</ul>
+<hr>
+<p><strong>8.</strong> Who invented the World Wide Web (WWW)?</p>
+<ul>
+<li>a) Bill Gates</li>
+<li>b) Steve Jobs</li>
+<li>c) Alan Turing</li>
+<li>d) <strong>Tim Berners-Lee</strong></li>
+</ul>
+<hr>
+<p><strong>9.</strong> In which year was the World Wide Web invented?</p>
+<ul>
+<li>a) 1975</li>
+<li>b) 1983</li>
+<li>c) <strong>1989</strong></li>
+<li>d) 1995</li>
+</ul>
+<hr>
+<p><strong>10.</strong> Which of the following is an example of connectivity and collaboration through a network?</p>
+<ul>
+<li>a) Printing a document on a local printer</li>
+<li>b) Saving a file to the desktop</li>
+<li>c) <strong>A team editing a shared document in real time using Google Drive</strong></li>
+<li>d) Installing software from a CD</li>
+</ul>
+<hr>
+<h3 id="topic-data-communication">Topic: Data Communication</h3>
+<p><strong>11.</strong> Data communication is defined as:</p>
+<ul>
+<li>a) Storing data on a hard drive</li>
+<li>b) Processing data using the CPU</li>
+<li>c) <strong>The exchange of data between a sender and a receiver through a communication medium</strong></li>
+<li>d) Converting analog signals to digital signals</li>
+</ul>
+<hr>
+<p><strong>12.</strong> How many basic components does data communication have?</p>
+<ul>
+<li>a) Three</li>
+<li>b) Four</li>
+<li>c) <strong>Five</strong></li>
+<li>d) Seven</li>
+</ul>
+<hr>
+<p><strong>13.</strong> Which component of data communication is the device that sends data?</p>
+<ul>
+<li>a) Receiver</li>
+<li>b) Medium</li>
+<li>c) Protocol</li>
+<li>d) <strong>Sender</strong></li>
+</ul>
+<hr>
+<p><strong>14.</strong> Which component of data communication is the actual data being sent?</p>
+<ul>
+<li>a) Protocol</li>
+<li>b) Sender</li>
+<li>c) Medium</li>
+<li>d) <strong>Message</strong></li>
+</ul>
+<hr>
+<p><strong>15.</strong> A protocol in data communication is best described as:</p>
+<ul>
+<li>a) The physical cable connecting two devices</li>
+<li>b) The device that receives data</li>
+<li>c) <strong>A set of rules that govern data communication</strong></li>
+<li>d) The speed at which data travels</li>
+</ul>
+<hr>
+<p><strong>16.</strong> Which of the following is an example of a protocol used in web communication?</p>
+<ul>
+<li>a) DNS</li>
+<li>b) <strong>HTTP</strong></li>
+<li>c) MAC</li>
+<li>d) RAM</li>
+</ul>
+<hr>
+<p><strong>17.</strong> Which component of data communication refers to the physical or wireless path through which data travels?</p>
+<ul>
+<li>a) Protocol</li>
+<li>b) Message</li>
+<li>c) Sender</li>
+<li>d) <strong>Medium</strong></li>
+</ul>
+<hr>
+<p><strong>18.</strong> An Ethernet cable is an example of which component of data communication?</p>
+<ul>
+<li>a) Sender</li>
+<li>b) Protocol</li>
+<li>c) Message</li>
+<li>d) <strong>Medium</strong></li>
+</ul>
+<hr>
+<p><strong>19.</strong> When a computer sends an email, it is acting as the:</p>
+<ul>
+<li>a) Receiver</li>
+<li>b) Medium</li>
+<li>c) Protocol</li>
+<li>d) <strong>Sender</strong></li>
+</ul>
+<hr>
+<p><strong>20.</strong> When a smartphone receives an email, it is acting as the:</p>
+<ul>
+<li>a) Sender</li>
+<li>b) <strong>Receiver</strong></li>
+<li>c) Medium</li>
+<li>d) Protocol</li>
+</ul>
+<hr>
+<h3 id="topic-networking-devices">Topic: Networking Devices</h3>
+<p><strong>21.</strong> Which networking device connects multiple devices within a single network and uses MAC addresses to forward data?</p>
+<ul>
+<li>a) Router</li>
+<li>b) Access Point</li>
+<li>c) Hub</li>
+<li>d) <strong>Switch</strong></li>
+</ul>
+<hr>
+<p><strong>22.</strong> A switch operates at which layer of the OSI model?</p>
+<ul>
+<li>a) Layer 1 — Physical Layer</li>
+<li>b) <strong>Layer 2 — Data Link Layer</strong></li>
+<li>c) Layer 3 — Network Layer</li>
+<li>d) Layer 4 — Transport Layer</li>
+</ul>
+<hr>
+<p><strong>23.</strong> What does MAC stand for in networking?</p>
+<ul>
+<li>a) Main Access Code</li>
+<li>b) Multiple Access Control</li>
+<li>c) <strong>Media Access Control</strong></li>
+<li>d) Modular Address Controller</li>
+</ul>
+<hr>
+<p><strong>24.</strong> What is a MAC address?</p>
+<ul>
+<li>a) A temporary address assigned by DHCP</li>
+<li>b) An address used only on the internet</li>
+<li>c) <strong>A unique, permanent hardware ID assigned to every network device</strong></li>
+<li>d) An address used to identify websites</li>
+</ul>
+<hr>
+<p><strong>25.</strong> When a data packet arrives at a switch, the switch:</p>
+<ul>
+<li>a) Broadcasts it to all connected devices</li>
+<li>b) Sends it to the router for processing</li>
+<li>c) Drops it if the destination is unknown</li>
+<li>d) <strong>Reads the destination MAC address and forwards it only to the correct device</strong></li>
+</ul>
+<hr>
+<p><strong>26.</strong> Which networking device connects different networks and directs data packets between them?</p>
+<ul>
+<li>a) Switch</li>
+<li>b) Access Point</li>
+<li>c) Hub</li>
+<li>d) <strong>Router</strong></li>
+</ul>
+<hr>
+<p><strong>27.</strong> A router uses which type of address to route data between networks?</p>
+<ul>
+<li>a) MAC address</li>
+<li>b) Physical address</li>
+<li>c) <strong>IP address</strong></li>
+<li>d) Port address</li>
+</ul>
+<hr>
+<p><strong>28.</strong> Which tool does a router use to find the best path for data packets?</p>
+<ul>
+<li>a) MAC table</li>
+<li>b) DNS table</li>
+<li>c) <strong>Routing table</strong></li>
+<li>d) DHCP table</li>
+</ul>
+<hr>
+<p><strong>29.</strong> An Access Point (AP) is used to:</p>
+<ul>
+<li>a) Connect two different networks using IP addresses</li>
+<li>b) Assign IP addresses to devices on a network</li>
+<li>c) <strong>Connect wireless devices to a wired network</strong></li>
+<li>d) Translate domain names to IP addresses</li>
+</ul>
+<hr>
+<p><strong>30.</strong> What is the first thing a switch does when it receives a data packet for the first time?</p>
+<ul>
+<li>a) Drops the packet</li>
+<li>b) Sends it to the router</li>
+<li>c) Reads the IP address</li>
+<li>d) <strong>Broadcasts it to all connected devices until it learns the destination address</strong></li>
+</ul>
+<hr>
+<h3 id="topic-network-topologies">Topic: Network Topologies</h3>
+<p><strong>31.</strong> What is a network topology?</p>
+<ul>
+<li>a) The speed at which data travels through a network</li>
+<li>b) The type of cables used in a network</li>
+<li>c) <strong>The arrangement of devices and connections in a computer network</strong></li>
+<li>d) The security method used to protect a network</li>
+</ul>
+<hr>
+<p><strong>32.</strong> In which topology do all devices share a single communication line?</p>
+<ul>
+<li>a) Star</li>
+<li>b) Ring</li>
+<li>c) Mesh</li>
+<li>d) <strong>Bus</strong></li>
+</ul>
+<hr>
+<p><strong>33.</strong> What happens in a Bus topology if the main cable fails?</p>
+<ul>
+<li>a) Only the nearest devices go offline</li>
+<li>b) The router takes over the connection</li>
+<li>c) Data is rerouted automatically</li>
+<li>d) <strong>The entire network goes down</strong></li>
+</ul>
+<hr>
+<p><strong>34.</strong> In which topology are all devices connected to a central switch or hub?</p>
+<ul>
+<li>a) Bus</li>
+<li>b) Ring</li>
+<li>c) Mesh</li>
+<li>d) <strong>Star</strong></li>
+</ul>
+<hr>
+<p><strong>35.</strong> In a Star topology, what happens if the central switch or hub fails?</p>
+<ul>
+<li>a) Only the first connected device goes offline</li>
+<li>b) Data is rerouted through other devices</li>
+<li>c) The network continues to work normally</li>
+<li>d) <strong>The entire network goes down</strong></li>
+</ul>
+<hr>
+<p><strong>36.</strong> Which topology is compared to a relay race where a baton passes from one runner to the next in a circle?</p>
+<ul>
+<li>a) Bus</li>
+<li>b) Star</li>
+<li>c) <strong>Ring</strong></li>
+<li>d) Mesh</li>
+</ul>
+<hr>
+<p><strong>37.</strong> In a Ring topology, in which direction does data travel?</p>
+<ul>
+<li>a) Both directions simultaneously</li>
+<li>b) In random directions</li>
+<li>c) From hub to all devices</li>
+<li>d) <strong>In one direction only, passing through each device</strong></li>
+</ul>
+<hr>
+<p><strong>38.</strong> Which network topology provides the highest redundancy and reliability?</p>
+<ul>
+<li>a) Bus</li>
+<li>b) Star</li>
+<li>c) Ring</li>
+<li>d) <strong>Mesh</strong></li>
+</ul>
+<hr>
+<p><strong>39.</strong> In a Mesh topology, each device is connected to:</p>
+<ul>
+<li>a) Only the central hub</li>
+<li>b) Only its two nearest neighbors</li>
+<li>c) The main bus cable</li>
+<li>d) <strong>Every other device in the network</strong></li>
+</ul>
+<hr>
+<p><strong>40.</strong> Which topology is most suitable when network reliability is the highest priority?</p>
+<ul>
+<li>a) Bus</li>
+<li>b) Star</li>
+<li>c) Ring</li>
+<li>d) <strong>Mesh</strong></li>
+</ul>
+<hr>
+<p><strong>41.</strong> A school principal's office connected to all classrooms through intercoms is an analogy for which topology?</p>
+<ul>
+<li>a) Bus</li>
+<li>b) Ring</li>
+<li>c) Mesh</li>
+<li>d) <strong>Star</strong></li>
+</ul>
+<hr>
+<p><strong>42.</strong> Which topology is the easiest and cheapest to set up but the least reliable?</p>
+<ul>
+<li>a) Star</li>
+<li>b) Ring</li>
+<li>c) Mesh</li>
+<li>d) <strong>Bus</strong></li>
+</ul>
+<hr>
+<h3 id="topic-transmission-modes">Topic: Transmission Modes</h3>
+<p><strong>43.</strong> In which transmission mode does data flow in only one direction?</p>
+<ul>
+<li>a) Full-Duplex</li>
+<li>b) Half-Duplex</li>
+<li>c) <strong>Simplex</strong></li>
+<li>d) Duplex</li>
+</ul>
+<hr>
+<p><strong>44.</strong> Which of the following is an example of Simplex communication?</p>
+<ul>
+<li>a) A telephone conversation</li>
+<li>b) A walkie-talkie exchange</li>
+<li>c) A video call</li>
+<li>d) <strong>A keyboard sending data to a computer</strong></li>
+</ul>
+<hr>
+<p><strong>45.</strong> In Half-Duplex communication, data:</p>
+<ul>
+<li>a) Flows only in one direction</li>
+<li>b) Flows in both directions at the same time</li>
+<li>c) <strong>Flows in both directions, but not simultaneously</strong></li>
+<li>d) Does not travel through a medium</li>
+</ul>
+<hr>
+<p><strong>46.</strong> Which of the following is the best real-life example of Half-Duplex communication?</p>
+<ul>
+<li>a) A telephone call</li>
+<li>b) A keyboard connected to a computer</li>
+<li>c) <strong>A walkie-talkie conversation</strong></li>
+<li>d) A television broadcast</li>
+</ul>
+<hr>
+<p><strong>47.</strong> In Full-Duplex communication, both devices can:</p>
+<ul>
+<li>a) Only receive data at the same time</li>
+<li>b) Only send data at the same time</li>
+<li>c) Send and receive data, but not at the same time</li>
+<li>d) <strong>Send and receive data simultaneously</strong></li>
+</ul>
+<hr>
+<p><strong>48.</strong> Which of the following is the best example of Full-Duplex communication?</p>
+<ul>
+<li>a) A keyboard sending input to a computer</li>
+<li>b) A walkie-talkie</li>
+<li>c) A television remote control</li>
+<li>d) <strong>A telephone conversation</strong></li>
+</ul>
+<hr>
+<p><strong>49.</strong> Which transmission mode allows the highest efficiency of communication?</p>
+<ul>
+<li>a) Simplex</li>
+<li>b) Half-Duplex</li>
+<li>c) <strong>Full-Duplex</strong></li>
+<li>d) Unidirectional</li>
+</ul>
+<hr>
+<p><strong>50.</strong> The first telephones used which mode of communication?</p>
+<ul>
+<li>a) Full-Duplex</li>
+<li>b) Simplex</li>
+<li>c) <strong>Half-Duplex</strong></li>
+<li>d) Mesh</li>
+</ul>
+<hr>
+<h3 id="topic-osi-model">Topic: OSI Model</h3>
+<p><strong>51.</strong> What does OSI stand for?</p>
+<ul>
+<li>a) Operating System Interface</li>
+<li>b) Online Security Infrastructure</li>
+<li>c) <strong>Open Systems Interconnection</strong></li>
+<li>d) Optical Signal Integration</li>
+</ul>
+<hr>
+<p><strong>52.</strong> How many layers does the OSI model have?</p>
+<ul>
+<li>a) 4</li>
+<li>b) 5</li>
+<li>c) 6</li>
+<li>d) <strong>7</strong></li>
+</ul>
+<hr>
+<p><strong>53.</strong> Which layer of the OSI model is responsible for the physical transmission of raw data bits through a medium?</p>
+<ul>
+<li>a) Data Link Layer</li>
+<li>b) Network Layer</li>
+<li>c) Transport Layer</li>
+<li>d) <strong>Physical Layer</strong></li>
+</ul>
+<hr>
+<p><strong>54.</strong> Which layer of the OSI model handles node-to-node data transfer and error detection?</p>
+<ul>
+<li>a) Physical Layer</li>
+<li>b) <strong>Data Link Layer</strong></li>
+<li>c) Network Layer</li>
+<li>d) Transport Layer</li>
+</ul>
+<hr>
+<p><strong>55.</strong> Which layer of the OSI model determines the best path for data to travel from source to destination?</p>
+<ul>
+<li>a) Physical Layer</li>
+<li>b) Data Link Layer</li>
+<li>c) <strong>Network Layer</strong></li>
+<li>d) Transport Layer</li>
+</ul>
+<hr>
+<p><strong>56.</strong> The Network Layer uses which type of address to route data?</p>
+<ul>
+<li>a) MAC address</li>
+<li>b) Port number</li>
+<li>c) <strong>IP address</strong></li>
+<li>d) Domain name</li>
+</ul>
+<hr>
+<p><strong>57.</strong> Which layer of the OSI model ensures reliable end-to-end data transfer?</p>
+<ul>
+<li>a) Network Layer</li>
+<li>b) Session Layer</li>
+<li>c) <strong>Transport Layer</strong></li>
+<li>d) Application Layer</li>
+</ul>
+<hr>
+<p><strong>58.</strong> Which protocol does the Transport Layer use to ensure reliable data transfer?</p>
+<ul>
+<li>a) HTTP</li>
+<li>b) FTP</li>
+<li>c) <strong>TCP</strong></li>
+<li>d) DNS</li>
+</ul>
+<hr>
+<p><strong>59.</strong> Which layer of the OSI model manages the establishment, maintenance, and termination of sessions between applications?</p>
+<ul>
+<li>a) Transport Layer</li>
+<li>b) <strong>Session Layer</strong></li>
+<li>c) Presentation Layer</li>
+<li>d) Application Layer</li>
+</ul>
+<hr>
+<p><strong>60.</strong> Which layer of the OSI model translates data between the application layer and the network, and handles encryption?</p>
+<ul>
+<li>a) Session Layer</li>
+<li>b) <strong>Presentation Layer</strong></li>
+<li>c) Application Layer</li>
+<li>d) Transport Layer</li>
+</ul>
+<hr>
+<p><strong>61.</strong> Which layer of the OSI model is closest to the end user and provides network services directly to applications?</p>
+<ul>
+<li>a) Session Layer</li>
+<li>b) Presentation Layer</li>
+<li>c) Transport Layer</li>
+<li>d) <strong>Application Layer</strong></li>
+</ul>
+<hr>
+<p><strong>62.</strong> Web browsing and email are examples of services provided by which OSI layer?</p>
+<ul>
+<li>a) Transport Layer</li>
+<li>b) Network Layer</li>
+<li>c) Session Layer</li>
+<li>d) <strong>Application Layer</strong></li>
+</ul>
+<hr>
+<p><strong>63.</strong> The analogy of a GPS system finding the best route from home to school represents which OSI layer?</p>
+<ul>
+<li>a) Physical Layer</li>
+<li>b) Transport Layer</li>
+<li>c) <strong>Network Layer</strong></li>
+<li>d) Session Layer</li>
+</ul>
+<hr>
+<p><strong>64.</strong> The analogy of a translator converting a book from one language to another represents which OSI layer?</p>
+<ul>
+<li>a) Session Layer</li>
+<li>b) Application Layer</li>
+<li>c) <strong>Presentation Layer</strong></li>
+<li>d) Transport Layer</li>
+</ul>
+<hr>
+<p><strong>65.</strong> Which OSI layer includes physical components like cables, hubs, and connectors?</p>
+<ul>
+<li>a) Data Link Layer</li>
+<li>b) Network Layer</li>
+<li>c) <strong>Physical Layer</strong></li>
+<li>d) Transport Layer</li>
+</ul>
+<hr>
+<h3 id="topic-ipv4-and-ipv6">Topic: IPv4 and IPv6</h3>
+<p><strong>66.</strong> IPv4 uses a how many bit address scheme?</p>
+<ul>
+<li>a) 16-bit</li>
+<li>b) <strong>32-bit</strong></li>
+<li>c) 64-bit</li>
+<li>d) 128-bit</li>
+</ul>
+<hr>
+<p><strong>67.</strong> How many unique addresses can IPv4 support?</p>
+<ul>
+<li>a) About 1 billion</li>
+<li>b) About 2 billion</li>
+<li>c) <strong>Approximately 4.3 billion</strong></li>
+<li>d) Approximately 340 undecillion</li>
+</ul>
+<hr>
+<p><strong>68.</strong> Which of the following is a valid IPv4 address?</p>
+<ul>
+<li>a) 2001:0000:130F:0000</li>
+<li>b) <strong>192.168.1.1</strong></li>
+<li>c) FF:AA:BB:CC:DD:EE</li>
+<li>d) www.example.com</li>
+</ul>
+<hr>
+<p><strong>69.</strong> IPv4 addresses are written in:</p>
+<ul>
+<li>a) Eight groups of hexadecimal numbers</li>
+<li>b) Binary notation with 32 characters</li>
+<li>c) <strong>Four sets of decimal numbers, each ranging from 0 to 255</strong></li>
+<li>d) Alphabetic codes separated by colons</li>
+</ul>
+<hr>
+<p><strong>70.</strong> IPv6 uses how many bits for its address scheme?</p>
+<ul>
+<li>a) 32-bit</li>
+<li>b) 64-bit</li>
+<li>c) 96-bit</li>
+<li>d) <strong>128-bit</strong></li>
+</ul>
+<hr>
+<p><strong>71.</strong> Why was IPv6 developed?</p>
+<ul>
+<li>a) To make internet connections faster</li>
+<li>b) To replace TCP/IP</li>
+<li>c) <strong>To address the depletion of IPv4 addresses due to the rapid growth of the internet</strong></li>
+<li>d) To improve network security</li>
+</ul>
+<hr>
+<p><strong>72.</strong> Which of the following is a valid IPv6 address?</p>
+<ul>
+<li>a) 192.168.0.1</li>
+<li>b) FF:EE:DD:CC:BB:AA</li>
+<li>c) <strong>2001:0000:130F:0000:0000:0900:876A:130B</strong></li>
+<li>d) 10.0.0.255</li>
+</ul>
+<hr>
+<p><strong>73.</strong> IPv6 can provide approximately how many unique addresses?</p>
+<ul>
+<li>a) 4.3 billion</li>
+<li>b) 1 trillion</li>
+<li>c) 1 quadrillion</li>
+<li>d) <strong>340 undecillion (an almost limitless number)</strong></li>
+</ul>
+<hr>
+<h3 id="topic-network-protocols-dns-dhcp-tcpip">Topic: Network Protocols — DNS, DHCP, TCP/IP</h3>
+<p><strong>74.</strong> What does DNS stand for?</p>
+<ul>
+<li>a) Data Network System</li>
+<li>b) Digital Name Service</li>
+<li>c) <strong>Domain Name System</strong></li>
+<li>d) Dynamic Node Server</li>
+</ul>
+<hr>
+<p><strong>75.</strong> What is the primary function of DNS?</p>
+<ul>
+<li>a) To assign IP addresses automatically to devices</li>
+<li>b) To encrypt data on the network</li>
+<li>c) To monitor network traffic</li>
+<li>d) <strong>To translate domain names into IP addresses</strong></li>
+</ul>
+<hr>
+<p><strong>76.</strong> When you type www.example.com into a browser, which service translates it into an IP address?</p>
+<ul>
+<li>a) DHCP</li>
+<li>b) HTTP</li>
+<li>c) <strong>DNS</strong></li>
+<li>d) TCP</li>
+</ul>
+<hr>
+<p><strong>77.</strong> What does DHCP stand for?</p>
+<ul>
+<li>a) Data Host Control Protocol</li>
+<li>b) <strong>Dynamic Host Configuration Protocol</strong></li>
+<li>c) Digital Hardware Configuration Program</li>
+<li>d) Domain Host Communication Protocol</li>
+</ul>
+<hr>
+<p><strong>78.</strong> What is the primary function of DHCP?</p>
+<ul>
+<li>a) To translate domain names to IP addresses</li>
+<li>b) To encrypt data on the network</li>
+<li>c) <strong>To automatically assign IP addresses to devices on a network</strong></li>
+<li>d) To monitor network traffic</li>
+</ul>
+<hr>
+<p><strong>79.</strong> When a device connects to a Wi-Fi network and receives an IP address automatically, which protocol is responsible?</p>
+<ul>
+<li>a) DNS</li>
+<li>b) TCP</li>
+<li>c) HTTP</li>
+<li>d) <strong>DHCP</strong></li>
+</ul>
+<hr>
+<p><strong>80.</strong> What does TCP/IP stand for?</p>
+<ul>
+<li>a) Terminal Control Protocol / Internet Process</li>
+<li>b) <strong>Transmission Control Protocol / Internet Protocol</strong></li>
+<li>c) Transfer Communication Protocol / Intranet Protocol</li>
+<li>d) Technical Computing Protocol / Internet Program</li>
+</ul>
+<hr>
+<p><strong>81.</strong> Which protocol in the TCP/IP suite ensures reliable data transfer?</p>
+<ul>
+<li>a) IP</li>
+<li>b) UDP</li>
+<li>c) HTTP</li>
+<li>d) <strong>TCP</strong></li>
+</ul>
+<hr>
+<p><strong>82.</strong> Which protocol in the TCP/IP suite handles addressing and routing of data packets?</p>
+<ul>
+<li>a) TCP</li>
+<li>b) UDP</li>
+<li>c) <strong>IP</strong></li>
+<li>d) FTP</li>
+</ul>
+<hr>
+<p><strong>83.</strong> UDP (User Datagram Protocol) is characterized by:</p>
+<ul>
+<li>a) Very slow but highly reliable data transfer</li>
+<li>b) Two-way handshake before data transfer</li>
+<li>c) <strong>Faster but less reliable data transfer compared to TCP</strong></li>
+<li>d) Encryption of all data before sending</li>
+</ul>
+<hr>
+<p><strong>84.</strong> Which protocol is used for transferring web pages over the internet?</p>
+<ul>
+<li>a) FTP</li>
+<li>b) SMTP</li>
+<li>c) DNS</li>
+<li>d) <strong>HTTP</strong></li>
+</ul>
+<hr>
+<p><strong>85.</strong> Which of the following is a correct sequence showing how protocols relate?</p>
+<ul>
+<li>a) HTTP → IP → DNS → TCP</li>
+<li>b) DNS → UDP → MAC → HTTP</li>
+<li>c) <strong>HTTP uses TCP, which uses IP, which uses the physical network</strong></li>
+<li>d) DHCP → DNS → HTTP → MAC</li>
+</ul>
+<hr>
+<h3 id="topic-network-security">Topic: Network Security</h3>
+<p><strong>86.</strong> Which of the following best describes the purpose of network security?</p>
+<ul>
+<li>a) To increase the speed of data transmission</li>
+<li>b) To organize data into packets</li>
+<li>c) To assign IP addresses to devices</li>
+<li>d) <strong>To protect data and prevent unauthorized access to computer networks</strong></li>
+</ul>
+<hr>
+<p><strong>87.</strong> Which network security method monitors and controls incoming and outgoing network traffic?</p>
+<ul>
+<li>a) Encryption</li>
+<li>b) Antivirus software</li>
+<li>c) <strong>Firewall</strong></li>
+<li>d) DHCP</li>
+</ul>
+<hr>
+<p><strong>88.</strong> What does encryption do to data?</p>
+<ul>
+<li>a) Deletes unauthorized data</li>
+<li>b) Sends data faster</li>
+<li>c) Assigns IP addresses to data packets</li>
+<li>d) <strong>Converts data into a secure format so only authorized users can read it</strong></li>
+</ul>
+<hr>
+<p><strong>89.</strong> Which network security method detects and removes malicious software?</p>
+<ul>
+<li>a) Firewall</li>
+<li>b) Encryption</li>
+<li>c) <strong>Antivirus software</strong></li>
+<li>d) DNS</li>
+</ul>
+<hr>
+<p><strong>90.</strong> Which of the following is a reason why network security is important?</p>
+<ul>
+<li>a) It increases the number of IP addresses available</li>
+<li>b) It makes data transfer faster</li>
+<li>c) <strong>It protects sensitive information from unauthorized access</strong></li>
+<li>d) It connects different networks together</li>
+</ul>
+<hr>
+<p><strong>91.</strong> "Maintaining Privacy" as a network security goal means:</p>
+<ul>
+<li>a) Ensuring data travels at maximum speed</li>
+<li>b) Preventing overheating of network devices</li>
+<li>c) Keeping IP addresses hidden from routers</li>
+<li>d) <strong>Safeguarding personal and confidential information from being compromised</strong></li>
+</ul>
+<hr>
+<p><strong>92.</strong> "Ensuring Availability" as a network security goal means:</p>
+<ul>
+<li>a) Backing up data on cloud servers</li>
+<li>b) Encrypting all data before transmission</li>
+<li>c) Blocking all incoming network traffic</li>
+<li>d) <strong>Ensuring that network resources are accessible to authorized users at all times</strong></li>
+</ul>
+<hr>
+<p><strong>93.</strong> A combination of which three tools provides the most robust network security?</p>
+<ul>
+<li>a) DNS, DHCP, and TCP</li>
+<li>b) Router, Switch, and Access Point</li>
+<li>c) <strong>Firewall, Encryption, and Antivirus Software</strong></li>
+<li>d) Hub, Modem, and Repeater</li>
+</ul>
+<hr>
+<h3 id="topic-types-of-networks">Topic: Types of Networks</h3>
+<p><strong>94.</strong> Which type of network is used for communication between personal devices within a few metres?</p>
+<ul>
+<li>a) LAN</li>
+<li>b) MAN</li>
+<li>c) WAN</li>
+<li>d) <strong>PAN</strong></li>
+</ul>
+<hr>
+<p><strong>95.</strong> A Bluetooth connection between a smartphone and a wireless headset is an example of which network?</p>
+<ul>
+<li>a) LAN</li>
+<li>b) WAN</li>
+<li>c) CAN</li>
+<li>d) <strong>PAN</strong></li>
+</ul>
+<hr>
+<p><strong>96.</strong> Which type of network connects computers and devices within a limited area such as a school or office building?</p>
+<ul>
+<li>a) PAN</li>
+<li>b) MAN</li>
+<li>c) WAN</li>
+<li>d) <strong>LAN</strong></li>
+</ul>
+<hr>
+<p><strong>97.</strong> The computer network in a school lab connecting all computers is an example of:</p>
+<ul>
+<li>a) PAN</li>
+<li>b) <strong>LAN</strong></li>
+<li>c) MAN</li>
+<li>d) WAN</li>
+</ul>
+<hr>
+<p><strong>98.</strong> Which type of network spans a city or large campus, connecting multiple LANs?</p>
+<ul>
+<li>a) PAN</li>
+<li>b) LAN</li>
+<li>c) <strong>MAN</strong></li>
+<li>d) WAN</li>
+</ul>
+<hr>
+<p><strong>99.</strong> A MAN can cover an area of up to:</p>
+<ul>
+<li>a) 5 kilometres</li>
+<li>b) 10 kilometres</li>
+<li>c) 25 kilometres</li>
+<li>d) <strong>50 kilometres</strong></li>
+</ul>
+<hr>
+<p><strong>100.</strong> Which type of network covers the largest geographical area, connecting multiple LANs and MANs across countries?</p>
+<ul>
+<li>a) PAN</li>
+<li>b) LAN</li>
+<li>c) MAN</li>
+<li>d) <strong>WAN</strong></li>
+</ul>
+<hr>
+<p><strong>101.</strong> The Internet is the largest example of which type of network?</p>
+<ul>
+<li>a) LAN</li>
+<li>b) MAN</li>
+<li>c) CAN</li>
+<li>d) <strong>WAN</strong></li>
+</ul>
+<hr>
+<p><strong>102.</strong> Which type of network connects multiple LANs within a university campus or business park?</p>
+<ul>
+<li>a) PAN</li>
+<li>b) LAN</li>
+<li>c) MAN</li>
+<li>d) <strong>CAN</strong></li>
+</ul>
+<hr>
+<p><strong>103.</strong> An Intranet is best described as:</p>
+<ul>
+<li>a) A public network accessible to everyone on the internet</li>
+<li>b) A type of wireless network using Bluetooth</li>
+<li>c) <strong>A private network inside an organization that uses internet technology</strong></li>
+<li>d) A network that spans multiple cities</li>
+</ul>
+<hr>
+<p><strong>104.</strong> Which type of network would a multinational company use to connect its offices in different countries?</p>
+<ul>
+<li>a) PAN</li>
+<li>b) LAN</li>
+<li>c) CAN</li>
+<li>d) <strong>WAN</strong></li>
+</ul>
+<hr>
+<h3 id="topic-real-world-applications">Topic: Real-World Applications</h3>
+<p><strong>105.</strong> Which technology allows doctors to consult with patients remotely through video calls and shared medical images?</p>
+<ul>
+<li>a) LMS</li>
+<li>b) EHR</li>
+<li>c) DNS</li>
+<li>d) <strong>Telemedicine</strong></li>
+</ul>
+<hr>
+<p><strong>106.</strong> What does EHR stand for in healthcare networks?</p>
+<ul>
+<li>a) <strong>Electronic Health Records</strong></li>
+<li>b) Encrypted Hospital Records</li>
+<li>c) External Health Repository</li>
+<li>d) Electronic Hub Router</li>
+</ul>
+<hr>
+<p><strong>107.</strong> Which of the following is an example of a Learning Management System (LMS)?</p>
+<ul>
+<li>a) Facebook</li>
+<li>b) WhatsApp</li>
+<li>c) Instagram</li>
+<li>d) <strong>Google Classroom</strong></li>
+</ul>
+<hr>
+<p><strong>108.</strong> Which of the following LMS platforms is commonly used in Pakistani universities?</p>
+<ul>
+<li>a) Canvas</li>
+<li>b) Blackboard</li>
+<li>c) <strong>Moodle</strong></li>
+<li>d) Google Classroom</li>
+</ul>
+<hr>
+<p><strong>109.</strong> What is "flipped learning"?</p>
+<ul>
+<li>a) A teaching method where students teach the teacher</li>
+<li>b) A method of learning where students study backward from the exam</li>
+<li>c) <strong>A method where students access lecture material online before class, then discuss it in class</strong></li>
+<li>d) A method where all learning is done in the classroom without technology</li>
+</ul>
+<hr>
+<p><strong>110.</strong> Computer networks benefit healthcare by:</p>
+<ul>
+<li>a) Making hospital buildings larger</li>
+<li>b) Replacing doctors with computers</li>
+<li>c) Increasing the number of hospital beds</li>
+<li>d) <strong>Enabling faster access to patient records and reducing medical errors</strong></li>
+</ul>
+<hr>
+<p><strong>111.</strong> During the COVID-19 pandemic, researchers used networks to:</p>
+<ul>
+<li>a) Build physical laboratories in multiple countries</li>
+<li>b) Send physical samples between hospitals</li>
+<li>c) <strong>Share genomic virus data internationally in real time to speed up vaccine development</strong></li>
+<li>d) Increase internet connection speed globally</li>
+</ul>
+<hr>
+<p><strong>112.</strong> Which of the following is a benefit of networks in education?</p>
+<ul>
+<li>a) Reducing the number of teachers needed</li>
+<li>b) Removing the need for physical schools</li>
+<li>c) <strong>Providing access to knowledge regardless of geographic location</strong></li>
+<li>d) Preventing students from accessing incorrect information</li>
+</ul>
+<hr>
+<p><strong>113.</strong> A company uses a private internal website to share information only with its employees. This is called:</p>
+<ul>
+<li>a) Extranet</li>
+<li>b) WAN</li>
+<li>c) <strong>Intranet</strong></li>
+<li>d) CAN</li>
+</ul>
+<hr>
+<p><strong>114.</strong> Which of the following correctly matches a network type with its real-world example?</p>
+<ul>
+<li>a) PAN — University campus network</li>
+<li>b) LAN — International company connecting offices across countries</li>
+<li>c) MAN — Bluetooth headset connected to a phone</li>
+<li>d) <strong>LAN — School computer lab network</strong></li>
+</ul>
+<hr>
+<p><strong>115.</strong> Packet switching in a router is compared to which real-life scenario in the chapter?</p>
+<ul>
+<li>a) A relay race on a circular track</li>
+<li>b) A GPS finding the shortest route</li>
+<li>c) <strong>Passengers split into groups and assigned different flights to reach the same destination</strong></li>
+<li>d) A phone call session being established and terminated</li>
+</ul>
+<hr>
+<hr>
+<h2 id="section-b-short-questions">Section B: Short Questions</h2>
+<p><em>Answer each question in 2–5 sentences. No answers are provided — use your notes and textbook.</em></p>
+<hr>
+<h3 id="topic-network-as-a-system_1">Topic: Network as a System</h3>
+<ol>
+<li>Define a computer network.</li>
+<li>What is meant by the term "network of networks"? What is it referring to?</li>
+<li>List the four primary components of a computer network and briefly describe each.</li>
+<li>What is a node in a computer network? Give two examples.</li>
+<li>What is a link in a computer network? Give one example of a wired link and one of a wireless link.</li>
+<li>State three main objectives of a computer network.</li>
+<li>What is resource sharing in the context of computer networks? Give one example.</li>
+<li>How do computer networks enable data communication? Give one real-life example.</li>
+<li>What is meant by connectivity and collaboration in computer networks?</li>
+</ol>
+<hr>
+<h3 id="topic-data-communication_1">Topic: Data Communication</h3>
+<ol start="10">
+<li>Define data communication.</li>
+<li>List the five key components of data communication.</li>
+<li>What is the role of the sender in data communication? Give an example.</li>
+<li>What is the role of the receiver in data communication? Give an example.</li>
+<li>What is a message in the context of data communication? What forms can it take?</li>
+<li>What is a protocol in data communication? Why is it important?</li>
+<li>Give two examples of communication mediums used in data communication.</li>
+<li>Differentiate between a wired medium and a wireless medium in data communication.</li>
+</ol>
+<hr>
+<h3 id="topic-networking-devices_1">Topic: Networking Devices</h3>
+<ol start="18">
+<li>What is a switch? What is its role in a network?</li>
+<li>At which OSI layer does a switch operate? What address does it use to forward data?</li>
+<li>What is a MAC address? What makes it unique?</li>
+<li>Explain how a switch forwards data when it receives a packet. What does it do the first time and after it learns the addresses?</li>
+<li>What is a router? How does it differ from a switch?</li>
+<li>Write the role of routers in a computer network.</li>
+<li>What is a routing table? How does a router use it?</li>
+<li>What is an Access Point (AP)? What problem does it solve?</li>
+<li>How does an Access Point work? What does it do with data from the wired network?</li>
+<li>Differentiate between a switch and a router.</li>
+</ol>
+<hr>
+<h3 id="topic-network-topologies_1">Topic: Network Topologies</h3>
+<ol start="28">
+<li>What is a network topology?</li>
+<li>Define Bus topology and state one advantage and one disadvantage.</li>
+<li>Define Star topology. What is the role of the central hub or switch?</li>
+<li>What happens in a Star topology if the central switch fails?</li>
+<li>Define Ring topology. In which direction does data travel?</li>
+<li>What is Mesh topology? Why is it considered the most reliable?</li>
+<li>Differentiate between Bus topology and Star topology.</li>
+<li>Differentiate between Ring topology and Mesh topology.</li>
+<li>Which topology would you recommend for a hospital where network reliability is critical? Justify your answer.</li>
+</ol>
+<hr>
+<h3 id="topic-transmission-modes_1">Topic: Transmission Modes</h3>
+<ol start="37">
+<li>What are transmission modes in computer networks? Name all three types.</li>
+<li>Define Simplex communication. Give one example.</li>
+<li>Define Half-Duplex communication. Give one example.</li>
+<li>Define Full-Duplex communication. Give one example.</li>
+<li>What is the difference between Half-Duplex and Full-Duplex communication?</li>
+<li>Differentiate between Simplex and Full-Duplex communication.</li>
+<li>Which transmission mode allows the most efficient two-way communication? Why?</li>
+</ol>
+<hr>
+<h3 id="topic-osi-model_1">Topic: OSI Model</h3>
+<ol start="44">
+<li>What does OSI stand for? What is the purpose of the OSI model?</li>
+<li>How many layers does the OSI model have? List them in order from Layer 1 to Layer 7.</li>
+<li>What is the function of the Physical Layer (Layer 1) in the OSI model?</li>
+<li>What is the function of the Data Link Layer (Layer 2)? Give an example analogy.</li>
+<li>What is the function of the Network Layer (Layer 3)? What address does it use?</li>
+<li>What is the function of the Transport Layer (Layer 4)? Which protocol does it use?</li>
+<li>What is the function of the Session Layer (Layer 5)? Give an example.</li>
+<li>What is the function of the Presentation Layer (Layer 6)?</li>
+<li>What is the function of the Application Layer (Layer 7)? Give two examples of services it provides.</li>
+<li>Define any three layers of the OSI model and explain their functions.</li>
+</ol>
+<hr>
+<h3 id="topic-ipv4-and-ipv6_1">Topic: IPv4 and IPv6</h3>
+<ol start="54">
+<li>What is an IP address? What is its purpose?</li>
+<li>What is IPv4? How many bits does it use?</li>
+<li>How many unique addresses can IPv4 support? Write the formula used to calculate this.</li>
+<li>Write an example of an IPv4 address and explain its format.</li>
+<li>What is IPv6? Why was it developed?</li>
+<li>How many bits does IPv6 use for its address scheme?</li>
+<li>Write an example of an IPv6 address.</li>
+<li>Differentiate between IPv4 and IPv6.</li>
+</ol>
+<hr>
+<h3 id="topic-protocols-dns-dhcp-tcpip">Topic: Protocols — DNS, DHCP, TCP/IP</h3>
+<ol start="62">
+<li>What is a network protocol? Give two examples.</li>
+<li>What is DNS? What problem does it solve?</li>
+<li>Explain how DNS works when a user types a website address into a browser.</li>
+<li>What is DHCP? What is its purpose?</li>
+<li>Explain how DHCP works when a device connects to a Wi-Fi network.</li>
+<li>What does TCP/IP stand for? What is it used for?</li>
+<li>What is the role of TCP (Transmission Control Protocol) in the TCP/IP suite?</li>
+<li>What is the role of IP (Internet Protocol) in the TCP/IP suite?</li>
+<li>What is UDP? How does it differ from TCP?</li>
+<li>Differentiate between TCP and UDP.</li>
+<li>Name four common network protocols and briefly state what each one does.</li>
+</ol>
+<hr>
+<h3 id="topic-network-security_1">Topic: Network Security</h3>
+<ol start="73">
+<li>What is network security? Why is it important?</li>
+<li>List four reasons why network security is important.</li>
+<li>What is a firewall? How does it contribute to network security?</li>
+<li>What is encryption in network security? How does it protect data?</li>
+<li>What is antivirus software? What role does it play in network security?</li>
+<li>Explain what is meant by "data protection" as a network security goal.</li>
+<li>Explain what is meant by "preventing attacks" as a network security goal.</li>
+<li>How do firewalls, encryption, and antivirus software work together to provide robust security?</li>
+</ol>
+<hr>
+<h3 id="topic-types-of-networks_1">Topic: Types of Networks</h3>
+<ol start="81">
+<li>What is a PAN? Give one real-world example.</li>
+<li>What is a LAN? Give one real-world example.</li>
+<li>What is a MAN? What area does it typically cover?</li>
+<li>What is a WAN? Give one real-world example.</li>
+<li>What is a CAN? How is it different from a LAN?</li>
+<li>Differentiate between LAN and WAN.</li>
+<li>Differentiate between MAN and CAN.</li>
+<li>What is an Intranet? How is it different from the Internet?</li>
+<li>Which type of network would be most suitable for connecting the computers in a single school building? Justify your answer.</li>
+<li>Arrange the network types PAN, LAN, CAN, MAN, WAN in order from smallest to largest coverage area.</li>
+</ol>
+<hr>
+<h3 id="topic-real-world-applications_1">Topic: Real-World Applications</h3>
+<ol start="91">
+<li>How do computer networks benefit businesses? Give two specific examples.</li>
+<li>What is an LMS (Learning Management System)? Give two examples of LMS platforms.</li>
+<li>How do networks enable virtual classrooms?</li>
+<li>What is "flipped learning"? How do networks make it possible?</li>
+<li>What are Electronic Health Records (EHR)? List two benefits of EHR systems.</li>
+<li>What is telemedicine? Give one real-world example of how it helps patients.</li>
+<li>How did networks help scientists respond to the COVID-19 pandemic?</li>
+<li>State two benefits of computer networks in education.</li>
+<li>State two benefits of computer networks in healthcare.</li>
+<li>What is an Intranet? How do companies use it?</li>
+</ol>
+<hr>
+<h2 id="section-c-long-questions">Section C: Long Questions</h2>
+<p><em>Answer each question in detail. Use diagrams where applicable. No answers are provided.</em></p>
+<hr>
+<p><strong>1.</strong> Discuss the objectives of computer networks in detail. For each objective, provide a real-world example and explain how it benefits individuals or organizations.</p>
+<hr>
+<p><strong>2.</strong> Explain the five components of data communication in detail. For each component, provide a clear definition and a real-world example. How do all five components work together to enable successful communication?</p>
+<hr>
+<p><strong>3.</strong> Describe the four main networking devices: Node, Link, Switch, and Router. Explain how each one works, what address or mechanism it uses, and give a real-world example for each. Clearly differentiate between a switch and a router.</p>
+<hr>
+<p><strong>4.</strong> What is a network topology? Explain all four network topologies — Bus, Star, Ring, and Mesh — with the following for each:<br>
+- Definition<br>
+- How devices are connected<br>
+- Advantages<br>
+- Disadvantages<br>
+- A real-life analogy or example<br>
+- A labeled diagram</p>
+<hr>
+<p><strong>5.</strong> Explain the three modes of data transmission — Simplex, Half-Duplex, and Full-Duplex — with examples, diagrams, and real-life analogies. Compare all three modes and state which is most efficient and why.</p>
+<hr>
+<p><strong>6.</strong> Define the OSI networking model. Explain all seven layers of the OSI model. For each layer, state:<br>
+- Its layer number and name<br>
+- Its primary function<br>
+- A real-life analogy or example</p>
+<hr>
+<p><strong>7.</strong> Describe any three layers of the OSI model in detail. Explain their functions, the protocols they use, and give a real-world analogy for each.</p>
+<hr>
+<p><strong>8.</strong> Compare and contrast IPv4 and IPv6. In your answer:<br>
+- Define both versions<br>
+- State the number of bits used by each<br>
+- Calculate or state the number of unique addresses each supports<br>
+- Provide an example address for each<br>
+- Explain why IPv6 was developed<br>
+- State the key differences between the two</p>
+<hr>
+<p><strong>9.</strong> What are network protocols? Explain the following protocols in detail with examples of how each one works in a real-world scenario:<br>
+- HTTP<br>
+- DNS<br>
+- DHCP<br>
+- TCP<br>
+- IP<br>
+- UDP</p>
+<hr>
+<p><strong>10.</strong> Explain the importance of network security. Describe the following three security methods in detail — including how each one works, its advantages, and any limitations:<br>
+- Firewall<br>
+- Encryption<br>
+- Antivirus Software</p>
+<p>How do these three methods work together to provide comprehensive network security?</p>
+<hr>
+<p><strong>11.</strong> Explain the five types of computer networks — PAN, LAN, CAN, MAN, and WAN. For each network type:<br>
+- Provide a definition<br>
+- State the typical range or area it covers<br>
+- Give one real-world example<br>
+- State one advantage<br>
+Draw a simple diagram for any two of the network types.</p>
+<hr>
+<p><strong>12.</strong> Describe real-world applications of computer networks in <strong>business</strong> and <strong>education</strong>. For each sector:<br>
+- Explain at least two specific ways networks are used<br>
+- Give concrete real-world examples<br>
+- State at least two benefits that networks bring to that sector</p>
+<hr>
+<p><strong>13.</strong> Describe real-world applications of computer networks in <strong>healthcare</strong>. In your answer:<br>
+- Explain what Electronic Health Records (EHR) are and how they benefit patients and doctors<br>
+- Explain what telemedicine is and give an example of how it helps patients in remote areas<br>
+- Explain how medical research networks accelerated the response to the COVID-19 pandemic<br>
+- State at least three overall benefits of networks in healthcare</p>
+<hr>
+<p><strong>14.</strong> In a Simplex communication system, data is transmitted at a rate of 500 bits per second (bps). Calculate the time required to transmit:<br>
+- a) A message of 10 kilobits<br>
+- b) A message of 10 kilobytes</p>
+<p>Show all working and state your final answers with the correct units.</p>
+<hr>
+<p><strong>15.</strong> Write a comprehensive essay on the role of computer networks in modern society. In your essay, discuss:<br>
+- What a computer network is and why it is important<br>
+- How data communication works<br>
+- The types of networks and where each is used<br>
+- How networks are secured<br>
+- The real-world impact of networks on business, education, and healthcare</p>
+<hr>
+<p><em>End of Unit 3: Computer Networks — Complete Question Bank</em></p>
+
+</body>
+</html>

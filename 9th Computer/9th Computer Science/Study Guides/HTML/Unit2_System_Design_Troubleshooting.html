@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 2: System Design and Troubleshooting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 2: System Design and Troubleshooting</div>
+</div>
+
+<h1 id="unit-2-system-design-and-troubleshooting">Unit 2: System Design and Troubleshooting</h1>
+<hr>
+<blockquote><p><strong>"The art of troubleshooting is the art of thinking clearly under pressure."</strong><br>
+— Anonymous Engineer</p></blockquote>
+<hr>
+<h2 id="student-learning-outcomes">Student Learning Outcomes</h2>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Understand <strong>analog and digital signals</strong> and explain the difference between them.</li>
+<li>Explain <strong>ADC</strong> (Analog to Digital Conversion) and <strong>DAC</strong> (Digital to Analog Conversion).</li>
+<li>Understand <strong>Boolean algebra</strong> and its three basic operations: AND, OR, and NOT.</li>
+<li>Construct <strong>Boolean expressions</strong> using binary variables and Boolean operators.</li>
+<li>Build and evaluate <strong>truth tables</strong> for logical expressions.</li>
+<li>Identify and explain several types of <strong>logic gates</strong> and their functions.</li>
+<li>Apply <strong>Boolean algebra rules</strong> to simplify Boolean expressions.</li>
+<li>Create <strong>logic diagrams</strong> for digital circuits.</li>
+<li>Follow a <strong>systematic 7-step troubleshooting process</strong> to resolve computer issues.</li>
+<li>Diagnose and address basic <strong>hardware and software issues</strong>.</li>
+<li>Apply strategies for <strong>data backup</strong> and <strong>system maintenance</strong>.</li>
+<li>Safely perform basic <strong>component replacement and upgrades</strong>.</li>
+</ul>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>Have you ever wondered why your computer understands nothing but 0s and 1s — yet somehow it plays music, shows videos, and runs games? Or why pressing two keys at the same time on your keyboard produces a specific result? The answer lies in <strong>digital logic</strong> — a set of mathematical rules that govern how digital systems work.</p>
+<p>And when those digital systems break down — and they will — <strong>troubleshooting</strong> is the skill that brings them back to life.</p>
+<p>In this chapter, you will learn two powerful things. First, you will discover how digital systems are designed using logic — how simple ON/OFF signals combine to create intelligent behavior. Second, you will learn how to fix things when they break — calmly, systematically, and confidently.</p>
+<p>Think of it this way: a doctor who understands how the body works is a much better healer than one who does not. Understanding how a computer thinks makes you a much better problem-solver when it stops thinking correctly.</p>
+<p>Let's begin.</p>
+<hr>
+<h2 id="21-basic-concept-of-digital-systems">2.1 Basic Concept of Digital Systems</h2>
+<h3 id="what-is-a-digital-system">What Is a Digital System?</h3>
+<blockquote><p><strong>Definition:</strong> A digital system is an electronic system that processes information in the form of binary digits — <strong>0</strong> and <strong>1</strong>. Every computer, smartphone, calculator, and digital clock is a digital system.</p></blockquote>
+<p>Digital systems are the foundation of modern electronics. They take inputs, process them using logic, and produce outputs — all using only two values.</p>
+<hr>
+<h3 id="211-analog-signal-vs-digital-signal">2.1.1 Analog Signal vs. Digital Signal</h3>
+<hr>
+<h4 id="the-hook">🔖 The Hook</h4>
+<p>Think about two types of light controls in a room.</p>
+<p>The first is a <strong>dimmer switch</strong>. You can turn it slightly, halfway, three-quarters of the way, all the way. The brightness changes smoothly and continuously — infinite positions between off and fully on. That is an <strong>analog</strong> signal.</p>
+<p>The second is a <strong>regular on/off switch</strong>. It has exactly two positions: OFF (0) and ON (1). Nothing in between. That is a <strong>digital</strong> signal.</p>
+<p>Your voice is analog. The music stored on your phone is digital. Understanding the difference between these two is the first step to understanding how computers work.</p>
+<hr>
+<h4 id="the-explanation">📖 The Explanation</h4>
+<p><strong>Analog Signals</strong></p>
+<blockquote><p><strong>Definition:</strong> An analog signal is a signal that changes <strong>continuously and smoothly</strong> over time. It can take any value within a given range — not just whole numbers, but any value in between.</p></blockquote>
+<p><strong>Real-world examples of analog signals:</strong><br>
+- The sound of your voice speaking into a microphone.<br>
+- The temperature of your body throughout the day.<br>
+- Radio waves carrying an FM broadcast.<br>
+- The voltage in a wall socket (which rises and falls smoothly).</p>
+<p>Imagine drawing a smooth, flowing wave on paper. That wave — going up and down continuously without jumping — represents an analog signal.</p>
+<hr>
+<p><strong>Digital Signals</strong></p>
+<blockquote><p><strong>Definition:</strong> A digital signal is a signal that has only <strong>two discrete values</strong>: 0 (OFF/Low) and 1 (ON/High). It does not take any value in between — it jumps directly from 0 to 1 or from 1 to 0.</p></blockquote>
+<p><strong>Real-world examples of digital signals:</strong><br>
+- Data stored on a hard drive (sequences of 0s and 1s).<br>
+- A keyboard key being pressed (signal sent: 1) or not pressed (signal: 0).<br>
+- Binary data transmitted over a network cable.<br>
+- The pixels on your screen — each encoded as numbers.</p>
+<p>Imagine drawing a staircase that only has two steps: floor (0) and ceiling (1). That is a digital signal.</p>
+<hr>
+<h4 id="comparison-table-analog-vs-digital-signals">📝 Comparison Table: Analog vs. Digital Signals</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Analog Signal</th>
+<th>Digital Signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Values</strong></td>
+<td>Continuous — any value</td>
+<td>Discrete — only 0 or 1</td>
+</tr>
+<tr>
+<td><strong>Shape</strong></td>
+<td>Smooth wave</td>
+<td>Rectangular steps</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Voice, temperature, radio</td>
+<td>Binary data, keyboard input</td>
+</tr>
+<tr>
+<td><strong>Noise sensitivity</strong></td>
+<td>Highly sensitive to noise</td>
+<td>Very resistant to noise</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Hard to store accurately</td>
+<td>Easy to store and copy</td>
+</tr>
+<tr>
+<td><strong>Processing</strong></td>
+<td>Difficult for computers</td>
+<td>Natural for computers</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="adc-analog-to-digital-conversion">📖 ADC — Analog to Digital Conversion</h4>
+<blockquote><p><strong>Definition:</strong> ADC (Analog to Digital Conversion) is the process of converting a <strong>continuous analog signal</strong> into a <strong>discrete digital signal</strong> that a computer can process.</p></blockquote>
+<p><strong>Why do we need ADC?</strong></p>
+<p>Computers only understand 0s and 1s. But the real world is analog — voices, sounds, and temperatures are all continuous. ADC is the bridge between the analog world and the digital world.</p>
+<p><strong>Real-world example — Microphone:</strong></p>
+<p>When you speak into a microphone:<br>
+1. Your voice creates sound waves (analog).<br>
+2. The microphone converts sound waves into an electrical signal (still analog).<br>
+3. The <strong>ADC chip</strong> samples the signal thousands of times per second.<br>
+4. Each sample is converted to a binary number (digital).<br>
+5. The computer stores and processes these binary numbers.</p>
+<p>This is why your voice can be recorded on a phone — the ADC converts it into data the phone can store.</p>
+<hr>
+<h4 id="dac-digital-to-analog-conversion">📖 DAC — Digital to Analog Conversion</h4>
+<blockquote><p><strong>Definition:</strong> DAC (Digital to Analog Conversion) is the process of converting a <strong>digital signal</strong> (0s and 1s) back into a <strong>continuous analog signal</strong> that humans can perceive.</p></blockquote>
+<p><strong>Why do we need DAC?</strong></p>
+<p>When you play music from your phone, the music is stored digitally. But your ears cannot hear binary numbers — they need sound waves. The DAC converts the digital data back into an analog electrical signal, which then drives the speakers to produce sound.</p>
+<p><strong>Real-world example — Speakers:</strong></p>
+<p>When you play a song on your phone:<br>
+1. The song is stored as binary data (digital).<br>
+2. The <strong>DAC chip</strong> in your phone converts the binary data back into an electrical signal (analog).<br>
+3. The electrical signal goes to the speakers.<br>
+4. The speakers vibrate to produce sound waves you can hear.</p>
+<hr>
+<h4 id="the-full-adc-dac-flow-voice-call-example">📝 The Full ADC-DAC Flow — Voice Call Example</h4>
+<pre><code>SENDER SIDE:                          RECEIVER SIDE:
+
+Your Voice        →   Microphone   →   ADC   →   Digital Data (0s and 1s)
+(Analog sound)        (captures)       (converts)  (stored/transmitted)
+
+                                            ↓
+                                      Transmitted over network
+
+                                            ↓
+
+Speaker Output    ←   Speaker       ←   DAC   ←   Digital Data (0s and 1s)
+(Analog sound)        (vibrates)        (converts)  (received)
+</code></pre>
+<p>The person you call hears your voice because ADC and DAC work together invisibly in the background.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Think about <strong>watching a YouTube video</strong> on your phone.</p>
+<ol>
+<li>Is the video stored on YouTube's servers as analog or digital data?</li>
+<li>When the video plays on your screen, what conversion might be happening for the <strong>audio</strong>?</li>
+<li>Is the image on your screen analog or digital?</li>
+<li>Can you think of another device in your home that uses ADC or DAC?</li>
+</ol>
+<p>Discuss your answers with a partner before moving on.</p>
+<hr>
+<h4 id="quick-recap">📌 Quick Recap</h4>
+<blockquote><p><strong>Analog signals are continuous and smooth (like a voice). Digital signals are discrete — only 0 or 1. ADC converts analog to digital (microphone). DAC converts digital to analog (speakers). Together, they connect the real world to the computer world.</strong></p></blockquote>
+<hr>
+<h2 id="22-boolean-algebra-and-logic-gates">2.2 Boolean Algebra and Logic Gates</h2>
+<h3 id="introduction_1">Introduction</h3>
+<p>In 1854, a mathematician named <strong>George Boole</strong> published a paper that would change the world — though no one realized it at the time. He created a system of mathematics using only two values: <strong>True</strong> and <strong>False</strong>.</p>
+<p>He called it Boolean algebra.</p>
+<p>Almost 100 years later, engineers realized that Boolean algebra was the perfect tool for designing electronic circuits — because a circuit can be either ON (True/1) or OFF (False/0). Today, every digital device you own — phone, laptop, calculator — runs on circuits designed using Boolean algebra.</p>
+<p>You are about to learn the mathematics that runs the modern world.</p>
+<hr>
+<h3 id="221-boolean-functions-and-expressions">2.2.1 Boolean Functions and Expressions</h3>
+<hr>
+<h4 id="the-hook_1">🔖 The Hook</h4>
+<p>Imagine a locked school gate. It opens only if <strong>both</strong> conditions are true: the time is after 7:00 AM <strong>AND</strong> a valid ID card is scanned. If either condition is false, the gate stays locked.</p>
+<p>This decision-making logic — two inputs, one output, a rule connecting them — is exactly what a <strong>Boolean function</strong> describes.</p>
+<hr>
+<h4 id="the-explanation_1">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> A Boolean function is a mathematical expression that describes the relationship between one or more <strong>binary variables</strong> (inputs) and produces a single <strong>binary output</strong> using logic operations.</p></blockquote>
+<p><strong>Key vocabulary:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Binary variable</strong></td>
+<td>A variable that can only hold the value 0 (False) or 1 (True).</td>
+</tr>
+<tr>
+<td><strong>Boolean expression</strong></td>
+<td>A mathematical formula using binary variables and logic operations.</td>
+</tr>
+<tr>
+<td><strong>Boolean function</strong></td>
+<td>A rule that maps input values to a single output value.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example Boolean functions:</strong></p>
+<pre><code>F(A, B) = A · B        (AND function)
+F(A, B) = A + B        (OR function)
+F(A) = Ā              (NOT function — bar over A means NOT A)
+F(A, B, C) = A·B + Ā·C  (complex function using AND, OR, and NOT)
+</code></pre>
+<p>The symbols used in Boolean algebra:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Operation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>· (dot) or no symbol</td>
+<td>AND</td>
+<td>Multiplication of logic</td>
+</tr>
+<tr>
+<td>+ (plus)</td>
+<td>OR</td>
+<td>Addition of logic</td>
+</tr>
+<tr>
+<td>‾ (bar over letter)</td>
+<td>NOT</td>
+<td>Negation / opposite</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="quick-recap_1">📌 Quick Recap</h4>
+<blockquote><p><strong>A Boolean function uses binary variables (0 or 1) and logic operations (AND, OR, NOT) to produce a single binary output. It describes decision-making logic in digital circuits.</strong></p></blockquote>
+<hr>
+<h3 id="222-binary-variables-and-logic-operations">2.2.2 Binary Variables and Logic Operations</h3>
+<hr>
+<h4 id="the-three-primary-logic-operations">📖 The Three Primary Logic Operations</h4>
+<p>There are three fundamental operations in Boolean algebra. Everything in digital logic is built from combinations of these three.</p>
+<hr>
+<h4 id="operation-1-and">Operation 1: AND ( · )</h4>
+<hr>
+<h5 id="the-hook_2">🔖 The Hook</h5>
+<p>A car's engine starts only if <strong>two</strong> conditions are both true: the key is in the ignition <strong>AND</strong> the key is turned. If either condition is false, the car does not start. That is AND logic.</p>
+<hr>
+<h5 id="the-explanation_2">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> The AND operation takes two binary inputs and produces a single output. The output is <strong>1 only when BOTH inputs are 1</strong>. If either input is 0, the output is 0.</p></blockquote>
+<p><strong>Symbol:</strong> A · B (also written as AB)</p>
+<p><strong>Plain English rule:</strong> "Both must be true for the result to be true."</p>
+<p><strong>Example:</strong></p>
+<pre><code>A = 1 (True)
+B = 0 (False)
+P = A · B = 1 · 0 = 0 (False)
+</code></pre>
+<p>Because B is 0 (False), even though A is 1, the output is 0.</p>
+<hr>
+<h5 id="truth-table-for-and">📝 Truth Table for AND</h5>
+<p>A <strong>truth table</strong> lists every possible combination of input values and shows the corresponding output. For two inputs (A and B), there are 4 possible combinations.</p>
+<pre><code>┌───┬───┬─────────────┐
+│ A │ B │ A AND B (P) │
+├───┼───┼─────────────┤
+│ 0 │ 0 │      0      │
+│ 0 │ 1 │      0      │
+│ 1 │ 0 │      0      │
+│ 1 │ 1 │      1      │
+└───┴───┴─────────────┘
+</code></pre>
+<p>Only the last row produces output 1 — when <strong>both</strong> A and B are 1.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_1">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>A school library door opens only if the student scans a valid ID card <strong>AND</strong> it is between 8:00 AM and 4:00 PM.</p>
+<p>Map this to AND logic:<br>
+- A = Valid ID scanned (1 = Yes, 0 = No)<br>
+- B = Time is between 8 AM and 4 PM (1 = Yes, 0 = No)</p>
+<p>What is the output (door opens?) for each scenario:<br>
+1. A = 1, B = 0 (Valid ID, but it's 5 PM)<br>
+2. A = 0, B = 1 (No valid ID, but it's 10 AM)<br>
+3. A = 1, B = 1 (Valid ID, 10 AM)<br>
+4. A = 0, B = 0 (No ID, 5 PM)</p>
+<hr>
+<h4 id="operation-2-or">Operation 2: OR ( + )</h4>
+<hr>
+<h5 id="the-hook_3">🔖 The Hook</h5>
+<p>A hospital alarm sounds if <strong>either</strong> a fire is detected <strong>OR</strong> an intruder is detected. It does not need both — even one is enough to trigger the alarm. That is OR logic.</p>
+<hr>
+<h5 id="the-explanation_3">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> The OR operation takes two binary inputs and produces a single output. The output is <strong>1 when at least one input is 1</strong>. The output is 0 only when <strong>both</strong> inputs are 0.</p></blockquote>
+<p><strong>Symbol:</strong> A + B</p>
+<p><strong>Plain English rule:</strong> "At least one must be true for the result to be true."</p>
+<p><strong>Example:</strong></p>
+<pre><code>A = 1 (True)
+B = 0 (False)
+P = A + B = 1 + 0 = 1 (True)
+</code></pre>
+<p>Because A is 1, the output is 1 — even though B is 0.</p>
+<blockquote><p><strong>Important:</strong> In Boolean algebra, 1 + 1 = 1 (NOT 2). The OR operation returns 1 if <strong>any</strong> input is 1. It is not regular addition.</p></blockquote>
+<hr>
+<h5 id="truth-table-for-or">📝 Truth Table for OR</h5>
+<pre><code>┌───┬───┬────────────┐
+│ A │ B │ A OR B (P) │
+├───┼───┼────────────┤
+│ 0 │ 0 │     0      │
+│ 0 │ 1 │     1      │
+│ 1 │ 0 │     1      │
+│ 1 │ 1 │     1      │
+└───┴───┴────────────┘
+</code></pre>
+<p>Only the first row (both 0) produces output 0. All other rows produce 1.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_2">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>A vending machine accepts payment if the customer inserts coins <strong>OR</strong> uses a card.</p>
+<ul>
+<li>A = Coins inserted (1 = Yes, 0 = No)</li>
+<li>B = Card used (1 = Yes, 0 = No)</li>
+<li>P = Machine accepts payment</li>
+</ul>
+<p>Complete this truth table without looking at the one above:</p>
+<pre><code>A = 0, B = 0 → P = ?
+A = 0, B = 1 → P = ?
+A = 1, B = 0 → P = ?
+A = 1, B = 1 → P = ?
+</code></pre>
+<hr>
+<h4 id="operation-3-not">Operation 3: NOT ( ‾ )</h4>
+<hr>
+<h5 id="the-hook_4">🔖 The Hook</h5>
+<p>A night light turns ON when it is dark (no light detected = 0 input) and turns OFF when it is bright (light detected = 1 input). The light sensor's output is <strong>inverted</strong> before controlling the lamp. That is NOT logic — the opposite of the input.</p>
+<hr>
+<h5 id="the-explanation_4">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> The NOT operation takes <strong>one</strong> binary input and produces its <strong>opposite</strong> as the output. If the input is 1, the output is 0. If the input is 0, the output is 1.</p></blockquote>
+<p><strong>Symbol:</strong> Ā (a bar drawn over the variable — read as "NOT A" or "A complement")</p>
+<p><strong>Plain English rule:</strong> "Flip it. True becomes False. False becomes True."</p>
+<p><strong>Example:</strong></p>
+<pre><code>A = 1 (True)
+P = Ā = NOT 1 = 0 (False)
+</code></pre>
+<pre><code>A = 0 (False)
+P = Ā = NOT 0 = 1 (True)
+</code></pre>
+<hr>
+<h5 id="truth-table-for-not">📝 Truth Table for NOT</h5>
+<pre><code>┌───┬──────────┐
+│ A │ NOT A (P)│
+├───┼──────────┤
+│ 0 │    1     │
+│ 1 │    0     │
+└───┴──────────┘
+</code></pre>
+<p>Simple. One input. One output. Always the opposite.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_3">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>A smart alarm system is set to alert you when a door is <strong>not</strong> locked.</p>
+<ul>
+<li>A = Door is locked (1 = Locked, 0 = Unlocked)</li>
+<li>P = Alert sent</li>
+</ul>
+<p>Write the Boolean expression for P in terms of A.<br>
+What is P when A = 1? What is P when A = 0?</p>
+<hr>
+<h4 id="quick-recap_2">📌 Quick Recap</h4>
+<blockquote><p><strong>Three operations power all of Boolean algebra: AND (both must be 1), OR (at least one must be 1), NOT (flip the value). Every digital circuit is built from combinations of these three.</strong></p></blockquote>
+<hr>
+<h3 id="223-construction-of-boolean-functions">2.2.3 Construction of Boolean Functions</h3>
+<hr>
+<h4 id="the-hook_5">🔖 The Hook</h4>
+<p>A single LEGO brick does very little. Two bricks connected in different ways start to make shapes. But when you combine dozens of bricks — each connected precisely — you can build a castle, a spaceship, or an entire city.</p>
+<p>Boolean functions work the same way. Simple AND, OR, and NOT operations are the bricks. Combined precisely, they create complex logic that powers every program ever written.</p>
+<hr>
+<h4 id="building-simple-boolean-functions">📖 Building Simple Boolean Functions</h4>
+<p><strong>Example 1: A Simple AND Function</strong></p>
+<pre><code>F(A, B) = A · B
+</code></pre>
+<p>This function has:<br>
+- Two inputs: A and B<br>
+- One operation: AND<br>
+- One output: F</p>
+<p><strong>Truth table:</strong></p>
+<pre><code>┌───┬───┬──────────┐
+│ A │ B │ F(A, B)  │
+├───┼───┼──────────┤
+│ 0 │ 0 │    0     │
+│ 0 │ 1 │    0     │
+│ 1 │ 0 │    0     │
+│ 1 │ 1 │    1     │
+└───┴───┴──────────┘
+</code></pre>
+<p>Output is 1 only when both A = 1 AND B = 1.</p>
+<hr>
+<h4 id="building-complex-boolean-functions">📖 Building Complex Boolean Functions</h4>
+<p><strong>Example 2: A Three-Variable Function</strong></p>
+<pre><code>F(A, B, C) = (A · B) + (Ā · C)
+</code></pre>
+<p>This function uses AND, OR, and NOT together.</p>
+<p><strong>How to read it:</strong><br>
+- First, compute A · B (AND of A and B).<br>
+- Then, compute Ā (NOT of A).<br>
+- Then, compute Ā · C (AND of NOT-A and C).<br>
+- Finally, OR the two results together.</p>
+<p><strong>Truth table — built step by step:</strong></p>
+<pre><code>┌───┬───┬───┬───────┬───┬───────┬───────────────────────┐
+│ A │ B │ C │ A · B │ Ā │ Ā · C │ F = (A·B) + (Ā·C)     │
+├───┼───┼───┼───────┼───┼───────┼───────────────────────┤
+│ 0 │ 0 │ 0 │   0   │ 1 │   0   │          0            │
+│ 0 │ 0 │ 1 │   0   │ 1 │   1   │          1            │
+│ 0 │ 1 │ 0 │   0   │ 1 │   0   │          0            │
+│ 0 │ 1 │ 1 │   0   │ 1 │   1   │          1            │
+│ 1 │ 0 │ 0 │   0   │ 0 │   0   │          0            │
+│ 1 │ 0 │ 1 │   0   │ 0 │   0   │          0            │
+│ 1 │ 1 │ 0 │   1   │ 0 │   0   │          1            │
+│ 1 │ 1 │ 1 │   1   │ 0 │   0   │          1            │
+└───┴───┴───┴───────┴───┴───────┴───────────────────────┘
+</code></pre>
+<p><strong>How to fill this table:</strong></p>
+<p><strong>Step 1:</strong> List all 8 combinations of A, B, C (count in binary from 000 to 111).</p>
+<p><strong>Step 2:</strong> Compute A · B for each row (AND: only 1 when both A=1 and B=1).</p>
+<p><strong>Step 3:</strong> Compute Ā for each row (NOT: flip A).</p>
+<p><strong>Step 4:</strong> Compute Ā · C for each row (AND: only 1 when Ā=1 and C=1).</p>
+<p><strong>Step 5:</strong> Compute F = (A · B) + (Ā · C) for each row (OR: 1 if either is 1).</p>
+<hr>
+<h4 id="why-boolean-functions-matter-in-computers">📖 Why Boolean Functions Matter in Computers</h4>
+<p>Boolean functions are not just theory. They are built directly into the hardware of every computer:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Application</th>
+<th>How Boolean Functions Are Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ALU (Arithmetic Logic Unit)</strong></td>
+<td>Uses AND, OR, NOT to perform addition, subtraction, comparisons.</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>Stores data in circuits that use Boolean logic to read and write bits.</td>
+</tr>
+<tr>
+<td><strong>Control Logic</strong></td>
+<td>Decides which part of the CPU does what, based on Boolean conditions.</td>
+</tr>
+<tr>
+<td><strong>Password Checking</strong></td>
+<td>Compares binary input to stored value — uses AND/NOT operations.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Build a truth table for this Boolean function:</p>
+<pre><code>F(A, B) = Ā · B + A · B̄
+</code></pre>
+<p><em>(Note: B̄ means NOT B)</em></p>
+<p>Steps:<br>
+1. List all 4 combinations: (0,0), (0,1), (1,0), (1,1)<br>
+2. Compute Ā for each row<br>
+3. Compute B̄ for each row<br>
+4. Compute Ā · B for each row<br>
+5. Compute A · B̄ for each row<br>
+6. Compute F = (Ā · B) + (A · B̄) for each row</p>
+<p>What do you notice about the output? When is F equal to 1?</p>
+<hr>
+<h4 id="quick-recap_3">📌 Quick Recap</h4>
+<blockquote><p><strong>Boolean functions combine AND, OR, and NOT to create complex decision-making logic. Truth tables show every possible input combination and the corresponding output. These functions are the mathematical foundation of every digital circuit.</strong></p></blockquote>
+<hr>
+<h3 id="224-logic-gates-and-their-functions">2.2.4 Logic Gates and Their Functions</h3>
+<hr>
+<h4 id="the-hook_6">🔖 The Hook</h4>
+<p>Boolean algebra is mathematics on paper. But for a computer to actually use it, the logic must be built in <strong>hardware</strong> — physical electronic components. These components are called <strong>logic gates</strong>.</p>
+<p>A logic gate is a tiny electronic circuit — so small that billions of them fit on a chip the size of your thumbnail. Each gate implements one Boolean operation. Combine millions of gates, and you have a CPU.</p>
+<hr>
+<h4 id="logic-gate-1-and-gate">📖 Logic Gate 1: AND Gate</h4>
+<blockquote><p><strong>Function:</strong> Implements the AND operation. Output is 1 <strong>only when both inputs are 1</strong>.</p></blockquote>
+<p><strong>Symbol (described for drawing):</strong></p>
+<p>Draw a D-shaped figure. Two input lines enter from the left. One output line exits from the flat right side.</p>
+<pre><code>     A ──┐
+          ├── [AND] ──── Output (A · B)
+     B ──┘
+</code></pre>
+<p><strong>Truth table:</strong></p>
+<pre><code>┌───┬───┬────────┐
+│ A │ B │ Output │
+├───┼───┼────────┤
+│ 0 │ 0 │   0    │
+│ 0 │ 1 │   0    │
+│ 1 │ 0 │   0    │
+│ 1 │ 1 │   1    │
+└───┴───┴────────┘
+</code></pre>
+<p><strong>Real-world analogy:</strong> Two switches in series (one after the other). Current flows (1) only if <strong>both</strong> switches are ON. If either switch is OFF, no current flows (0).</p>
+<hr>
+<h4 id="logic-gate-2-or-gate">📖 Logic Gate 2: OR Gate</h4>
+<blockquote><p><strong>Function:</strong> Implements the OR operation. Output is 1 <strong>when at least one input is 1</strong>.</p></blockquote>
+<p><strong>Symbol (described for drawing):</strong></p>
+<p>Draw a curved D-shape with a pointed right end. Two inputs enter from the left. One output exits from the pointed right side.</p>
+<pre><code>     A ──┐
+          ├── [OR] ──── Output (A + B)
+     B ──┘
+</code></pre>
+<p><strong>Truth table:</strong></p>
+<pre><code>┌───┬───┬────────┐
+│ A │ B │ Output │
+├───┼───┼────────┤
+│ 0 │ 0 │   0    │
+│ 0 │ 1 │   1    │
+│ 1 │ 0 │   1    │
+│ 1 │ 1 │   1    │
+└───┴───┴────────┘
+</code></pre>
+<p><strong>Real-world analogy:</strong> Two switches in parallel (side by side). Current flows (1) if <strong>either</strong> switch is ON. Current stops (0) only if <strong>both</strong> are OFF.</p>
+<hr>
+<h4 id="logic-gate-3-not-gate-inverter">📖 Logic Gate 3: NOT Gate (Inverter)</h4>
+<blockquote><p><strong>Function:</strong> Implements the NOT operation. Output is the <strong>opposite</strong> of the input.</p></blockquote>
+<p><strong>Symbol (described for drawing):</strong></p>
+<p>Draw a triangle pointing right. Add a small circle at the tip (the circle represents inversion). One input enters from the flat left side. One output exits from the circle.</p>
+<pre><code>     A ──── [NOT (▷○)] ──── Output (Ā)
+</code></pre>
+<p><strong>Truth table:</strong></p>
+<pre><code>┌───┬────────┐
+│ A │ Output │
+├───┼────────┤
+│ 0 │   1    │
+│ 1 │   0    │
+└───┴────────┘
+</code></pre>
+<p><strong>Real-world analogy:</strong> A night light sensor. When it detects light (input = 1), the light turns OFF (output = 0). When it detects no light (input = 0), the light turns ON (output = 1).</p>
+<hr>
+<h4 id="logic-gate-4-nand-gate">📖 Logic Gate 4: NAND Gate</h4>
+<blockquote><p><strong>Definition:</strong> NAND = NOT + AND. The NAND gate is an AND gate followed by a NOT gate. Its output is the <strong>opposite of AND</strong> — it is 0 only when both inputs are 1. In all other cases it outputs 1.</p></blockquote>
+<p><strong>Symbol:</strong> The AND gate symbol with a small circle at the output.</p>
+<pre><code>     A ──┐
+          ├── [AND]──○ ──── Output (NOT(A · B))
+     B ──┘
+</code></pre>
+<p><strong>Truth table:</strong></p>
+<pre><code>┌───┬───┬────────────────┐
+│ A │ B │ NAND Output    │
+├───┼───┼────────────────┤
+│ 0 │ 0 │      1         │
+│ 0 │ 1 │      1         │
+│ 1 │ 0 │      1         │
+│ 1 │ 1 │      0         │
+└───┴───┴────────────────┘
+</code></pre>
+<p><strong>Real-world analogy:</strong> A safety alarm that sounds unless <strong>all</strong> safety systems are active. If even one safety system fails, the alarm triggers.</p>
+<blockquote><p><strong>Did you know?</strong> The NAND gate is called a <strong>universal gate</strong> — you can build any other logic gate using only NAND gates. All of computing could theoretically be built with just NAND gates.</p></blockquote>
+<hr>
+<h4 id="logic-gate-5-xor-gate-exclusive-or">📖 Logic Gate 5: XOR Gate (Exclusive OR)</h4>
+<blockquote><p><strong>Definition:</strong> XOR (Exclusive OR) outputs 1 when <strong>exactly one</strong> input is 1. If both inputs are 1 or both are 0, the output is 0.</p></blockquote>
+<p><strong>Symbol:</strong> The OR gate symbol with an extra curved line at the input side.</p>
+<pre><code>     A ──┐
+          ├── [XOR] ──── Output (A ⊕ B)
+     B ──┘
+</code></pre>
+<p><strong>Truth table:</strong></p>
+<pre><code>┌───┬───┬────────────┐
+│ A │ B │ XOR Output │
+├───┼───┼────────────┤
+│ 0 │ 0 │     0      │
+│ 0 │ 1 │     1      │
+│ 1 │ 0 │     1      │
+│ 1 │ 1 │     0      │
+└───┴───┴────────────┘
+</code></pre>
+<p><strong>Real-world analogy:</strong> A classroom projector connected to two computers. It works when <strong>exactly one</strong> computer is sending a signal. If both send at the same time (conflict), the output fails.</p>
+<p><strong>XOR is especially important</strong> in binary addition — the XOR of two bits gives the <strong>sum bit</strong>, while AND gives the <strong>carry bit</strong>. This is how computer adder circuits work.</p>
+<hr>
+<h4 id="summary-table-all-logic-gates">📝 Summary Table: All Logic Gates</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Symbol</th>
+<th>Operation</th>
+<th>Output is 1 when...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AND</strong></td>
+<td>D-shape</td>
+<td>A · B</td>
+<td>Both A and B are 1</td>
+</tr>
+<tr>
+<td><strong>OR</strong></td>
+<td>Curved D with point</td>
+<td>A + B</td>
+<td>At least one input is 1</td>
+</tr>
+<tr>
+<td><strong>NOT</strong></td>
+<td>Triangle with circle</td>
+<td>Ā</td>
+<td>Input is 0</td>
+</tr>
+<tr>
+<td><strong>NAND</strong></td>
+<td>AND with circle at output</td>
+<td>NOT(A · B)</td>
+<td>NOT both inputs are 1</td>
+</tr>
+<tr>
+<td><strong>XOR</strong></td>
+<td>OR with extra curve</td>
+<td>A ⊕ B</td>
+<td>Exactly one input is 1</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="class-activity-logic-gate-experiments">🏫 Class Activity: Logic Gate Experiments</h4>
+<p><strong>AND Adventure:</strong> Work in pairs. One person is Switch A, the other is Switch B. Both must clap at the same time for a "light" (the teacher) to turn ON. If only one claps, the light stays OFF. Verify AND behavior.</p>
+<p><strong>OR Options:</strong> If either person claps, the light turns ON. It only stays OFF if neither claps. Verify OR behavior.</p>
+<p><strong>NOT Negatives:</strong> Ask true/false questions. Students must shout the <strong>opposite</strong> answer. "Is it raining inside the classroom?" — the answer is No (0), so shout Yes (1)!</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_4">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Look at these two scenarios. For each, identify which gate(s) could implement the logic:</p>
+<p><strong>Scenario 1:</strong> A car's airbag deploys if the crash sensor detects impact <strong>AND</strong> the car's speed was above 30 km/h at impact.</p>
+<p><strong>Scenario 2:</strong> A smart TV remote works if the <strong>batteries are not</strong> empty.</p>
+<p><strong>Scenario 3:</strong> A bonus point is awarded if a student finishes the exam early <strong>OR</strong> answers the bonus question.</p>
+<p>Write the gate name and draw its simple shape for each scenario.</p>
+<hr>
+<h4 id="quick-recap_4">📌 Quick Recap</h4>
+<blockquote><p><strong>Logic gates are physical electronic circuits that implement Boolean operations. AND, OR, NOT are the basic gates. NAND and XOR are derived gates. Every digital circuit — from calculators to CPUs — is built by combining millions of these gates.</strong></p></blockquote>
+<hr>
+<h2 id="23-simplification-of-boolean-functions">2.3 Simplification of Boolean Functions</h2>
+<hr>
+<h4 id="the-hook_7">🔖 The Hook</h4>
+<p>Imagine two different routes to school. Route A goes through six streets, four traffic lights, and a roundabout. Route B goes straight through two streets. Both routes reach the same destination — but Route B is faster, uses less time, and wastes less energy.</p>
+<p>Digital circuits have routes too. A complex Boolean function might use 10 logic gates. A simplified version of the same function might use only 4. Both produce identical outputs — but the simplified version is smaller, faster, and uses less power.</p>
+<p><strong>Simplification is about finding the shorter route.</strong></p>
+<hr>
+<h4 id="why-simplify">📖 Why Simplify?</h4>
+<blockquote><p><strong>Definition:</strong> Simplification of Boolean functions means using Boolean algebra rules to reduce a complex expression into a simpler equivalent form that requires fewer logic gates.</p></blockquote>
+<p><strong>Why it matters:</strong><br>
+- Fewer gates = smaller chip.<br>
+- Smaller chip = less power consumption.<br>
+- Less power = longer battery life.<br>
+- Fewer gates = faster circuit operation.</p>
+<p>Every chip designer simplifies Boolean functions before building circuits.</p>
+<hr>
+<h4 id="the-boolean-algebra-rules">📖 The Boolean Algebra Rules</h4>
+<p>These rules are always true. Memorize them — they are your tools for simplification.</p>
+<p><strong>1. Identity Laws</strong></p>
+<pre><code>A + 0 = A        (OR with 0 gives A)
+A · 1 = A        (AND with 1 gives A)
+</code></pre>
+<p><em>Adding 0 changes nothing. Multiplying by 1 changes nothing.</em></p>
+<p><strong>2. Null Laws</strong></p>
+<pre><code>A + 1 = 1        (OR with 1 always gives 1)
+A · 0 = 0        (AND with 0 always gives 0)
+</code></pre>
+<p><em>OR with 1 is always 1. AND with 0 is always 0.</em></p>
+<p><strong>3. Idempotent Laws</strong></p>
+<pre><code>A + A = A        (OR of A with itself = A)
+A · A = A        (AND of A with itself = A)
+</code></pre>
+<p><em>A variable OR or AND with itself equals itself.</em></p>
+<p><strong>4. Complement Laws</strong></p>
+<pre><code>A + Ā = 1        (A OR NOT-A always equals 1)
+A · Ā = 0        (A AND NOT-A always equals 0)
+</code></pre>
+<p><em>Something plus its opposite covers all cases = 1. Something times its opposite is impossible = 0.</em></p>
+<p><strong>5. Commutative Laws</strong></p>
+<pre><code>A + B = B + A    (order in OR doesn't matter)
+A · B = B · A    (order in AND doesn't matter)
+</code></pre>
+<p><em>Like regular addition and multiplication — order doesn't change the result.</em></p>
+<p><strong>6. Associative Laws</strong></p>
+<pre><code>(A + B) + C = A + (B + C)
+(A · B) · C = A · (B · C)
+</code></pre>
+<p><em>Grouping doesn't matter — like brackets in regular math.</em></p>
+<p><strong>7. Distributive Laws</strong></p>
+<pre><code>A · (B + C) = (A · B) + (A · C)
+A + (B · C) = (A + B) · (A + C)
+</code></pre>
+<p><em>AND distributes over OR (and vice versa) — similar to algebra.</em></p>
+<p><strong>8. Absorption Laws</strong></p>
+<pre><code>A + (A · B) = A
+A · (A + B) = A
+</code></pre>
+<p><em>The larger expression is absorbed by the simpler one.</em></p>
+<p><strong>9. De Morgan's Theorems</strong></p>
+<pre><code>Ā + B̄ = A̅·̅B̅    (NOT(A) OR NOT(B) = NOT(A AND B))
+Ā · B̄ = A̅+̅B̅    (NOT(A) AND NOT(B) = NOT(A OR B))
+</code></pre>
+<p><em>De Morgan's theorems let you convert between AND and OR when negation is involved.</em></p>
+<p><strong>10. Double Negation Law</strong></p>
+<pre><code>Ā̄ = A          (NOT NOT A = A)
+</code></pre>
+<p><em>Negating twice returns to the original value.</em></p>
+<hr>
+<h4 id="step-by-step-simplification-example">📝 Step-by-Step Simplification Example</h4>
+<p><strong>Problem:</strong> Simplify the expression:</p>
+<pre><code>F = A · B + A · B̄
+</code></pre>
+<p><strong>Step 1:</strong> Factor out A (using the Distributive Law):</p>
+<pre><code>F = A · (B + B̄)
+</code></pre>
+<p><strong>Step 2:</strong> Apply the Complement Law (B + B̄ = 1):</p>
+<pre><code>F = A · 1
+</code></pre>
+<p><strong>Step 3:</strong> Apply the Identity Law (A · 1 = A):</p>
+<pre><code>F = A
+</code></pre>
+<p><strong>Result:</strong> The function F = A · B + A · B̄ simplifies to just <strong>F = A</strong>.</p>
+<p>This means instead of building a circuit with AND gates and a NOT gate, you just need a wire connecting A directly to the output. The complexity was unnecessary.</p>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_1">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Simplify these Boolean expressions. Show every step and name the rule you used.</p>
+<ol>
+<li>F = A + A · B</li>
+<li>F = A · B + Ā · B</li>
+<li>F = A + Ā · B</li>
+</ol>
+<p><em>(Hint for question 1: Try the Absorption Law. Hint for question 2: Try factoring.)</em></p>
+<hr>
+<h4 id="quick-recap_5">📌 Quick Recap</h4>
+<blockquote><p><strong>Boolean simplification uses standard algebraic rules (Identity, Null, Complement, De Morgan's, etc.) to reduce a complex Boolean expression to its simplest form — fewer gates, same output.</strong></p></blockquote>
+<hr>
+<h2 id="24-creating-logic-diagrams">2.4 Creating Logic Diagrams</h2>
+<hr>
+<h4 id="the-hook_8">🔖 The Hook</h4>
+<p>An architect does not build a skyscraper from memory. They draw a detailed blueprint first — every wall, every door, every wire, mapped out precisely on paper. Only then does construction begin.</p>
+<p>Digital circuit engineers do the same thing. Before building a chip, they draw a <strong>logic diagram</strong> — a visual map of every gate and every connection. If the diagram is wrong, the chip will be wrong.</p>
+<p>You are about to learn how to draw these blueprints.</p>
+<hr>
+<h4 id="the-explanation_5">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> A logic diagram is a visual representation of a digital circuit that uses standard gate symbols to show how logic gates are connected to implement a Boolean function.</p></blockquote>
+<p><strong>How to create a logic diagram — step by step:</strong></p>
+<p><strong>Step 1: Read the Boolean expression.</strong></p>
+<p>Identify every operation (AND, OR, NOT) and every variable.</p>
+<p><strong>Step 2: Identify the gates needed.</strong></p>
+<p>Each AND, OR, NOT, NAND, or XOR operation needs one gate.</p>
+<p><strong>Step 3: Draw the inputs on the left.</strong></p>
+<p>Write each variable (A, B, C...) as a line entering from the left side of the diagram.</p>
+<p><strong>Step 4: Draw the gates in order of operations.</strong></p>
+<p>Operations inside brackets are performed first. Draw those gates first. Connect their outputs as inputs to the next gates.</p>
+<p><strong>Step 5: Draw the final output on the right.</strong></p>
+<p>The last gate's output is labeled F (or the output name).</p>
+<hr>
+<h4 id="example-1-logic-diagram-for-f-a-b">📝 Example 1: Logic Diagram for F = A · B</h4>
+<p>This is simple — just one AND gate.</p>
+<pre><code>     A ──────┐
+              ├──[AND]──── F = A · B
+     B ──────┘
+</code></pre>
+<p>Draw: Two input lines (A and B) entering from the left. They connect to one AND gate. The output of the AND gate is F.</p>
+<hr>
+<h4 id="example-2-logic-diagram-for-f-a-b-a-c">📝 Example 2: Logic Diagram for F = A · B + Ā · C</h4>
+<p>This uses AND, NOT, AND, then OR.</p>
+<p><strong>Parse the expression:</strong><br>
+- <code>A · B</code> → AND Gate 1<br>
+- <code>Ā</code> → NOT Gate on A<br>
+- <code>Ā · C</code> → AND Gate 2<br>
+- <code>(A · B) + (Ā · C)</code> → OR Gate combining the two AND outputs</p>
+<p><strong>Logic diagram:</strong></p>
+<pre><code>     A ──┬────────────────────┐
+          │                    ├── [AND Gate 1] ──────┐
+     B ──│────────────────────┘                       │
+          │                                            ├── [OR Gate] ──── F
+          └──── [NOT Gate] ──── Ā ──┐                 │
+                                    ├── [AND Gate 2] ──┘
+     C ──────────────────────────── ┘
+</code></pre>
+<p><strong>Reading the diagram:</strong><br>
+- A enters two places: directly into AND Gate 1, and into the NOT Gate.<br>
+- The NOT Gate produces Ā.<br>
+- AND Gate 1 takes A and B → produces A · B.<br>
+- AND Gate 2 takes Ā and C → produces Ā · C.<br>
+- The OR Gate takes both AND outputs → produces F = (A · B) + (Ā · C).</p>
+<hr>
+<h4 id="key-rules-for-drawing-logic-diagrams">📖 Key Rules for Drawing Logic Diagrams</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Left to right</strong></td>
+<td>Inputs always enter from the left. Output exits to the right.</td>
+</tr>
+<tr>
+<td><strong>One gate per operation</strong></td>
+<td>Each AND, OR, NOT needs its own gate symbol.</td>
+</tr>
+<tr>
+<td><strong>Connect carefully</strong></td>
+<td>A signal line (wire) can split and feed into multiple gates.</td>
+</tr>
+<tr>
+<td><strong>No crossing lines</strong></td>
+<td>Keep the diagram clean. Reroute lines to avoid confusing crossings.</td>
+</tr>
+<tr>
+<td><strong>Label everything</strong></td>
+<td>Label all inputs (A, B, C), intermediate signals, and the output (F).</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="class-activity">🏫 Class Activity</h4>
+<p>Draw the logic diagram for this Boolean function:</p>
+<pre><code>F(A, B) = Ā + B
+</code></pre>
+<p>Steps:<br>
+1. Identify the operations: one NOT (on A), one OR.<br>
+2. Draw input A going through a NOT gate first.<br>
+3. Draw input B entering directly.<br>
+4. Both signals feed into an OR gate.<br>
+5. The OR gate's output is F.</p>
+<p>Draw it on paper. Compare with your partner's diagram. Are they identical?</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_5">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Look at this logic diagram description:</p>
+<ul>
+<li>Input A goes through a NOT gate → produces Ā</li>
+<li>Input B goes through a NOT gate → produces B̄</li>
+<li>Ā and B̄ both feed into an AND gate → output is F</li>
+</ul>
+<p>Write the <strong>Boolean expression</strong> for F from this diagram.</p>
+<p>Then check: can you simplify F using De Morgan's theorem? What does it simplify to?</p>
+<hr>
+<h4 id="quick-recap_6">📌 Quick Recap</h4>
+<blockquote><p><strong>A logic diagram is the visual blueprint of a digital circuit. It shows each gate, each connection, and the flow from inputs to output. Draw left-to-right: inputs on the left, gates in the middle, output on the right.</strong></p></blockquote>
+<hr>
+<h2 id="25-system-troubleshooting">2.5 System Troubleshooting</h2>
+<h3 id="introduction_2">Introduction</h3>
+<hr>
+<h4 id="the-hook_9">🔖 The Hook</h4>
+<p>Sherlock Holmes never walks into a crime scene and randomly guesses the culprit. He observes. He thinks. He forms a theory. He tests it. He revises it if needed. And then — only then — he reaches a conclusion.</p>
+<p><strong>That is exactly how a good computer technician troubleshoots a problem.</strong></p>
+<p>Troubleshooting is not panic. It is not randomly unplugging things and hoping for the best. It is a <strong>systematic, logical process</strong> — observe the symptoms, form a theory, test it, implement the fix, verify it worked.</p>
+<p>When your computer breaks, you are the detective. The broken system is the crime scene. And you are about to learn the exact method to solve the case.</p>
+<hr>
+<h4 id="the-explanation_6">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Troubleshooting is a systematic process of identifying, diagnosing, and resolving problems in a computer system (or any system) to restore it to proper functioning.</p></blockquote>
+<p><strong>Why is troubleshooting important?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prevents downtime</strong></td>
+<td>Systems that stop working cost time and money. Quick troubleshooting reduces downtime.</td>
+</tr>
+<tr>
+<td><strong>Saves money</strong></td>
+<td>Fixing problems yourself avoids expensive professional repairs.</td>
+</tr>
+<tr>
+<td><strong>Protects data</strong></td>
+<td>Identifying problems early prevents data loss or corruption.</td>
+</tr>
+<tr>
+<td><strong>Improves security</strong></td>
+<td>Troubleshooting can reveal security breaches and vulnerabilities.</td>
+</tr>
+<tr>
+<td><strong>Extends equipment life</strong></td>
+<td>Regular maintenance and early fixes prevent small issues from becoming major failures.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="251-the-systematic-7-step-troubleshooting-process">2.5.1 The Systematic 7-Step Troubleshooting Process</h3>
+<p>Every professional technician follows the same logical sequence. Learn these seven steps — in order — and you will be able to solve almost any computer problem systematically.</p>
+<hr>
+<h4 id="step-1-identify-the-problem">Step 1: Identify the Problem</h4>
+<hr>
+<h5 id="the-hook_10">🔖 The Hook</h5>
+<p>A doctor's first question is always: "What are your symptoms?" Before any test or treatment, they need to know exactly what is wrong. You must do the same before touching any computer.</p>
+<hr>
+<h5 id="the-explanation_7">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> Identifying the problem means clearly recognizing <strong>what is not working</strong> and gathering all available information about the issue.</p></blockquote>
+<p><strong>How to identify the problem — checklist:</strong></p>
+<ul>
+<li>[ ] What exactly is happening? (Computer won't turn on? Screen is black? Program crashes?)</li>
+<li>[ ] When did it start? (After an update? After a new device was plugged in? Suddenly?)</li>
+<li>[ ] What changed recently? (New software installed? Hardware moved? Power outage?)</li>
+<li>[ ] Is there an error message? (Write it down exactly.)</li>
+<li>[ ] Does the problem happen always or only sometimes?</li>
+</ul>
+<p><strong>Example:</strong></p>
+<p><em>"I pressed the power button on my laptop. Nothing happened — no lights, no fan, no screen. This started after I dropped the laptop yesterday."</em></p>
+<p>This is a clear, specific problem description.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_6">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>Your friend says: "My computer is broken."</p>
+<p>That is not a useful problem description. Ask your friend the five questions from the checklist above and write a clear, specific problem statement from their answers.</p>
+<hr>
+<h5 id="quick-recap_7">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 1: Identify the Problem. Gather specific symptoms, timing, and recent changes. The more specific the problem description, the easier the solution.</strong></p></blockquote>
+<hr>
+<h4 id="step-2-establish-a-theory-of-probable-cause">Step 2: Establish a Theory of Probable Cause</h4>
+<hr>
+<h5 id="the-hook_11">🔖 The Hook</h5>
+<p>When your doctor hears your symptoms, they do not immediately operate. They say: "This could be a cold. Or allergies. Or a sinus infection." They list the <strong>possible causes</strong> — from most likely to least likely — before testing any of them.</p>
+<hr>
+<h5 id="the-explanation_8">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> Establishing a theory of probable cause means brainstorming all possible reasons for the identified problem, then ranking them from most likely to least likely.</p></blockquote>
+<p><strong>How to form a theory:</strong></p>
+<ol>
+<li>Think about what components or software are involved.</li>
+<li>Consider what changed recently.</li>
+<li>List all possible causes — do not dismiss anything yet.</li>
+<li>Order them: most likely first.</li>
+</ol>
+<p><strong>Example (continuing from Step 1 — laptop won't turn on after being dropped):</strong></p>
+<p>Possible causes (most to least likely):<br>
+1. Battery disconnected or dislodged from the drop.<br>
+2. Power adapter damaged.<br>
+3. Internal component (RAM, hard drive) came loose.<br>
+4. Motherboard damaged from impact.<br>
+5. Power button cable disconnected.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_7">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>Problem: A student's monitor shows a black screen, but the computer's power light is ON and the fan is running.</p>
+<p>Form a theory: List at least four possible causes of this specific problem. Order them from most likely to least likely.</p>
+<hr>
+<h5 id="quick-recap_8">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 2: Form a theory. List all possible causes from most likely to least. Think before you act.</strong></p></blockquote>
+<hr>
+<h4 id="step-3-test-the-theory-to-determine-the-cause">Step 3: Test the Theory to Determine the Cause</h4>
+<hr>
+<h5 id="the-hook_12">🔖 The Hook</h5>
+<p>A scientist does not just guess — they <strong>experiment</strong>. They test one variable at a time. If the experiment confirms the hypothesis, great. If not, they revise the hypothesis and test again.</p>
+<hr>
+<h5 id="the-explanation_9">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> Testing the theory means checking whether your suspected cause is actually the reason for the problem — one test at a time, starting with the most likely cause.</p></blockquote>
+<p><strong>Testing rules:</strong><br>
+- <strong>Test one thing at a time.</strong> If you change multiple things at once, you will not know which change fixed the problem.<br>
+- <strong>Start with the simplest test.</strong> The easiest-to-check cause goes first.<br>
+- <strong>If the test disproves the theory, move to the next theory.</strong></p>
+<p><strong>Example (laptop won't turn on):</strong></p>
+<p>Theory 1: Battery is dislodged.<br>
+Test 1: Remove the battery, reinsert it firmly, try powering on.<br>
+Result: Still won't turn on → Theory 1 disproved.</p>
+<p>Theory 2: Power adapter is damaged.<br>
+Test 2: Try a different power adapter.<br>
+Result: Laptop turns on → <strong>Theory 2 confirmed.</strong> The power adapter was the cause.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_8">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>You believe your internet is slow because of a problem with your router.</p>
+<p>Design a simple test to confirm or disprove this theory. What exactly would you do? What result would confirm it? What result would disprove it?</p>
+<hr>
+<h5 id="quick-recap_9">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 3: Test your theory. Test one thing at a time, starting with the most likely cause. If the test fails, move to the next theory.</strong></p></blockquote>
+<hr>
+<h4 id="step-4-establish-a-plan-of-action-to-resolve-the-problem">Step 4: Establish a Plan of Action to Resolve the Problem</h4>
+<hr>
+<h5 id="the-explanation_10">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> Once the cause is confirmed, establish a plan of action — a clear, ordered list of steps you will take to fix the problem.</p></blockquote>
+<p><strong>Why plan before acting?</strong></p>
+<ul>
+<li>Some fixes can cause new problems if done incorrectly.</li>
+<li>Some fixes require backing up data first.</li>
+<li>Some fixes require ordering a replacement part before you can proceed.</li>
+<li>A plan ensures you do not miss any steps.</li>
+</ul>
+<p><strong>Example (confirmed: power adapter is faulty):</strong></p>
+<p>Plan of action:<br>
+1. Note down the laptop model and the adapter's voltage/amperage specifications.<br>
+2. Order or purchase a compatible replacement adapter.<br>
+3. Test the laptop with the new adapter.<br>
+4. If working, safely dispose of the old faulty adapter.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_9">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>Confirmed cause: A student's computer runs slowly because the hard drive is 99% full.</p>
+<p>Write a step-by-step plan of action to resolve this. Think carefully — what should you do <strong>first</strong> before deleting anything?</p>
+<hr>
+<h5 id="quick-recap_10">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 4: Plan before acting. Write out the steps to fix the confirmed problem. Consider what needs to happen first (like backups) before making changes.</strong></p></blockquote>
+<hr>
+<h4 id="step-5-implement-the-solution">Step 5: Implement the Solution</h4>
+<hr>
+<h5 id="the-explanation_11">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> Implementing the solution means carrying out your plan — performing the actual fix.</p></blockquote>
+<p><strong>Key principles during implementation:</strong></p>
+<ul>
+<li>Follow the plan step by step. Do not skip steps.</li>
+<li><strong>Back up important data</strong> before making major changes (reinstalling software, replacing hard drives).</li>
+<li>Work carefully and slowly — especially with physical components.</li>
+<li>If something unexpected happens mid-fix, stop and reassess. Do not force it.</li>
+</ul>
+<p><strong>Example (replacing the power adapter):</strong></p>
+<ol>
+<li>Confirm the new adapter's voltage and amperage match the laptop's requirements. ✓</li>
+<li>Plug the new adapter into the laptop.</li>
+<li>Press the power button.</li>
+<li>Laptop powers on successfully. ✓</li>
+</ol>
+<hr>
+<h5 id="interactive-stop-point-pause-think_10">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>Before replacing a student's failed hard drive, what is the single most important thing to do before removing the old drive?</p>
+<p>Why is this step so critical? What could happen if you skip it?</p>
+<hr>
+<h5 id="quick-recap_11">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 5: Implement the solution. Follow your plan step by step. Back up data first. Work carefully. Stop and reassess if anything unexpected happens.</strong></p></blockquote>
+<hr>
+<h4 id="step-6-verify-full-system-functionality">Step 6: Verify Full System Functionality</h4>
+<hr>
+<h5 id="the-explanation_12">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> After implementing the fix, verify that the problem is completely resolved and that no new problems were accidentally introduced.</p></blockquote>
+<p><strong>How to verify:</strong></p>
+<ul>
+<li>Test the specific thing that was broken — does it now work?</li>
+<li>Test related functions — did the fix accidentally break something else?</li>
+<li>Test under normal usage conditions — not just one quick check.</li>
+</ul>
+<p><strong>Example:</strong></p>
+<p>After replacing the power adapter:<br>
+- Does the laptop power on? ✓<br>
+- Does it charge the battery? ✓<br>
+- Does the laptop work correctly when unplugged from the adapter? ✓<br>
+- Does it shut down and restart normally? ✓</p>
+<p>All tests passed. The system is fully functional.</p>
+<hr>
+<h5 id="interactive-stop-point-pause-think_11">✋ Interactive Stop-Point: Pause &amp; Think</h5>
+<p>A technician fixes a computer's internet connection by reinstalling the network driver. They verify that the internet now works.</p>
+<p>One hour later, the user reports that the computer's sound has stopped working.</p>
+<p>What likely happened? Which step of the troubleshooting process did the technician not complete properly?</p>
+<hr>
+<h5 id="quick-recap_12">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 6: Verify. Test the fixed issue AND related functions. Make sure no new problems were created. Do not close the case until full system functionality is confirmed.</strong></p></blockquote>
+<hr>
+<h4 id="step-7-document-findings-actions-and-outcomes">Step 7: Document Findings, Actions, and Outcomes</h4>
+<hr>
+<h5 id="the-hook_13">🔖 The Hook</h5>
+<p>Imagine a doctor who fixes a patient but writes nothing down. Next time that patient comes in — or next time a different patient has the same symptoms — the doctor has no record. They start from scratch. The same mistake could be made again.</p>
+<p>Documentation is the memory of the troubleshooting process.</p>
+<hr>
+<h5 id="the-explanation_13">📖 The Explanation</h5>
+<blockquote><p><strong>Definition:</strong> Documentation means recording what the problem was, what caused it, what you did to fix it, and what the outcome was.</p></blockquote>
+<p><strong>What to document:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What to Write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Problem</strong></td>
+<td>Clear description of what was wrong.</td>
+</tr>
+<tr>
+<td><strong>Probable cause identified</strong></td>
+<td>What you suspected.</td>
+</tr>
+<tr>
+<td><strong>Tests performed</strong></td>
+<td>What you tested and the results.</td>
+</tr>
+<tr>
+<td><strong>Solution implemented</strong></td>
+<td>What you did to fix it.</td>
+</tr>
+<tr>
+<td><strong>Outcome</strong></td>
+<td>Did it work? Any remaining issues?</td>
+</tr>
+<tr>
+<td><strong>Date and time</strong></td>
+<td>When the issue occurred and when it was resolved.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why documentation matters:</strong></p>
+<ul>
+<li>Future reference — if the same problem happens again, the solution is recorded.</li>
+<li>Team knowledge — other technicians can learn from your findings.</li>
+<li>Warranty tracking — proves what was done and when.</li>
+<li>Pattern detection — if the same issue happens repeatedly, documentation reveals it.</li>
+</ul>
+<hr>
+<h5 id="interactive-stop-point-grab-a-partner_2">✋ Interactive Stop-Point: Grab a Partner</h5>
+<p>Think of a problem you have had with a phone, computer, or any electronic device. Write a complete documentation record for that incident using the seven fields in the table above.</p>
+<p>Compare your documentation with your partner's. Is it clear enough that someone else could understand what happened without you explaining it?</p>
+<hr>
+<h5 id="quick-recap_13">📌 Quick Recap</h5>
+<blockquote><p><strong>Step 7: Document everything. Record the problem, cause, tests, solution, and outcome. Good documentation saves time the next time the same problem occurs.</strong></p></blockquote>
+<hr>
+<h3 id="252-importance-of-troubleshooting-in-computing-systems">2.5.2 Importance of Troubleshooting in Computing Systems</h3>
+<hr>
+<h4 id="the-six-key-reasons-troubleshooting-matters">📖 The Six Key Reasons Troubleshooting Matters</h4>
+<p><strong>1. Preventing Downtime</strong></p>
+<p>Downtime is when a system stops working. For a business, every minute of downtime can mean lost money and lost productivity. Fast, systematic troubleshooting minimizes downtime.</p>
+<p><strong>2. Ensuring Data Integrity</strong></p>
+<p>Data integrity means your data is accurate and uncorrupted. Hardware failures and software bugs can corrupt data. Troubleshooting finds the cause before more data is damaged.</p>
+<p><strong>3. Improving Security</strong></p>
+<p>Many cyber-attacks exploit system weaknesses. Troubleshooting reveals these weaknesses — strange system behavior, unexpected crashes, unusual network activity — so they can be fixed before attackers exploit them.</p>
+<blockquote><p><strong>Real-world example:</strong> In 2017, the <strong>WannaCry ransomware attack</strong> infected over 200,000 computers in 150 countries. It exploited a vulnerability in Windows that Microsoft had already patched in a security update. Organizations that had not installed the update — and had not been monitoring their systems — were the victims.</p></blockquote>
+<p><strong>4. Enhancing Performance</strong></p>
+<p>Computers slow down over time due to software bloat, filled storage, fragmented drives, or hardware failures. Troubleshooting identifies the specific cause and allows targeted improvement.</p>
+<p><strong>5. Extending Equipment Life</strong></p>
+<p>Small problems become big problems if ignored. A loose cable causes intermittent crashes. Ignored, it causes permanent damage. Early troubleshooting prevents this escalation.</p>
+<p><strong>6. Saving Costs</strong></p>
+<p>A problem found early costs less to fix. A problem ignored can require expensive repairs or full replacement. Regular maintenance and quick troubleshooting are always cheaper than crisis repairs.</p>
+<hr>
+<h4 id="quick-recap_14">📌 Quick Recap</h4>
+<blockquote><p><strong>Troubleshooting matters because it prevents downtime, protects data, improves security, enhances performance, extends equipment life, and saves money.</strong></p></blockquote>
+<hr>
+<h3 id="253-basic-hardware-related-issues">2.5.3 Basic Hardware-Related Issues</h3>
+<hr>
+<h4 id="the-hook_14">🔖 The Hook</h4>
+<p>Most computer problems are not mysterious. They are the same issues, happening again and again, to millions of people. A loose cable. Too much heat. A dead battery. Learning to recognize these common problems — and their standard solutions — solves the majority of hardware issues before they escalate.</p>
+<hr>
+<h4 id="common-hardware-issues-and-solutions">📖 Common Hardware Issues and Solutions</h4>
+<hr>
+<p><strong>Issue 1: Cable Disconnection</strong></p>
+<blockquote><p><strong>Symptom:</strong> A device (monitor, keyboard, printer, external hard drive) suddenly stops working or is not recognized.</p></blockquote>
+<p><strong>Cause:</strong> Loose or disconnected cables are the most common and most embarrassing hardware issue. A cable that looks connected may not be fully seated.</p>
+<p><strong>Solution:</strong><br>
+1. Check all cables connected to the affected device.<br>
+2. Unplug and firmly replug each cable.<br>
+3. Check both ends — the device end AND the computer end.<br>
+4. If using USB, try a different USB port.<br>
+5. Use cable ties or organizers to keep cables neat and reduce accidental disconnections.<br>
+6. Label cables so you can identify them easily during future troubleshooting.</p>
+<blockquote><p><strong>Tip:</strong> Always check cables first. It is the simplest check and solves the problem surprisingly often.</p></blockquote>
+<hr>
+<p><strong>Issue 2: Overheating</strong></p>
+<blockquote><p><strong>Symptom:</strong> Computer slows down dramatically, freezes, shuts down unexpectedly, or fan makes loud noise.</p></blockquote>
+<p><strong>Cause:</strong> Computer components generate heat. If heat cannot escape — due to blocked vents, broken fans, or too much dust inside — components overheat and the system shuts down to protect itself.</p>
+<p><strong>Solution:</strong><br>
+1. Shut down the computer and let it cool for 15–20 minutes.<br>
+2. Check that all ventilation slots are not blocked (do not place a laptop on a bed or sofa — the fabric blocks airflow).<br>
+3. Use compressed air to blow dust out of vents (dust is the most common cause of overheating in older computers).<br>
+4. Ensure the room is not unusually hot.<br>
+5. For desktops, open the case and check if all fans are spinning.<br>
+6. Consider a cooling pad for laptops.</p>
+<hr>
+<p><strong>Issue 3: Peripheral Device Not Working</strong></p>
+<blockquote><p><strong>Symptom:</strong> Keyboard, mouse, printer, or other peripheral is unresponsive or not recognized by the computer.</p></blockquote>
+<p><strong>Cause:</strong> The device may have lost its connection (physical or driver), its batteries may be dead (for wireless devices), or the driver software may have become corrupted.</p>
+<p><strong>Solution:</strong><br>
+1. <strong>Wired device:</strong> Unplug and replug. Try a different port. Try the device on a different computer to isolate whether the problem is the device or the computer.<br>
+2. <strong>Wireless device:</strong> Replace batteries. Try re-pairing the device with the receiver.<br>
+3. <strong>Driver issue:</strong> Open Device Manager (Windows), check for any devices showing an error (yellow triangle). Right-click → Update Driver.<br>
+4. If the device is visibly damaged, replacement is the solution.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_12">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Your classroom's projector is connected to a laptop via an HDMI cable. The laptop screen shows the presentation normally, but the projector shows nothing — just a black screen.</p>
+<p>Using what you know about cable and peripheral troubleshooting:<br>
+1. What is the most likely cause?<br>
+2. List three steps you would take to diagnose and fix this.<br>
+3. If those three steps do not work, what is your next theory?</p>
+<hr>
+<h4 id="quick-recap_15">📌 Quick Recap</h4>
+<blockquote><p><strong>The three most common hardware issues are disconnected cables (check and reseat them), overheating (clean vents, improve airflow), and peripheral devices not working (check connection, replace batteries, update drivers).</strong></p></blockquote>
+<hr>
+<h3 id="254-hardware-diagnosis-and-maintenance">2.5.4 Hardware Diagnosis and Maintenance</h3>
+<hr>
+<h4 id="recognizing-hardware-failures">📖 Recognizing Hardware Failures</h4>
+<p>Two of the most critical hardware components — RAM and hard drives — have specific failure symptoms. Learn to recognize them early.</p>
+<hr>
+<p><strong>RAM Failures</strong></p>
+<blockquote><p><strong>Symptoms:</strong> Frequent system crashes, Blue Screen of Death (BSOD) with memory-related error codes, random restarts, system fails to boot, applications crash unexpectedly.</p></blockquote>
+<p><strong>Why RAM fails:</strong> Physical damage, manufacturing defects, incorrect installation, or simply aging.</p>
+<p><strong>Diagnostic tools:</strong><br>
+- <strong>Windows Memory Diagnostic:</strong> Built into Windows. Search "Windows Memory Diagnostic" in the Start menu. Runs a memory test on restart.<br>
+- <strong>MemTest86:</strong> A free, bootable diagnostic tool that tests RAM thoroughly. More thorough than the built-in tool.</p>
+<p><strong>What to do if RAM fails:</strong><br>
+1. Run MemTest86. Note any errors reported.<br>
+2. If errors are found, power off and reseat the RAM sticks (remove and firmly reinsert).<br>
+3. Test again. If errors persist, the RAM stick is faulty and needs replacement.<br>
+4. Replace with compatible RAM (check your motherboard's specifications for the correct type and speed).</p>
+<hr>
+<p><strong>Hard Drive Failures</strong></p>
+<blockquote><p><strong>Symptoms:</strong> Clicking or grinding noises from inside the computer (this is serious — act immediately), extremely slow file operations, frequent crashes when accessing files, corrupted or missing files, system fails to boot with disk error messages.</p></blockquote>
+<p><strong>Why hard drives fail:</strong> Mechanical wear (HDDs have moving parts), physical shock, overheating, age, or power surges.</p>
+<p><strong>Diagnostic tools:</strong><br>
+- <strong>SMART Status (Self-Monitoring, Analysis, and Reporting Technology):</strong> Built into every hard drive. Use software like <strong>CrystalDiskInfo</strong> (free) to read the SMART data and see the drive's health status.<br>
+- <strong>CrystalDiskInfo</strong> displays a "Good," "Caution," or "Bad" status and shows specific error counts.</p>
+<blockquote><p><strong>Critical warning:</strong> If your hard drive makes clicking noises, stop using it immediately and back up all data before doing anything else. Clicking usually means the read/write head is failing — continued use can destroy all data.</p></blockquote>
+<hr>
+<h4 id="replacement-and-upgrading-components">📖 Replacement and Upgrading Components</h4>
+<hr>
+<p><strong>Replacing RAM</strong></p>
+<p><strong>When to replace RAM:</strong><br>
+- RAM diagnostic tests show errors.<br>
+- You want to improve multitasking performance.</p>
+<p><strong>Step-by-step RAM replacement:</strong></p>
+<ol>
+<li><strong>Check compatibility:</strong> Find your laptop or motherboard's model number. Look up which RAM type (DDR4, DDR5), speed (e.g., 3200 MHz), and maximum capacity it supports.</li>
+<li><strong>Purchase compatible RAM sticks.</strong></li>
+<li><strong>Power off the computer completely.</strong> Unplug the power cord.</li>
+<li><strong>Ground yourself</strong> by touching a metal surface — this prevents static electricity from damaging components.</li>
+<li><strong>Open the computer case</strong> (or the RAM panel on a laptop).</li>
+<li><strong>Remove old RAM:</strong> Press the clips on both sides of the slot outward. The RAM stick will pop up at an angle. Slide it out.</li>
+<li><strong>Insert new RAM:</strong> Align the notch in the RAM stick with the notch in the slot. Press firmly and evenly until the clips click into place.</li>
+<li><strong>Close the case. Power on.</strong> Check that the system recognizes the new RAM (right-click My Computer → Properties → RAM amount).</li>
+</ol>
+<hr>
+<p><strong>Replacing a Hard Drive</strong></p>
+<p><strong>When to replace a hard drive:</strong><br>
+- SMART diagnostic shows "Bad" status.<br>
+- Drive makes clicking or grinding noises.<br>
+- You want more storage space.<br>
+- You want faster performance (replacing HDD with SSD).</p>
+<p><strong>Step-by-step hard drive replacement:</strong></p>
+<ol>
+<li><strong>Back up all data FIRST.</strong> Copy everything to an external drive or cloud storage. This is non-negotiable.</li>
+<li><strong>Find a compatible replacement drive</strong> (check the drive size: 2.5" for laptops, 3.5" for desktops; check the connector type: SATA or NVMe).</li>
+<li><strong>Power off the computer completely.</strong> Unplug the power cord.</li>
+<li><strong>Open the computer case.</strong></li>
+<li><strong>Disconnect the old drive:</strong> Unplug the data cable (SATA cable) and power cable from the drive. Unscrew it from the drive bay.</li>
+<li><strong>Install the new drive:</strong> Screw it into the drive bay. Connect the data cable and power cable.</li>
+<li><strong>Close the case.</strong></li>
+<li><strong>Reinstall the operating system</strong> (the new drive is blank — you will need a Windows/Linux installation USB).</li>
+<li><strong>Restore your data</strong> from the backup made in Step 1.</li>
+</ol>
+<blockquote><p><strong>SSD upgrade tip:</strong> Replacing a spinning hard drive (HDD) with a solid-state drive (SSD) is the single most impactful upgrade for an older, slow computer. Boot times can go from 2 minutes to 15 seconds.</p></blockquote>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_3">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>A 3-year-old laptop is showing these symptoms:<br>
+- It takes 5 minutes to start up.<br>
+- It freezes when multiple apps are open.<br>
+- CrystalDiskInfo shows the hard drive status as "Good."<br>
+- The RAM diagnostic shows no errors.</p>
+<p>Based on this information:<br>
+1. Is the hard drive the problem? Why or why not?<br>
+2. What is the most likely hardware upgrade that would help?<br>
+3. What information would you need before buying the upgrade?</p>
+<hr>
+<h4 id="quick-recap_16">📌 Quick Recap</h4>
+<blockquote><p><strong>RAM failures show as crashes and BSODs — diagnose with MemTest86. Hard drive failures show as noises, corruption, and slow performance — diagnose with CrystalDiskInfo/SMART. Always back up data before any hardware replacement.</strong></p></blockquote>
+<hr>
+<h3 id="255-security-and-maintenance">2.5.5 Security and Maintenance</h3>
+<hr>
+<h4 id="the-hook_15">🔖 The Hook</h4>
+<p>A car needs regular oil changes, tyre checks, and filter replacements — even when it is running fine. Skip these and small problems become engine failures. Computers work exactly the same way. Regular maintenance prevents major problems.</p>
+<hr>
+<h4 id="maintaining-software">📖 Maintaining Software</h4>
+<p><strong>1. Installing Updates and Patches</strong></p>
+<blockquote><p><strong>Definition:</strong> A software update or patch is a small program released by software developers to fix bugs, close security vulnerabilities, and improve performance.</p></blockquote>
+<p><strong>Why updates matter:</strong></p>
+<p>In 2017, the <strong>WannaCry ransomware</strong> attacked hundreds of thousands of computers globally. Microsoft had released a security patch two months earlier that fixed the exact vulnerability WannaCry exploited. Organizations that installed the update were safe. Those that did not were victims.</p>
+<p><strong>Best practices:</strong><br>
+- Enable <strong>automatic updates</strong> for your operating system.<br>
+- Regularly update all installed applications — especially browsers and antivirus software.<br>
+- Never ignore security updates, even if the update dialog appears at an inconvenient time.</p>
+<hr>
+<p><strong>2. Resolving Software Conflicts</strong></p>
+<blockquote><p><strong>Definition:</strong> A software conflict occurs when two programs interfere with each other, causing crashes, freezes, or unexpected behavior.</p></blockquote>
+<p><strong>Common causes:</strong><br>
+- Two antivirus programs running simultaneously.<br>
+- A newly installed program using the same resources as an existing one.<br>
+- An outdated program incompatible with the current operating system version.</p>
+<p><strong>Steps to resolve software conflicts:</strong></p>
+<ol>
+<li>Identify which application was installed or updated just before the problem started.</li>
+<li>Try <strong>uninstalling</strong> the newly added software.</li>
+<li>If the problem resolves, the new software was the conflict.</li>
+<li>Check if an updated version of the software exists that fixes the conflict.</li>
+<li>Contact the software developer's support if needed.</li>
+</ol>
+<hr>
+<p><strong>3. Data Backups</strong></p>
+<blockquote><p><strong>Definition:</strong> A backup is a copy of your important data stored in a separate location so that if the original is lost or damaged, you can restore it.</p></blockquote>
+<p><strong>The 3-2-1 Backup Rule:</strong><br>
+- <strong>3</strong> copies of your data<br>
+- On <strong>2</strong> different types of storage (e.g., hard drive + cloud)<br>
+- With <strong>1</strong> copy stored off-site (e.g., cloud storage or an external drive kept at a different location)</p>
+<p><strong>Backup options:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>External Hard Drive</strong></td>
+<td>Seagate, WD portable drives</td>
+<td>Large capacity, one-time cost</td>
+<td>Can be lost or damaged</td>
+</tr>
+<tr>
+<td><strong>USB Flash Drive</strong></td>
+<td>Pen drive</td>
+<td>Portable, inexpensive</td>
+<td>Small capacity</td>
+</tr>
+<tr>
+<td><strong>Cloud Storage</strong></td>
+<td>Google Drive, OneDrive, iCloud</td>
+<td>Accessible anywhere, automatic</td>
+<td>Requires internet, subscription cost</td>
+</tr>
+<tr>
+<td><strong>Network Storage</strong></td>
+<td>Home NAS device</td>
+<td>Large capacity, always on</td>
+<td>Expensive setup</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Backup schedule:</strong> For school or personal work, back up important files at least <strong>once a week</strong>. For critical data (business, research), back up <strong>daily</strong>.</p>
+<hr>
+<p><strong>4. Basic Security Practices</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Strong passwords</strong></td>
+<td>Use at least 12 characters with uppercase, lowercase, numbers, and symbols. Avoid names or birthdates.</td>
+</tr>
+<tr>
+<td><strong>Antivirus software</strong></td>
+<td>Detects and removes malware. Run regular scans. Keep definitions updated.</td>
+</tr>
+<tr>
+<td><strong>Firewall</strong></td>
+<td>Blocks unauthorized network access. Keep it enabled.</td>
+</tr>
+<tr>
+<td><strong>Avoid unknown downloads</strong></td>
+<td>Never install software from untrusted sources.</td>
+</tr>
+<tr>
+<td><strong>Lock your screen</strong></td>
+<td>Always lock your computer when leaving it unattended (Windows: Win + L).</td>
+</tr>
+<tr>
+<td><strong>Regular OS updates</strong></td>
+<td>Patches fix security vulnerabilities. Install them promptly.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="class-activity-security-practices">🏫 Class Activity: Security Practices</h4>
+<p><strong>Task 1 — Password Strength Check:</strong><br>
+Create a strong password for an imaginary account. It must have:<br>
+- At least 12 characters<br>
+- At least one uppercase letter<br>
+- At least one number<br>
+- At least one symbol</p>
+<p>Write it down. Then check: is your name or birthdate in it? If yes, change it.</p>
+<p><strong>Task 2 — Software Update Check:</strong><br>
+On your computer, go to Settings → Update &amp; Security (Windows) or System Preferences → Software Update (Mac). Is your system up to date? Note any pending updates.</p>
+<p><strong>Task 3 — Antivirus Scan:</strong><br>
+If antivirus software is installed, open it and run a quick scan. Document the scan results.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_13">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>A student stores all their school project files only on their laptop's local hard drive. The laptop was stolen from the school cafeteria. All their files are gone.</p>
+<ol>
+<li>Which backup strategy (from the 3-2-1 rule) would have prevented this data loss?</li>
+<li>What is the cheapest and easiest backup solution this student could have used?</li>
+<li>Going forward, design a simple weekly backup plan for this student.</li>
+</ol>
+<hr>
+<h4 id="quick-recap_17">📌 Quick Recap</h4>
+<blockquote><p><strong>Regular maintenance = installing updates, resolving conflicts, backing up data (use the 3-2-1 rule), and applying security practices (strong passwords, antivirus, firewall). Prevention is always cheaper than cure.</strong></p></blockquote>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>This chapter covered two major areas: the foundations of digital logic and systems, and the systematic process of troubleshooting and maintaining computer systems.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Key Takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Analog Signal</strong></td>
+<td>Continuous, smooth, infinite values. Examples: voice, temperature, radio.</td>
+</tr>
+<tr>
+<td><strong>Digital Signal</strong></td>
+<td>Discrete — only 0 or 1. Examples: binary data, keyboard input.</td>
+</tr>
+<tr>
+<td><strong>ADC</strong></td>
+<td>Converts analog signals to digital so computers can process them.</td>
+</tr>
+<tr>
+<td><strong>DAC</strong></td>
+<td>Converts digital signals back to analog so humans can perceive them.</td>
+</tr>
+<tr>
+<td><strong>Boolean Algebra</strong></td>
+<td>Mathematics using only True (1) and False (0). Invented by George Boole.</td>
+</tr>
+<tr>
+<td><strong>AND operation</strong></td>
+<td>Output is 1 only when BOTH inputs are 1. Symbol: A · B</td>
+</tr>
+<tr>
+<td><strong>OR operation</strong></td>
+<td>Output is 1 when AT LEAST ONE input is 1. Symbol: A + B</td>
+</tr>
+<tr>
+<td><strong>NOT operation</strong></td>
+<td>Output is the OPPOSITE of the input. Symbol: Ā</td>
+</tr>
+<tr>
+<td><strong>Boolean Function</strong></td>
+<td>A mathematical rule mapping binary inputs to a binary output.</td>
+</tr>
+<tr>
+<td><strong>Truth Table</strong></td>
+<td>A table showing all possible input combinations and their outputs.</td>
+</tr>
+<tr>
+<td><strong>AND Gate</strong></td>
+<td>Physical circuit implementing AND. D-shaped symbol.</td>
+</tr>
+<tr>
+<td><strong>OR Gate</strong></td>
+<td>Physical circuit implementing OR. Curved D-shape with point.</td>
+</tr>
+<tr>
+<td><strong>NOT Gate</strong></td>
+<td>Physical circuit implementing NOT. Triangle with circle.</td>
+</tr>
+<tr>
+<td><strong>NAND Gate</strong></td>
+<td>AND followed by NOT. Universal gate.</td>
+</tr>
+<tr>
+<td><strong>XOR Gate</strong></td>
+<td>Output 1 when exactly one input is 1. Used in binary addition circuits.</td>
+</tr>
+<tr>
+<td><strong>Boolean Simplification</strong></td>
+<td>Reducing Boolean expressions using standard rules (Identity, De Morgan's, etc.)</td>
+</tr>
+<tr>
+<td><strong>Logic Diagram</strong></td>
+<td>Visual blueprint of a digital circuit using gate symbols.</td>
+</tr>
+<tr>
+<td><strong>Troubleshooting</strong></td>
+<td>7-step systematic process: Identify → Theory → Test → Plan → Implement → Verify → Document.</td>
+</tr>
+<tr>
+<td><strong>Cable issues</strong></td>
+<td>Most common hardware problem. Reseat cables first.</td>
+</tr>
+<tr>
+<td><strong>Overheating</strong></td>
+<td>Clean vents, improve airflow. Use CrystalDiskInfo to monitor.</td>
+</tr>
+<tr>
+<td><strong>RAM failure</strong></td>
+<td>BSOD, crashes. Diagnose with MemTest86.</td>
+</tr>
+<tr>
+<td><strong>Hard drive failure</strong></td>
+<td>Clicking sounds, slow speed. Diagnose with SMART/CrystalDiskInfo.</td>
+</tr>
+<tr>
+<td><strong>Backups</strong></td>
+<td>Use the 3-2-1 rule. Back up regularly.</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Strong passwords, antivirus, firewall, regular updates.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="key-vocabulary">Key Vocabulary</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Analog signal</strong></td>
+<td>A continuous signal that can take any value within a range.</td>
+</tr>
+<tr>
+<td><strong>Digital signal</strong></td>
+<td>A signal with only two values: 0 (OFF) and 1 (ON).</td>
+</tr>
+<tr>
+<td><strong>ADC</strong></td>
+<td>Analog to Digital Conversion — converting analog signals to digital.</td>
+</tr>
+<tr>
+<td><strong>DAC</strong></td>
+<td>Digital to Analog Conversion — converting digital signals to analog.</td>
+</tr>
+<tr>
+<td><strong>Boolean algebra</strong></td>
+<td>A mathematical system using only two values (True/False) for logical operations.</td>
+</tr>
+<tr>
+<td><strong>Binary variable</strong></td>
+<td>A variable that can only hold 0 or 1.</td>
+</tr>
+<tr>
+<td><strong>AND operation</strong></td>
+<td>Logical operation: output is 1 only when both inputs are 1.</td>
+</tr>
+<tr>
+<td><strong>OR operation</strong></td>
+<td>Logical operation: output is 1 when at least one input is 1.</td>
+</tr>
+<tr>
+<td><strong>NOT operation</strong></td>
+<td>Logical operation: output is the opposite of the input.</td>
+</tr>
+<tr>
+<td><strong>Boolean function</strong></td>
+<td>A mathematical expression mapping binary inputs to a binary output.</td>
+</tr>
+<tr>
+<td><strong>Truth table</strong></td>
+<td>A table showing all input combinations and corresponding outputs.</td>
+</tr>
+<tr>
+<td><strong>Logic gate</strong></td>
+<td>A physical electronic circuit that implements a Boolean operation.</td>
+</tr>
+<tr>
+<td><strong>AND gate</strong></td>
+<td>Gate implementing AND. Output is 1 only when both inputs are 1.</td>
+</tr>
+<tr>
+<td><strong>OR gate</strong></td>
+<td>Gate implementing OR. Output is 1 when at least one input is 1.</td>
+</tr>
+<tr>
+<td><strong>NOT gate</strong></td>
+<td>Gate implementing NOT. Outputs the opposite of the input.</td>
+</tr>
+<tr>
+<td><strong>NAND gate</strong></td>
+<td>AND gate followed by NOT. Universal gate — can build any other gate.</td>
+</tr>
+<tr>
+<td><strong>XOR gate</strong></td>
+<td>Exclusive OR. Output is 1 when exactly one input is 1.</td>
+</tr>
+<tr>
+<td><strong>Boolean simplification</strong></td>
+<td>Reducing a Boolean expression to a simpler equivalent form.</td>
+</tr>
+<tr>
+<td><strong>De Morgan's theorem</strong></td>
+<td>Rules converting between AND and OR under negation.</td>
+</tr>
+<tr>
+<td><strong>Logic diagram</strong></td>
+<td>Visual representation of a digital circuit using gate symbols.</td>
+</tr>
+<tr>
+<td><strong>Troubleshooting</strong></td>
+<td>Systematic process of identifying, diagnosing, and fixing system problems.</td>
+</tr>
+<tr>
+<td><strong>Downtime</strong></td>
+<td>Period when a system is not operational.</td>
+</tr>
+<tr>
+<td><strong>BSOD</strong></td>
+<td>Blue Screen of Death — Windows error screen often caused by RAM or driver failures.</td>
+</tr>
+<tr>
+<td><strong>SMART</strong></td>
+<td>Self-Monitoring, Analysis, and Reporting Technology — built-in hard drive health monitoring.</td>
+</tr>
+<tr>
+<td><strong>Data backup</strong></td>
+<td>A copy of important data stored separately for recovery purposes.</td>
+</tr>
+<tr>
+<td><strong>3-2-1 rule</strong></td>
+<td>Backup strategy: 3 copies, 2 different media types, 1 off-site location.</td>
+</tr>
+<tr>
+<td><strong>Software patch</strong></td>
+<td>A small update that fixes bugs or security vulnerabilities in software.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="review-questions">Review Questions</h2>
+<h3 id="multiple-choice-questions">Multiple Choice Questions</h3>
+<ol>
+<li>
+<p>Which Boolean expression represents the OR operation?<br>
+   - a) A · B<br>
+   - b) <strong>A + B</strong> ✓<br>
+   - c) Ā<br>
+   - d) A · B̄</p>
+</li>
+<li>
+<p>What is the output of an AND gate when A = 1 and B = 0?<br>
+   - a) 1<br>
+   - b) <strong>0</strong> ✓<br>
+   - c) Undefined<br>
+   - d) A + B</p>
+</li>
+<li>
+<p>Which logic gate outputs true only when both inputs are true?<br>
+   - a) OR gate<br>
+   - b) <strong>AND gate</strong> ✓<br>
+   - c) XOR gate<br>
+   - d) NOT gate</p>
+</li>
+<li>
+<p>What is the dual of A · 0 = 0?<br>
+   - a) <strong>A + 1 = 1</strong> ✓<br>
+   - b) A + 0 = A<br>
+   - c) A · 1 = A<br>
+   - d) A · 0 = 0</p>
+</li>
+<li>
+<p>What is the first step in the systematic troubleshooting process?<br>
+   - a) Establish a Theory<br>
+   - b) Implement the Solution<br>
+   - c) <strong>Identify the Problem</strong> ✓<br>
+   - d) Document Findings</p>
+</li>
+<li>
+<p>Which step comes immediately after implementing a solution?<br>
+   - a) Document findings<br>
+   - b) Test the theory<br>
+   - c) <strong>Verify full system functionality</strong> ✓<br>
+   - d) Establish a plan</p>
+</li>
+<li>
+<p>A computer crashes frequently with a BSOD. What component should you test first?<br>
+   - a) Hard Drive<br>
+   - b) <strong>RAM</strong> ✓<br>
+   - c) Power Supply<br>
+   - d) Monitor</p>
+</li>
+<li>
+<p>A student hears clicking sounds from inside their laptop. What should they do FIRST?<br>
+   - a) Replace the RAM<br>
+   - b) Reinstall the operating system<br>
+   - c) <strong>Back up all data immediately</strong> ✓<br>
+   - d) Update the drivers</p>
+</li>
+<li>
+<p>What does ADC stand for?<br>
+   - a) Advanced Digital Circuit<br>
+   - b) <strong>Analog to Digital Conversion</strong> ✓<br>
+   - c) Automatic Data Control<br>
+   - d) Advanced Data Communication</p>
+</li>
+<li>
+<p>Which tool is used to check the health of a hard drive?</p>
+<ul>
+<li>a) MemTest86</li>
+<li>b) Task Manager</li>
+<li>c) <strong>CrystalDiskInfo</strong> ✓</li>
+<li>d) Device Manager</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="short-questions">Short Questions</h3>
+<ol>
+<li>Define a Boolean function.</li>
+<li>What is the significance of a truth table in digital logic?</li>
+<li>Describe the function of a NOT gate. Draw its truth table.</li>
+<li>What is the purpose of ADC and DAC? Give one real-world example of each.</li>
+<li>Create the truth table for the AND operation with two variables A and B.</li>
+<li>What is the first step in the systematic process of troubleshooting?</li>
+<li>After identifying a problem, what is the next step in troubleshooting?</li>
+<li>Why is it important to test only one theory at a time during troubleshooting?</li>
+<li>Explain what the "Implement the Solution" step involves. What important action should always happen before implementation?</li>
+<li>Why is it necessary to verify full system functionality after implementing a solution?</li>
+</ol>
+<hr>
+<h3 id="long-questions">Long Questions</h3>
+<ol>
+<li>
+<p>Explain the difference between analog and digital signals. Describe how ADC and DAC work together in a phone call, using a clear step-by-step example.</p>
+</li>
+<li>
+<p>Explain the three primary Boolean operations (AND, OR, NOT) with truth tables and real-world analogies for each.</p>
+</li>
+<li>
+<p>Construct the truth table for the Boolean function F(A, B, C) = (A · B) + (Ā · C). Show all intermediate columns and explain each step.</p>
+</li>
+<li>
+<p>Explain five different logic gates (AND, OR, NOT, NAND, XOR). For each: state the function, describe the symbol, draw the truth table, and give a real-world analogy.</p>
+</li>
+<li>
+<p>Using Boolean algebra rules, simplify the following expressions. Name the rule used at each step.<br>
+   - a. F = A · B + A · B̄<br>
+   - b. F = A + A · B<br>
+   - c. F = (A + B) · (A + B̄)</p>
+</li>
+<li>
+<p>Describe the complete 7-step troubleshooting process. For each step, provide a practical example related to a laptop that will not connect to Wi-Fi.</p>
+</li>
+</ol>
+<hr>
+<h2 id="practical-exercises">Practical Exercises</h2>
+<p><strong>Exercise 1 — Truth Tables</strong></p>
+<p>Build complete truth tables for each of these Boolean functions:<br>
+1. F(A, B) = Ā · B + A · B̄<br>
+2. F(A, B, C) = A + B · C<br>
+3. F(A, B) = NOT(A OR B) — also known as NOR</p>
+<p><strong>Exercise 2 — Boolean Simplification</strong></p>
+<p>Simplify these expressions using Boolean algebra rules. Show all steps.<br>
+1. F = A · B + A · B + A · B̄<br>
+2. F = (A + B) · A<br>
+3. F = A · B + Ā · B + A · B̄</p>
+<p><strong>Exercise 3 — Logic Diagrams</strong></p>
+<p>Draw logic diagrams for:<br>
+1. F = A · B + C<br>
+2. F = (A + B) · C̄<br>
+3. F = Ā · B̄ (implement using De Morgan's theorem first, then draw)</p>
+<p><strong>Exercise 4 — Troubleshooting Scenarios</strong></p>
+<p>For each scenario below, apply the full 7-step troubleshooting process. Write all seven steps clearly.</p>
+<ol>
+<li>A student's computer turns on, but the keyboard is completely unresponsive.</li>
+<li>A classroom printer prints blank pages even though the document clearly has text.</li>
+<li>A computer works normally but crashes every time a specific game is launched.</li>
+</ol>
+<p><strong>Exercise 5 — Backup Plan Design</strong></p>
+<p>Design a complete data backup plan for a student who:<br>
+- Has 50 GB of school projects and photos on their laptop.<br>
+- Has no external hard drive but does have internet access.<br>
+- Cannot afford a paid backup service.</p>
+<p>Your plan must address: what to back up, where to back it up, how often, and how to restore files if the laptop is lost.</p>
+<hr>
+<p><em>End of Unit 2: System Design and Troubleshooting</em></p>
+<hr>
+<blockquote><p><strong>You now think like a digital engineer and a systems detective.</strong> You understand why a circuit behaves the way it does — because of Boolean logic baked into every gate. And you know that when something breaks, you do not panic. You observe. You think. You test. You fix. You document. That is not just a computer skill. That is how every great problem-solver in every field approaches every challenge. You have got this.</p></blockquote>
+
+</body>
+</html>

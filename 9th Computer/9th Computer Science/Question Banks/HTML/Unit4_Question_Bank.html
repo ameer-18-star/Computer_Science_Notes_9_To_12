@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 4: Computational Thinking — Question Bank</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Chapter 4: Computational Thinking — Question Bank</div>
+</div>
+
+<h1 id="chapter-4-computational-thinking-question-bank">Chapter 4: Computational Thinking — Question Bank</h1>
+<hr>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple Choice Questions (MCQs)</h2>
+<blockquote><p><strong>Instructions:</strong> Choose the best answer. Correct answers are marked with ✅.</p></blockquote>
+<hr>
+<h3 id="41-computational-thinking">4.1 Computational Thinking</h3>
+<p><strong>Q1.</strong> What is Computational Thinking?</p>
+<ul>
+<li>A) A method of typing code quickly</li>
+<li>B) ✅ A problem-solving process that involves skills and techniques to solve complex problems in a way executable by a computer</li>
+<li>C) A way to design computer hardware</li>
+<li>D) A technique used only by software engineers</li>
+</ul>
+<hr>
+<p><strong>Q2.</strong> Which of the following is NOT a key component of Computational Thinking?</p>
+<ul>
+<li>A) Decomposition</li>
+<li>B) Pattern Recognition</li>
+<li>C) ✅ Memorization</li>
+<li>D) Abstraction</li>
+</ul>
+<hr>
+<p><strong>Q3.</strong> Decomposition in computational thinking means:</p>
+<ul>
+<li>A) Combining multiple solutions into one</li>
+<li>B) Writing code in different programming languages</li>
+<li>C) ✅ Breaking down a complex problem into smaller, manageable tasks</li>
+<li>D) Finding patterns in data</li>
+</ul>
+<hr>
+<p><strong>Q4.</strong> Which of the following is the best example of decomposition?</p>
+<ul>
+<li>A) Recognizing that all squares follow the same area formula</li>
+<li>B) ✅ Breaking "building a birdhouse" into steps like designing, gathering materials, cutting wood, and assembling</li>
+<li>C) Hiding unnecessary details when making tea</li>
+<li>D) Writing a step-by-step recipe</li>
+</ul>
+<hr>
+<p><strong>Q5.</strong> Pattern recognition in computational thinking involves:</p>
+<ul>
+<li>A) Breaking problems into sub-problems</li>
+<li>B) ✅ Identifying and understanding regularities or patterns within a set of data or problems</li>
+<li>C) Creating step-by-step instructions</li>
+<li>D) Hiding complex details</li>
+</ul>
+<hr>
+<p><strong>Q6.</strong> The area of a square with side length 4 using the pattern of consecutive odd numbers is:</p>
+<ul>
+<li>A) 1 + 3 + 5 = 9</li>
+<li>B) 1 + 3 = 4</li>
+<li>C) ✅ 1 + 3 + 5 + 7 = 16</li>
+<li>D) 1 + 3 + 5 + 7 + 9 = 25</li>
+</ul>
+<hr>
+<p><strong>Q7.</strong> Abstraction is best described as:</p>
+<ul>
+<li>A) Creating a detailed list of all problem components</li>
+<li>B) Finding recurring patterns in data</li>
+<li>C) ✅ Hiding complex details while exposing only the necessary parts</li>
+<li>D) Dividing a problem into sub-problems</li>
+</ul>
+<hr>
+<p><strong>Q8.</strong> Which example best demonstrates abstraction?</p>
+<ul>
+<li>A) Listing all ingredients to bake a cake</li>
+<li>B) Breaking a website into layout, content, and code</li>
+<li>C) ✅ Describing "making a cup of tea" as just: boil water, add tea, wait, pour</li>
+<li>D) Drawing arrows to show the flow of a process</li>
+</ul>
+<hr>
+<p><strong>Q9.</strong> An algorithm is defined as:</p>
+<ul>
+<li>A) A visual diagram using symbols and arrows</li>
+<li>B) An informal description of a problem</li>
+<li>C) A method to identify patterns in data</li>
+<li>D) ✅ A precise, step-by-step set of instructions to solve a problem or complete a task</li>
+</ul>
+<hr>
+<p><strong>Q10.</strong> Which of the following is the correct first step in planting a tree algorithm from the chapter?</p>
+<ul>
+<li>A) Water the tree generously</li>
+<li>B) Fill the hole with soil</li>
+<li>C) ✅ Choose a suitable spot in your garden</li>
+<li>D) Add mulch around the base</li>
+</ul>
+<hr>
+<h3 id="42-principles-of-computational-thinking">4.2 Principles of Computational Thinking</h3>
+<p><strong>Q11.</strong> What is the FIRST and most important step in computational thinking?</p>
+<ul>
+<li>A) Solution Design</li>
+<li>B) Pattern Recognition</li>
+<li>C) ✅ Problem Understanding</li>
+<li>D) Problem Simplification</li>
+</ul>
+<hr>
+<p><strong>Q12.</strong> According to Albert Einstein's quote referenced in the chapter, if he had an hour to solve a problem, he would spend how long thinking about the problem?</p>
+<ul>
+<li>A) 30 minutes</li>
+<li>B) 45 minutes</li>
+<li>C) ✅ 55 minutes</li>
+<li>D) 50 minutes</li>
+</ul>
+<hr>
+<p><strong>Q13.</strong> Problem simplification involves:</p>
+<ul>
+<li>A) Selecting the fastest algorithm</li>
+<li>B) ✅ Breaking a problem into smaller, more manageable sub-problems</li>
+<li>C) Drawing a flowchart for the problem</li>
+<li>D) Writing pseudocode for the problem</li>
+</ul>
+<hr>
+<p><strong>Q14.</strong> Solution selection and design requires:</p>
+<ul>
+<li>A) Only writing code</li>
+<li>B) Decomposing the problem into sub-tasks</li>
+<li>C) ✅ Evaluating different approaches and selecting the most efficient one, then creating a detailed plan</li>
+<li>D) Only identifying patterns</li>
+</ul>
+<hr>
+<p><strong>Q15.</strong> To design a website, which is an example of problem simplification?</p>
+<ul>
+<li>A) Writing the entire website code at once</li>
+<li>B) Testing the website with 100 users</li>
+<li>C) ✅ Breaking tasks into designing the layout, creating content, and coding the functionality</li>
+<li>D) Choosing between HTML and CSS</li>
+</ul>
+<hr>
+<h3 id="43-algorithm-design-methods-flowcharts">4.3 Algorithm Design Methods — Flowcharts</h3>
+<p><strong>Q16.</strong> What are flowcharts?</p>
+<ul>
+<li>A) Written descriptions of algorithms using plain language</li>
+<li>B) ✅ Visual representations of the steps in a process, depicted using different symbols connected by arrows</li>
+<li>C) Programs that run algorithms automatically</li>
+<li>D) Tables that compare algorithms</li>
+</ul>
+<hr>
+<p><strong>Q17.</strong> Which symbol is used to represent the START or END of a process in a flowchart?</p>
+<ul>
+<li>A) Rectangle</li>
+<li>B) Diamond</li>
+<li>C) Parallelogram</li>
+<li>D) ✅ Oval (Terminal)</li>
+</ul>
+<hr>
+<p><strong>Q18.</strong> Which flowchart symbol represents a decision point?</p>
+<ul>
+<li>A) Rectangle</li>
+<li>B) Oval</li>
+<li>C) ✅ Diamond</li>
+<li>D) Parallelogram</li>
+</ul>
+<hr>
+<p><strong>Q19.</strong> A Rectangle in a flowchart represents:</p>
+<ul>
+<li>A) Input or output operation</li>
+<li>B) Start or end of a process</li>
+<li>C) A decision point</li>
+<li>D) ✅ A process, task, or operation to be performed</li>
+</ul>
+<hr>
+<p><strong>Q20.</strong> Which symbol represents Input/Output in a flowchart?</p>
+<ul>
+<li>A) Oval</li>
+<li>B) Diamond</li>
+<li>C) Rectangle</li>
+<li>D) ✅ Parallelogram</li>
+</ul>
+<hr>
+<p><strong>Q21.</strong> Arrows in a flowchart are used to:</p>
+<ul>
+<li>A) Represent decisions</li>
+<li>B) Show the start of the process</li>
+<li>C) ✅ Show the direction of flow and connect symbols to indicate the sequence of steps</li>
+<li>D) Represent input/output</li>
+</ul>
+<hr>
+<p><strong>Q22.</strong> Flowcharts were popularized in the early days of computing by:</p>
+<ul>
+<li>A) Alan Turing and Bill Gates</li>
+<li>B) ✅ John von Neumann and Herman Goldstine</li>
+<li>C) Albert Einstein and Isaac Newton</li>
+<li>D) Steve Jobs and Dennis Ritchie</li>
+</ul>
+<hr>
+<p><strong>Q23.</strong> In the flowchart for finding even or odd numbers, which operation is performed on the number?</p>
+<ul>
+<li>A) Division by 10</li>
+<li>B) ✅ Modulus by 2 (remainder when divided by 2)</li>
+<li>C) Multiplication by 2</li>
+<li>D) Addition of 2</li>
+</ul>
+<hr>
+<p><strong>Q24.</strong> In the login system flowchart, what happens after 5 failed login attempts?</p>
+<ul>
+<li>A) The user is asked to reset password</li>
+<li>B) The system restarts</li>
+<li>C) ✅ The account is locked and the user is alerted</li>
+<li>D) The system grants limited access</li>
+</ul>
+<hr>
+<p><strong>Q25.</strong> Which is NOT listed as an importance of flowcharts in the chapter?</p>
+<ul>
+<li>A) Clarity</li>
+<li>B) Communication</li>
+<li>C) ✅ Speed of execution</li>
+<li>D) Documentation</li>
+</ul>
+<hr>
+<h3 id="43-algorithm-design-methods-pseudocode">4.3 Algorithm Design Methods — Pseudocode</h3>
+<p><strong>Q26.</strong> Pseudocode is best described as:</p>
+<ul>
+<li>A) Actual programming code written in Python</li>
+<li>B) A visual diagram using standard symbols</li>
+<li>C) ✅ A method of representing an algorithm using simple and informal language combining programming structure with plain English readability</li>
+<li>D) A compiled program that runs on a computer</li>
+</ul>
+<hr>
+<p><strong>Q27.</strong> Which of the following is TRUE about pseudocode?</p>
+<ul>
+<li>A) It can be directly run on a computer</li>
+<li>B) It uses only mathematical symbols</li>
+<li>C) ✅ It focuses on the logic of the algorithm without worrying about the syntax of a specific programming language</li>
+<li>D) It is only used after writing the actual code</li>
+</ul>
+<hr>
+<p><strong>Q28.</strong> In the pseudocode for checking even or odd, which condition is used?</p>
+<ul>
+<li>A) number / 2 == 0</li>
+<li>B) number + 2 == 0</li>
+<li>C) ✅ No. % 2 == 0 (modulus equals zero)</li>
+<li>D) number * 2 == 0</li>
+</ul>
+<hr>
+<p><strong>Q29.</strong> In the pseudocode for checking if a number is prime, what is returned if the number is less than or equal to 1?</p>
+<ul>
+<li>A) True</li>
+<li>B) "Prime"</li>
+<li>C) "Not checked"</li>
+<li>D) ✅ False</li>
+</ul>
+<hr>
+<p><strong>Q30.</strong> In the prime number pseudocode, the loop runs from 2 to:</p>
+<ul>
+<li>A) number / 2</li>
+<li>B) number - 1</li>
+<li>C) ✅ sqrt(number)</li>
+<li>D) number + 1</li>
+</ul>
+<hr>
+<p><strong>Q31.</strong> The pseudocode for credential checking uses which variable to store the correct username?</p>
+<ul>
+<li>A) correctUser</li>
+<li>B) ✅ validUsername</li>
+<li>C) inputUser</li>
+<li>D) trueUsername</li>
+</ul>
+<hr>
+<p><strong>Q32.</strong> Which of the following is listed as a benefit of using pseudocode?</p>
+<ul>
+<li>A) It runs faster than actual code</li>
+<li>B) It replaces the need for flowcharts completely</li>
+<li>C) It generates executable programs automatically</li>
+<li>D) ✅ It is a universal way to convey algorithm steps, making it easier to discuss with others</li>
+</ul>
+<hr>
+<p><strong>Q33.</strong> How does pseudocode differ from a flowchart?</p>
+<ul>
+<li>A) Pseudocode uses symbols; flowcharts use plain language</li>
+<li>B) ✅ Pseudocode uses structured plain language read sequentially; flowcharts use graphical symbols and arrows to show flow visually</li>
+<li>C) Pseudocode is only for beginners; flowcharts are for experts</li>
+<li>D) There is no difference between them</li>
+</ul>
+<hr>
+<h3 id="44-evaluation-techniques-for-an-algorithm">4.4 Evaluation Techniques for an Algorithm</h3>
+<p><strong>Q34.</strong> Time complexity measures:</p>
+<ul>
+<li>A) How much memory an algorithm uses</li>
+<li>B) How many lines of code are in an algorithm</li>
+<li>C) ✅ How fast or slow an algorithm performs and how running time changes as input size increases</li>
+<li>D) How many decisions an algorithm makes</li>
+</ul>
+<hr>
+<p><strong>Q35.</strong> Time complexity is usually expressed using:</p>
+<ul>
+<li>A) Percentage notation</li>
+<li>B) Roman numerals</li>
+<li>C) ✅ Big O notation (e.g., O(n), O(log n), O(n²))</li>
+<li>D) Decimal notation</li>
+</ul>
+<hr>
+<p><strong>Q36.</strong> Space complexity measures:</p>
+<ul>
+<li>A) The number of steps in an algorithm</li>
+<li>B) How fast an algorithm runs</li>
+<li>C) The number of decisions in an algorithm</li>
+<li>D) ✅ The amount of memory an algorithm uses relative to input size</li>
+</ul>
+<hr>
+<h3 id="45-dry-run">4.5 Dry Run</h3>
+<p><strong>Q37.</strong> A dry run involves:</p>
+<ul>
+<li>A) Compiling the program on a computer</li>
+<li>B) Testing the program with 1000 data inputs automatically</li>
+<li>C) ✅ Manually going through the algorithm with sample data to identify any errors</li>
+<li>D) Drawing a flowchart for the algorithm</li>
+</ul>
+<hr>
+<p><strong>Q38.</strong> In the dry run of the "Sum of Two Numbers" flowchart with inputs 3 and 5, what is the output?</p>
+<ul>
+<li>A) 3</li>
+<li>B) 5</li>
+<li>C) 53</li>
+<li>D) ✅ 8</li>
+</ul>
+<hr>
+<p><strong>Q39.</strong> In the dry run of the "FindMax" pseudocode with inputs 10 and 15, what is the output?</p>
+<ul>
+<li>A) 10</li>
+<li>B) False</li>
+<li>C) ✅ 15</li>
+<li>D) 25</li>
+</ul>
+<hr>
+<p><strong>Q40.</strong> In the FindMax dry run, why is max assigned to num2 (15)?</p>
+<ul>
+<li>A) Because num2 is always larger</li>
+<li>B) Because num1 is undefined</li>
+<li>C) ✅ Because the condition num1 &gt; num2 (10 &gt; 15) is False, so the else branch executes</li>
+<li>D) Because the algorithm is incorrect</li>
+</ul>
+<hr>
+<p><strong>Q41.</strong> What is Simulation in the context of algorithms?</p>
+<ul>
+<li>A) Writing pseudocode for a real problem</li>
+<li>B) Drawing a flowchart manually</li>
+<li>C) ✅ Using computer programs to create a model of a real-world process to test ideas without trying them in real life</li>
+<li>D) Performing a dry run of pseudocode</li>
+</ul>
+<hr>
+<p><strong>Q42.</strong> Which of the following is listed as a benefit of simulation?</p>
+<ul>
+<li>A) It increases algorithm complexity</li>
+<li>B) It requires real-world experiments</li>
+<li>C) ✅ It is cost-effective, safe, and repeatable</li>
+<li>D) It eliminates the need for flowcharts</li>
+</ul>
+<hr>
+<p><strong>Q43.</strong> Which real-world application uses simulation as mentioned in the chapter?</p>
+<ul>
+<li>A) Baking a cake</li>
+<li>B) Planting a tree</li>
+<li>C) ✅ Weather forecasting by meteorologists</li>
+<li>D) Designing a login system</li>
+</ul>
+<hr>
+<h3 id="46-larp">4.6 LARP</h3>
+<p><strong>Q44.</strong> LARP stands for:</p>
+<ul>
+<li>A) Language Algorithm Running Protocol</li>
+<li>B) ✅ Logic of Algorithms for Resolution of Problems</li>
+<li>C) Logical Array Resolution Program</li>
+<li>D) Loop Algorithm Runtime Process</li>
+</ul>
+<hr>
+<p><strong>Q45.</strong> In LARP syntax, which command is used to display a message?</p>
+<ul>
+<li>A) PRINT</li>
+<li>B) DISPLAY</li>
+<li>C) OUTPUT</li>
+<li>D) ✅ WRITE</li>
+</ul>
+<hr>
+<p><strong>Q46.</strong> In LARP syntax, which command is used to take input from a user?</p>
+<ul>
+<li>A) GET</li>
+<li>B) INPUT</li>
+<li>C) SCAN</li>
+<li>D) ✅ READ</li>
+</ul>
+<hr>
+<p><strong>Q47.</strong> A LARP algorithm must always begin with which command?</p>
+<ul>
+<li>A) BEGIN</li>
+<li>B) RUN</li>
+<li>C) ✅ START</li>
+<li>D) OPEN</li>
+</ul>
+<hr>
+<p><strong>Q48.</strong> A LARP algorithm must always end with which command?</p>
+<ul>
+<li>A) STOP</li>
+<li>B) CLOSE</li>
+<li>C) FINISH</li>
+<li>D) ✅ END</li>
+</ul>
+<hr>
+<p><strong>Q49.</strong> In LARP's even/odd algorithm, what condition is checked?</p>
+<ul>
+<li>A) number / 2 == 1</li>
+<li>B) ✅ number % 2 == 0 (to check for even)</li>
+<li>C) number * 2 == 0</li>
+<li>D) number - 2 == 0</li>
+</ul>
+<hr>
+<h3 id="47-error-identification-and-debugging">4.7 Error Identification and Debugging</h3>
+<p><strong>Q50.</strong> Which type of error occurs when something is written incorrectly in the algorithm, such as missing a step or using the wrong symbol?</p>
+<ul>
+<li>A) Runtime Error</li>
+<li>B) Logical Error</li>
+<li>C) Execution Error</li>
+<li>D) ✅ Syntax Error</li>
+</ul>
+<hr>
+<p><strong>Q51.</strong> A Runtime Error occurs when:</p>
+<ul>
+<li>A) The algorithm has wrong logic</li>
+<li>B) A symbol is missing in the flowchart</li>
+<li>C) ✅ The algorithm is being executed and an impossible operation is attempted, such as dividing by zero</li>
+<li>D) The algorithm produces the wrong output silently</li>
+</ul>
+<hr>
+<p><strong>Q52.</strong> Which type of error is hardest to detect because the algorithm still runs but produces incorrect results?</p>
+<ul>
+<li>A) Syntax Error</li>
+<li>B) Runtime Error</li>
+<li>C) ✅ Logical Error</li>
+<li>D) Compilation Error</li>
+</ul>
+<hr>
+<p><strong>Q53.</strong> Which type of error is easiest to find because LARP usually points it out?</p>
+<ul>
+<li>A) Logical Error</li>
+<li>B) Runtime Error</li>
+<li>C) ✅ Syntax Error</li>
+<li>D) Semantic Error</li>
+</ul>
+<hr>
+<p><strong>Q54.</strong> What does the LARP error message "Undefined Variable" mean?</p>
+<ul>
+<li>A) A step is missing in the algorithm</li>
+<li>B) You divided by zero</li>
+<li>C) ✅ You are using a variable that hasn't been defined yet</li>
+<li>D) The algorithm has a logical error</li>
+</ul>
+<hr>
+<p><strong>Q55.</strong> What does the LARP error message "Invalid Operation" indicate?</p>
+<ul>
+<li>A) A missing step in the algorithm</li>
+<li>B) A variable used before definition</li>
+<li>C) An incorrect condition in a decision</li>
+<li>D) ✅ Performing an operation that is not allowed, such as dividing by zero</li>
+</ul>
+<hr>
+<p><strong>Q56.</strong> The term "debugging" originates from:</p>
+<ul>
+<li>A) A mathematical term for fixing logical errors</li>
+<li>B) A programming language keyword</li>
+<li>C) ✅ An actual moth (bug) found causing problems in an early computer</li>
+<li>D) The name of a computer scientist</li>
+</ul>
+<hr>
+<p><strong>Q57.</strong> Which of the following is a common error message in LARP?</p>
+<ul>
+<li>A) "Loop Not Found"</li>
+<li>B) "Flowchart Missing"</li>
+<li>C) ✅ "Missing Step"</li>
+<li>D) "Symbol Overflow"</li>
+</ul>
+<hr>
+<p><strong>Q58.</strong> Computational thinking can be applied in:</p>
+<ul>
+<li>A) Only computer science</li>
+<li>B) Only mathematics</li>
+<li>C) Only biology</li>
+<li>D) ✅ Various fields including biology, mathematics, engineering, and daily life</li>
+</ul>
+<hr>
+<p><strong>Q59.</strong> Which of the following is the correct order of steps in the "birdhouse" decomposition example?</p>
+<ul>
+<li>A) Cut Wood → Gather Materials → Design → Assemble → Paint → Install</li>
+<li>B) ✅ Design → Gather Materials → Cut Wood → Assemble → Paint → Install</li>
+<li>C) Gather Materials → Design → Assemble → Cut Wood → Paint → Install</li>
+<li>D) Install → Design → Paint → Assemble → Cut Wood → Gather Materials</li>
+</ul>
+<hr>
+<p><strong>Q60.</strong> Which principle states "Choosing the best solution involves evaluating different approaches and selecting the most efficient one"?</p>
+<ul>
+<li>A) Problem Understanding</li>
+<li>B) Problem Simplification</li>
+<li>C) Abstraction</li>
+<li>D) ✅ Solution Selection and Design</li>
+</ul>
+<hr>
+<hr>
+<h2 id="section-b-short-questions">Section B: Short Questions</h2>
+<blockquote><p><strong>Instructions:</strong> Answer each question in 2–5 sentences.</p></blockquote>
+<hr>
+<h3 id="41-computational-thinking_1">4.1 Computational Thinking</h3>
+<p><strong>Q1. Define Computational Thinking.</strong></p>
+<blockquote><p>Computational Thinking (CT) is a problem-solving process that involves a set of skills and techniques to solve complex problems in a way that can be executed by a computer. It is not limited to computer science and can be applied in everyday life, biology, mathematics, and other fields. Its key components include decomposition, pattern recognition, abstraction, and algorithms.</p></blockquote>
+<hr>
+<p><strong>Q2. What is decomposition? Give one example.</strong></p>
+<blockquote><p>Decomposition is the method of breaking down a complicated problem into smaller, more manageable components. For example, building a birdhouse can be decomposed into steps: designing, gathering materials, cutting wood, assembling, painting, and installing. This makes even complex tasks easier to handle one at a time.</p></blockquote>
+<hr>
+<p><strong>Q3. What is pattern recognition in computational thinking?</strong></p>
+<blockquote><p>Pattern recognition involves identifying and understanding regularities or patterns within a set of data or problems. For example, the area of squares follows a pattern where each area can be found by adding consecutive odd numbers (e.g., 1+3+5 = 9 for side length 3). Recognizing such patterns helps create faster and more efficient solutions.</p></blockquote>
+<hr>
+<p><strong>Q4. Define abstraction with an example.</strong></p>
+<blockquote><p>Abstraction is the process of hiding complex details while exposing only the necessary parts, helping to reduce complexity. For example, making a cup of tea can be described at a high level as: boil water, add tea, wait, pour — without mentioning the complex chemistry or physics involved. It allows us to focus on the important aspects of a problem.</p></blockquote>
+<hr>
+<p><strong>Q5. What is an algorithm? Give a real-life example.</strong></p>
+<blockquote><p>An algorithm is a precise, step-by-step set of instructions followed to achieve a specific goal. A real-life example is a recipe for baking a cake, which includes steps like preheating the oven, mixing ingredients, and setting a timer. Algorithms are used everywhere — from cooking to navigation directions to computer programs.</p></blockquote>
+<hr>
+<h3 id="42-principles-of-computational-thinking_1">4.2 Principles of Computational Thinking</h3>
+<p><strong>Q6. What is meant by "Problem Understanding" in computational thinking?</strong></p>
+<blockquote><p>Problem understanding involves identifying the core issue, defining the requirements, and setting the objectives before attempting a solution. It is the first and most important step in the problem-solving process. Without clearly understanding the problem, any solution designed may be ineffective or incorrect.</p></blockquote>
+<hr>
+<p><strong>Q7. What is problem simplification? Give an example.</strong></p>
+<blockquote><p>Problem simplification involves breaking down a large problem into smaller, more manageable sub-problems. For example, designing a website can be simplified by dividing it into sub-tasks: designing the layout, creating content, and coding the functionality. This approach makes large problems easier to solve step by step.</p></blockquote>
+<hr>
+<p><strong>Q8. What is "Solution Selection and Design"?</strong></p>
+<blockquote><p>Solution selection and design involves evaluating different approaches to solve a problem and choosing the most efficient one. After selecting the best approach, a detailed plan or algorithm is designed to implement the solution. This ensures the final solution is both effective and optimized.</p></blockquote>
+<hr>
+<h3 id="43-algorithm-design-methods">4.3 Algorithm Design Methods</h3>
+<p><strong>Q9. What are flowcharts and why are they important?</strong></p>
+<blockquote><p>Flowcharts are visual representations of the steps in a process or system, depicted using different symbols connected by arrows. They are important because they provide clarity, aid communication, help in problem-solving by identifying bottlenecks, and serve as documentation. They are widely used in computer science, engineering, and business.</p></blockquote>
+<hr>
+<p><strong>Q10. Name and describe any THREE flowchart symbols.</strong></p>
+<blockquote><ul>
+<li><strong>Oval (Terminal):</strong> Represents the start or end of a process, labeled "Start" or "End."</li>
+<li><strong>Rectangle (Process):</strong> Represents a process, task, or operation to be performed.</li>
+<li><strong>Diamond (Decision):</strong> Represents a decision point where the flow branches based on a yes/no or true/false condition.</li>
+</ul></blockquote>
+<hr>
+<p><strong>Q11. What is pseudocode and how does it differ from actual code?</strong></p>
+<blockquote><p>Pseudocode is a method of representing an algorithm using simple, informal language that combines the structure of programming with the readability of plain English. Unlike actual code, pseudocode cannot be run on a computer — it is used to plan and explain the logic of an algorithm. It allows programmers to focus on problem-solving without worrying about programming language syntax.</p></blockquote>
+<hr>
+<p><strong>Q12. List THREE benefits of using pseudocode.</strong></p>
+<blockquote><ol>
+<li><strong>Clarity:</strong> It helps understand the logic of the algorithm without worrying about syntax.</li>
+<li><strong>Planning:</strong> It allows programmers to outline their thoughts and plan algorithm steps before coding.</li>
+<li><strong>Communication:</strong> It is a universal way to convey algorithm steps, making it easier to discuss with team members who may use different programming languages.</li>
+</ol></blockquote>
+<hr>
+<p><strong>Q13. Compare flowcharts and pseudocode. (Any two differences)</strong></p>
+<blockquote><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Flowchart</th>
+<th>Pseudocode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Format</td>
+<td>Uses graphical symbols and arrows</td>
+<td>Uses structured plain language</td>
+</tr>
+<tr>
+<td>Understanding</td>
+<td>Visual — like watching a movie</td>
+<td>Sequential — like reading a story</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Seeing overall flow at a glance</td>
+<td>Documenting logic for conversion to code</td>
+</tr>
+</tbody>
+</table></div></blockquote>
+<hr>
+<p><strong>Q14. Write pseudocode to check if a number is even or odd.</strong></p>
+<pre><code>Procedure CheckEvenOdd(number)
+  Input: No.
+  Output: &quot;Even&quot; or &quot;Odd&quot;
+  Begin
+    if (No. % 2 == 0) then
+      print &quot;No. is Even&quot;
+    else
+      print &quot;No. is Odd&quot;
+    End if
+  End
+</code></pre>
+<hr>
+<p><strong>Q15. Describe the flowchart for a login system as explained in the chapter.</strong></p>
+<blockquote><p>The login system flowchart starts by asking the user to input a username and password. It then checks whether the credentials are valid. If correct, access is granted. If incorrect, the attempt counter increases. After 5 failed attempts, the account is locked and the user is alerted.</p></blockquote>
+<hr>
+<h3 id="44-evaluation-techniques">4.4 Evaluation Techniques</h3>
+<p><strong>Q16. What is time complexity? Why is it important?</strong></p>
+<blockquote><p>Time complexity measures how fast or slow an algorithm performs and shows how the running time changes as the size of the input increases. It is expressed using Big O notation such as O(n), O(log n), or O(n²). It is important because it helps compare different algorithms to determine which one is faster and more efficient.</p></blockquote>
+<hr>
+<p><strong>Q17. What is space complexity?</strong></p>
+<blockquote><p>Space complexity measures the amount of memory an algorithm uses relative to the size of its input. It considers both the memory needed to store the input data and any additional memory used during execution. Understanding space complexity helps ensure an algorithm does not use more memory than available.</p></blockquote>
+<hr>
+<h3 id="45-dry-run-and-simulation">4.5 Dry Run and Simulation</h3>
+<p><strong>Q18. What is a dry run? Why is it useful?</strong></p>
+<blockquote><p>A dry run involves manually going through an algorithm or flowchart step-by-step with sample data to identify any errors before running it on a computer. It helps catch logical mistakes early in the development process, saving time and effort. Many professional programmers use dry running as a key debugging technique.</p></blockquote>
+<hr>
+<p><strong>Q19. Perform a dry run of the "FindMax" pseudocode with inputs num1 = 10 and num2 = 15.</strong></p>
+<blockquote><ol>
+<li>Input: num1 = 10, num2 = 15</li>
+<li>Check if num1 &gt; num2 → 10 &gt; 15 → <strong>False</strong></li>
+<li>Since condition is False, execute else → max = num2 = <strong>15</strong></li>
+<li>Output: <strong>15</strong></li>
+</ol></blockquote>
+<hr>
+<p><strong>Q20. What is simulation? Give two real-world examples.</strong></p>
+<blockquote><p>Simulation is the use of computer programs to create a model of a real-world process or system to test ideas without needing real-life trials. Two examples are:<br>
+1. <strong>Weather Forecasting:</strong> Meteorologists input data like temperature and humidity into models to predict future weather.<br>
+2. <strong>Traffic Flow:</strong> City planners simulate traffic to see how changes to roads or traffic lights affect the flow of cars.</p></blockquote>
+<hr>
+<p><strong>Q21. List THREE benefits of simulation.</strong></p>
+<blockquote><ol>
+<li><strong>Cost-Effective:</strong> It is cheaper and faster to run simulations than real experiments.</li>
+<li><strong>Safe:</strong> Dangerous situations like fires can be tested without real risk.</li>
+<li><strong>Repeatable:</strong> The same simulation can be run multiple times with different settings to observe changes.</li>
+</ol></blockquote>
+<hr>
+<h3 id="46-larp_1">4.6 LARP</h3>
+<p><strong>Q22. What is LARP and why is it important?</strong></p>
+<blockquote><p>LARP stands for Logic of Algorithms for Resolution of Problems. It is a fun and interactive way to learn how algorithms work by running them and seeing the results. LARP is important because it helps students understand how algorithms process data, see the effect of different inputs on outputs, and practice writing and improving their own algorithms.</p></blockquote>
+<hr>
+<p><strong>Q23. Write a LARP algorithm to check if a number is even or odd.</strong></p>
+<pre><code>START
+  WRITE &quot;Enter a number&quot;
+  READ number
+  IF number % 2 == 0 THEN
+    WRITE &quot;The number is even&quot;
+  ELSE
+    WRITE &quot;The number is odd&quot;
+  ENDIF
+END
+</code></pre>
+<hr>
+<p><strong>Q24. What commands does LARP use for input, output, and decisions?</strong></p>
+<blockquote><ul>
+<li><strong>WRITE</strong> — to display messages or output to the user</li>
+<li><strong>READ</strong> — to take input from the user</li>
+<li><strong>IF...THEN...ELSE...ENDIF</strong> — for conditional decision-making</li>
+<li><strong>START</strong> — to begin the algorithm</li>
+<li><strong>END</strong> — to terminate the algorithm</li>
+</ul></blockquote>
+<hr>
+<h3 id="47-error-identification-and-debugging_1">4.7 Error Identification and Debugging</h3>
+<p><strong>Q25. What are the three types of errors in algorithms? Define each briefly.</strong></p>
+<blockquote><ol>
+<li><strong>Syntax Error:</strong> Occurs when something is written incorrectly, such as missing a step or using the wrong symbol. It is the easiest to find.</li>
+<li><strong>Runtime Error:</strong> Occurs during execution, such as attempting to divide by zero. The algorithm crashes or stops unexpectedly.</li>
+<li><strong>Logical Error:</strong> Occurs when the algorithm's logic is wrong, causing incorrect results even though the algorithm runs without crashing. It is the hardest to detect.</li>
+</ol></blockquote>
+<hr>
+<p><strong>Q26. Which type of error is hardest to find and why?</strong></p>
+<blockquote><p>Logical errors are the hardest to find because the algorithm still runs successfully without any crash or error message, but produces incorrect results. Since no warning is displayed, the programmer must carefully trace the algorithm's logic to identify where the wrong condition or operation is being used.</p></blockquote>
+<hr>
+<p><strong>Q27. What is debugging?</strong></p>
+<blockquote><p>Debugging is the process of finding and fixing errors (bugs) in an algorithm, flowchart, or program. The term originates from an actual moth (bug) found causing problems in an early computer, which was then "debugged." Techniques like dry runs, reading error messages carefully, and testing with different inputs are used during debugging.</p></blockquote>
+<hr>
+<p><strong>Q28. List the three common error messages in LARP and their meanings.</strong></p>
+<blockquote><ol>
+<li><strong>Missing Step</strong> — An important step was forgotten in the algorithm.</li>
+<li><strong>Undefined Variable</strong> — A variable is being used before it has been defined.</li>
+<li><strong>Invalid Operation</strong> — An operation not allowed is being performed, such as dividing by zero.</li>
+</ol></blockquote>
+<hr>
+<p><strong>Q29. Why should error messages be read carefully during debugging?</strong></p>
+<blockquote><p>Error messages often tell you exactly where the problem is in the algorithm, saving significant time during debugging. For example, in LARP, a "Missing Step" message immediately tells the programmer that a required step is absent. Carefully reading error messages allows programmers to locate and fix bugs quickly and efficiently.</p></blockquote>
+<hr>
+<p><strong>Q30. What is the origin of the word "debugging"?</strong></p>
+<blockquote><p>The term "debugging" comes from an actual bug — a moth — that was found causing problems inside an early computer. When the moth was physically removed from the machine, the process was called "debugging." Since then, the term has been used to describe the process of finding and fixing errors in programs and algorithms.</p></blockquote>
+<hr>
+<p><em>End of Question Bank — Chapter 4: Computational Thinking</em></p>
+
+</body>
+</html>

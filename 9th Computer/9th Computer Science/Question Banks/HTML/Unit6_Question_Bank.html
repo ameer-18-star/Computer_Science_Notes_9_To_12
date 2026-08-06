@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 6: Data Science and Data Gathering</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 6: Data Science and Data Gathering</div>
+</div>
+
+<h1 id="unit-6-data-science-and-data-gathering">Unit 6: Data Science and Data Gathering</h1>
+<h2 id="complete-exam-question-bank-mcqs-short-questions-long-questions">Complete Exam Question Bank — MCQs, Short Questions &amp; Long Questions</h2>
+<hr>
+<h2 id="section-a-multiple-choice-questions">Section A: Multiple Choice Questions</h2>
+<p><em>Each question has one correct answer. The correct answer is in </em><em>bold</em><em>.</em></p>
+<hr>
+<h3 id="topic-data-and-data-types-qualitative-vs-quantitative">Topic: Data and Data Types (Qualitative vs Quantitative)</h3>
+<p><strong>1.</strong> What is data?</p>
+<ul>
+<li>a) Processed information ready for use</li>
+<li>b) <strong>Raw facts gathered about things around us that can be processed to generate useful information</strong></li>
+<li>c) A collection of numbers only</li>
+<li>d) A list of observed events already interpreted</li>
+</ul>
+<hr>
+<p><strong>2.</strong> Which of the following best describes qualitative data?</p>
+<ul>
+<li>a) Data expressed in numbers and used for mathematical calculations</li>
+<li>b) Data that can be measured using instruments</li>
+<li>c) <strong>Data that describes qualities or characteristics using words, labels, or categories</strong></li>
+<li>d) Data that can be counted or enumerated</li>
+</ul>
+<hr>
+<p><strong>3.</strong> Which of the following is an example of qualitative data?</p>
+<ul>
+<li>a) Temperature readings in degrees Celsius</li>
+<li>b) Number of students in a class</li>
+<li>c) <strong>Favourite ice cream flavours</strong></li>
+<li>d) Test scores out of 100</li>
+</ul>
+<hr>
+<p><strong>4.</strong> Which of the following is an example of quantitative data?</p>
+<ul>
+<li>a) Names of students in a class</li>
+<li>b) Types of fruit</li>
+<li>c) Colours of cars in a parking lot</li>
+<li>d) <strong>Heights and weights of students</strong></li>
+</ul>
+<hr>
+<p><strong>5.</strong> Which characteristic describes qualitative data?</p>
+<ul>
+<li>a) Numerical and measurable</li>
+<li>b) Countable and arithmetical</li>
+<li>c) <strong>Non-numeric, descriptive, and categorical</strong></li>
+<li>d) Expressed in units like kilograms or metres</li>
+</ul>
+<hr>
+<p><strong>6.</strong> Which of the following questions would generate quantitative data?</p>
+<ul>
+<li>a) "What is your favourite colour?"</li>
+<li>b) "Which subject do you enjoy the most?"</li>
+<li>c) <strong>"How many hours do you study per day?"</strong></li>
+<li>d) "What type of music do you prefer?"</li>
+</ul>
+<hr>
+<p><strong>7.</strong> Which of the following questions would generate qualitative data?</p>
+<ul>
+<li>a) "How tall are you?"</li>
+<li>b) "How many books have you read?"</li>
+<li>c) "What is your test score?"</li>
+<li>d) <strong>"What is your favourite school activity?"</strong></li>
+</ul>
+<hr>
+<p><strong>8.</strong> Multiplying the unit price of a fruit by its weight to find the total price is an example of which characteristic of quantitative data?</p>
+<ul>
+<li>a) Numerical</li>
+<li>b) Measurable</li>
+<li>c) Countable</li>
+<li>d) <strong>Arithmetical</strong></li>
+</ul>
+<hr>
+<p><strong>9.</strong> The names of students in a class — Ali, Badar, Qasim — are an example of which type of data?</p>
+<ul>
+<li>a) Quantitative — numerical data</li>
+<li>b) Quantitative — measurable data</li>
+<li>c) <strong>Qualitative — non-numeric data</strong></li>
+<li>d) Quantitative — countable data</li>
+</ul>
+<hr>
+<p><strong>10.</strong> The number of cars in a car park is an example of which characteristic of quantitative data?</p>
+<ul>
+<li>a) Arithmetical</li>
+<li>b) Measurable</li>
+<li>c) Numerical</li>
+<li>d) <strong>Countable</strong></li>
+</ul>
+<hr>
+<p><strong>11.</strong> Using a thermometer to measure temperature is an example of which characteristic of quantitative data?</p>
+<ul>
+<li>a) Countable</li>
+<li>b) Arithmetical</li>
+<li>c) Numerical</li>
+<li>d) <strong>Measurable</strong></li>
+</ul>
+<hr>
+<p><strong>12.</strong> Which of the following pairs correctly classifies the data type?</p>
+<ul>
+<li>a) Number of students = qualitative; student names = quantitative</li>
+<li>b) Test scores = qualitative; student names = quantitative</li>
+<li>c) <strong>Student names = qualitative; test scores = quantitative</strong></li>
+<li>d) Favourite subjects = quantitative; heights = qualitative</li>
+</ul>
+<hr>
+<h3 id="topic-organising-and-analysing-data">Topic: Organising and Analysing Data</h3>
+<p><strong>13.</strong> Why is organising data important before analysis?</p>
+<ul>
+<li>a) It makes data look more colourful</li>
+<li>b) It reduces the amount of data collected</li>
+<li>c) <strong>It reduces errors, saves time, and improves clarity</strong></li>
+<li>d) It automatically generates conclusions</li>
+</ul>
+<hr>
+<p><strong>14.</strong> Which of the following is the best tool for presenting students' scores across multiple subjects clearly?</p>
+<ul>
+<li>a) A paragraph of text</li>
+<li>b) A random list</li>
+<li>c) An audio recording</li>
+<li>d) <strong>A data table</strong></li>
+</ul>
+<hr>
+<p><strong>15.</strong> Charts in data analysis are used primarily to:</p>
+<ul>
+<li>a) Store large amounts of data permanently</li>
+<li>b) Replace data tables entirely</li>
+<li>c) <strong>Identify patterns, trends, and outliers in datasets visually</strong></li>
+<li>d) Automatically analyse data without human input</li>
+</ul>
+<hr>
+<p><strong>16.</strong> Which of the following is NOT a common type of chart?</p>
+<ul>
+<li>a) Bar chart</li>
+<li>b) Line chart</li>
+<li>c) Pie chart</li>
+<li>d) <strong>Flow chart</strong></li>
+</ul>
+<hr>
+<p><strong>17.</strong> Which of the following is NOT a common type of graph?</p>
+<ul>
+<li>a) Line graph</li>
+<li>b) Bar graph</li>
+<li>c) Scatter plot</li>
+<li>d) <strong>Pie diagram</strong></li>
+</ul>
+<hr>
+<p><strong>18.</strong> A scatter plot is best used to show:</p>
+<ul>
+<li>a) The proportion of a whole divided into categories</li>
+<li>b) Trends over a period of time</li>
+<li>c) <strong>The relationship between two different variables</strong></li>
+<li>d) A comparison of quantities using rectangular bars</li>
+</ul>
+<hr>
+<p><strong>19.</strong> A pie chart is most suitable for showing:</p>
+<ul>
+<li>a) Trends over time</li>
+<li>b) The relationship between two variables</li>
+<li>c) Distribution of values in a dataset</li>
+<li>d) <strong>The proportion of different categories as parts of a whole</strong></li>
+</ul>
+<hr>
+<p><strong>20.</strong> A line graph is most suitable for showing:</p>
+<ul>
+<li>a) Proportion of categories in a whole</li>
+<li>b) Relationship between two unrelated variables</li>
+<li>c) Comparison of individual items side by side</li>
+<li>d) <strong>Trends and changes in data over a period of time</strong></li>
+</ul>
+<hr>
+<h3 id="topic-data-collection-methods-and-tools">Topic: Data Collection Methods and Tools</h3>
+<p><strong>21.</strong> What is data collection?</p>
+<ul>
+<li>a) Storing processed data in a database</li>
+<li>b) Deleting old and unnecessary data</li>
+<li>c) Analysing data to find patterns</li>
+<li>d) <strong>The process of gathering information to answer questions or make decisions</strong></li>
+</ul>
+<hr>
+<p><strong>22.</strong> Which data collection method gathers information from people by asking them questions, either on paper, over the phone, or online?</p>
+<ul>
+<li>a) Observation</li>
+<li>b) Interview</li>
+<li>c) Online data sources</li>
+<li>d) <strong>Survey</strong></li>
+</ul>
+<hr>
+<p><strong>23.</strong> Which data collection method involves written forms with a set of questions that people fill out, often with multiple-choice answers?</p>
+<ul>
+<li>a) Survey</li>
+<li>b) Interview</li>
+<li>c) <strong>Questionnaire</strong></li>
+<li>d) Observation</li>
+</ul>
+<hr>
+<p><strong>24.</strong> Which data collection method involves talking to individuals one-on-one to gather detailed information?</p>
+<ul>
+<li>a) Survey</li>
+<li>b) Questionnaire</li>
+<li>c) <strong>Interview</strong></li>
+<li>d) Online data source</li>
+</ul>
+<hr>
+<p><strong>25.</strong> A teacher watches how students behave during a group project to understand their teamwork. Which data collection method is this?</p>
+<ul>
+<li>a) Survey</li>
+<li>b) Interview</li>
+<li>c) Questionnaire</li>
+<li>d) <strong>Observation</strong></li>
+</ul>
+<hr>
+<p><strong>26.</strong> Using websites, databases, and digital tools to find and collect information is known as:</p>
+<ul>
+<li>a) Survey</li>
+<li>b) Observation</li>
+<li>c) Interview</li>
+<li>d) <strong>Online data sources</strong></li>
+</ul>
+<hr>
+<p><strong>27.</strong> Which of the following is a free online tool from Google used to create surveys?</p>
+<ul>
+<li>a) SurveyMonkey</li>
+<li>b) Microsoft Forms</li>
+<li>c) <strong>Google Forms</strong></li>
+<li>d) Tableau</li>
+</ul>
+<hr>
+<p><strong>28.</strong> Which of the following is a best practice in survey design?</p>
+<ul>
+<li>a) Use long, complex questions to gather more information</li>
+<li>b) Include as many questions as possible</li>
+<li>c) Only send the survey to one group of people</li>
+<li>d) <strong>Keep it short, simple, and test the survey before sending it out</strong></li>
+</ul>
+<hr>
+<p><strong>29.</strong> Which of the following platforms is commonly used for creating detailed professional surveys?</p>
+<ul>
+<li>a) Google Docs</li>
+<li>b) Microsoft Excel</li>
+<li>c) <strong>SurveyMonkey</strong></li>
+<li>d) Tableau</li>
+</ul>
+<hr>
+<p><strong>30.</strong> To collect the most detailed and in-depth information from an individual, the most appropriate method would be:</p>
+<ul>
+<li>a) Survey</li>
+<li>b) Online data sources</li>
+<li>c) Observation</li>
+<li>d) <strong>Interview</strong></li>
+</ul>
+<hr>
+<h3 id="topic-structured-and-unstructured-data">Topic: Structured and Unstructured Data</h3>
+<p><strong>31.</strong> With respect to storage and processing, data is divided into which two types?</p>
+<ul>
+<li>a) Qualitative and quantitative</li>
+<li>b) Numeric and non-numeric</li>
+<li>c) <strong>Structured and unstructured</strong></li>
+<li>d) Primary and secondary</li>
+</ul>
+<hr>
+<p><strong>32.</strong> Which of the following best describes structured data?</p>
+<ul>
+<li>a) Data that is free-form and does not follow any format</li>
+<li>b) Data found in emails and social media posts</li>
+<li>c) <strong>Data that is organised and formatted to be easily searchable and analysable</strong></li>
+<li>d) Data represented as images and videos</li>
+</ul>
+<hr>
+<p><strong>33.</strong> Which of the following is an example of structured data?</p>
+<ul>
+<li>a) A social media post</li>
+<li>b) An email</li>
+<li>c) A video file</li>
+<li>d) <strong>Data in a spreadsheet or traditional database</strong></li>
+</ul>
+<hr>
+<p><strong>34.</strong> Which of the following is an example of unstructured data?</p>
+<ul>
+<li>a) A table of student marks</li>
+<li>b) A database of product prices</li>
+<li>c) <strong>A social media post or video</strong></li>
+<li>d) A spreadsheet of employee details</li>
+</ul>
+<hr>
+<p><strong>35.</strong> A student database with columns for Student ID, Name, Class, Date of Birth, and Fee Status is an example of:</p>
+<ul>
+<li>a) Unstructured data</li>
+<li>b) Qualitative data only</li>
+<li>c) Raw data</li>
+<li>d) <strong>Structured data</strong></li>
+</ul>
+<hr>
+<p><strong>36.</strong> Unstructured data is described as:</p>
+<ul>
+<li>a) Organised in rows and columns in a spreadsheet</li>
+<li>b) Easily searchable using standard database tools</li>
+<li>c) Expressed only in numbers</li>
+<li>d) <strong>Free-form data that does not fit into a specific format</strong></li>
+</ul>
+<hr>
+<h3 id="topic-data-visualisation">Topic: Data Visualisation</h3>
+<p><strong>37.</strong> What is data visualisation?</p>
+<ul>
+<li>a) The process of collecting raw data from various sources</li>
+<li>b) The process of storing data in a database</li>
+<li>c) <strong>The process of turning numbers and information into pictures such as charts and graphs</strong></li>
+<li>d) The process of deleting unnecessary data</li>
+</ul>
+<hr>
+<p><strong>38.</strong> What is the primary purpose of data visualisation?</p>
+<ul>
+<li>a) To generate random numbers</li>
+<li>b) To convert text into structured data</li>
+<li>c) To hide complex relationships in data</li>
+<li>d) <strong>To make data easier to understand by representing it visually</strong></li>
+</ul>
+<hr>
+<p><strong>39.</strong> Which of the following is a data visualisation tool specifically designed for creating detailed and interactive visualisations?</p>
+<ul>
+<li>a) Microsoft Word</li>
+<li>b) Google Docs</li>
+<li>c) Python</li>
+<li>d) <strong>Tableau</strong></li>
+</ul>
+<hr>
+<p><strong>40.</strong> Which of the following tools allows users to create and share visualisations online in a way similar to Microsoft Excel?</p>
+<ul>
+<li>a) Tableau</li>
+<li>b) Power BI</li>
+<li>c) <strong>Google Sheets</strong></li>
+<li>d) SQL</li>
+</ul>
+<hr>
+<p><strong>41.</strong> Microsoft Power BI is best described as:</p>
+<ul>
+<li>a) A programming language for data analysis</li>
+<li>b) A spreadsheet tool for basic calculations</li>
+<li>c) A database management system</li>
+<li>d) <strong>A tool that allows users to create a wide variety of visualisations including charts, graphs, and maps</strong></li>
+</ul>
+<hr>
+<p><strong>42.</strong> Which visualisation tool is most suitable for students who already know spreadsheet software and want to create basic charts quickly?</p>
+<ul>
+<li>a) Tableau</li>
+<li>b) Power BI</li>
+<li>c) Python</li>
+<li>d) <strong>Microsoft Excel</strong></li>
+</ul>
+<hr>
+<p><strong>43.</strong> A bar chart is most useful for:</p>
+<ul>
+<li>a) Showing trends over time</li>
+<li>b) Showing proportions as parts of a whole</li>
+<li>c) Showing relationships between two variables</li>
+<li>d) <strong>Comparing quantities across different categories</strong></li>
+</ul>
+<hr>
+<p><strong>44.</strong> A histogram is used to show:</p>
+<ul>
+<li>a) The proportion of categories in a dataset</li>
+<li>b) Trends in data over time</li>
+<li>c) Relationships between two different variables</li>
+<li>d) <strong>The frequency distribution of a dataset</strong></li>
+</ul>
+<hr>
+<h3 id="topic-data-pre-processing">Topic: Data Pre-Processing</h3>
+<p><strong>45.</strong> What is data pre-processing?</p>
+<ul>
+<li>a) The final step in data analysis where conclusions are drawn</li>
+<li>b) The process of collecting data from surveys and questionnaires</li>
+<li>c) The process of visualising data using charts and graphs</li>
+<li>d) <strong>The first and most important step of preparing data for analysis by cleaning and organising it</strong></li>
+</ul>
+<hr>
+<p><strong>46.</strong> Which analogy best describes data pre-processing?</p>
+<ul>
+<li>a) Writing a report after completing research</li>
+<li>b) Presenting a finished dish at a restaurant</li>
+<li>c) Eating a meal at a restaurant</li>
+<li>d) <strong>Preparing ingredients before cooking — washing, chopping, and measuring everything</strong></li>
+</ul>
+<hr>
+<p><strong>47.</strong> What does evaluating data quality involve?</p>
+<ul>
+<li>a) Creating visualisations from the data</li>
+<li>b) Collecting more data from additional sources</li>
+<li>c) Presenting data in tables and charts</li>
+<li>d) <strong>Checking if data is accurate, complete, consistent, and reliable</strong></li>
+</ul>
+<hr>
+<p><strong>48.</strong> In a list of student test scores, if one student's score is recorded as 105 out of 100, this is an example of:</p>
+<ul>
+<li>a) An outlier</li>
+<li>b) A bias</li>
+<li>c) Missing data</li>
+<li>d) <strong>An error</strong></li>
+</ul>
+<hr>
+<p><strong>49.</strong> In a list of test scores where most students scored between 50 and 80, but one student scored 5, the score of 5 is an example of:</p>
+<ul>
+<li>a) An error</li>
+<li>b) A bias</li>
+<li>c) Missing data</li>
+<li>d) <strong>An outlier</strong></li>
+</ul>
+<hr>
+<p><strong>50.</strong> If a survey only includes responses from students in one school but is used to represent opinions of all students in a city, this is an example of:</p>
+<ul>
+<li>a) An error</li>
+<li>b) An outlier</li>
+<li>c) Missing data</li>
+<li>d) <strong>A bias</strong></li>
+</ul>
+<hr>
+<p><strong>51.</strong> Data validation involves:</p>
+<ul>
+<li>a) Deleting all data that contains errors</li>
+<li>b) Creating visualisations of the data</li>
+<li>c) Collecting additional data to replace missing values</li>
+<li>d) <strong>Checking data for completeness and accuracy</strong></li>
+</ul>
+<hr>
+<p><strong>52.</strong> Ensuring that every student has a test score recorded in a dataset is an example of:</p>
+<ul>
+<li>a) Validating data accuracy</li>
+<li>b) Removing outliers</li>
+<li>c) Handling missing data</li>
+<li>d) <strong>Validating data completeness</strong></li>
+</ul>
+<hr>
+<p><strong>53.</strong> Verifying that all test scores in a dataset are between 0 and 100 is an example of:</p>
+<ul>
+<li>a) Validating data completeness</li>
+<li>b) Removing outliers</li>
+<li>c) Handling missing data</li>
+<li>d) <strong>Validating data accuracy</strong></li>
+</ul>
+<hr>
+<p><strong>54.</strong> When a student's test score is missing and you fill in the gap using the class average, this is an example of:</p>
+<ul>
+<li>a) Data validation</li>
+<li>b) Removing outliers</li>
+<li>c) Error correction</li>
+<li>d) <strong>Handling missing data</strong></li>
+</ul>
+<hr>
+<p><strong>55.</strong> Data cleaning involves which of the following?</p>
+<ul>
+<li>a) Only collecting new data to replace old data</li>
+<li>b) Creating charts and graphs from existing data</li>
+<li>c) Storing data in a structured format</li>
+<li>d) <strong>Removing errors, handling missing data, and dealing with outliers</strong></li>
+</ul>
+<hr>
+<p><strong>56.</strong> Which of the following is NOT a data pre-processing technique?</p>
+<ul>
+<li>a) Identifying errors and outliers</li>
+<li>b) Validating data completeness</li>
+<li>c) Handling missing data</li>
+<li>d) <strong>Creating a bar chart from the data</strong></li>
+</ul>
+<hr>
+<h3 id="topic-data-analysis-techniques">Topic: Data Analysis Techniques</h3>
+<p><strong>57.</strong> What is the purpose of data analysis?</p>
+<ul>
+<li>a) To collect data from multiple sources</li>
+<li>b) To store data in a structured format</li>
+<li>c) To visualise data using charts</li>
+<li>d) <strong>To examine data to discover useful information, draw conclusions, and support decision-making</strong></li>
+</ul>
+<hr>
+<p><strong>58.</strong> Quantitative analysis deals with:</p>
+<ul>
+<li>a) Text, images, and sounds</li>
+<li>b) Descriptions and observations</li>
+<li>c) Experiences and meanings</li>
+<li>d) <strong>Numbers and measurable data</strong></li>
+</ul>
+<hr>
+<p><strong>59.</strong> Qualitative analysis deals with:</p>
+<ul>
+<li>a) Numbers and statistical calculations</li>
+<li>b) Measurable and countable data</li>
+<li>c) Mathematical formulas and equations</li>
+<li>d) <strong>Non-numeric data such as text, images, and sounds</strong></li>
+</ul>
+<hr>
+<p><strong>60.</strong> Which type of analysis helps us understand patterns, relationships, and trends in numeric data?</p>
+<ul>
+<li>a) Qualitative analysis</li>
+<li>b) Descriptive analysis</li>
+<li>c) <strong>Quantitative analysis</strong></li>
+<li>d) Categorical analysis</li>
+</ul>
+<hr>
+<p><strong>61.</strong> Which type of analysis helps us understand meanings, concepts, and experiences?</p>
+<ul>
+<li>a) Quantitative analysis</li>
+<li>b) Statistical analysis</li>
+<li>c) Numerical analysis</li>
+<li>d) <strong>Qualitative analysis</strong></li>
+</ul>
+<hr>
+<h3 id="topic-cloud-storage-and-data-backups">Topic: Cloud Storage and Data Backups</h3>
+<p><strong>62.</strong> What is cloud storage?</p>
+<ul>
+<li>a) Storing data on a USB flash drive</li>
+<li>b) Storing data on a physical hard drive at home</li>
+<li>c) <strong>Saving files on the internet for access from any device</strong></li>
+<li>d) Storing data on a DVD or CD</li>
+</ul>
+<hr>
+<p><strong>63.</strong> What is remote access in the context of data management?</p>
+<ul>
+<li>a) Accessing files stored only on the local computer</li>
+<li>b) Printing documents from a wireless printer nearby</li>
+<li>c) Connecting two computers using a USB cable</li>
+<li>d) <strong>The ability to connect to and use a computer or network from a distant location</strong></li>
+</ul>
+<hr>
+<p><strong>64.</strong> What is a data backup?</p>
+<ul>
+<li>a) The original copy of a file stored on your computer</li>
+<li>b) A method of compressing data to save space</li>
+<li>c) A process of encrypting data for security</li>
+<li>d) <strong>A copy of important data stored separately from the original to protect against data loss</strong></li>
+</ul>
+<hr>
+<p><strong>65.</strong> Why are data backups important?</p>
+<ul>
+<li>a) They make files load faster</li>
+<li>b) They increase the storage capacity of a computer</li>
+<li>c) They allow multiple users to edit the same file at once</li>
+<li>d) <strong>They allow you to recover data if it is lost due to accidental deletion, hardware failure, or a virus</strong></li>
+</ul>
+<hr>
+<p><strong>66.</strong> A student saves a school project on their computer and also uploads a copy to Google Drive. The Google Drive copy is an example of:</p>
+<ul>
+<li>a) Data compression</li>
+<li>b) Data validation</li>
+<li>c) <strong>A data backup</strong></li>
+<li>d) Data pre-processing</li>
+</ul>
+<hr>
+<p><strong>67.</strong> Which of the following is a benefit of using collaborative cloud tools in data management?</p>
+<ul>
+<li>a) They reduce the need for any data analysis</li>
+<li>b) They eliminate the possibility of data errors</li>
+<li>c) They replace the need for any physical devices</li>
+<li>d) <strong>They allow multiple people to work on the same project simultaneously from different locations</strong></li>
+</ul>
+<hr>
+<p><strong>68.</strong> Version control in collaborative tools like Google Docs means:</p>
+<ul>
+<li>a) The document is automatically deleted after a set time</li>
+<li>b) Only one person can edit the document at a time</li>
+<li>c) The document is converted to a different file format</li>
+<li>d) <strong>Every change is saved automatically, allowing users to go back to previous versions</strong></li>
+</ul>
+<hr>
+<p><strong>69.</strong> Which of the following is an example of a cloud storage service?</p>
+<ul>
+<li>a) Microsoft Excel</li>
+<li>b) USB flash drive</li>
+<li>c) <strong>Google Drive</strong></li>
+<li>d) SQL Server</li>
+</ul>
+<hr>
+<p><strong>70.</strong> Which of the following correctly describes a benefit of collaborative tools?</p>
+<ul>
+<li>a) They slow down the data collection process</li>
+<li>b) They prevent multiple users from accessing the same file</li>
+<li>c) They require all team members to be in the same physical location</li>
+<li>d) <strong>They enhance productivity by allowing multiple users to work on different sections of a project simultaneously</strong></li>
+</ul>
+<hr>
+<h3 id="topic-introduction-to-data-science">Topic: Introduction to Data Science</h3>
+<p><strong>71.</strong> Data science is best described as:</p>
+<ul>
+<li>a) A tool for creating spreadsheets and charts</li>
+<li>b) A method of storing large amounts of structured data</li>
+<li>c) A programming language used for web development</li>
+<li>d) <strong>A field that combines computer skills, mathematics, and business knowledge to turn raw data into useful insights</strong></li>
+</ul>
+<hr>
+<p><strong>72.</strong> Which analogy is used in the chapter to describe data science?</p>
+<ul>
+<li>a) A chef preparing ingredients for a meal</li>
+<li>b) A librarian organising books on a shelf</li>
+<li>c) A teacher grading exam papers</li>
+<li>d) <strong>A detective solving problems using data instead of solving crimes</strong></li>
+</ul>
+<hr>
+<p><strong>73.</strong> Which of the following fields is NOT part of the interdisciplinary nature of data science?</p>
+<ul>
+<li>a) Computer Science</li>
+<li>b) Mathematics and Statistics</li>
+<li>c) Business Knowledge</li>
+<li>d) <strong>Literature and History</strong></li>
+</ul>
+<hr>
+<p><strong>74.</strong> Why is knowing about data science important in daily life?</p>
+<ul>
+<li>a) It allows you to write programs in all languages</li>
+<li>b) It helps you build websites and mobile applications</li>
+<li>c) It is only useful for professional data scientists</li>
+<li>d) <strong>It helps us make better decisions, understand patterns, and solve problems more effectively</strong></li>
+</ul>
+<hr>
+<p><strong>75.</strong> Which of the following is an example of data science being used in sports?</p>
+<ul>
+<li>a) Designing uniforms using computer graphics</li>
+<li>b) Broadcasting matches on television</li>
+<li>c) <strong>Using data to create better strategies and enhance team performance</strong></li>
+<li>d) Building larger stadiums using architectural software</li>
+</ul>
+<hr>
+<p><strong>76.</strong> Which of the following is an example of data science being used in healthcare?</p>
+<ul>
+<li>a) Ordering medical equipment online</li>
+<li>b) Scheduling doctor appointments using a calendar app</li>
+<li>c) <strong>Predicting health trends and providing better patient care</strong></li>
+<li>d) Designing hospital buildings using CAD software</li>
+</ul>
+<hr>
+<p><strong>77.</strong> The role of Computer Science in data science is to:</p>
+<ul>
+<li>a) Apply insights to real-life business problems</li>
+<li>b) Analyse data and find statistical patterns</li>
+<li>c) Create reports and visualisations for clients</li>
+<li>d) <strong>Handle and organise data</strong></li>
+</ul>
+<hr>
+<p><strong>78.</strong> The role of Mathematics and Statistics in data science is to:</p>
+<ul>
+<li>a) Handle and organise data using computers</li>
+<li>b) Apply insights to real-life business problems</li>
+<li>c) Create visualisations for presentations</li>
+<li>d) <strong>Analyse data and find patterns</strong></li>
+</ul>
+<hr>
+<p><strong>79.</strong> The role of Business Knowledge in data science is to:</p>
+<ul>
+<li>a) Write programs to collect data</li>
+<li>b) Perform statistical calculations on datasets</li>
+<li>c) Design databases for data storage</li>
+<li>d) <strong>Apply data insights to real-life problems and make informed decisions</strong></li>
+</ul>
+<hr>
+<h3 id="topic-data-science-tools">Topic: Data Science Tools</h3>
+<p><strong>80.</strong> Which data science tool is a widely-used spreadsheet program that helps organise and analyse data?</p>
+<ul>
+<li>a) Python</li>
+<li>b) R</li>
+<li>c) SQL</li>
+<li>d) <strong>Microsoft Excel</strong></li>
+</ul>
+<hr>
+<p><strong>81.</strong> Which data science tool is a popular programming language used for analysing data and building data models?</p>
+<ul>
+<li>a) Excel</li>
+<li>b) SQL</li>
+<li>c) Tableau</li>
+<li>d) <strong>Python</strong></li>
+</ul>
+<hr>
+<p><strong>82.</strong> Which Python library is used for data manipulation and analysis?</p>
+<ul>
+<li>a) Matplotlib</li>
+<li>b) NumPy</li>
+<li>c) <strong>Pandas</strong></li>
+<li>d) SciPy</li>
+</ul>
+<hr>
+<p><strong>83.</strong> Which Python library is used for creating graphs and charts?</p>
+<ul>
+<li>a) Pandas</li>
+<li>b) NumPy</li>
+<li>c) <strong>Matplotlib</strong></li>
+<li>d) SciPy</li>
+</ul>
+<hr>
+<p><strong>84.</strong> Which data science tool is specifically designed for statistical analysis and data visualisation, and is particularly good at handling complex data?</p>
+<ul>
+<li>a) Python</li>
+<li>b) Excel</li>
+<li>c) SQL</li>
+<li>d) <strong>R</strong></li>
+</ul>
+<hr>
+<p><strong>85.</strong> What does SQL stand for?</p>
+<ul>
+<li>a) Simple Question Language</li>
+<li>b) System Query Logic</li>
+<li>c) Software Query Library</li>
+<li>d) <strong>Structured Query Language</strong></li>
+</ul>
+<hr>
+<p><strong>86.</strong> SQL is primarily used for:</p>
+<ul>
+<li>a) Creating visualisations and dashboards</li>
+<li>b) Building machine learning models</li>
+<li>c) Writing statistical analysis reports</li>
+<li>d) <strong>Managing and querying databases</strong></li>
+</ul>
+<hr>
+<p><strong>87.</strong> If you want to find all students who scored above 90 in a large database, which tool would you use?</p>
+<ul>
+<li>a) Excel</li>
+<li>b) Python</li>
+<li>c) <strong>SQL</strong></li>
+<li>d) Tableau</li>
+</ul>
+<hr>
+<p><strong>88.</strong> Which analogy is used in the chapter to describe the role of SQL?</p>
+<ul>
+<li>a) A chef preparing ingredients</li>
+<li>b) A detective solving a crime</li>
+<li>c) A GPS finding the best route</li>
+<li>d) <strong>A librarian finding all books by a particular author from a huge collection</strong></li>
+</ul>
+<hr>
+<p><strong>89.</strong> A student wants to analyse survey results and then create a chart showing the findings. Which set of Python tools would they use?</p>
+<ul>
+<li>a) SQL and Tableau</li>
+<li>b) R and Excel</li>
+<li>c) <strong>Pandas and Matplotlib</strong></li>
+<li>d) Power BI and Google Sheets</li>
+</ul>
+<hr>
+<p><strong>90.</strong> Which data science tool would a scientist use to analyse a dataset from a scientific experiment and create detailed statistical plots?</p>
+<ul>
+<li>a) SQL</li>
+<li>b) Excel</li>
+<li>c) <strong>R</strong></li>
+<li>d) Tableau</li>
+</ul>
+<hr>
+<h3 id="topic-big-data-and-data-storage">Topic: Big Data and Data Storage</h3>
+<p><strong>91.</strong> Big data refers to:</p>
+<ul>
+<li>a) Data stored only in spreadsheets</li>
+<li>b) Small datasets that are easy to analyse</li>
+<li>c) Only quantitative data collected from surveys</li>
+<li>d) <strong>Extremely large and complex datasets that cannot be processed using traditional tools</strong></li>
+</ul>
+<hr>
+<p><strong>92.</strong> Which of the following is NOT a domain where big data is commonly applied?</p>
+<ul>
+<li>a) Retail</li>
+<li>b) Healthcare</li>
+<li>c) Finance</li>
+<li>d) <strong>Creative writing</strong></li>
+</ul>
+<hr>
+<p><strong>93.</strong> Which type of data storage is best suited for organised, easily searchable data in rows and columns?</p>
+<ul>
+<li>a) Cloud storage</li>
+<li>b) NoSQL database</li>
+<li>c) Data warehouse</li>
+<li>d) <strong>Spreadsheet or traditional relational database</strong></li>
+</ul>
+<hr>
+<p><strong>94.</strong> A data warehouse is best described as:</p>
+<ul>
+<li>a) A physical room where computers are stored</li>
+<li>b) A tool for creating visualisations</li>
+<li>c) <strong>A large storage system used to store and manage large volumes of structured data for analysis</strong></li>
+<li>d) A type of unstructured data storage</li>
+</ul>
+<hr>
+<p><strong>95.</strong> NoSQL databases are best suited for:</p>
+<ul>
+<li>a) Storing data only in tables with fixed columns</li>
+<li>b) Running SQL queries on structured data</li>
+<li>c) Creating charts and graphs from data</li>
+<li>d) <strong>Storing large volumes of unstructured or semi-structured data that does not fit neatly into tables</strong></li>
+</ul>
+<hr>
+<p><strong>96.</strong> Which of the following is an example of data science being applied in retail?</p>
+<ul>
+<li>a) Designing store layouts using architecture software</li>
+<li>b) Training store employees in customer service</li>
+<li>c) <strong>Analysing customer purchase patterns to recommend products</strong></li>
+<li>d) Printing price tags using label software</li>
+</ul>
+<hr>
+<p><strong>97.</strong> Predictive modelling in data science means:</p>
+<ul>
+<li>a) Creating charts and graphs from historical data</li>
+<li>b) Cleaning and organising data before analysis</li>
+<li>c) Collecting data from surveys and questionnaires</li>
+<li>d) <strong>Using historical data to make predictions about future outcomes</strong></li>
+</ul>
+<hr>
+<p><strong>98.</strong> Graph analytics in data science is used to:</p>
+<ul>
+<li>a) Create bar charts and pie charts for presentations</li>
+<li>b) Store data in graph-based NoSQL databases</li>
+<li>c) Write SQL queries to extract data from databases</li>
+<li>d) <strong>Analyse relationships and connections between data points</strong></li>
+</ul>
+<hr>
+<p><strong>99.</strong> Data Analytics is described in the chapter as:</p>
+<ul>
+<li>a) A method of collecting data from multiple sources</li>
+<li>b) A tool for creating interactive visualisations</li>
+<li>c) A programming language for data science</li>
+<li>d) <strong>A branch of data science focused on analysing data to understand it better and support decision-making</strong></li>
+</ul>
+<hr>
+<p><strong>100.</strong> Which of the following is the correct order of steps in a typical data science process?</p>
+<ul>
+<li>a) Data Analysis → Data Collection → Data Cleaning → Understanding the Problem</li>
+<li>b) Data Cleaning → Data Collection → Understanding the Problem → Data Analysis</li>
+<li>c) Data Collection → Data Analysis → Understanding the Problem → Data Cleaning</li>
+<li>d) <strong>Understanding the Problem → Data Collection → Data Cleaning → Data Analysis</strong></li>
+</ul>
+<hr>
+<hr>
+<h2 id="section-b-short-questions">Section B: Short Questions</h2>
+<p><em>Answer each question in 2–5 sentences. No answers are provided.</em></p>
+<hr>
+<h3 id="topic-data-and-data-types">Topic: Data and Data Types</h3>
+<ol>
+<li>What is data? Give three different forms that data can take.</li>
+<li>Write two differences between qualitative and quantitative data.</li>
+<li>What are the key characteristics of qualitative data? Give two examples.</li>
+<li>What are the key characteristics of quantitative data? Give two examples.</li>
+<li>Give three examples of qualitative data and three examples of quantitative data.</li>
+<li>What type of data is the number of students in your class? Justify your answer.</li>
+<li>What type of data is the favourite colour of students in a class? Justify your answer.</li>
+<li>Explain the "arithmetical" characteristic of quantitative data with an example.</li>
+<li>Explain the "measurable" characteristic of quantitative data with an example.</li>
+<li>Explain the "countable" characteristic of quantitative data with an example.</li>
+</ol>
+<hr>
+<h3 id="topic-organising-and-analysing-data_1">Topic: Organising and Analysing Data</h3>
+<ol start="11">
+<li>Why is it important to organise data before analysing it? Give two reasons.</li>
+<li>Why is it important to organise data into tables or charts before analysing it?</li>
+<li>What is a data table? How does it help in data analysis?</li>
+<li>What are charts? State three common types of charts.</li>
+<li>What are graphs? State four common types of graphs.</li>
+<li>What is a bar chart used for? Give one example.</li>
+<li>For which purpose do we use a line graph?</li>
+<li>What is the difference between a bar chart and a pie chart?</li>
+<li>When would you use a scatter plot instead of a line graph?</li>
+<li>How does organising data reduce errors? Give an example.</li>
+</ol>
+<hr>
+<h3 id="topic-data-collection-methods-and-tools_1">Topic: Data Collection Methods and Tools</h3>
+<ol start="21">
+<li>What is data collection? Why is it important?</li>
+<li>What is a survey? How is it different from a questionnaire?</li>
+<li>Which method would you use to collect opinions from a large group of people about a new school policy? Justify your answer.</li>
+<li>What is an interview as a data collection method? When is it most useful?</li>
+<li>What is observation as a data collection method? Give one example.</li>
+<li>What are online data sources? Give two examples of situations where you would use them.</li>
+<li>List four best practices in survey design and administration.</li>
+<li>Name three online tools that can be used to create surveys and briefly describe each.</li>
+<li>Differentiate between surveys and interviews as data collection methods.</li>
+<li>You want to find out the most popular sport among students in your school. Which data collection method would you choose and why?</li>
+</ol>
+<hr>
+<h3 id="topic-structured-and-unstructured-data_1">Topic: Structured and Unstructured Data</h3>
+<ol start="31">
+<li>What is structured data? Give two examples.</li>
+<li>What is unstructured data? Give two examples.</li>
+<li>Differentiate between structured and unstructured data.</li>
+<li>Give one example of structured data and explain why it is structured.</li>
+<li>Give one example of unstructured data and explain why it is unstructured.</li>
+<li>Why is structured data easier to search and analyse than unstructured data?</li>
+</ol>
+<hr>
+<h3 id="topic-data-visualisation_1">Topic: Data Visualisation</h3>
+<ol start="37">
+<li>What is data visualisation? Why is it important?</li>
+<li>Explain why data visualisation is important in data analysis.</li>
+<li>Name four popular data visualisation tools and briefly describe what each one does.</li>
+<li>What is Microsoft Excel used for in data visualisation?</li>
+<li>How does Microsoft Power BI help in data visualisation?</li>
+<li>What makes Tableau different from Excel and Google Sheets as a visualisation tool?</li>
+<li>How does turning data into a chart or graph help in drawing conclusions?</li>
+</ol>
+<hr>
+<h3 id="topic-data-pre-processing_1">Topic: Data Pre-Processing</h3>
+<ol start="44">
+<li>What is data pre-processing? Why is it the most important first step in working with data?</li>
+<li>What does evaluating data quality involve? What questions should you ask?</li>
+<li>What is an error in data? Give one example.</li>
+<li>What is an outlier in data? Give one example.</li>
+<li>What is a bias in data? Give one example.</li>
+<li>What is the difference between an error and an outlier in a dataset?</li>
+<li>What is data validation? State two types of data validation.</li>
+<li>What does validating data completeness mean? Give an example.</li>
+<li>What does validating data accuracy mean? Give an example.</li>
+<li>What is data cleaning? What three things does it involve?</li>
+<li>How do you handle missing data during data cleaning? Give one strategy.</li>
+<li>How do you deal with outliers during data cleaning?</li>
+<li>A student's score is recorded as 105 out of 100. What type of data quality issue is this and how would you fix it?</li>
+</ol>
+<hr>
+<h3 id="topic-data-analysis">Topic: Data Analysis</h3>
+<ol start="57">
+<li>What is data analysis? What is its purpose?</li>
+<li>What is quantitative analysis? What type of data does it deal with?</li>
+<li>What is qualitative analysis? What type of data does it deal with?</li>
+<li>Differentiate between quantitative analysis and qualitative analysis.</li>
+<li>Give one example of a situation where quantitative analysis would be used.</li>
+<li>Give one example of a situation where qualitative analysis would be used.</li>
+</ol>
+<hr>
+<h3 id="topic-cloud-storage-and-data-backups_1">Topic: Cloud Storage and Data Backups</h3>
+<ol start="63">
+<li>What is cloud storage? What is its main advantage over traditional storage?</li>
+<li>What is remote access? How is it useful for students and professionals?</li>
+<li>What is a data backup? Why is it important?</li>
+<li>Give one example of how a student can back up their school project.</li>
+<li>List three events that could lead to data loss that backups can protect against.</li>
+<li>What is version control in collaborative tools? Why is it useful?</li>
+<li>State two benefits of using collaborative cloud-based tools in education.</li>
+<li>How does cloud storage enable global collaboration? Give an example.</li>
+</ol>
+<hr>
+<h3 id="topic-introduction-to-data-science_1">Topic: Introduction to Data Science</h3>
+<ol start="71">
+<li>What is data science? Define it in your own words.</li>
+<li>Why is data science important in everyday life? Give two examples.</li>
+<li>What are the three fields that make up the interdisciplinary nature of data science? Briefly explain each one.</li>
+<li>How is data science used in sports? Give a specific example.</li>
+<li>How is data science used in healthcare? Give a specific example.</li>
+<li>How is data science used in business? Give a specific example.</li>
+<li>Explain the detective analogy used in the chapter to describe data science.</li>
+</ol>
+<hr>
+<h3 id="topic-data-science-tools_1">Topic: Data Science Tools</h3>
+<ol start="78">
+<li>Name four data science tools and state what each one is used for.</li>
+<li>How can we use Python in data science?</li>
+<li>What is the role of the Pandas library in Python?</li>
+<li>What is the role of the Matplotlib library in Python?</li>
+<li>What is R? What is it particularly good at?</li>
+<li>What is SQL? What is it used for?</li>
+<li>How does SQL help a data scientist extract specific information from a large database? Give an example.</li>
+<li>Differentiate between Python and R as data science tools.</li>
+<li>Differentiate between Excel and Tableau as data visualisation tools.</li>
+<li>Which data science tool would you use to manage and query a large student database? Justify your answer.</li>
+</ol>
+<hr>
+<h3 id="topic-big-data">Topic: Big Data</h3>
+<ol start="88">
+<li>What is big data? What makes it different from ordinary data?</li>
+<li>Name four domains where big data is applied and give one example from each.</li>
+<li>What is predictive modelling in data science? Give one example.</li>
+<li>What is graph analytics? What is it used to study?</li>
+<li>What is data analytics? How is it related to data science?</li>
+</ol>
+<hr>
+<h2 id="section-c-long-questions">Section C: Long Questions</h2>
+<p><em>Answer each question in full detail. Use examples, diagrams, or tables where applicable. No answers are provided.</em></p>
+<hr>
+<p><strong>1.</strong> Define data and explain the two broad categories of data — qualitative and quantitative. For each category:<br>
+- Provide a clear definition<br>
+- List all key characteristics with explanations<br>
+- Give at least three real-world examples<br>
+- Explain how they differ from each other</p>
+<hr>
+<p><strong>2.</strong> Explain the importance of organising data. Describe how data can be organised using tables, charts, and graphs. For each method:<br>
+- Explain what it is<br>
+- State when it is most useful<br>
+- Give a real-world example<br>
+- Name at least two specific types (for charts and graphs)</p>
+<hr>
+<p><strong>3.</strong> Describe five methods of data collection in detail. For each method:<br>
+- Provide a clear definition<br>
+- Explain how it works<br>
+- Give a real-world example<br>
+- State one advantage and one disadvantage</p>
+<p>Which method would be most suitable for collecting opinions of 200 students about a new school canteen menu? Justify your answer.</p>
+<hr>
+<p><strong>4.</strong> Differentiate between structured and unstructured data. In your answer:<br>
+- Define both types clearly<br>
+- Give at least two examples of each<br>
+- Explain why structured data is easier to analyse<br>
+- Describe one real-world scenario where structured data is used and one where unstructured data is generated<br>
+- State which type of data is more common in the modern world and why</p>
+<hr>
+<p><strong>5.</strong> What is data visualisation? Explain its importance in data analysis. Describe four data visualisation tools — Microsoft Excel, Google Sheets, Tableau, and Microsoft Power BI — and compare their features and uses. Which tool would you recommend for a student working on a school project and why?</p>
+<hr>
+<p><strong>6.</strong> Explain data pre-processing in detail. In your answer:<br>
+- Define data pre-processing and explain why it is the first and most important step<br>
+- Describe what evaluating data quality involves<br>
+- Define and give examples of errors, outliers, and biases in data<br>
+- Explain data validation — both completeness and accuracy — with examples<br>
+- Explain data cleaning — including error correction, handling missing data, and dealing with outliers</p>
+<hr>
+<p><strong>7.</strong> Describe the two main types of data analysis — quantitative and qualitative. For each:<br>
+- Provide a clear definition<br>
+- Explain what type of data it deals with<br>
+- Give two real-world examples of when it would be used<br>
+- State one advantage</p>
+<p>Compare the two types of analysis and explain a situation where you might need to use both together.</p>
+<hr>
+<p><strong>8.</strong> Explain the role of cloud storage and data backups in modern data management. In your answer:<br>
+- Define cloud storage and explain how it differs from traditional storage<br>
+- Explain what remote access is and why it is useful<br>
+- Define a data backup and explain its importance<br>
+- Describe two benefits of collaborative cloud-based tools<br>
+- Give three real-world examples of how cloud storage and backups are used in education or business</p>
+<hr>
+<p><strong>9.</strong> What is data science? Explain its definition, scope, and importance. In your answer:<br>
+- Define data science clearly<br>
+- Explain the interdisciplinary nature of data science — the role of computer science, mathematics/statistics, and business knowledge<br>
+- Give examples of how data science is applied in at least four real-world domains (e.g., sports, healthcare, education, business)<br>
+- Explain why learning data science is important for students today</p>
+<hr>
+<p><strong>10.</strong> Describe the four main data science tools — Microsoft Excel, Python, R, and SQL. For each tool:<br>
+- Provide a clear description<br>
+- Explain what it is used for in data science<br>
+- State any specific libraries or features it offers<br>
+- Give a real-world example of how it is used<br>
+- State one advantage compared to the other tools</p>
+<hr>
+<p><strong>11.</strong> Explain the concept of big data, its characteristics, and its applications. In your answer:<br>
+- Define big data and explain what makes it different from ordinary data<br>
+- Describe the key characteristics of big data<br>
+- Explain its applications in at least four domains: retail, healthcare, finance, and transportation<br>
+- Explain what predictive modelling is and give one example<br>
+- Explain what graph analytics is and give one example</p>
+<hr>
+<p><strong>12.</strong> Write a comprehensive essay on the complete data science process. Your essay should cover:<br>
+- What data is and the types of data (qualitative vs quantitative)<br>
+- How data is collected (methods and tools)<br>
+- How data is organised and visualised<br>
+- How data is pre-processed and cleaned<br>
+- How data is analysed (quantitative and qualitative techniques)<br>
+- How data is stored and protected (cloud storage and backups)<br>
+- The ethical considerations involved in working with data (privacy, confidentiality, legal frameworks)</p>
+<hr>
+<p><strong>13.</strong> Discuss the ethical practices related to data in detail. In your answer:<br>
+- Explain the importance of data privacy<br>
+- Explain what data confidentiality means and why it matters<br>
+- Describe the legal frameworks that protect data<br>
+- Explain what secure data handling involves<br>
+- Give real-world examples of what can happen when ethical data practices are not followed<br>
+- State three best practices that individuals and organisations should follow to handle data ethically</p>
+<hr>
+<p><em>End of Unit 6: Data Science and Data Gathering — Complete Question Bank</em></p>
+
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 7: Emerging Technologies — Complete Question Bank</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 7: Emerging Technologies — Complete Question Bank</div>
+</div>
+
+<h1 id="unit-7-emerging-technologies-complete-question-bank">Unit 7: Emerging Technologies — Complete Question Bank</h1>
+<hr>
+<h2 id="multiple-choice-questions">📝 Multiple Choice Questions</h2>
+<hr>
+<h3 id="section-a-artificial-intelligence">Section A: Artificial Intelligence</h3>
+<p><strong>1. What does Artificial Intelligence simulate?</strong><br>
+a) Human physical abilities<br>
+<strong>b) Human thinking and learning ability in computer systems</strong><br>
+c) Human emotional responses only<br>
+d) Human communication patterns only</p>
+<hr>
+<p><strong>2. Which of the following is NOT a subfield of AI?</strong><br>
+a) Machine Learning<br>
+b) Natural Language Processing<br>
+c) Computer Vision<br>
+<strong>d) DBMS</strong></p>
+<hr>
+<p><strong>3. The first AI program, the Logic Theorist, was created in:</strong><br>
+a) 1945<br>
+b) 1965<br>
+<strong>c) 1955</strong><br>
+d) 1975</p>
+<hr>
+<p><strong>4. Who created the first AI program, the Logic Theorist?</strong><br>
+a) Bill Gates and Steve Jobs<br>
+<strong>b) Allen Newell and Herbert A. Simon</strong><br>
+c) Kevin Ashton and Tim Berners-Lee<br>
+d) Alan Turing and John McCarthy</p>
+<hr>
+<p><strong>5. Which AI subfield helps computers understand and respond in human language?</strong><br>
+a) Computer Vision<br>
+b) Robotics<br>
+<strong>c) Natural Language Processing (NLP)</strong><br>
+d) Deep Learning</p>
+<hr>
+<p><strong>6. Which of the following is an example of NLP in everyday use?</strong><br>
+a) A robot vacuum cleaner<br>
+<strong>b) Siri or Alexa understanding your questions</strong><br>
+c) A self-driving car detecting obstacles<br>
+d) A smart thermostat adjusting temperature</p>
+<hr>
+<p><strong>7. Deep Learning uses complex structures called:</strong><br>
+<strong>a) Neural Networks</strong><br>
+b) Decision Trees<br>
+c) Relational Databases<br>
+d) Binary Search Trees</p>
+<hr>
+<p><strong>8. Neural networks are inspired by:</strong><br>
+a) Computer processors<br>
+<strong>b) The human brain</strong><br>
+c) The internet structure<br>
+d) Mathematical equations</p>
+<hr>
+<p><strong>9. Machine Learning is best described as:</strong><br>
+a) Programming computers with fixed rules<br>
+<strong>b) Teaching computers to learn from experience without explicit programming</strong><br>
+c) Building robots that mimic humans<br>
+d) Creating databases for AI systems</p>
+<hr>
+<p><strong>10. Which AI subfield enables computers to interpret and understand images and videos?</strong><br>
+a) NLP<br>
+b) Robotics<br>
+<strong>c) Computer Vision</strong><br>
+d) Machine Learning</p>
+<hr>
+<p><strong>11. Self-driving cars primarily rely on which technology?</strong><br>
+a) IoT only<br>
+b) NLP only<br>
+<strong>c) AI</strong><br>
+d) Cloud computing only</p>
+<hr>
+<p><strong>12. Which of the following is an application of AI in healthcare?</strong><br>
+a) Personalized drug development<br>
+b) Automated diagnosis<br>
+c) Remote patient monitoring<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>13. AI in finance is used for:</strong><br>
+a) Fraud detection<br>
+b) Algorithmic trading<br>
+c) Personalized investment recommendations<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>14. AI is used in agriculture for:</strong><br>
+a) Predictive analytics for crop yields<br>
+b) Automated irrigation systems<br>
+c) Computer vision for disease and pest detection<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>15. In social media, AI is used for:</strong><br>
+a) Personalized content recommendations<br>
+b) Sentiment analysis<br>
+c) Targeted advertising<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>16. Which of the following best describes Explainable (Whitebox) AI algorithms?</strong><br>
+<strong>a) The decision-making process is transparent and understandable</strong><br>
+b) The decision-making process is hidden and complex<br>
+c) They always use neural networks<br>
+d) They perform better than blackbox algorithms</p>
+<hr>
+<p><strong>17. Which of the following is an example of a Blackbox (Unexplainable) AI algorithm?</strong><br>
+a) Simple decision tree<br>
+b) Linear regression<br>
+<strong>c) Deep learning neural network</strong><br>
+d) Rule-based expert system</p>
+<hr>
+<p><strong>18. The key difference between whitebox and blackbox AI models is:</strong><br>
+a) The complexity of the model<br>
+<strong>b) The ability to understand the decision-making process</strong><br>
+c) The performance of the model<br>
+d) The training data used</p>
+<hr>
+<p><strong>19. Google's AlphaGo used which type of AI technique?</strong><br>
+a) Supervised Learning<br>
+b) Natural Language Processing<br>
+<strong>c) Reinforcement Learning</strong><br>
+d) Computer Vision</p>
+<hr>
+<p><strong>20. What is the primary purpose of using AI techniques in machine learning models?</strong><br>
+a) To improve accuracy<br>
+b) To enhance interpretability<br>
+c) To reduce computational complexity<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>21. AI in e-commerce is used for:</strong><br>
+a) Personalized product recommendations<br>
+b) Intelligent chatbots for customer support<br>
+c) Fraud detection systems<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>22. Robotics is defined as:</strong><br>
+a) The study of computer algorithms<br>
+<strong>b) The science of building and programming robots</strong><br>
+c) A branch of NLP<br>
+d) A type of machine learning</p>
+<hr>
+<h3 id="section-b-internet-of-things-iot">Section B: Internet of Things (IoT)</h3>
+<p><strong>23. The term "Internet of Things" was coined by:</strong><br>
+a) Allen Newell<br>
+b) Tim Berners-Lee<br>
+<strong>c) Kevin Ashton</strong><br>
+d) Herbert A. Simon</p>
+<hr>
+<p><strong>24. When was the term "Internet of Things" coined?</strong><br>
+a) 1985<br>
+b) 2005<br>
+<strong>c) 1999</strong><br>
+d) 2010</p>
+<hr>
+<p><strong>25. IoT is defined as:</strong><br>
+a) A network of AI-powered robots<br>
+<strong>b) A network of physical objects equipped with sensors and software to exchange data over the internet</strong><br>
+c) A type of cloud computing service<br>
+d) A cybersecurity framework</p>
+<hr>
+<p><strong>26. Which of the following is NOT a component of an IoT system?</strong><br>
+a) Sensors<br>
+b) Actuators<br>
+<strong>c) Compiler</strong><br>
+d) Networks</p>
+<hr>
+<p><strong>27. What is the role of sensors in an IoT system?</strong><br>
+<strong>a) To detect and measure physical properties like temperature, humidity, and motion</strong><br>
+b) To connect devices to the internet<br>
+c) To analyse and process data<br>
+d) To convert energy into motion</p>
+<hr>
+<p><strong>28. What is the function of actuators in an IoT system?</strong><br>
+a) To collect data from the environment<br>
+<strong>b) To convert energy into motion and act on data to generate output</strong><br>
+c) To provide communication pathways<br>
+d) To analyse collected data</p>
+<hr>
+<p><strong>29. Networks in IoT systems serve the purpose of:</strong><br>
+a) Detecting physical properties<br>
+b) Processing data analysis<br>
+<strong>c) Providing communication pathways connecting sensors and devices to the internet</strong><br>
+d) Converting energy into motion</p>
+<hr>
+<p><strong>30. In 2020, how many IoT devices were in use worldwide?</strong><br>
+a) 5 billion<br>
+b) 10 billion<br>
+<strong>c) Over 20 billion</strong><br>
+d) 50 billion</p>
+<hr>
+<p><strong>31. Which of the following is a security concern in IoT deployments?</strong><br>
+a) Device vulnerability<br>
+b) Data privacy<br>
+c) Lack of standardization<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>32. Which of the following is a recommended security measure for IoT devices?</strong><br>
+a) Using simple passwords for convenience<br>
+<strong>b) Regular software and firmware updates</strong><br>
+c) Sharing passwords across devices<br>
+d) Avoiding encryption to speed up data transfer</p>
+<hr>
+<p><strong>33. Which of the following is an application of IoT in the transportation domain?</strong><br>
+a) Smart traffic management<br>
+b) Vehicle-to-Vehicle (V2V) communication<br>
+c) Predictive maintenance of vehicles<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>34. IoT in healthcare is used for:</strong><br>
+a) Tracking vital signs<br>
+b) Reminding patients to take medication<br>
+c) Alerting healthcare providers in emergencies<br>
+<strong>d) All of the above</strong></p>
+<hr>
+<p><strong>35. A smart home system is an example of IoT because:</strong><br>
+a) It uses AI to make decisions<br>
+<strong>b) It connects internet-enabled appliances like temperature controls, lighting, and cameras</strong><br>
+c) It stores large amounts of data in the cloud<br>
+d) It uses NLP to communicate with users</p>
+<hr>
+<p><strong>36. Data in IoT systems can be analysed:</strong><br>
+a) Only on the device itself<br>
+b) Only in the cloud<br>
+c) Only on a central server<br>
+<strong>d) On the device, in the cloud, or on a central server</strong></p>
+<hr>
+<p><strong>37. Encryption in IoT systems is used to:</strong><br>
+a) Speed up data transmission<br>
+b) Reduce power consumption<br>
+<strong>c) Protect data from being intercepted by hackers</strong><br>
+d) Increase device connectivity</p>
+<hr>
+<p><strong>38. IoT is significant because it allows for:</strong><br>
+a) Replacing human workers with machines<br>
+<strong>b) Seamless integration of the physical and digital worlds</strong><br>
+c) Unlimited data storage at no cost<br>
+d) Eliminating the need for cybersecurity</p>
+<hr>
+<p><strong>39. Which of the following best describes "Data Analysis" as an IoT component?</strong><br>
+<strong>a) Processing and analysing collected sensor data to gain insights and make decisions</strong><br>
+b) Detecting physical properties in the environment<br>
+c) Providing communication pathways between devices<br>
+d) Converting electrical signals into motion</p>
+<hr>
+<p><strong>40. Strong passwords are recommended for IoT devices in order to:</strong><br>
+a) Speed up the device<br>
+<strong>b) Prevent unauthorized access</strong><br>
+c) Improve data analysis<br>
+d) Enhance device connectivity</p>
+<hr>
+<h2 id="short-questions">📋 Short Questions</h2>
+<hr>
+<h3 id="section-a-artificial-intelligence_1">Section A: Artificial Intelligence</h3>
+<ol>
+<li>
+<p>Define Artificial Intelligence (AI).</p>
+</li>
+<li>
+<p>Who created the first AI program and what was it called?</p>
+</li>
+<li>
+<p>What is Machine Learning? How is it different from traditional programming?</p>
+</li>
+<li>
+<p>What is Deep Learning and what structures does it use?</p>
+</li>
+<li>
+<p>Define Natural Language Processing (NLP) and give two real-world examples.</p>
+</li>
+<li>
+<p>What is Computer Vision? Give one practical application.</p>
+</li>
+<li>
+<p>Define Robotics as a subfield of AI.</p>
+</li>
+<li>
+<p>List any four domains where AI is applied and briefly describe its role in each.</p>
+</li>
+<li>
+<p>How is AI used in the healthcare sector?</p>
+</li>
+<li>
+<p>How does AI contribute to the agriculture sector?</p>
+</li>
+<li>
+<p>What are the two broad categories of AI algorithms based on interpretability?</p>
+</li>
+<li>
+<p>What are Explainable (Whitebox) AI algorithms? Give one example.</p>
+</li>
+<li>
+<p>What are Unexplainable (Blackbox) AI algorithms? Give one example.</p>
+</li>
+<li>
+<p>What is the key difference between whitebox and blackbox AI models?</p>
+</li>
+<li>
+<p>What is Reinforcement Learning? Give an example of its application.</p>
+</li>
+<li>
+<p>How is AI used in the finance industry?</p>
+</li>
+<li>
+<p>How is AI used in social media platforms?</p>
+</li>
+<li>
+<p>How is AI transforming the automobile industry?</p>
+</li>
+<li>
+<p>Explain the role of AI techniques in advancing machine learning models.</p>
+</li>
+<li>
+<p>Give two examples of AI applications in e-commerce.</p>
+</li>
+</ol>
+<hr>
+<h3 id="section-b-internet-of-things-iot_1">Section B: Internet of Things (IoT)</h3>
+<ol start="21">
+<li>
+<p>Define the Internet of Things (IoT).</p>
+</li>
+<li>
+<p>Who coined the term "Internet of Things" and when?</p>
+</li>
+<li>
+<p>What is the significance of IoT in connecting devices and systems?</p>
+</li>
+<li>
+<p>List and briefly describe the five main components of an IoT system.</p>
+</li>
+<li>
+<p>What is the role of sensors in an IoT system?</p>
+</li>
+<li>
+<p>What is the role of actuators in an IoT system? How are they different from sensors?</p>
+</li>
+<li>
+<p>What is the role of networks in an IoT system?</p>
+</li>
+<li>
+<p>Explain how data analysis works within an IoT system.</p>
+</li>
+<li>
+<p>Give one example of a smart home IoT application and describe how it works.</p>
+</li>
+<li>
+<p>Describe applications of IoT in the healthcare domain.</p>
+</li>
+<li>
+<p>Describe applications of IoT in the transportation domain.</p>
+</li>
+<li>
+<p>What security and privacy concerns arise from IoT deployments?</p>
+</li>
+<li>
+<p>List three security measures that should be taken to protect IoT devices.</p>
+</li>
+<li>
+<p>Why is encryption important in IoT systems?</p>
+</li>
+<li>
+<p>Why is it important to regularly update the software and firmware of IoT devices?</p>
+</li>
+<li>
+<p>How does IoT contribute to improving efficiency in smart homes?</p>
+</li>
+<li>
+<p>How does IoT benefit the healthcare sector in terms of patient monitoring?</p>
+</li>
+<li>
+<p>What is meant by "Vehicle-to-Vehicle (V2V) communication" in the context of IoT?</p>
+</li>
+<li>
+<p>Explain the importance of using strong passwords for IoT devices.</p>
+</li>
+<li>
+<p>How does IoT enable the seamless integration of the physical and digital worlds?</p>
+</li>
+</ol>
+<hr>
+<blockquote><p><strong>Tip for Students:</strong> For MCQs, focus on definitions, examples, and the distinguishing features of each concept. For short questions, always structure your answer with a clear definition followed by an example where possible.</p></blockquote>
+
+</body>
+</html>

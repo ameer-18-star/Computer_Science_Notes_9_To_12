@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 4: Computational Thinking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 4: Computational Thinking</div>
+</div>
+
+<h1 id="unit-4-computational-thinking">Unit 4: Computational Thinking</h1>
+<hr>
+<blockquote><p><strong>"Everyone in this country should learn to program a computer, because it teaches you how to think."</strong><br>
+— Steve Jobs</p></blockquote>
+<hr>
+<h2 id="student-learning-outcomes">Student Learning Outcomes</h2>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Define <strong>computational thinking</strong> and its four key components: decomposition, pattern recognition, abstraction, and algorithms.</li>
+<li>Explain the <strong>principles of computational thinking</strong>: problem understanding, problem simplification, and solution selection and design.</li>
+<li>Describe two <strong>algorithm design methods</strong> — flowcharts and pseudocode — and explain the differences between them.</li>
+<li><strong>Create and interpret flowcharts</strong> to represent algorithms visually.</li>
+<li><strong>Write pseudocode</strong> to outline algorithms in a structured, human-readable format.</li>
+<li>Perform <strong>dry runs</strong> of flowcharts and pseudocode to manually verify their correctness.</li>
+<li>Understand the concept and purpose of <strong>LARP</strong> (Logic of Algorithms for Resolution of Problems).</li>
+<li><strong>Identify</strong> three types of errors in algorithms: syntax errors, logical errors, and runtime errors.</li>
+<li>Apply <strong>debugging techniques</strong> to find and fix errors.</li>
+<li>Demonstrate <strong>problem-solving skills</strong> by applying computational thinking to real-world scenarios.</li>
+</ul>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>Imagine you have never baked a cake before. You walk into a kitchen and there is flour, sugar, eggs, butter, and an oven. Can you just start mixing things randomly? Probably not. You would look for a <strong>recipe</strong> — a clear, step-by-step guide that tells you exactly what to do and in what order.</p>
+<p>That recipe is an algorithm. And the process of reading the recipe, gathering the right ingredients, and thinking through the steps before you start? That is <strong>computational thinking</strong>.</p>
+<p>Computational thinking is not about computers. It is a <strong>way of thinking</strong>. It is a set of problem-solving skills that helps you break big, scary problems into small, manageable pieces — and then solve them, one step at a time.</p>
+<p>You already use computational thinking in daily life. When you plan a route to school, when you organize your school bag, when you figure out how many minutes until lunch — you are thinking computationally.</p>
+<p>In this chapter, you will learn to use these skills <strong>consciously and systematically</strong>. You will learn to draw flowcharts, write pseudocode, test your logic, and fix mistakes. By the end, you will see the world a little differently — not just as a student, but as a <strong>problem-solver</strong>.</p>
+<p>Let's begin.</p>
+<hr>
+<h2 id="41-computational-thinking">4.1 Computational Thinking</h2>
+<h3 id="what-is-computational-thinking">What Is Computational Thinking?</h3>
+<blockquote><p><strong>Definition:</strong> Computational thinking (CT) is a problem-solving process. It involves a set of skills and techniques to solve complex problems in a way that a computer — or any logical system — can understand and execute.</p></blockquote>
+<p>The important point: <strong>you do not need a computer to think computationally.</strong> Scientists, doctors, architects, and teachers all use computational thinking. It is a universal skill.</p>
+<p>Computational thinking has four main components:</p>
+<ol>
+<li><strong>Decomposition</strong></li>
+<li><strong>Pattern Recognition</strong></li>
+<li><strong>Abstraction</strong></li>
+<li><strong>Algorithms</strong></li>
+</ol>
+<p>Let's explore each one.</p>
+<hr>
+<h3 id="411-decomposition">4.1.1 Decomposition</h3>
+<hr>
+<h4 id="the-hook">🔖 The Hook</h4>
+<p>It is the first day of summer break. Your mother asks you to <strong>clean your entire room</strong>. You look at it — clothes on the floor, books piled up, a dusty desk, shoes everywhere — and you feel completely overwhelmed. Where do you even start?</p>
+<p>But then you think: what if you do <strong>one thing at a time</strong>?</p>
+<ol>
+<li>First, pick up all the clothes and put them in the laundry basket.</li>
+<li>Then, stack the books on the shelf.</li>
+<li>Then, wipe the desk.</li>
+<li>Then, arrange the shoes.</li>
+<li>Finally, sweep the floor.</li>
+</ol>
+<p>Suddenly, a huge, scary task becomes five small, easy tasks. <strong>That is decomposition.</strong></p>
+<hr>
+<h4 id="the-explanation">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Decomposition is the method of breaking down a complicated problem into smaller, more convenient, and manageable components.</p></blockquote>
+<p>When a problem is large, it is hard to know where to begin. Decomposition gives us a starting point. It helps us see the individual parts that make up the whole.</p>
+<p><strong>Example: Building a Birdhouse</strong></p>
+<p>Imagine you want to build a birdhouse. The full task sounds complicated. But watch what happens when we decompose it:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Sub-Task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Design</strong> the birdhouse — decide size, shape, and sketch a plan.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Gather materials</strong> — wood, nails, paint, hammer, saw.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Cut the wood</strong> — measure and cut pieces according to the design.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Assemble the pieces</strong> — join the wood pieces to form the structure.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Paint and decorate</strong> — make it attractive for birds.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Install the birdhouse</strong> — find a good location and fix it securely.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each step is simple on its own. Together, they build a birdhouse. Decomposition made the impossible feel possible.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p><strong>Your Turn:</strong> You want to organize a <strong>class science exhibition</strong>. It feels huge. Decompose it.</p>
+<p>Write down at least <strong>5 smaller sub-tasks</strong> that together make up the full task of organizing the exhibition.</p>
+<p><em>(Example starter: "1. Choose a topic for each group.")</em></p>
+<p>Can you add 4 more? Discuss with your partner.</p>
+<hr>
+<h4 id="quick-recap">📌 Quick Recap</h4>
+<blockquote><p><strong>Decomposition = Breaking one big problem into many small, solvable steps.</strong></p></blockquote>
+<hr>
+<h3 id="412-pattern-recognition">4.1.2 Pattern Recognition</h3>
+<hr>
+<h4 id="the-hook_1">🔖 The Hook</h4>
+<p>Your mathematics teacher gives you a sequence: <strong>1, 4, 9, 16, 25 ...</strong></p>
+<p>"What comes next?" she asks.</p>
+<p>You stare. Then you notice something. 1 = 1×1. 4 = 2×2. 9 = 3×3. 16 = 4×4. 25 = 5×5.</p>
+<p>They are all <strong>perfect squares</strong>! So the next number must be 6×6 = <strong>36</strong>.</p>
+<p>You did not memorize that answer. You found a <strong>pattern</strong>. And once you found it, you could predict any number in the sequence. That is pattern recognition.</p>
+<hr>
+<h4 id="the-explanation_1">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Pattern recognition is the process of identifying regularities, similarities, or repeating structures within a set of data or problems.</p></blockquote>
+<p>When we recognize a pattern, we can:<br>
+- <strong>Predict</strong> what comes next.<br>
+- <strong>Reuse</strong> a solution we already know.<br>
+- <strong>Save time</strong> instead of solving from scratch every time.</p>
+<p><strong>Example: Areas of Squares</strong></p>
+<p>Look at how the area of a square grows as the side length increases:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Side Length</th>
+<th>Area</th>
+<th>How It's Built</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>1 + 3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>9</td>
+<td>1 + 3 + 5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16</td>
+<td>1 + 3 + 5 + 7</td>
+</tr>
+<tr>
+<td>5</td>
+<td>25</td>
+<td>1 + 3 + 5 + 7 + 9</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The pattern:</strong> Each new area is formed by adding the next <strong>consecutive odd number</strong>.</p>
+<p>Once you see this pattern, you do not need to square the number every time. You can just add the next odd number. This is pattern recognition saving you work.</p>
+<hr>
+<h4 id="class-activity">🏫 Class Activity</h4>
+<p>Create a table with side lengths from <strong>1 to 10</strong>. Use the pattern (adding consecutive odd numbers) to fill in the area for each. Then verify your answers by squaring the side lengths. Do they match? They should!</p>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Look at this sequence of numbers: <strong>2, 6, 18, 54, 162 ...</strong></p>
+<p>With your partner, answer these questions:<br>
+1. What is the pattern? (Hint: what are you multiplying by each time?)<br>
+2. What is the <strong>6th</strong> number in the sequence?<br>
+3. What is the <strong>10th</strong> number?</p>
+<hr>
+<h4 id="quick-recap_1">📌 Quick Recap</h4>
+<blockquote><p><strong>Pattern Recognition = Spotting a repeating rule in data so you can predict, reuse, and save effort.</strong></p></blockquote>
+<hr>
+<h3 id="413-abstraction">4.1.3 Abstraction</h3>
+<hr>
+<h4 id="the-hook_2">🔖 The Hook</h4>
+<p>You are using Google Maps to find your school. The map shows roads, labels, and a blue dot for your location. It does <strong>not</strong> show every tree, every building's interior, every person walking on the road.</p>
+<p>Why not? Because you do not need that information to find your school. The map hides the unnecessary details and shows you only what matters. <strong>That is abstraction.</strong></p>
+<hr>
+<h4 id="the-explanation_2">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Abstraction is the process of hiding complex details and showing only the necessary information. It helps reduce complexity so we can focus on what is important.</p></blockquote>
+<p>Abstraction is everywhere:</p>
+<ul>
+<li>A <strong>map</strong> abstracts reality — it shows roads, not every tree.</li>
+<li>A <strong>recipe</strong> abstracts chemistry — it says "bake at 180°C" without explaining combustion.</li>
+<li>A <strong>phone icon</strong> on your screen abstracts millions of lines of code — you just tap it.</li>
+</ul>
+<p><strong>Example: Making a Cup of Tea</strong></p>
+<p>The full chemistry of making tea involves boiling water (which means exciting water molecules), the extraction of tannins and caffeine through diffusion... and so on.</p>
+<p>But the <strong>abstracted version</strong> is clean and simple:</p>
+<ol>
+<li>Boil water.</li>
+<li>Add a tea bag.</li>
+<li>Wait 3 minutes.</li>
+<li>Remove the bag. Add milk or sugar if you like.</li>
+<li>Drink.</li>
+</ol>
+<p>You did not need to understand chemistry. The abstraction gave you exactly what you needed.</p>
+<p><strong>In computing</strong>, abstraction means we design systems in layers. A programmer writing a game does not worry about how the computer stores data in binary. Those details are <strong>abstracted away</strong> by the operating system and programming language.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_1">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Think about <strong>driving a car</strong>.</p>
+<p>A driver uses: the steering wheel, the accelerator, the brakes, and the gear shift.</p>
+<p>A driver does NOT need to know: how the engine converts fuel into motion, how the transmission system works, or how the brake pads create friction.</p>
+<p><strong>Question:</strong> What details has the car <strong>abstracted away</strong> from the driver? Can you list three more examples of abstraction in daily life?</p>
+<hr>
+<h4 id="quick-recap_2">📌 Quick Recap</h4>
+<blockquote><p><strong>Abstraction = Hide what is not needed. Show only what matters. Focus on the big picture.</strong></p></blockquote>
+<hr>
+<h3 id="414-algorithms">4.1.4 Algorithms</h3>
+<hr>
+<h4 id="the-hook_3">🔖 The Hook</h4>
+<p>In 1843, a mathematician named <strong>Ada Lovelace</strong> wrote a set of step-by-step instructions for a mechanical computing machine built by Charles Babbage. It was the very first algorithm written for a machine. Ada Lovelace is considered the world's first computer programmer — and she never even saw a modern computer.</p>
+<p>Her insight? That a machine could follow instructions if those instructions were clear, ordered, and complete. A good algorithm is exactly that: <strong>clear, ordered, and complete</strong>.</p>
+<hr>
+<h4 id="the-explanation_3">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> An algorithm is a step-by-step set of instructions used to solve a problem or complete a task.</p></blockquote>
+<p>Think of an algorithm like a <strong>recipe</strong>, a set of <strong>driving directions</strong>, or a <strong>game rulebook</strong>. Each one tells you exactly what to do, in what order, to achieve a specific result.</p>
+<p><strong>Key Properties of a Good Algorithm:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Clear</strong></td>
+<td>Each step is specific. No guessing.</td>
+</tr>
+<tr>
+<td><strong>Ordered</strong></td>
+<td>Steps are in the correct sequence.</td>
+</tr>
+<tr>
+<td><strong>Finite</strong></td>
+<td>The algorithm must eventually end.</td>
+</tr>
+<tr>
+<td><strong>Effective</strong></td>
+<td>It must actually solve the problem.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example: Planting a Tree</strong></p>
+<p>Here is a simple, real-life algorithm:</p>
+<pre><code>1. Choose a suitable spot in your garden.
+2. Dig a hole twice the width of the tree's root ball.
+3. Place the tree in the hole. Make sure it is upright.
+4. Fill the hole with soil. Press gently to remove air pockets.
+5. Water the tree generously.
+6. Add mulch around the base to retain moisture.
+7. Water the tree regularly until it is established.
+</code></pre>
+<p>Notice: each step is specific. The order matters (you cannot fill the hole before placing the tree). And the algorithm has a clear end.</p>
+<p><strong>Example: Adding Two Numbers (Computer Algorithm)</strong></p>
+<pre><code>1. START
+2. Read the first number. Store it as A.
+3. Read the second number. Store it as B.
+4. Calculate Sum = A + B.
+5. Display Sum.
+6. STOP
+</code></pre>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_1">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Write an algorithm for <strong>making a cheese sandwich</strong>. Your algorithm must have at least 6 steps. Be specific — imagine you are writing it for someone who has never made a sandwich before. Exchange your algorithm with another pair. Can they follow it exactly? Does it work?</p>
+<hr>
+<h4 id="quick-recap_3">📌 Quick Recap</h4>
+<blockquote><p><strong>An algorithm is a clear, ordered, finite set of instructions that solves a specific problem.</strong></p></blockquote>
+<hr>
+<h2 id="42-principles-of-computational-thinking">4.2 Principles of Computational Thinking</h2>
+<h3 id="overview">Overview</h3>
+<p>Computational thinking is not just about the four components above. It also involves a <strong>process</strong> — a way of approaching any problem systematically. This process has three key principles:</p>
+<ol>
+<li><strong>Problem Understanding</strong></li>
+<li><strong>Problem Simplification</strong></li>
+<li><strong>Solution Selection and Design</strong></li>
+</ol>
+<hr>
+<h3 id="421-problem-understanding">4.2.1 Problem Understanding</h3>
+<hr>
+<h4 id="the-hook_4">🔖 The Hook</h4>
+<p>Albert Einstein once said:</p>
+<blockquote><p><em>"If I had an hour to solve a problem, I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions."</em></p></blockquote>
+<p>Why? Because if you misunderstand the problem, your solution — no matter how brilliant — will be <strong>wrong</strong>. The most common mistake students make in exams is misreading the question. In computer science, the same mistake in a program can cause a complete system failure.</p>
+<p><strong>Understanding the problem is the most important step.</strong></p>
+<hr>
+<h4 id="the-explanation_4">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Problem Understanding means thoroughly analyzing a problem to identify its <strong>core issue</strong>, its <strong>requirements</strong>, and its <strong>goals</strong> — <strong>before</strong> attempting any solution.</p></blockquote>
+<p>To understand a problem, ask yourself:</p>
+<ul>
+<li><strong>What exactly is being asked?</strong> (Not what you think is being asked.)</li>
+<li><strong>What information do I have?</strong> (The inputs.)</li>
+<li><strong>What result do I need?</strong> (The output.)</li>
+<li><strong>Are there any constraints?</strong> (Rules, limits, special conditions.)</li>
+</ul>
+<p><strong>Example:</strong></p>
+<p><em>Problem:</em> "Write a program to find the largest number in a list."</p>
+<p>Before writing anything, think:<br>
+- Input: A list of numbers. How many numbers? Can they be negative?<br>
+- Output: One number — the largest one.<br>
+- Constraint: What if the list is empty?</p>
+<p>Understanding the problem means answering these questions first.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_2">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Read this problem statement:</p>
+<p><em>"A school canteen wants to know how many students bought lunch today. The canteen serves from 12:00 PM to 1:00 PM."</em></p>
+<p>Answer these questions:<br>
+1. What is the <strong>input</strong> to this problem?<br>
+2. What is the <strong>output</strong> we need?<br>
+3. What <strong>constraint</strong> exists? (Look at the time.)<br>
+4. What information is missing that you would need to ask about?</p>
+<hr>
+<h4 id="quick-recap_4">📌 Quick Recap</h4>
+<blockquote><p><strong>Understand the problem fully — its inputs, outputs, and constraints — before writing a single line of solution.</strong></p></blockquote>
+<hr>
+<h3 id="422-problem-simplification">4.2.2 Problem Simplification</h3>
+<hr>
+<h4 id="the-hook_5">🔖 The Hook</h4>
+<p>Think of a jigsaw puzzle with 1,000 pieces. You cannot solve it all at once. What do you do? You sort pieces by color. You find the corner pieces first. You build one section at a time.</p>
+<p>Problem simplification is the same idea: <strong>divide the big problem into smaller sub-problems, and solve each one.</strong></p>
+<hr>
+<h4 id="the-explanation_5">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Problem Simplification means breaking a complex problem into smaller, more manageable sub-problems that are easier to understand and solve.</p></blockquote>
+<p>This principle connects directly to <strong>decomposition</strong> (Section 4.1.1). But here, we apply it specifically as a step in the problem-solving process.</p>
+<p><strong>Example: Designing a Website</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Sub-Problem</th>
+<th>What It Involves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Design the layout</td>
+<td>How many pages? Where does the menu go?</td>
+</tr>
+<tr>
+<td>2. Create the content</td>
+<td>Write the text. Choose the images.</td>
+</tr>
+<tr>
+<td>3. Code the functionality</td>
+<td>Make buttons work. Add forms.</td>
+</tr>
+<tr>
+<td>4. Test the website</td>
+<td>Check for broken links. Test on different devices.</td>
+</tr>
+<tr>
+<td>5. Launch the website</td>
+<td>Upload to a server.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each sub-problem can be worked on separately — even by different team members. This is how professional software is built.</p>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_2">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Simplify this problem into at least 4 sub-problems:</p>
+<p><em>"Plan a school sports day event for 200 students."</em></p>
+<p>Write each sub-problem as a separate task. Then, compare your list with another pair. Did you miss anything they included?</p>
+<hr>
+<h4 id="quick-recap_5">📌 Quick Recap</h4>
+<blockquote><p><strong>Simplify any large problem by dividing it into smaller sub-problems. Solve each piece. The full solution follows.</strong></p></blockquote>
+<hr>
+<h3 id="423-solution-selection-and-design">4.2.3 Solution Selection and Design</h3>
+<hr>
+<h4 id="the-hook_6">🔖 The Hook</h4>
+<p>You need to travel from Lahore to Karachi. You have three options: plane, train, or bus. Each one is a valid solution. But which is the <strong>best</strong> solution for your situation?</p>
+<ul>
+<li>If you have very little time: choose the plane.</li>
+<li>If you have little money: choose the bus.</li>
+<li>If you want comfort at a reasonable price: choose the train.</li>
+</ul>
+<p>Choosing the best solution requires <strong>evaluation</strong>. The same is true in computer science.</p>
+<hr>
+<h4 id="the-explanation_6">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Solution Selection and Design means evaluating different possible approaches to a problem and choosing the most efficient one — then creating a detailed plan (an algorithm) to implement it.</p></blockquote>
+<p><strong>How to evaluate solutions:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Criteria</th>
+<th>Question to Ask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Correctness</strong></td>
+<td>Does it actually solve the problem?</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>Is it fast? Does it use less memory?</td>
+</tr>
+<tr>
+<td><strong>Simplicity</strong></td>
+<td>Is it easy to understand and maintain?</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Will it still work if the problem gets bigger?</td>
+</tr>
+</tbody>
+</table></div>
+<p>Once you select the best solution, you <strong>design</strong> it — meaning you write out the algorithm, create a flowchart, or write pseudocode to represent it clearly.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_3">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>You want to find a specific name in a list of 100 student names. Here are two approaches:</p>
+<ul>
+<li><strong>Approach A:</strong> Read every name from the beginning until you find it.</li>
+<li><strong>Approach B:</strong> Sort the list alphabetically first, then jump directly to the right section (like a dictionary).</li>
+</ul>
+<p>Which approach is better? Why? What factors does your choice depend on?</p>
+<hr>
+<h4 id="quick-recap_6">📌 Quick Recap</h4>
+<blockquote><p><strong>Evaluate your options. Choose the solution that is correct, efficient, and practical. Then design it clearly.</strong></p></blockquote>
+<hr>
+<h2 id="43-algorithm-design-methods">4.3 Algorithm Design Methods</h2>
+<h3 id="introduction_1">Introduction</h3>
+<p>You have an algorithm in your head. Now how do you <strong>communicate</strong> it to someone else — or to a computer?</p>
+<p>There are two main methods:</p>
+<ol>
+<li><strong>Flowcharts</strong> — visual diagrams</li>
+<li><strong>Pseudocode</strong> — structured plain-language text</li>
+</ol>
+<p>Both methods describe the same algorithm. They just do it in different ways. Let's learn both.</p>
+<hr>
+<h3 id="431-flowcharts">4.3.1 Flowcharts</h3>
+<hr>
+<h4 id="the-hook_7">🔖 The Hook</h4>
+<p>In the 1940s, <strong>Herman Goldstine</strong> and <strong>John von Neumann</strong> — two pioneering computer scientists — needed a way to explain complex computer programs to their teams. Writing out long paragraphs of instructions was confusing. So they invented a system of <strong>boxes and arrows</strong> that showed the flow of logic visually.</p>
+<p>That system became the <strong>flowchart</strong>. Today, it is used by computer scientists, engineers, business analysts, and students around the world. You are about to join that tradition.</p>
+<hr>
+<h4 id="importance-of-flowcharts">📖 Importance of Flowcharts</h4>
+<blockquote><p><strong>Definition:</strong> A flowchart is a visual representation of the steps in a process or algorithm, using different symbols connected by arrows.</p></blockquote>
+<p><strong>Why are flowcharts important?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Clarity</strong></td>
+<td>A picture shows the full process at a glance.</td>
+</tr>
+<tr>
+<td><strong>Communication</strong></td>
+<td>Anyone — even without coding knowledge — can read a flowchart.</td>
+</tr>
+<tr>
+<td><strong>Problem Solving</strong></td>
+<td>Flowcharts help you spot steps that are missing or incorrect.</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>They serve as a permanent record of how a system works.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="flowchart-symbols">📐 Flowchart Symbols</h4>
+<p>Every flowchart uses a small set of standard symbols. Learn these five — they are all you need.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symbol Shape</th>
+<th>Name</th>
+<th>What It Represents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Oval</strong></td>
+<td>Terminal</td>
+<td>The <strong>Start</strong> or <strong>End</strong> of the process. Always labeled "Start" or "End/Stop".</td>
+</tr>
+<tr>
+<td><strong>Rectangle</strong></td>
+<td>Process</td>
+<td>A <strong>task or operation</strong> being performed. Example: "Calculate Sum = A + B"</td>
+</tr>
+<tr>
+<td><strong>Parallelogram</strong></td>
+<td>Input / Output</td>
+<td><strong>Reading input</strong> from the user OR <strong>displaying output</strong>. Example: "Read A" or "Display Sum"</td>
+</tr>
+<tr>
+<td><strong>Diamond</strong></td>
+<td>Decision</td>
+<td>A <strong>yes/no question</strong> or <strong>condition</strong>. The flow branches into two paths based on the answer.</td>
+</tr>
+<tr>
+<td><strong>Arrow</strong></td>
+<td>Flowline</td>
+<td>Shows the <strong>direction</strong> of flow — which step comes next.</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><p><strong>How to draw these symbols on paper:</strong><br>
+- Oval: Draw an elongated circle (like a running track shape).<br>
+- Rectangle: A standard rectangle box.<br>
+- Parallelogram: A slanted rectangle (leaning to the right).<br>
+- Diamond: A square rotated 45°, like a diamond shape.<br>
+- Arrow: A line with an arrowhead at the end.</p></blockquote>
+<hr>
+<h4 id="flowchart-examples">📖 Flowchart Examples</h4>
+<p><strong>Example 1: Adding Two Numbers</strong></p>
+<p>Here is how to describe this flowchart (draw it as you read):</p>
+<pre><code>[START] — oval
+    ↓
+[READ A] — parallelogram (input)
+    ↓
+[READ B] — parallelogram (input)
+    ↓
+[Sum = A + B] — rectangle (process)
+    ↓
+[DISPLAY Sum] — parallelogram (output)
+    ↓
+[STOP] — oval
+</code></pre>
+<p>Simple. Clean. Six steps. Anyone can follow it.</p>
+<hr>
+<p><strong>Example 2: Finding If a Number Is Even or Odd</strong></p>
+<pre><code>[START] — oval
+    ↓
+[READ No.] — parallelogram (input)
+    ↓
+[Is No. % 2 == 0 ?] — diamond (decision)
+   ↙ YES              ↘ NO
+[DISPLAY &quot;Even&quot;]     [DISPLAY &quot;Odd&quot;]
+— parallelogram       — parallelogram
+    ↓                     ↓
+        [STOP] — oval
+</code></pre>
+<p>The <strong>diamond</strong> creates a fork in the road. If the remainder when divided by 2 is zero, the number is even. Otherwise, it is odd.</p>
+<hr>
+<p><strong>Example 3: Login System (Maximum 5 Attempts)</strong></p>
+<pre><code>[START]
+    ↓
+[SET Attempts = 0]
+    ↓
+[READ Username and Password]
+    ↓
+[Are credentials correct?]  — diamond
+   ↙ YES                ↘ NO
+[GRANT ACCESS]        [Attempts = Attempts + 1]
+[STOP]                    ↓
+                   [Is Attempts == 5?]  — diamond
+                   ↙ YES         ↘ NO
+              [LOCK ACCOUNT]   [GO BACK to READ Username and Password]
+              [ALERT USER]
+              [STOP]
+</code></pre>
+<p>This flowchart shows <strong>looping</strong> (going back to try again) and <strong>multiple decision points</strong>.</p>
+<hr>
+<h4 id="class-activity_1">🏫 Class Activity</h4>
+<p><strong>Draw a flowchart for selecting the school cricket team.</strong></p>
+<p>Rules:<br>
+- The team can have a maximum of <strong>11 players</strong>.<br>
+- Each player must have <strong>parental permission</strong>.</p>
+<p>Start with: "Is the player's permission form signed?" and "Is the team full (11 players)?"</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_4">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>A vending machine gives you a snack if you insert enough money. If you insert too little, it asks for more. If the snack is out of stock, it returns your money.</p>
+<p>Can you <strong>describe</strong> this as a flowchart in words? Write out each step and decision. Then try to draw it.</p>
+<hr>
+<h4 id="quick-recap_7">📌 Quick Recap</h4>
+<blockquote><p><strong>A flowchart uses standard symbols (oval, rectangle, parallelogram, diamond, arrow) to visually show the steps and decisions in an algorithm.</strong></p></blockquote>
+<hr>
+<h3 id="432-pseudocode">4.3.2 Pseudocode</h3>
+<hr>
+<h4 id="the-hook_8">🔖 The Hook</h4>
+<p>Imagine you are writing a recipe — but not for a person. You are writing it for a robot that can read English but needs very precise, structured instructions. You cannot use casual language like "add a little salt." You must write "Add 1 teaspoon of salt." But you also do not need to write actual code.</p>
+<p>That middle ground — <strong>structured, precise, plain language</strong> — is pseudocode.</p>
+<hr>
+<h4 id="the-explanation_7">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Pseudocode is a method of representing an algorithm using simple, structured, informal language that is easy for humans to read. It combines the structure of programming with the clarity of plain English.</p></blockquote>
+<p><strong>Important:</strong> Pseudocode is NOT actual code. It cannot be run on a computer. It is a <strong>planning tool</strong>. You use it to think through your logic before writing real code.</p>
+<p><strong>Why use pseudocode?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Reason</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Clarity</strong></td>
+<td>Focus on logic, not syntax rules.</td>
+</tr>
+<tr>
+<td><strong>Planning</strong></td>
+<td>Outline your algorithm before coding.</td>
+</tr>
+<tr>
+<td><strong>Communication</strong></td>
+<td>Share ideas with teammates who use different coding languages.</td>
+</tr>
+<tr>
+<td><strong>Language-independent</strong></td>
+<td>Not tied to Python, Java, or any specific language.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="pseudocode-examples">📝 Pseudocode Examples</h4>
+<p><strong>Example 1: Checking If a Number Is Even or Odd</strong></p>
+<pre><code>Procedure CheckEvenOdd(number)
+    Input:  number  (the number to check)
+    Output: &quot;Even&quot; or &quot;Odd&quot;
+
+    BEGIN
+        READ No.
+        IF (No. % 2 == 0) THEN
+            PRINT &quot;No. is Even&quot;
+        ELSE
+            PRINT &quot;No. is Odd&quot;
+        END IF
+    END
+</code></pre>
+<p><strong>Line-by-line explanation:</strong><br>
+- <code>Procedure</code> — this is the name of our algorithm.<br>
+- <code>READ No.</code> — we get the number from the user.<br>
+- <code>IF (No. % 2 == 0)</code> — we check if the remainder after dividing by 2 is zero.<br>
+- <code>THEN PRINT "Even"</code> — if yes, print Even.<br>
+- <code>ELSE PRINT "Odd"</code> — if no, print Odd.<br>
+- <code>END IF</code> — closes the decision block.<br>
+- <code>END</code> — the algorithm is complete.</p>
+<hr>
+<p><strong>Example 2: Checking If a Number Is Prime</strong></p>
+<p>A <strong>prime number</strong> is a number greater than 1 that has no divisors other than 1 and itself. (Examples: 2, 3, 5, 7, 11, 13...)</p>
+<pre><code>Procedure IsPrime(number)
+    Input:  number  (the number to check)
+    Output: True (prime) or False (not prime)
+
+    BEGIN
+        IF (number &lt;= 1) THEN
+            RETURN False
+        END IF
+
+        FOR i FROM 2 TO sqrt(number) DO
+            IF (number % i == 0) THEN
+                RETURN False
+            END IF
+        END FOR
+
+        RETURN True
+    END
+</code></pre>
+<p><strong>Key ideas:</strong><br>
+- We only check divisors up to the <strong>square root</strong> of the number. This is more efficient.<br>
+- If any divisor divides the number evenly (remainder = 0), it is NOT prime.<br>
+- If no divisor divides it, it IS prime.</p>
+<hr>
+<p><strong>Example 3: Login System — Username and Password Check</strong></p>
+<pre><code>Procedure CheckCredentials(username, password)
+    Input:  username, password
+    Output: Login success or failure message
+
+    BEGIN
+        validUsername = &quot;user123&quot;
+        validPassword = &quot;pass123&quot;
+
+        IF (username == validUsername) THEN
+            IF (password == validPassword) THEN
+                PRINT &quot;Login successful&quot;
+            ELSE
+                PRINT &quot;Invalid password&quot;
+            END IF
+        ELSE
+            PRINT &quot;Invalid username&quot;
+        END IF
+    END
+</code></pre>
+<p>Notice the <strong>nested IF</strong> — one decision inside another. This is common in real programs.</p>
+<hr>
+<h4 id="class-activity_2">🏫 Class Activity</h4>
+<p>Divide into small groups. Each group gets one of these problems:</p>
+<ol>
+<li>Find the <strong>maximum number</strong> in a list of five numbers.</li>
+<li>Calculate the <strong>factorial</strong> of a number. (Factorial of 5 = 5 × 4 × 3 × 2 × 1 = 120)</li>
+<li>Check if a student <strong>passed or failed</strong> (passing mark = 50).</li>
+</ol>
+<p>Write pseudocode for your problem. Present it to the class. Can the class follow your logic?</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_5">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Here is a piece of pseudocode:</p>
+<pre><code>BEGIN
+    READ score
+    IF score &gt;= 80 THEN
+        PRINT &quot;Grade: A&quot;
+    ELSE IF score &gt;= 60 THEN
+        PRINT &quot;Grade: B&quot;
+    ELSE IF score &gt;= 40 THEN
+        PRINT &quot;Grade: C&quot;
+    ELSE
+        PRINT &quot;Grade: Fail&quot;
+    END IF
+END
+</code></pre>
+<p>What grade would be printed for the following scores?<br>
+1. Score = 75<br>
+2. Score = 92<br>
+3. Score = 38<br>
+4. Score = 60</p>
+<hr>
+<h4 id="quick-recap_8">📌 Quick Recap</h4>
+<blockquote><p><strong>Pseudocode uses structured, plain-language instructions to describe an algorithm clearly — without using any specific programming language syntax.</strong></p></blockquote>
+<hr>
+<h3 id="433-differentiating-flowcharts-and-pseudocode">4.3.3 Differentiating Flowcharts and Pseudocode</h3>
+<p>Both flowcharts and pseudocode describe the <strong>same algorithm</strong> — but in very different ways. The table below summarizes the key differences:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Flowchart</th>
+<th>Pseudocode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Format</strong></td>
+<td>Visual (shapes and arrows)</td>
+<td>Text (structured plain language)</td>
+</tr>
+<tr>
+<td><strong>Reading style</strong></td>
+<td>Like watching a map — see the whole picture at once</td>
+<td>Like reading a story — step by step</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Understanding the <strong>flow and structure</strong> of an algorithm</td>
+<td>Planning and <strong>converting directly to code</strong></td>
+</tr>
+<tr>
+<td><strong>Audience</strong></td>
+<td>Anyone — including non-programmers</td>
+<td>Programmers and technical students</td>
+</tr>
+<tr>
+<td><strong>Decisions</strong></td>
+<td>Shown as diamond shapes with branches</td>
+<td>Shown as IF...THEN...ELSE blocks</td>
+</tr>
+<tr>
+<td><strong>Ease of change</strong></td>
+<td>Harder to edit once drawn</td>
+<td>Easy to revise — just rewrite the line</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Which should you use?</strong></p>
+<ul>
+<li>Use a <strong>flowchart</strong> when you want to visualize the process or present it to an audience.</li>
+<li>Use <strong>pseudocode</strong> when you want to plan logic before writing actual code.</li>
+<li>Many professionals use <strong>both</strong> — a flowchart for the big picture, pseudocode for the detail.</li>
+</ul>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_3">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Your partner describes an algorithm verbally: <em>"Ask the user for their age. If the age is 18 or above, print 'You can vote.' Otherwise, print 'You cannot vote yet.'"</em></p>
+<p><strong>You</strong> draw the <strong>flowchart</strong>. <strong>Your partner</strong> writes the <strong>pseudocode</strong>.</p>
+<p>Compare your results. Do they represent the same logic?</p>
+<hr>
+<h4 id="quick-recap_9">📌 Quick Recap</h4>
+<blockquote><p><strong>Flowcharts show the visual flow. Pseudocode shows the structured logic. Both describe the same algorithm in different formats.</strong></p></blockquote>
+<hr>
+<h2 id="44-evaluation-techniques-for-an-algorithm">4.4 Evaluation Techniques for an Algorithm</h2>
+<h3 id="introduction_2">Introduction</h3>
+<p>You have designed an algorithm. It works. But is it <strong>good</strong>? Could a different algorithm solve the same problem <strong>faster</strong> or using <strong>less memory</strong>?</p>
+<p>Evaluating an algorithm means measuring how well it performs. There are two key measurements:</p>
+<ol>
+<li><strong>Time Complexity</strong> — how fast is it?</li>
+<li><strong>Space Complexity</strong> — how much memory does it use?</li>
+</ol>
+<hr>
+<h3 id="441-time-complexity">4.4.1 Time Complexity</h3>
+<hr>
+<h4 id="the-hook_9">🔖 The Hook</h4>
+<p>Imagine you are searching for your friend's name in a school attendance register. The register has 30 names. You start from the top and read each name until you find your friend. If your friend's name starts with "Z", you might have to read all 30 names.</p>
+<p>Now imagine the register has <strong>1,000 names</strong>. Or <strong>10,000 names</strong>.</p>
+<p>The more names, the more time it takes. <strong>Time complexity</strong> is the study of exactly how that time grows as the input gets larger.</p>
+<hr>
+<h4 id="the-explanation_8">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Time complexity is a measure of how the running time of an algorithm changes as the size of the input increases.</p></blockquote>
+<p>We usually express time complexity using <strong>Big O notation</strong>. You do not need to calculate it mathematically at this level — just understand what it means.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Big O Notation</th>
+<th>Name</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O(1)</strong></td>
+<td>Constant Time</td>
+<td>The algorithm always takes the same time, regardless of input size. Example: looking up a value in a known location.</td>
+</tr>
+<tr>
+<td><strong>O(n)</strong></td>
+<td>Linear Time</td>
+<td>As input doubles, time doubles. Example: searching through a list one by one.</td>
+</tr>
+<tr>
+<td><strong>O(n²)</strong></td>
+<td>Quadratic Time</td>
+<td>As input doubles, time quadruples. Example: comparing every item with every other item.</td>
+</tr>
+<tr>
+<td><strong>O(log n)</strong></td>
+<td>Logarithmic Time</td>
+<td>As input doubles, time increases only slightly. Example: binary search on a sorted list.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Simple analogy:</strong></p>
+<ul>
+<li>You have a box of 100 chocolates. Finding a specific chocolate by checking one by one = <strong>O(n)</strong>.</li>
+<li>If the chocolates are sorted by flavor and you split the box in half each time = <strong>O(log n)</strong>.</li>
+<li>O(log n) is much faster. This is why sorting data before searching it is often worth the effort.</li>
+</ul>
+<hr>
+<h4 id="class-activity_3">🏫 Class Activity</h4>
+<p>Think of a simple task: finding the <strong>largest number</strong> in a list.</p>
+<p>Write down the steps. Now imagine the list has:<br>
+- 10 numbers<br>
+- 100 numbers<br>
+- 1,000 numbers</p>
+<p>How do the steps change? Does the number of comparisons increase? By how much?</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_6">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Which algorithm do you think is faster for finding a name in a list of 1,000 names?</p>
+<ul>
+<li><strong>Algorithm A:</strong> Start at the beginning. Check each name. Stop when you find it.</li>
+<li><strong>Algorithm B:</strong> The list is sorted alphabetically. Guess the middle. If your name comes before the middle, discard the second half. Repeat.</li>
+</ul>
+<p>Why is Algorithm B faster? What does this tell you about the relationship between <strong>data organization</strong> and <strong>time complexity</strong>?</p>
+<hr>
+<h4 id="quick-recap_10">📌 Quick Recap</h4>
+<blockquote><p><strong>Time complexity tells us how an algorithm's running time grows as the input size grows. Faster algorithms have lower time complexity.</strong></p></blockquote>
+<hr>
+<h3 id="442-space-complexity">4.4.2 Space Complexity</h3>
+<hr>
+<h4 id="the-hook_10">🔖 The Hook</h4>
+<p>You are packing for a camping trip. One of your friends brings a single backpack with everything neatly organized. Another friend brings three large suitcases for the same trip.</p>
+<p>Both friends are prepared. But your organized friend is much more <strong>efficient</strong> in their use of space.</p>
+<p>Algorithms work the same way. Two algorithms might both solve a problem correctly — but one might use far more <strong>memory</strong> to do it.</p>
+<hr>
+<h4 id="the-explanation_9">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Space complexity is a measure of how much memory an algorithm needs relative to the size of its input.</p></blockquote>
+<p>Space complexity includes:<br>
+- <strong>Input space:</strong> The memory needed to store the input data.<br>
+- <strong>Auxiliary space:</strong> Extra memory the algorithm needs while running (temporary variables, lists, etc.).</p>
+<p><strong>Example:</strong></p>
+<p>An algorithm that sorts a list by copying it into a second list uses <strong>more memory</strong> than one that sorts it <strong>in place</strong> (rearranging items within the same list). The in-place algorithm has lower space complexity.</p>
+<p>Like time complexity, space complexity is also expressed in Big O notation.</p>
+<p><strong>The trade-off:</strong> Sometimes you can make an algorithm faster by using more memory. Other times, saving memory makes the algorithm slower. A good computer scientist understands this trade-off.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_7">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>You have a list of 10 numbers. You want to find the <strong>average</strong>.</p>
+<ul>
+<li><strong>Method A:</strong> Add all numbers one by one, keeping a running total. Use only 2 extra variables (total and count).</li>
+<li><strong>Method B:</strong> Copy all 10 numbers into a second list, then add them.</li>
+</ul>
+<p>Which method uses <strong>less space</strong>? Which would you prefer if memory was limited? Does the choice change if the list has 1 million numbers?</p>
+<hr>
+<h4 id="quick-recap_11">📌 Quick Recap</h4>
+<blockquote><p><strong>Space complexity measures how much memory an algorithm uses. Good algorithms are efficient in both time and space.</strong></p></blockquote>
+<hr>
+<h2 id="45-dry-run">4.5 Dry Run</h2>
+<h3 id="introduction_3">Introduction</h3>
+<p>You have written an algorithm or drawn a flowchart. How do you know it is correct <strong>before</strong> running it on a computer?</p>
+<p>The answer: you <strong>dry run</strong> it. A dry run means you trace through the algorithm <strong>manually</strong>, step by step, using sample data, with a pen and paper. You track the value of each variable at each step.</p>
+<p>A dry run catches logical errors early — saving time and frustration later.</p>
+<hr>
+<h3 id="451-dry-run-of-a-flowchart">4.5.1 Dry Run of a Flowchart</h3>
+<hr>
+<h4 id="the-hook_11">🔖 The Hook</h4>
+<p>Before a pilot flies a new aircraft, they sit in a simulator and "fly" the plane without leaving the ground. They go through every step — engine startup, takeoff, navigation, landing — to make sure they know exactly what to do and that everything works.</p>
+<p>A dry run is the same idea. You "fly" your flowchart without a computer.</p>
+<hr>
+<h4 id="step-by-step-walkthrough">📖 Step-by-Step Walkthrough</h4>
+<p><strong>Flowchart: Adding Two Numbers</strong></p>
+<p>Flowchart steps (as described in Section 4.3.1):</p>
+<pre><code>[START] → [Input A] → [Input B] → [Sum = A + B] → [Display Sum] → [STOP]
+</code></pre>
+<p><strong>Dry Run with sample values: A = 3, B = 5</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+<th>Variable Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>START</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Input A</td>
+<td>A = 3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Input B</td>
+<td>B = 5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Sum = A + B</td>
+<td>Sum = 3 + 5 = <strong>8</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Display Sum</td>
+<td>Output: <strong>8</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>STOP</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>The algorithm correctly outputs 8. The dry run confirms the flowchart is correct.</p>
+<hr>
+<h4 id="class-activity_4">🏫 Class Activity</h4>
+<p>Draw a flowchart for finding the <strong>largest of two numbers</strong>. Then perform a dry run for:<br>
+- Numbers 7 and 4<br>
+- Numbers 12 and 19</p>
+<p>Write down each step and the value of all variables at each step. What does your flowchart output? Is it correct?</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_8">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>A student drew this flowchart for finding if a number is positive or negative. During the dry run with the number <strong>0</strong>, the flowchart displayed "Positive."</p>
+<p>Is that correct? What change would you make to the flowchart to handle the number 0 properly?</p>
+<hr>
+<h4 id="quick-recap_12">📌 Quick Recap</h4>
+<blockquote><p><strong>A dry run of a flowchart means manually tracing through each step with sample data, tracking variables, to verify the logic is correct.</strong></p></blockquote>
+<hr>
+<h3 id="452-dry-run-of-pseudocode">4.5.2 Dry Run of Pseudocode</h3>
+<hr>
+<h4 id="the-hook_12">🔖 The Hook</h4>
+<p>Imagine you are a teacher marking a student's pseudocode. You go through it line by line, mentally running the instructions with a specific example, checking whether the output makes sense. That is exactly what a dry run of pseudocode is.</p>
+<hr>
+<h4 id="step-by-step-walkthrough_1">📖 Step-by-Step Walkthrough</h4>
+<p><strong>Pseudocode: Finding the Maximum of Two Numbers</strong></p>
+<pre><code>Algorithm FindMax
+    Input: num1, num2
+
+    IF num1 &gt; num2 THEN
+        max = num1
+    ELSE
+        max = num2
+    END IF
+
+    OUTPUT max
+</code></pre>
+<p><strong>Dry Run with values: num1 = 10, num2 = 15</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Instruction</th>
+<th>Variable Values</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Input num1 = 10, num2 = 15</td>
+<td>num1=10, num2=15</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>IF 10 &gt; 15 THEN</td>
+<td>—</td>
+<td>Condition is <strong>FALSE</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>ELSE</td>
+<td>—</td>
+<td>Go to ELSE branch</td>
+</tr>
+<tr>
+<td>4</td>
+<td>max = num2</td>
+<td>max = <strong>15</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>END IF</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>OUTPUT max</td>
+<td>Output: <strong>15</strong></td>
+<td>Correct!</td>
+</tr>
+</tbody>
+</table></div>
+<p>The algorithm correctly identifies 15 as the maximum.</p>
+<p><strong>Now try with: num1 = 25, num2 = 10</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Instruction</th>
+<th>Variable Values</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Input num1 = 25, num2 = 10</td>
+<td>num1=25, num2=10</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>IF 25 &gt; 10 THEN</td>
+<td>—</td>
+<td>Condition is <strong>TRUE</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>max = num1</td>
+<td>max = <strong>25</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>END IF</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>OUTPUT max</td>
+<td>Output: <strong>25</strong></td>
+<td>Correct!</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_4">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Dry run the following pseudocode with the values <strong>num1 = 7, num2 = 7</strong> (both equal):</p>
+<pre><code>IF num1 &gt; num2 THEN
+    max = num1
+ELSE
+    max = num2
+END IF
+OUTPUT max
+</code></pre>
+<ul>
+<li>What does the output?</li>
+<li>Is the output correct (is 7 the maximum of 7 and 7)?</li>
+<li>What would happen if we changed <code>&gt;</code> to <code>&gt;=</code>? Would the output change?</li>
+</ul>
+<hr>
+<h4 id="quick-recap_13">📌 Quick Recap</h4>
+<blockquote><p><strong>A dry run of pseudocode means tracing through each line manually with sample values to verify that the logic and output are correct.</strong></p></blockquote>
+<hr>
+<h3 id="453-simulation">4.5.3 Simulation</h3>
+<hr>
+<h4 id="the-hook_13">🔖 The Hook</h4>
+<p>In 2003, NASA sent two rovers — Spirit and Opportunity — to the surface of Mars. Before launching them into space, NASA engineers ran <strong>thousands of computer simulations</strong> to test what would happen when they landed, how the terrain would affect the wheels, and what could go wrong.</p>
+<p>They could not test on Mars. So they built a digital model of Mars and tested there first.</p>
+<p><strong>That is simulation:</strong> using a computer model to imitate a real-world system.</p>
+<hr>
+<h4 id="the-explanation_10">📖 The Explanation</h4>
+<blockquote><p><strong>Definition:</strong> Simulation is the use of computer programs to create a model of a real-world process or system, allowing us to test ideas and algorithms without real-world risk or cost.</p></blockquote>
+<p><strong>Why use simulation?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cost-effective</strong></td>
+<td>Testing aircraft designs digitally costs less than building real prototypes.</td>
+</tr>
+<tr>
+<td><strong>Safe</strong></td>
+<td>Simulating a building fire to test evacuation plans — without actually burning a building.</td>
+</tr>
+<tr>
+<td><strong>Repeatable</strong></td>
+<td>Run the same simulation 1,000 times with different settings.</td>
+</tr>
+<tr>
+<td><strong>Exploratory</strong></td>
+<td>Try scenarios that haven't happened yet.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Real-world examples:</strong></p>
+<ul>
+<li><strong>Weather forecasting:</strong> Meteorologists input temperature, humidity, and wind data into computer models to predict tomorrow's weather.</li>
+<li><strong>Traffic flow:</strong> City planners simulate how changing a traffic light timing affects congestion.</li>
+<li><strong>Medical training:</strong> Doctors practice surgery on digital simulations before performing on real patients.</li>
+<li><strong>Video games:</strong> Physics engines simulate gravity, collision, and movement in game worlds.</li>
+</ul>
+<hr>
+<h4 id="class-activity-simulation-game">🏫 Class Activity: Simulation Game</h4>
+<p><strong>Objective:</strong> Experience managing a system and making decisions.</p>
+<p><strong>Required materials:</strong> A computer or tablet with internet access; a city-building simulation game (e.g., SimCity or similar).</p>
+<p><strong>Activity:</strong> Play in pairs. Build and manage a virtual city. Make decisions about roads, power, water, and buildings. After 20 minutes, discuss:<br>
+- What decisions were hardest?<br>
+- What happened when you ran out of resources?<br>
+- How did changing one thing (a road, a power plant) affect the whole city?</p>
+<p><strong>Link to learning:</strong> Real cities use simulations to plan. You just did the same thing.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_9">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>A hospital wants to know if it has enough doctors to handle an outbreak of flu during the winter. They cannot wait for winter to find out.</p>
+<p>How could they use <strong>simulation</strong> to plan ahead? What information (inputs) would they need to include in the simulation? What outputs would they want?</p>
+<hr>
+<h4 id="quick-recap_14">📌 Quick Recap</h4>
+<blockquote><p><strong>Simulation creates a digital model of a real-world system, allowing safe, repeatable, and cost-effective testing of algorithms and plans.</strong></p></blockquote>
+<hr>
+<h2 id="46-introduction-to-larp-logic-of-algorithms-for-resolution-of-problems">4.6 Introduction to LARP (Logic of Algorithms for Resolution of Problems)</h2>
+<h3 id="what-is-larp">What Is LARP?</h3>
+<blockquote><p><strong>Definition:</strong> LARP stands for <strong>Logic of Algorithms for Resolution of Problems</strong>. It is a software tool that allows students to <strong>write, draw, and execute algorithms</strong> in a simplified, beginner-friendly environment.</p></blockquote>
+<p>Think of LARP as a <strong>playground for algorithms</strong>. You write your steps, run them, and see the results immediately. You can experiment, make mistakes, and learn — all in a safe, visual environment.</p>
+<hr>
+<h3 id="461-why-is-larp-important">4.6.1 Why Is LARP Important?</h3>
+<hr>
+<h4 id="the-hook_14">🔖 The Hook</h4>
+<p>Learning to play guitar is much more effective if you actually <strong>pick up the guitar</strong> and play, rather than just reading a book about music theory. LARP is the guitar for algorithm learners. It puts the algorithm in your hands.</p>
+<hr>
+<h4 id="the-explanation_11">📖 The Explanation</h4>
+<p>LARP helps you:</p>
+<ol>
+<li><strong>See</strong> how algorithms execute step by step.</li>
+<li><strong>Understand</strong> the effect of different inputs on the output.</li>
+<li><strong>Practice</strong> writing algorithms in a safe, interactive environment.</li>
+<li><strong>Visualize</strong> flowcharts and immediately run them to check their correctness.</li>
+<li><strong>Debug</strong> errors using real error messages.</li>
+</ol>
+<p>LARP makes the abstract concept of an algorithm <strong>concrete and real</strong>. Instead of imagining what happens when you run an algorithm, you actually run it and watch.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_10">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Before using LARP, think about: what is the difference between <strong>writing</strong> an algorithm and <strong>running</strong> it? What can running reveal that writing alone cannot?</p>
+<hr>
+<h4 id="quick-recap_15">📌 Quick Recap</h4>
+<blockquote><p><strong>LARP is a tool that lets you write, draw, and run algorithms interactively — turning theory into hands-on practice.</strong></p></blockquote>
+<hr>
+<h3 id="462-writing-algorithms-in-larp">4.6.2 Writing Algorithms in LARP</h3>
+<hr>
+<h4 id="larp-syntax-the-commands">📖 LARP Syntax — The Commands</h4>
+<p>LARP uses a simple, structured language. Here are the key commands:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>START</code></td>
+<td>Begin the algorithm</td>
+<td><code>START</code></td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>Finish the algorithm</td>
+<td><code>END</code></td>
+</tr>
+<tr>
+<td><code>WRITE</code></td>
+<td>Display a message or value</td>
+<td><code>WRITE "Enter your salary"</code></td>
+</tr>
+<tr>
+<td><code>READ</code></td>
+<td>Take input from the user</td>
+<td><code>READ salary</code></td>
+</tr>
+<tr>
+<td><code>IF...THEN...ELSE...ENDIF</code></td>
+<td>Make a decision</td>
+<td><code>IF salary &gt; 50000 THEN</code></td>
+</tr>
+<tr>
+<td><code>FOR...DO...ENDFOR</code></td>
+<td>Repeat a block of steps</td>
+<td><code>FOR i FROM 1 TO 10 DO</code></td>
+</tr>
+<tr>
+<td><code>WHILE...DO...ENDWHILE</code></td>
+<td>Repeat while a condition is true</td>
+<td><code>WHILE answer != "quit" DO</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="larp-algorithm-examples">📝 LARP Algorithm Examples</h4>
+<p><strong>Example 1: Check If a Number Is Even or Odd</strong></p>
+<pre><code>START
+    WRITE &quot;Enter a number&quot;
+    READ number
+    IF number % 2 == 0 THEN
+        WRITE &quot;The number is even&quot;
+    ELSE
+        WRITE &quot;The number is odd&quot;
+    ENDIF
+END
+</code></pre>
+<p><strong>What happens when you run this in LARP:</strong><br>
+1. LARP displays: <em>Enter a number</em><br>
+2. You type: 6<br>
+3. LARP checks: 6 % 2 = 0 → Condition is TRUE<br>
+4. LARP displays: <em>The number is even</em></p>
+<hr>
+<p><strong>Example 2: Calculate Tax on Annual Salary</strong></p>
+<pre><code>START
+    WRITE &quot;Enter monthly salary&quot;
+    READ salary
+    annualSalary = salary * 12
+    WRITE &quot;Annual Salary: &quot;
+    WRITE annualSalary
+    IF annualSalary &gt; 600000 THEN
+        WRITE &quot;Tax applies&quot;
+    ELSE
+        WRITE &quot;No tax&quot;
+    ENDIF
+END
+</code></pre>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_5">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Write a LARP algorithm that:<br>
+1. Asks the user for a student's marks (out of 100).<br>
+2. If marks are 50 or above, display "PASS".<br>
+3. If marks are below 50, display "FAIL".</p>
+<p>Write it using LARP syntax. Then swap with your partner and check each other's work. Are the START and END commands present? Is the IF...THEN...ELSE...ENDIF structure correct?</p>
+<hr>
+<h4 id="quick-recap_16">📌 Quick Recap</h4>
+<blockquote><p><strong>LARP uses simple commands — START, END, WRITE, READ, IF...THEN...ELSE — to write and execute algorithms interactively.</strong></p></blockquote>
+<hr>
+<h3 id="463-drawing-flowcharts-in-larp">4.6.3 Drawing Flowcharts in LARP</h3>
+<hr>
+<h4 id="the-explanation_12">📖 The Explanation</h4>
+<p>LARP also has a <strong>visual flowchart mode</strong>. In this mode, you drag and drop standard flowchart shapes — ovals, rectangles, parallelograms, diamonds — onto a canvas and connect them with arrows.</p>
+<p>Once your flowchart is complete, LARP can <strong>execute it</strong> — simulating the flow of control through each shape and displaying the output.</p>
+<p><strong>Standard shapes in LARP's flowchart mode:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Shape</th>
+<th>Name</th>
+<th>Use in LARP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oval</td>
+<td>Terminal</td>
+<td>START and STOP nodes</td>
+</tr>
+<tr>
+<td>Rectangle</td>
+<td>Process</td>
+<td>Calculations, assignments</td>
+</tr>
+<tr>
+<td>Parallelogram</td>
+<td>Input/Output</td>
+<td>READ (input) and WRITE (output)</td>
+</tr>
+<tr>
+<td>Diamond</td>
+<td>Decision</td>
+<td>IF conditions — two branches: YES and NO</td>
+</tr>
+<tr>
+<td>Arrow</td>
+<td>Flowline</td>
+<td>Connects shapes, shows direction</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example: Flowchart for Checking a Student's Grade in LARP</strong></p>
+<pre><code>[START]
+    ↓
+[READ percentage]  — parallelogram
+    ↓
+[Is percentage &gt;= 60?]  — diamond
+   ↙ YES              ↘ NO
+[WRITE &quot;Grade A&quot;]    [WRITE &quot;Below A&quot;]
+— parallelogram       — parallelogram
+    ↓                     ↓
+           [STOP]
+</code></pre>
+<p>After drawing this in LARP, you click <strong>Run</strong>. LARP asks you to enter a percentage. You type 75. LARP follows the YES branch and displays "Grade A."</p>
+<p>This visual feedback is what makes LARP powerful for learners.</p>
+<hr>
+<h4 id="class-activity_5">🏫 Class Activity</h4>
+<p>Open LARP. Draw a flowchart that:<br>
+1. Asks the user to enter an integer.<br>
+2. Checks if the number is greater than 100.<br>
+3. If YES, displays "Large number."<br>
+4. If NO, displays "Small number."</p>
+<p>Run the flowchart with these test values: 50, 100, 150. Record your outputs. Are they correct?</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_11">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>A student draws a flowchart in LARP where the <strong>arrow from the diamond goes back to the READ step</strong>. What does this create in the algorithm? Is that useful? Can you think of a situation where going back (looping) is necessary?</p>
+<hr>
+<h4 id="quick-recap_17">📌 Quick Recap</h4>
+<blockquote><p><strong>LARP's flowchart mode lets you visually build and execute flowcharts using standard shapes, giving immediate feedback on your algorithm's logic.</strong></p></blockquote>
+<hr>
+<h2 id="47-error-identification-and-debugging">4.7 Error Identification and Debugging</h2>
+<h3 id="introduction_4">Introduction</h3>
+<p>Here is something very important to know:</p>
+<p><strong>Every programmer makes mistakes. Every single one. From beginners to experts.</strong></p>
+<p>The difference between a good programmer and a struggling one is not that the good programmer never makes errors. It is that the good programmer knows <strong>how to find and fix them</strong>.</p>
+<p>Errors in an algorithm are called <strong>bugs</strong>. The process of finding and fixing bugs is called <strong>debugging</strong>.</p>
+<blockquote><p><strong>Fun Fact:</strong> The term "debugging" comes from 1947, when engineers found an actual moth stuck inside a computer at Harvard University. The moth was causing the machine to malfunction. They removed it — literally "debugging" the computer. The logbook entry still exists today.</p></blockquote>
+<hr>
+<h3 id="471-types-of-errors">4.7.1 Types of Errors</h3>
+<p>There are three main types of errors you will encounter:</p>
+<hr>
+<h4 id="error-type-1-syntax-errors">Error Type 1: Syntax Errors</h4>
+<blockquote><p><strong>Definition:</strong> A syntax error occurs when the algorithm breaks the rules of the language — like using the wrong command, misspelling a keyword, or forgetting a required word.</p></blockquote>
+<p><strong>Analogy:</strong> It is like writing in English but saying "The ball the hit boy" instead of "The boy hit the ball." The grammar is wrong.</p>
+<p><strong>LARP Example:</strong></p>
+<pre><code>START
+    WRITE &quot;Enter number&quot;
+    READ num
+    IF num &gt; 0
+        WRITE &quot;Positive&quot;
+    ENDIF
+END
+</code></pre>
+<p><strong>Error:</strong> The <code>IF</code> statement is missing <code>THEN</code>. The correct line is:</p>
+<pre><code>    IF num &gt; 0 THEN
+</code></pre>
+<p><strong>How to spot it:</strong> LARP will usually <strong>underline or highlight</strong> the incorrect line and show an error message telling you exactly where the problem is.</p>
+<p><strong>Key insight:</strong> Syntax errors are the <strong>easiest</strong> to fix because the tool tells you where they are.</p>
+<hr>
+<h4 id="error-type-2-runtime-errors">Error Type 2: Runtime Errors</h4>
+<blockquote><p><strong>Definition:</strong> A runtime error occurs while the algorithm is running — it happens because the algorithm tries to do something <strong>impossible</strong>.</p></blockquote>
+<p><strong>Analogy:</strong> The grammar of your sentence is fine, but you are asking someone to "divide a pizza into zero slices." That is impossible at the moment of execution.</p>
+<p><strong>Common runtime errors:</strong><br>
+- <strong>Dividing by zero:</strong> <code>result = 10 / 0</code> — mathematically undefined.<br>
+- <strong>Using a variable before giving it a value:</strong> <code>WRITE total</code> when <code>total</code> was never calculated.<br>
+- <strong>Going beyond the end of a list:</strong> Asking for item 15 in a list that only has 10 items.</p>
+<p><strong>LARP Example:</strong></p>
+<pre><code>START
+    WRITE &quot;Enter denominator&quot;
+    READ denom
+    result = 100 / denom
+    WRITE result
+END
+</code></pre>
+<p>If the user enters <strong>0</strong>, LARP will throw a <strong>runtime error</strong> (division by zero) and stop execution.</p>
+<p><strong>Fix:</strong> Add a check before the division:</p>
+<pre><code>    IF denom == 0 THEN
+        WRITE &quot;Error: Cannot divide by zero&quot;
+    ELSE
+        result = 100 / denom
+        WRITE result
+    END IF
+</code></pre>
+<hr>
+<h4 id="error-type-3-logical-errors">Error Type 3: Logical Errors</h4>
+<blockquote><p><strong>Definition:</strong> A logical error is when the algorithm runs without crashing, but produces the <strong>wrong output</strong> because the logic is incorrect.</p></blockquote>
+<p><strong>Analogy:</strong> Your sentence is grammatically correct. It is possible. But it gives the wrong answer. Like saying "5 + 3 = 9."</p>
+<p><strong>This is the hardest type of error to find</strong> — because the computer does not tell you about it. The algorithm runs fine. But the output is wrong.</p>
+<p><strong>Example:</strong></p>
+<p>A student wants to find the average of three numbers. They write:</p>
+<pre><code>START
+    READ a
+    READ b
+    READ c
+    average = a + b + c
+    WRITE average
+END
+</code></pre>
+<p><strong>The error:</strong> The student forgot to <strong>divide by 3</strong>. The algorithm outputs the sum, not the average. No error message appears. But the answer is wrong.</p>
+<p><strong>Correct version:</strong></p>
+<pre><code>    average = (a + b + c) / 3
+</code></pre>
+<p><strong>How to find logical errors:</strong> Dry runs. Trace through your algorithm manually with known values. If the output from the dry run does not match your expected answer, you have a logical error.</p>
+<hr>
+<h4 id="summary-table-types-of-errors">Summary Table: Types of Errors</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>When It Occurs</th>
+<th>How It's Detected</th>
+<th>Difficulty to Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Syntax</strong></td>
+<td>When you write the algorithm</td>
+<td>LARP highlights it immediately</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td><strong>Runtime</strong></td>
+<td>When the algorithm is running</td>
+<td>LARP stops and shows a message</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Logical</strong></td>
+<td>When the algorithm runs AND gives wrong output</td>
+<td>You must compare output to expected results</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="class-activity_6">🏫 Class Activity</h4>
+<p>Create a simple LARP flowchart that calculates the average of three numbers.</p>
+<p>Then deliberately introduce:<br>
+1. A <strong>syntax error</strong> (e.g., remove a required keyword).<br>
+2. A <strong>runtime error</strong> (e.g., allow division by zero).<br>
+3. A <strong>logical error</strong> (e.g., divide by 2 instead of 3).</p>
+<p>Run each version. Record the error messages or wrong outputs. Then fix all three errors.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_12">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Look at this pseudocode:</p>
+<pre><code>START
+    READ temperature
+    IF temperature &gt; 100 THEN
+        WRITE &quot;Water is boiling&quot;
+    IF temperature &lt; 0 THEN
+        WRITE &quot;Water is freezing&quot;
+    ELSE
+        WRITE &quot;Water is liquid&quot;
+    ENDIF
+END
+</code></pre>
+<ol>
+<li>Is there a <strong>syntax error</strong>? Look carefully at the structure.</li>
+<li>If temperature = 110, what will be displayed? Is that correct?</li>
+<li>What type of error is present?</li>
+</ol>
+<hr>
+<h4 id="quick-recap_18">📌 Quick Recap</h4>
+<blockquote><p><strong>There are three types of errors: syntax (wrong structure), runtime (impossible operation), and logical (wrong output). Debugging means finding and fixing all three.</strong></p></blockquote>
+<hr>
+<h3 id="472-common-error-messages-in-larp">4.7.2 Common Error Messages in LARP</h3>
+<p>When LARP encounters a problem, it shows an <strong>error message</strong>. These messages are clues — not insults. Learn to read them carefully.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Error Message</th>
+<th>What It Means</th>
+<th>What to Do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Missing Step</strong></td>
+<td>You forgot an important step or command (e.g., missing <code>THEN</code>, <code>ENDIF</code>, or <code>END</code>).</td>
+<td>Review the flagged line. Check that all blocks are properly opened and closed.</td>
+</tr>
+<tr>
+<td><strong>Undefined Variable</strong></td>
+<td>You are using a variable (like <code>total</code>) that was never given a value using <code>READ</code> or an assignment.</td>
+<td>Add a <code>READ total</code> or <code>total = 0</code> before using it.</td>
+</tr>
+<tr>
+<td><strong>Invalid Operation</strong></td>
+<td>You are attempting something impossible — like dividing by zero or using a text value where a number is needed.</td>
+<td>Add an <code>IF</code> check to prevent the impossible situation.</td>
+</tr>
+<tr>
+<td><strong>Unexpected End</strong></td>
+<td>The algorithm ended before all blocks were closed — a missing <code>ENDIF</code>, <code>ENDFOR</code>, or <code>END</code>.</td>
+<td>Count your opening and closing statements. Every <code>IF</code> needs an <code>ENDIF</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="debugging-strategy-the-4-step-method">🔖 Debugging Strategy: The 4-Step Method</h4>
+<p>When you find a bug in your algorithm, follow these steps:</p>
+<ol>
+<li><strong>Read the error message carefully.</strong> What is it telling you?</li>
+<li><strong>Find the location.</strong> LARP usually highlights the line with the error.</li>
+<li><strong>Understand the cause.</strong> Why did this error happen? (Wrong syntax? Impossible operation? Wrong logic?)</li>
+<li><strong>Fix and re-run.</strong> Make the change. Run the algorithm again with the same test data.</li>
+</ol>
+<p>If no error message appears but the output is wrong, do a <strong>dry run</strong> — trace through the algorithm manually.</p>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_6">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Here is a buggy LARP algorithm. It is supposed to print all numbers from 1 to 5:</p>
+<pre><code>START
+    SET i = 1
+    WHILE i &lt;= 5 DO
+        WRITE i
+    ENDWHILE
+END
+</code></pre>
+<p><strong>Spot the bug:</strong> What is missing? What will happen when you run this? What type of error is it?</p>
+<p><em>(Hint: What happens to the value of <code>i</code> inside the loop?)</em></p>
+<hr>
+<h4 id="quick-recap_19">📌 Quick Recap</h4>
+<blockquote><p><strong>LARP error messages are clues. Read them carefully, find the cause, fix it, and re-run. Always test with multiple values to confirm the fix works.</strong></p></blockquote>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>This chapter introduced you to one of the most important skills in computer science — and in life: <strong>computational thinking</strong>.</p>
+<p>Here is everything you learned:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Key Takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Computational Thinking</strong></td>
+<td>A problem-solving approach using decomposition, pattern recognition, abstraction, and algorithms.</td>
+</tr>
+<tr>
+<td><strong>Decomposition</strong></td>
+<td>Break big problems into smaller, manageable pieces.</td>
+</tr>
+<tr>
+<td><strong>Pattern Recognition</strong></td>
+<td>Find repeating patterns to predict and reuse solutions.</td>
+</tr>
+<tr>
+<td><strong>Abstraction</strong></td>
+<td>Focus on what matters; ignore unnecessary details.</td>
+</tr>
+<tr>
+<td><strong>Algorithms</strong></td>
+<td>A clear, ordered, finite set of steps to solve a problem.</td>
+</tr>
+<tr>
+<td><strong>Problem Understanding</strong></td>
+<td>Fully analyze the problem — inputs, outputs, and constraints — before solving.</td>
+</tr>
+<tr>
+<td><strong>Problem Simplification</strong></td>
+<td>Divide complex problems into sub-problems.</td>
+</tr>
+<tr>
+<td><strong>Solution Design</strong></td>
+<td>Evaluate options; choose the most efficient approach; plan it clearly.</td>
+</tr>
+<tr>
+<td><strong>Flowcharts</strong></td>
+<td>Visual diagrams using ovals, rectangles, parallelograms, diamonds, and arrows.</td>
+</tr>
+<tr>
+<td><strong>Pseudocode</strong></td>
+<td>Structured plain-language description of an algorithm.</td>
+</tr>
+<tr>
+<td><strong>Time Complexity</strong></td>
+<td>How running time grows as input size grows.</td>
+</tr>
+<tr>
+<td><strong>Space Complexity</strong></td>
+<td>How much memory an algorithm needs.</td>
+</tr>
+<tr>
+<td><strong>Dry Run</strong></td>
+<td>Manually trace through an algorithm with sample data to verify correctness.</td>
+</tr>
+<tr>
+<td><strong>Simulation</strong></td>
+<td>Use computer models to test algorithms and systems safely.</td>
+</tr>
+<tr>
+<td><strong>LARP</strong></td>
+<td>A tool for writing, drawing, and running algorithms interactively.</td>
+</tr>
+<tr>
+<td><strong>Syntax Errors</strong></td>
+<td>Wrong structure or spelling in the algorithm — easiest to detect.</td>
+</tr>
+<tr>
+<td><strong>Runtime Errors</strong></td>
+<td>Impossible operations detected during execution.</td>
+</tr>
+<tr>
+<td><strong>Logical Errors</strong></td>
+<td>Wrong output despite correct structure — hardest to detect.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="key-vocabulary">Key Vocabulary</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Algorithm</strong></td>
+<td>A step-by-step set of instructions to solve a problem.</td>
+</tr>
+<tr>
+<td><strong>Abstraction</strong></td>
+<td>Hiding unnecessary details to focus on what is important.</td>
+</tr>
+<tr>
+<td><strong>Big O Notation</strong></td>
+<td>A way to express time or space complexity (e.g., O(n), O(log n)).</td>
+</tr>
+<tr>
+<td><strong>Bug</strong></td>
+<td>An error in an algorithm or program.</td>
+</tr>
+<tr>
+<td><strong>Computational Thinking</strong></td>
+<td>A structured, logical approach to problem-solving.</td>
+</tr>
+<tr>
+<td><strong>Debugging</strong></td>
+<td>The process of finding and fixing errors.</td>
+</tr>
+<tr>
+<td><strong>Decomposition</strong></td>
+<td>Breaking a problem into smaller, manageable sub-problems.</td>
+</tr>
+<tr>
+<td><strong>Dry Run</strong></td>
+<td>Manually tracing through an algorithm with sample data.</td>
+</tr>
+<tr>
+<td><strong>Flowchart</strong></td>
+<td>A visual diagram representing the steps and decisions in an algorithm.</td>
+</tr>
+<tr>
+<td><strong>LARP</strong></td>
+<td>Logic of Algorithms for Resolution of Problems — a learning tool for algorithms.</td>
+</tr>
+<tr>
+<td><strong>Pattern Recognition</strong></td>
+<td>Identifying regularities or repeating structures in data or problems.</td>
+</tr>
+<tr>
+<td><strong>Pseudocode</strong></td>
+<td>Structured, plain-language description of an algorithm.</td>
+</tr>
+<tr>
+<td><strong>Simulation</strong></td>
+<td>A computer model of a real-world process used for testing.</td>
+</tr>
+<tr>
+<td><strong>Space Complexity</strong></td>
+<td>A measure of how much memory an algorithm uses.</td>
+</tr>
+<tr>
+<td><strong>Syntax Error</strong></td>
+<td>An error caused by incorrect structure or spelling in an algorithm.</td>
+</tr>
+<tr>
+<td><strong>Time Complexity</strong></td>
+<td>A measure of how running time grows with input size.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="review-questions">Review Questions</h2>
+<p><strong>Section 4.1 — Computational Thinking</strong></p>
+<ol>
+<li>Define computational thinking in your own words.</li>
+<li>What is decomposition? Give one example from daily life.</li>
+<li>In the square area pattern (1, 4, 9, 16, 25...), what is the rule for the pattern?</li>
+<li>What does abstraction mean? Why is it useful in problem-solving?</li>
+<li>List four properties of a good algorithm.</li>
+</ol>
+<p><strong>Section 4.2 — Principles</strong></p>
+<ol start="6">
+<li>Why is understanding the problem the most important step?</li>
+<li>Give an example of problem simplification from your school life.</li>
+<li>What four criteria would you use to choose the best solution to a problem?</li>
+</ol>
+<p><strong>Section 4.3 — Algorithm Design Methods</strong></p>
+<ol start="9">
+<li>Name and describe the five standard flowchart symbols.</li>
+<li>Draw a flowchart for checking if a student passed (passing marks = 50).</li>
+<li>What is pseudocode? How is it different from actual code?</li>
+<li>Write pseudocode to print the numbers 1 to 10.</li>
+<li>Give two situations where you would prefer a flowchart over pseudocode, and two where you would prefer pseudocode.</li>
+</ol>
+<p><strong>Section 4.4 — Evaluation Techniques</strong></p>
+<ol start="14">
+<li>What does O(n) mean in simple terms?</li>
+<li>Describe one situation where space complexity matters more than time complexity.</li>
+</ol>
+<p><strong>Section 4.5 — Dry Run</strong></p>
+<ol start="16">
+<li>Why is a dry run useful before running an algorithm on a computer?</li>
+<li>Perform a dry run of the <code>FindMax</code> pseudocode (Section 4.5.2) for <code>num1 = 3</code> and <code>num2 = 8</code>. Show each step.</li>
+<li>What is simulation? Give two real-world examples of simulation.</li>
+</ol>
+<p><strong>Section 4.6 — LARP</strong></p>
+<ol start="19">
+<li>What does LARP stand for? What is its purpose?</li>
+<li>Write a LARP algorithm that asks for a temperature and displays "Hot" if it is above 35, "Cold" if it is below 10, and "Comfortable" otherwise.</li>
+<li>What is the difference between the <code>WRITE</code> and <code>READ</code> commands in LARP?</li>
+</ol>
+<p><strong>Section 4.7 — Error Identification and Debugging</strong></p>
+<ol start="22">
+<li>What is the difference between a syntax error and a logical error?</li>
+<li>Give an example of a runtime error. How would you fix it?</li>
+<li>A program calculates the average of two numbers but always gives the wrong answer. What type of error is this likely to be? How would you find it?</li>
+<li>List three common LARP error messages and what they mean.</li>
+</ol>
+<hr>
+<p><em>End of Unit 4: Computational Thinking</em></p>
+<hr>
+<blockquote><p><strong>Remember:</strong> You are not just learning computer science. You are learning how to think — how to break problems apart, spot patterns, ignore the noise, and build solutions step by step. Those skills will serve you in every subject, every career, and every challenge you face. You have got this.</p></blockquote>
+
+</body>
+</html>

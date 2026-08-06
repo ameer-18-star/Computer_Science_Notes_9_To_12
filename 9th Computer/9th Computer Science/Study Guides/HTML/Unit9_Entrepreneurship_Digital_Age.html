@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNIT 9: Entrepreneurship in the Digital Age</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">UNIT 9: Entrepreneurship in the Digital Age</div>
+</div>
+
+<h1 id="unit-9-entrepreneurship-in-the-digital-age">UNIT 9: Entrepreneurship in the Digital Age</h1>
+<h3 id="9th-class-computer-science-student-textbook">9th Class Computer Science — Student Textbook</h3>
+<hr>
+<blockquote><p><strong>"The people who are crazy enough to think they can change the world are the ones who do."</strong><br>
+— Steve Jobs, Co-Founder of Apple</p></blockquote>
+<hr>
+<h2 id="student-learning-outcomes">📚 Student Learning Outcomes</h2>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Define entrepreneurship and understand why it matters today.</li>
+<li>Tell the difference between startup founders, social entrepreneurs, and intrapreneurs.</li>
+<li>Identify the key qualities of successful entrepreneurs.</li>
+<li>Explain how digital tools and technologies are changing business.</li>
+<li>Apply data techniques to make smart business decisions.</li>
+<li>Come up with creative business ideas by identifying real problems.</li>
+<li>Build a complete business plan with market analysis and digital strategies.</li>
+<li>Understand what it means to run a business in an ethical and sustainable way.</li>
+</ul>
+<hr>
+<h2 id="introduction-you-are-already-thinking-like-an-entrepreneur">🚀 Introduction: You Are Already Thinking Like an Entrepreneur</h2>
+<p>Let us start with a story.</p>
+<p>Meet <strong>Fatima</strong>. She is 14 years old and lives in Lahore. Every day, she notices that students in her school forget to bring their notebooks for class. Her younger brother asks her the same question every evening: <em>"Can you explain today's lesson to me?"</em></p>
+<p>One day, Fatima has an idea.</p>
+<p><em>What if I wrote clear, simple summaries of every lesson and sold them online as digital notes?</em></p>
+<p>She creates a WhatsApp group. She charges Rs. 50 per week. Within a month, 40 students subscribe. She earns Rs. 2,000 per month — just by solving a problem she noticed every day.</p>
+<p>Fatima is not a billionaire. She does not have an office. But she <strong>is</strong> an entrepreneur.</p>
+<p>That is what this chapter is about.</p>
+<p>Entrepreneurship is not magic. It is not just for adults. It is not just for people with money. It is a <strong>skill</strong> — a way of thinking, solving problems, and creating something valuable for others.</p>
+<p>And you can learn it.</p>
+<hr>
+<h2 id="91-entrepreneurship">9.1 Entrepreneurship</h2>
+<h3 id="the-hook-from-a-garage-to-the-whole-world">🎯 The Hook: From a Garage to the Whole World</h3>
+<p>In 1976, two young men — <strong>Steve Jobs</strong> and <strong>Steve Wozniak</strong> — built their first computer in a garage in California. They had no factory. No big investors. No fancy office. They had an idea: <em>What if everyone could have their own computer at home?</em></p>
+<p>At the time, computers filled entire rooms and cost millions of dollars. People laughed at their idea.</p>
+<p>They did not stop.</p>
+<p>That garage project became <strong>Apple Inc.</strong> — today one of the most valuable companies on Earth.</p>
+<p>Now look closer to home. Pakistan is home to one of the <strong>largest freelancing communities in the world</strong>, ranking in the top five globally for freelance growth. Young Pakistanis are earning in dollars by offering skills in software development, graphic design, and digital marketing — all from their laptops.</p>
+<p>The world is open. The question is: what idea will <em>you</em> bring to it?</p>
+<hr>
+<h3 id="what-is-entrepreneurship">📖 What Is Entrepreneurship?</h3>
+<p><strong>Entrepreneurship</strong> is the process of starting a new business or organization.</p>
+<p>Let us break that down simply:</p>
+<ul>
+<li>You <strong>identify</strong> a need — something people want or a problem they have.</li>
+<li>You <strong>create</strong> an idea to meet that need.</li>
+<li>You <strong>take the risk</strong> to bring that idea to life.</li>
+</ul>
+<p>The person who does all of this is called an <strong>entrepreneur</strong>.</p>
+<p>Entrepreneurs are three things:<br>
+1. <strong>Innovators</strong> — they create new or better ways of doing things.<br>
+2. <strong>Risk-takers</strong> — they move forward even when they are not sure of the result.<br>
+3. <strong>Problem-solvers</strong> — they look at frustrations and say, <em>"I can fix this."</em></p>
+<blockquote><p>💡 <strong>Word Origin:</strong> The word <em>"entrepreneur"</em> comes from a French word meaning <strong>"to undertake."</strong> An entrepreneur <em>undertakes</em> — they take on the challenge of building something new.</p></blockquote>
+<hr>
+<h3 id="examples-of-entrepreneurship">🏢 Examples of Entrepreneurship</h3>
+<h4 id="tech-startups">Tech Startups</h4>
+<p>A <strong>startup</strong> is a new company that is just beginning. Startups usually start small and grow fast.</p>
+<p>Some of the most famous companies in the world began as startups:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Company</th>
+<th>Founded By</th>
+<th>Started As</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Mark Zuckerberg</td>
+<td>A college dorm room project</td>
+</tr>
+<tr>
+<td><strong>Google</strong></td>
+<td>Larry Page &amp; Sergey Brin</td>
+<td>A university research project</td>
+</tr>
+<tr>
+<td><strong>Apple</strong></td>
+<td>Steve Jobs &amp; Steve Wozniak</td>
+<td>A home garage project</td>
+</tr>
+</tbody>
+</table></div>
+<p>These founders did not have everything figured out at the start. They had a problem, an idea, and the courage to try.</p>
+<h4 id="local-businesses">Local Businesses</h4>
+<p>Entrepreneurship is not only about billion-dollar tech companies. Your neighborhood <strong>bakery</strong>, a <strong>small clothing shop</strong>, a <strong>tutoring service</strong>, or a <strong>local fruit stall</strong> — these are all examples of entrepreneurship.</p>
+<p>Every local business was started by someone who saw a need and decided to fill it.</p>
+<blockquote><p>🌟 <strong>Did You Know?</strong> Walt Disney, the creator of Mickey Mouse and Disneyland, started his company in his uncle's garage. He was rejected more than 300 times before anyone believed in him. Today, Disney is one of the largest entertainment companies on Earth.</p></blockquote>
+<hr>
+<h3 id="key-characteristics-of-entrepreneurs">🔑 Key Characteristics of Entrepreneurs</h3>
+<p>What makes someone a good entrepreneur? There are certain qualities — <strong>key characteristics</strong> — that successful entrepreneurs share. You may already have some of them.</p>
+<h4 id="1-innovation">1. Innovation</h4>
+<p><strong>Innovation</strong> means creating something <em>new</em> or making something <em>better</em> than it was before.</p>
+<p>Entrepreneurs do not just copy what already exists. They ask: <em>"How can this be improved? What is missing? What can I do differently?"</em></p>
+<p><strong>Example:</strong> Before Daraz (Pakistan's largest e-commerce platform), buying products online in Pakistan was rare and complicated. Daraz's founders saw a gap and created a platform that made online shopping simple for millions of Pakistanis.</p>
+<h4 id="2-risk-taking">2. Risk-Taking</h4>
+<p>Starting a business always involves <strong>risk</strong>. Risk means there is a chance you might fail.</p>
+<p>A new business might not make money right away. Customers may not come immediately. Plans may not work out as expected.</p>
+<p>But entrepreneurs understand this truth: <strong>no risk, no reward.</strong> They take calculated risks — they do not jump blindly, but they are willing to move forward with incomplete information.</p>
+<blockquote><p>❗ <strong>Important:</strong> Failure is not the opposite of success. Failure is part of the journey. Every great entrepreneur has failed at something. What matters is what you learn and how you keep going.</p></blockquote>
+<h4 id="3-other-important-characteristics">3. Other Important Characteristics</h4>
+<p>Alongside innovation and risk-taking, successful entrepreneurs also show:</p>
+<ul>
+<li><strong>Persistence:</strong> They keep going even when things get hard.</li>
+<li><strong>Creativity:</strong> They think of new solutions.</li>
+<li><strong>Leadership:</strong> They inspire and guide others.</li>
+<li><strong>Adaptability:</strong> They change their plans when needed.</li>
+<li><strong>Passion:</strong> They deeply care about what they are building.</li>
+</ul>
+<hr>
+<h3 id="why-is-entrepreneurship-important">🌍 Why Is Entrepreneurship Important?</h3>
+<p>Entrepreneurship does more than just make money for one person. It changes entire communities and countries.</p>
+<h4 id="economic-growth">Economic Growth</h4>
+<p>When entrepreneurs start new businesses, they:<br>
+- <strong>Create jobs</strong> for other people.<br>
+- <strong>Produce new products and services</strong> that people want to buy.<br>
+- <strong>Contribute money to the economy</strong> through taxes, wages, and spending.</p>
+<p>Think of it like this: When someone opens a new bakery, they hire bakers, a cashier, a delivery person, and a cleaner. One business idea creates five jobs. Those five people now have income. They spend money. Other businesses grow. The whole community benefits.</p>
+<p>This is called <strong>economic growth</strong> — a country produces more, people earn more, and lives improve.</p>
+<h4 id="innovation-and-progress">Innovation and Progress</h4>
+<p>Entrepreneurs change the world by solving problems in new ways.</p>
+<ul>
+<li>Before the <strong>smartphone</strong>, people used separate devices for calls, music, maps, and cameras.</li>
+<li>An entrepreneur thought: <em>"What if one device did everything?"</em></li>
+<li>Today, the smartphone is in the hands of billions of people worldwide — including yours.</li>
+</ul>
+<p>Every major technology we use today — the internet, apps, social media, online payments — was created by an entrepreneur who asked: <em>"What if?"</em></p>
+<hr>
+<h3 id="pause-think-activity-91">✋ Pause &amp; Think — Activity 9.1</h3>
+<p><strong>Grab a partner and try this:</strong></p>
+<ol>
+<li>Think of <strong>one problem</strong> you face every day at school, at home, or in your neighborhood.</li>
+<li>Write it down in one sentence. Example: <em>"Students forget to bring their homework diaries."</em></li>
+<li>Now think: <strong>What product or service could solve this problem?</strong> It does not need to be technical. It just needs to be useful.</li>
+<li>Share your idea with the class.</li>
+</ol>
+<blockquote><p>There is no wrong answer. The goal is to start <em>thinking like an entrepreneur.</em></p></blockquote>
+<hr>
+<h3 id="quick-recap-section-91">📝 Quick Recap — Section 9.1</h3>
+<p><strong>Entrepreneurship</strong> is the process of identifying a need, creating an idea, and taking the risk to build it into a real product or business. Entrepreneurs are innovators, risk-takers, and problem-solvers. They create jobs, drive economic growth, and change the world through their ideas — and you do not need to be an adult or have a lot of money to start.</p>
+<hr>
+<hr>
+<h2 id="92-entrepreneurship-in-the-digital-landscape">9.2 Entrepreneurship in the Digital Landscape</h2>
+<h3 id="the-hook-a-laptop-a-camera-and-a-business">🎯 The Hook: A Laptop, a Camera, and a Business</h3>
+<p>Meet <strong>Bilal</strong>, 16, from Karachi. He loves photography. He used to take photos just for fun.</p>
+<p>One day, his friend suggested: <em>"Post your best photos on Instagram."</em></p>
+<p>Bilal did. He built an account. Within three months, a local clothing brand saw his work and hired him for Rs. 15,000 to photograph their products.</p>
+<p>Bilal did not need a studio. He did not need an office. He needed a phone, Instagram, and a skill.</p>
+<p>This is <strong>digital entrepreneurship</strong> — using technology and the internet to start and grow a business.</p>
+<hr>
+<h3 id="digital-transformation-and-entrepreneurship">📖 Digital Transformation and Entrepreneurship</h3>
+<p>The world has changed. Businesses today do not only exist in shops and offices. They exist <strong>online</strong>.</p>
+<p><strong>Digital transformation</strong> means businesses are using digital technology to change the way they operate and serve customers.</p>
+<p>For entrepreneurs, this is exciting news. Digital tools allow you to:<br>
+- Reach customers all over Pakistan — or all over the world.<br>
+- Start a business with very little money.<br>
+- Grow faster than any traditional business could.<br>
+- Measure exactly what is working and what is not.</p>
+<p><strong>Digital entrepreneurship</strong> means using the internet, digital platforms, and technology to create and run your business.</p>
+<hr>
+<h3 id="role-of-digital-technologies">🛠️ Role of Digital Technologies</h3>
+<p>Digital technologies are the <strong>tools</strong> of the modern entrepreneur. Let us explore the most important ones.</p>
+<h4 id="1-social-media">1. Social Media</h4>
+<p><strong>Social media</strong> platforms — like Facebook, Instagram, TikTok, and Twitter — allow entrepreneurs to:</p>
+<ul>
+<li><strong>Market their products:</strong> Show what they sell to millions of people.</li>
+<li><strong>Engage with customers:</strong> Talk to buyers directly and build trust.</li>
+<li><strong>Build a brand:</strong> Create a recognizable identity for their business.</li>
+</ul>
+<p><strong>Example:</strong> A student who bakes at home can post videos of her cakes on Instagram. A customer in another city sees it, orders online, and her business grows without ever opening a physical shop.</p>
+<pre><code>[ VISUAL — How Social Media Builds a Business ]
+
+   YOU Post a Photo/Video
+          ↓
+   Instagram / TikTok / Facebook
+          ↓
+   1,000 People See It
+          ↓
+   50 People Share It
+          ↓
+   5,000 People See It
+          ↓
+   100 People Ask to Buy
+          ↓
+   YOU Make Sales 🎉
+</code></pre>
+<h4 id="2-mobile-apps">2. Mobile Apps</h4>
+<p>A <strong>mobile app</strong> is a program on a smartphone. Apps allow businesses to:</p>
+<ul>
+<li>Offer services directly to customers' phones.</li>
+<li>Make buying simple (one tap = done).</li>
+<li>Send notifications and stay connected with users.</li>
+</ul>
+<p><strong>Example:</strong> Careem and Bykea are Pakistani apps that connect drivers with passengers. The entrepreneurs who built these apps did not need any cars. They just needed to connect people who needed rides with people who could give them.</p>
+<h4 id="3-cloud-computing">3. Cloud Computing</h4>
+<p><strong>Cloud computing</strong> means storing data and running programs on the internet, not on a physical computer.</p>
+<p>Instead of buying expensive servers and equipment, entrepreneurs can:<br>
+- Store all their files online (Google Drive, Dropbox).<br>
+- Run their business tools online (Google Docs, Shopify).<br>
+- Work from anywhere in the world.</p>
+<p><strong>Think of it this way:</strong> The cloud is like a digital warehouse in the sky. You can put anything there and access it from any device, anywhere.</p>
+<h4 id="4-big-data-analytics">4. Big Data Analytics</h4>
+<p><strong>Big data analytics</strong> means collecting and analyzing large amounts of information to understand patterns.</p>
+<p>For entrepreneurs, this means:<br>
+- Understanding what products customers are buying most.<br>
+- Knowing what time of day people visit your website.<br>
+- Finding out which advertisement is bringing in the most customers.</p>
+<p><strong>Example:</strong> If a student sells handmade bracelets online and notices (from her sales data) that blue bracelets sell three times more than red ones, she can make more blue bracelets. Data helps her make smarter decisions.</p>
+<hr>
+<h3 id="digital-marketing-and-e-commerce">🛒 Digital Marketing and E-commerce</h3>
+<h4 id="what-is-digital-marketing">What Is Digital Marketing?</h4>
+<p><strong>Digital marketing</strong> means promoting your business using the internet and digital channels.</p>
+<p>Traditional marketing uses newspapers, billboards, and TV. Digital marketing uses:</p>
+<ul>
+<li>Social media posts</li>
+<li>Search engines like Google</li>
+<li>Email</li>
+<li>Online videos</li>
+</ul>
+<p>Digital marketing is often <strong>cheaper</strong> than traditional marketing and can <strong>reach far more people</strong>.</p>
+<h4 id="digital-marketing-strategies">Digital Marketing Strategies</h4>
+<p>Here are the most important digital marketing strategies every entrepreneur should know:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>What It Means</th>
+<th>Simple Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SEO (Search Engine Optimization)</strong></td>
+<td>Making your website appear at the top of Google search results</td>
+<td>Writing a blog post so that when someone searches "best cakes in Lahore," your bakery appears first</td>
+</tr>
+<tr>
+<td><strong>Social Media Marketing</strong></td>
+<td>Using platforms like Instagram and Facebook to promote your business</td>
+<td>Posting daily photos of your products with a price tag and a "message to order" caption</td>
+</tr>
+<tr>
+<td><strong>Content Marketing</strong></td>
+<td>Creating useful content — blogs, videos, guides — that attract customers</td>
+<td>A student tutor posting free math tips on YouTube, building followers who later pay for private lessons</td>
+</tr>
+<tr>
+<td><strong>Email Marketing</strong></td>
+<td>Sending emails to interested customers about new products or offers</td>
+<td>Sending a weekly newsletter to people who signed up on your website</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="what-is-e-commerce">What Is E-commerce?</h4>
+<p><strong>E-commerce</strong> means buying and selling products and services on the internet.</p>
+<p>You have probably used e-commerce already — when you buy something from Daraz or watch a paid course online, that is e-commerce.</p>
+<p>For entrepreneurs, e-commerce means:<br>
+- You do not need a physical shop.<br>
+- Customers from across the country can find you.<br>
+- You can sell 24 hours a day, 7 days a week — even while you sleep.</p>
+<h4 id="e-commerce-platforms">E-commerce Platforms</h4>
+<p>An <strong>e-commerce platform</strong> is an online tool that helps you set up a store, accept payments, and manage your orders.</p>
+<p>Key platforms include:</p>
+<ul>
+<li><strong>Shopify:</strong> Lets you create a professional online store easily. You can add products, set prices, and receive orders without knowing any coding.</li>
+<li><strong>PayPal / JazzCash / EasyPaisa:</strong> These are <strong>payment gateways</strong> — tools that allow customers to pay you online safely.</li>
+<li><strong>Zendesk:</strong> A tool for <strong>customer service</strong> — it helps you answer customer questions and solve their problems quickly.</li>
+</ul>
+<pre><code>[ VISUAL — How an E-commerce Business Works ]
+
+CUSTOMER               PLATFORM              YOU
+─────────              ────────              ───
+Searches for           Shopify Store         You Listed
+&quot;handmade bag&quot;    →    Shows Your       →    Your Product
+online                 Product               with Photos
+                           ↓
+                   Customer Clicks
+                   &quot;Buy Now&quot;
+                           ↓
+                   Payment via           You Receive
+                   JazzCash          →   Rs. 800
+                           ↓
+                   Customer Gets         You Pack &amp;
+                   Order Confirmation    Send the Bag
+</code></pre>
+<blockquote><p>💡 <strong>Pakistan E-commerce Fact:</strong> Pakistan's e-commerce market was estimated at <strong>$4 billion</strong> in 2021 by the Pakistan Telecommunication Authority (PTA), and it is growing rapidly every year. This means there is enormous opportunity for young Pakistani entrepreneurs right now.</p></blockquote>
+<hr>
+<h3 id="pause-think-activity-92">✋ Pause &amp; Think — Activity 9.2</h3>
+<p><strong>Mini Social Media Marketing Plan:</strong></p>
+<p>Imagine you make and sell <strong>handwritten greeting cards</strong> (for birthdays, Eid, and exams). Answer these questions:</p>
+<ol>
+<li><strong>What platform will you use?</strong> (Instagram, Facebook, WhatsApp?)</li>
+<li><strong>Who is your customer?</strong> (Students? Families? Teachers?)</li>
+<li><strong>What will you post?</strong> (Photos of cards? A behind-the-scenes video of you making them?)</li>
+<li><strong>How often will you post?</strong> (Daily? Weekly?)</li>
+<li><strong>How will people order?</strong> (WhatsApp message? Instagram DM? A Google Form?)</li>
+</ol>
+<p>Write your answers on paper. You have just created your first <strong>social media marketing plan!</strong></p>
+<hr>
+<h3 id="quick-recap-section-92">📝 Quick Recap — Section 9.2</h3>
+<p>Digital technologies — social media, mobile apps, cloud computing, and big data — give modern entrepreneurs powerful and affordable tools to start, market, and grow their businesses. Digital marketing and e-commerce allow anyone with an idea and a smartphone to reach customers far beyond their neighborhood.</p>
+<hr>
+<hr>
+<h2 id="93-business-idea-generation">9.3 Business Idea Generation</h2>
+<h3 id="the-hook-the-problem-is-the-idea">🎯 The Hook: The Problem Is the Idea</h3>
+<p>In the early 2000s, taxi drivers in San Francisco were hard to find. People stood on streets for 20 minutes trying to wave down a cab. It was frustrating.</p>
+<p>Two entrepreneurs — Travis Kalanick and Garrett Camp — noticed this problem. They thought: <em>"What if you could press a button on your phone and a car comes to you in minutes?"</em></p>
+<p>That thought became <strong>Uber</strong> — now used in over 70 countries.</p>
+<p>The business idea did not come from nowhere. It came from a <strong>real problem</strong> that real people had every day.</p>
+<p>Every great business starts the same way: someone sees a problem and decides to solve it.</p>
+<hr>
+<h3 id="problem-identification">📖 Problem Identification</h3>
+<p><strong>Problem identification</strong> means finding a real need or frustration in people's lives that your business could solve.</p>
+<p>This is the first and most important step in creating a business idea.</p>
+<p>Here is the key insight: <strong>you do not need to invent something completely new.</strong> You just need to find a problem that is not yet solved well enough — and solve it better.</p>
+<p><strong>Where do you find problems?</strong></p>
+<p>Look around you. Problems are everywhere:<br>
+- Students forget their timetables — <em>could you create a printed reminder card service?</em><br>
+- Parents in rural areas cannot find tutors — <em>could you offer online tutoring via video calls?</em><br>
+- People waste food because they do not know recipes — <em>could you create a simple recipe app for local ingredients?</em></p>
+<hr>
+<h3 id="techniques-for-identifying-market-needs">🔍 Techniques for Identifying Market Needs</h3>
+<p>A <strong>market need</strong> is something that a group of people want but cannot easily get.</p>
+<p>Here are three proven techniques to find market needs:</p>
+<h4 id="technique-1-surveys-and-questionnaires">Technique 1: Surveys and Questionnaires</h4>
+<p>A <strong>survey</strong> is a list of questions you give to people to collect their opinions and feedback.</p>
+<p><strong>How to do it:</strong><br>
+1. Write 5–10 short questions about a problem you have noticed.<br>
+2. Share the questions with 20–30 people (classmates, neighbors, family).<br>
+3. Read the answers. Look for patterns — what do most people complain about?<br>
+4. The most common complaint is your business opportunity.</p>
+<p><strong>Example Survey Questions for a School Note-Selling Business:</strong><br>
+- <em>Do you ever miss notes when you are absent from class?</em><br>
+- <em>Would you pay a small amount for reliable, clear class notes?</em><br>
+- <em>What subject's notes would you buy most?</em></p>
+<h4 id="technique-2-market-research">Technique 2: Market Research</h4>
+<p><strong>Market research</strong> means studying existing businesses, trends, and customer behavior to find gaps and opportunities.</p>
+<p><strong>How to do it:</strong><br>
+1. Search online: What products or services exist in your area?<br>
+2. Read customer reviews on platforms like Daraz: What are people complaining about?<br>
+3. Talk to local shopkeepers: What do their customers ask for that they cannot provide?</p>
+<p><strong>Example:</strong> If you search Daraz for "study planners" and find only English-language ones with bad reviews saying <em>"We want an Urdu version,"</em> that is your market gap.</p>
+<h4 id="technique-3-observation">Technique 3: Observation</h4>
+<p><strong>Observation</strong> means quietly watching how people use existing products and services, and noticing what frustrates them.</p>
+<p><strong>How to do it:</strong><br>
+1. Visit a local shop, school canteen, or bus stop.<br>
+2. Watch people. What slows them down? What makes them frustrated?<br>
+3. Note what they ask for that is not available.</p>
+<p><strong>Example:</strong> If you observe that students at your school's canteen always queue for 10 minutes during the short break, and many leave without buying food, the problem is slow service. A solution could be a <strong>pre-order app</strong> where students order before break time.</p>
+<hr>
+<h3 id="creative-problem-solving">💡 Creative Problem Solving</h3>
+<p>Once you have identified a problem, you need to solve it creatively. <strong>Creative problem solving</strong> is the process of finding new and useful solutions.</p>
+<h4 id="design-thinking-a-5-step-method">Design Thinking: A 5-Step Method</h4>
+<p><strong>Design thinking</strong> is a popular method used by companies like Apple, Google, and UNICEF to solve problems in a human-centered way.</p>
+<p>It has five steps:</p>
+<pre><code>[ VISUAL — Design Thinking Process ]
+
+  ┌─────────────┐
+  │  1. EMPATHIZE│  →  Understand the people who have the problem
+  └─────────────┘
+         ↓
+  ┌─────────────┐
+  │  2. DEFINE  │  →  Write the problem clearly in one sentence
+  └─────────────┘
+         ↓
+  ┌─────────────┐
+  │  3. IDEATE  │  →  Brainstorm as many solutions as possible
+  └─────────────┘
+         ↓
+  ┌─────────────┐
+  │ 4. PROTOTYPE│  →  Create a simple model of your best idea
+  └─────────────┘
+         ↓
+  ┌─────────────┐
+  │  5. TEST    │  →  Try your prototype with real users and get feedback
+  └─────────────┘
+</code></pre>
+<p>Let us walk through each step using an example.</p>
+<p><strong>Problem:</strong> Farmers in rural Pakistan do not know when it will rain, so they water crops at the wrong time, wasting water and money.</p>
+<p><strong>Step 1 — Empathize:</strong> Talk to farmers. What do they feel? What do they struggle with? <em>"I never know if rain is coming. I spend so much money on water pumps."</em></p>
+<p><strong>Step 2 — Define:</strong> Write the problem clearly: <em>"Farmers in our area need simple, accurate daily weather forecasts in Urdu to manage their crops."</em></p>
+<p><strong>Step 3 — Ideate:</strong> Brainstorm solutions:<br>
+- A daily SMS weather alert service in Urdu.<br>
+- A simple app with a voice weather report.<br>
+- A WhatsApp bot that sends weather updates.</p>
+<p><strong>Step 4 — Prototype:</strong> Build a simple WhatsApp chatbot that sends a weather message every morning. Use free tools online to set it up.</p>
+<p><strong>Step 5 — Test:</strong> Share the chatbot with 10 farmers. Ask them: <em>"Is this helpful? Is the message clear? What would you change?"</em></p>
+<p>Improve based on their feedback. Then test again.</p>
+<blockquote><p>❗ <strong>The Malan Rule:</strong> <em>A bad first idea is not failure — it is data.</em> Every test teaches you something. The goal of prototyping is not to be perfect. It is to learn fast so you can improve faster.</p></blockquote>
+<hr>
+<h3 id="pause-think-activity-93">✋ Pause &amp; Think — Activity 9.3</h3>
+<p><strong>Design Thinking Challenge — 20 Minutes:</strong></p>
+<p>In groups of 3–4, apply the design thinking process to your school:</p>
+<ol>
+<li><strong>Empathize:</strong> Interview two classmates and ask: <em>"What is the biggest daily frustration in our school?"</em></li>
+<li><strong>Define:</strong> Write the problem in one sentence.</li>
+<li><strong>Ideate:</strong> List 5 possible digital or non-digital solutions.</li>
+<li><strong>Prototype:</strong> Sketch your best solution on paper — it can be an app screen, a form, or a service idea.</li>
+<li><strong>Present:</strong> Share your problem and solution with the class in 2 minutes.</li>
+</ol>
+<hr>
+<h3 id="quick-recap-section-93">📝 Quick Recap — Section 9.3</h3>
+<p>Great business ideas come from <strong>real problems</strong>. Use surveys, market research, and observation to find what people need. Then use the <strong>design thinking process</strong> — Empathize, Define, Ideate, Prototype, Test — to create and refine your solution. A bad first idea is just the first step toward a good one.</p>
+<hr>
+<hr>
+<h2 id="94-developing-business-plans">9.4 Developing Business Plans</h2>
+<h3 id="the-hook-the-map-before-the-journey">🎯 The Hook: The Map Before the Journey</h3>
+<p>Imagine you want to travel from Islamabad to Karachi by road. You would not just start driving without a map, fuel stops planned, and overnight resting spots identified.</p>
+<p>Building a business is the same. If you start without a plan, you will get lost.</p>
+<p>A <strong>business plan</strong> is your map. It tells you where you are going, how you will get there, what you need, and how you will know when you have arrived.</p>
+<hr>
+<h3 id="what-is-a-business-plan">📖 What Is a Business Plan?</h3>
+<p>A <strong>business plan</strong> is a detailed written document that outlines:<br>
+- What your business does.<br>
+- Who your customers are.<br>
+- How you will make money.<br>
+- What resources you need.<br>
+- How you will market and grow.</p>
+<p>Even simple, one-person businesses benefit from a plan. It forces you to think clearly before you spend time or money.</p>
+<blockquote><p>💡 <strong>Think of a business plan as an answer to these five key questions:</strong><br>
+1. <strong>What</strong> am I selling?<br>
+2. <strong>Who</strong> will buy it?<br>
+3. <strong>How</strong> will I reach them?<br>
+4. <strong>How</strong> will I make money?<br>
+5. <strong>What</strong> do I need to get started?</p></blockquote>
+<hr>
+<h3 id="components-of-a-business-plan">🗂️ Components of a Business Plan</h3>
+<p>A complete business plan has several important sections. Let us go through each one.</p>
+<hr>
+<h4 id="component-1-business-description">Component 1: Business Description</h4>
+<p><strong>What it is:</strong> A short, clear explanation of your business.</p>
+<p><strong>What to write:</strong><br>
+- What product or service do you offer?<br>
+- What problem does it solve?<br>
+- What makes it different from what already exists?</p>
+<p><strong>Example:</strong></p>
+<blockquote><p><em>"ZaraiBuddy is a WhatsApp-based service that sends Urdu weather forecasts and crop tips to farmers in rural Punjab every morning. Unlike other weather apps, ours requires no smartphone — just a basic mobile phone."</em></p></blockquote>
+<hr>
+<h4 id="component-2-market-analysis">Component 2: Market Analysis</h4>
+<p><strong>What it is:</strong> Research about your target customers and competitors.</p>
+<p><strong>Market analysis</strong> involves:<br>
+- <strong>Target Audience:</strong> Who exactly will buy from you? (Age, location, income, needs)<br>
+- <strong>Market Size:</strong> How many potential customers exist?<br>
+- <strong>Competitor Analysis:</strong> Who else is solving this problem? What are they doing well or poorly?</p>
+<pre><code>[ VISUAL — Market Analysis Framework ]
+
+┌─────────────────────────────────────────┐
+│           MARKET ANALYSIS               │
+├─────────────────┬───────────────────────┤
+│ TARGET AUDIENCE │ Farmers aged 30–60    │
+│                 │ in rural Punjab &amp;     │
+│                 │ Sindh                 │
+├─────────────────┼───────────────────────┤
+│ MARKET SIZE     │ ~8 million small      │
+│                 │ farmers in Pakistan   │
+├─────────────────┼───────────────────────┤
+│ COMPETITORS     │ Weather apps (but     │
+│                 │ they require internet │
+│                 │ and are in English)   │
+├─────────────────┼───────────────────────┤
+│ YOUR ADVANTAGE  │ Urdu, SMS-based,      │
+│                 │ no smartphone needed  │
+└─────────────────┴───────────────────────┘
+</code></pre>
+<hr>
+<h4 id="component-3-revenue-model">Component 3: Revenue Model</h4>
+<p><strong>What it is:</strong> The plan for how your business will make money.</p>
+<p>A <strong>revenue model</strong> answers the question: <em>"Where does the money come from?"</em></p>
+<p>Common revenue models:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Revenue Model</th>
+<th>What It Means</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Direct Sales</strong></td>
+<td>Sell a product for a price</td>
+<td>Selling handmade bracelets for Rs. 200 each</td>
+</tr>
+<tr>
+<td><strong>Subscription</strong></td>
+<td>Charge a weekly/monthly fee</td>
+<td>Charging Rs. 100/month for daily weather alerts</td>
+</tr>
+<tr>
+<td><strong>Advertising</strong></td>
+<td>Free for users; earn from ads</td>
+<td>A free app where companies pay to show ads</td>
+</tr>
+<tr>
+<td><strong>Freemium</strong></td>
+<td>Free basic version, paid for extra features</td>
+<td>Free notes, but pay for video explanations</td>
+</tr>
+<tr>
+<td><strong>Commission</strong></td>
+<td>Take a percentage of each sale</td>
+<td>Taking 10% from every order on your platform</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>For your business plan, include:</strong><br>
+- Your chosen revenue model.<br>
+- Your price per unit or per subscription.<br>
+- How many customers you need to break even (cover your costs).</p>
+<hr>
+<h4 id="component-4-digital-marketing-strategy">Component 4: Digital Marketing Strategy</h4>
+<p><strong>What it is:</strong> Your plan for reaching customers online.</p>
+<p><strong>Include:</strong><br>
+- Which platform you will use (Instagram, WhatsApp, website).<br>
+- What type of content you will post.<br>
+- How often you will post.<br>
+- How you will measure success (number of followers, orders, website visits).</p>
+<hr>
+<h4 id="component-5-operations-plan">Component 5: Operations Plan</h4>
+<p><strong>What it is:</strong> How your business will run day-to-day.</p>
+<p><strong>Include:</strong><br>
+- What tools or equipment you need.<br>
+- How orders will be processed.<br>
+- How products will be delivered.<br>
+- How you will handle customer complaints.</p>
+<hr>
+<h3 id="prototyping-and-iteration">🔁 Prototyping and Iteration</h3>
+<h4 id="what-is-a-prototype">What Is a Prototype?</h4>
+<p>A <strong>prototype</strong> is an early, simple version of your product — built just to test whether your idea works.</p>
+<p>Prototypes do not need to be perfect. They just need to be real enough for someone to try.</p>
+<p><strong>Types of prototypes:</strong><br>
+- A hand-drawn sketch of an app screen (called a <strong>wireframe</strong>).<br>
+- A Google Form acting as a fake order system.<br>
+- A WhatsApp group acting as a customer service channel.<br>
+- A printed sample of your first product.</p>
+<pre><code>[ VISUAL — App Prototype Wireframe (Draw This on Paper) ]
+
+┌──────────────────────┐
+│   ZaraiBuddy App     │
+│   ─────────────────  │
+│   [☁ Today's Weather]│
+│   Lahore: 28°C       │
+│   Rain: 40% Chance   │
+│   ─────────────────  │
+│   [🌾 Crop Tip Today]│
+│   Water wheat fields │
+│   before 7 AM.       │
+│   ─────────────────  │
+│   [📞 Call for Help] │
+└──────────────────────┘
+    This is a wireframe!
+    Draw it on paper first.
+</code></pre>
+<h4 id="what-is-iteration">What Is Iteration?</h4>
+<p><strong>Iteration</strong> means improving your product based on feedback — making version 2, then version 3, then version 4.</p>
+<p>The cycle goes like this:</p>
+<pre><code>Build Prototype → Test with Users → Get Feedback → Improve → Build Again
+</code></pre>
+<p>This is how every successful product is built. Instagram looked very different in version 1 compared to what it looks like today. Improvement never stops.</p>
+<blockquote><p>❗ <strong>Remember:</strong> Your first version does not need to be perfect. It needs to be <em>useful enough to learn from.</em></p></blockquote>
+<hr>
+<h3 id="pause-think-activity-94">✋ Pause &amp; Think — Activity 9.4</h3>
+<p><strong>Build Your Business Plan — One Page:</strong></p>
+<p>Using a blank page, fill in these five sections for your business idea from Activity 9.1 or 9.3:</p>
+<ol>
+<li><strong>Business Name &amp; Description</strong> (2 sentences)</li>
+<li><strong>Target Customer</strong> (Who will buy? Be specific.)</li>
+<li><strong>Revenue Model</strong> (How will you charge? How much?)</li>
+<li><strong>Marketing Plan</strong> (Which platform? What will you post?)</li>
+<li><strong>Prototype Idea</strong> (What simple version can you test this week?)</li>
+</ol>
+<p>Share your one-page plan with a partner and give each other one suggestion for improvement.</p>
+<hr>
+<h3 id="quick-recap-section-94">📝 Quick Recap — Section 9.4</h3>
+<p>A <strong>business plan</strong> is your roadmap. It includes a business description, market analysis, revenue model, digital marketing strategy, and operations plan. Start with a simple <strong>prototype</strong>, test it with real people, and use their feedback to <strong>iterate</strong> and improve. Your first version will not be perfect — and that is exactly fine.</p>
+<hr>
+<hr>
+<h2 id="95-ethical-and-sustainable-entrepreneurship">9.5 Ethical and Sustainable Entrepreneurship</h2>
+<h3 id="the-hook-more-than-just-profit">🎯 The Hook: More Than Just Profit</h3>
+<p>In 2013, a clothing factory in Bangladesh called <strong>Rana Plaza</strong> collapsed. Over 1,100 workers were killed. Investigations revealed that the factory was making clothes for major international brands under dangerous, unfair conditions.</p>
+<p>Workers were paid very little. Safety rules were ignored. Profits were the only priority.</p>
+<p>This disaster changed how many people think about business. People realized: <strong>a business that harms people or the planet is not truly successful, no matter how much money it makes.</strong></p>
+<p>Today, the world expects entrepreneurs to be not just <strong>profitable</strong> — but also <strong>ethical</strong> and <strong>sustainable</strong>.</p>
+<p>That is what this section is about.</p>
+<hr>
+<h3 id="ethical-practices-and-sustainable-growth">📖 Ethical Practices and Sustainable Growth</h3>
+<h4 id="what-is-ethical-entrepreneurship">What Is Ethical Entrepreneurship?</h4>
+<p><strong>Ethical entrepreneurship</strong> means running a business in a way that is honest, fair, and respectful to all people involved.</p>
+<p><em>All people involved</em> includes:<br>
+- Your customers.<br>
+- Your employees.<br>
+- Your suppliers.<br>
+- Your community.<br>
+- Your competitors.<br>
+- The environment.</p>
+<p>Ethical businesses do not succeed <em>at the expense</em> of others. They succeed <em>in a way that benefits</em> others.</p>
+<hr>
+<h3 id="principles-of-ethics-in-business">🧭 Principles of Ethics in Business</h3>
+<p>Here are the four core ethical principles every entrepreneur must understand and practice:</p>
+<h4 id="1-honesty">1. Honesty</h4>
+<p><strong>Honesty</strong> means telling the truth in all business dealings.</p>
+<ul>
+<li>Do not advertise something that is not true.</li>
+<li>Do not hide defects in your product.</li>
+<li>Do not promise delivery times you cannot meet.</li>
+</ul>
+<p><strong>Example:</strong> If your handmade soap is made with 80% natural ingredients, do not write "100% natural" on the label. Being caught lying destroys trust permanently.</p>
+<h4 id="2-integrity">2. Integrity</h4>
+<p><strong>Integrity</strong> means acting consistently with your moral values — even when no one is watching.</p>
+<ul>
+<li>Keep your promises.</li>
+<li>Do what you say you will do.</li>
+<li>Treat your suppliers and customers fairly, not just when it benefits you.</li>
+</ul>
+<p><strong>Example:</strong> If a customer pays for a product and it is damaged during delivery, an entrepreneur with integrity replaces it — even if it costs them money.</p>
+<h4 id="3-fairness">3. Fairness</h4>
+<p><strong>Fairness</strong> means giving everyone equal treatment and opportunities.</p>
+<ul>
+<li>Pay your employees fairly for their work.</li>
+<li>Do not discriminate in hiring.</li>
+<li>Set prices that are reasonable — not exploitative.</li>
+</ul>
+<p><strong>Example:</strong> A business that pays its delivery riders Rs. 50 per trip while charging the customer Rs. 300, without explanation, is being unfair to the riders.</p>
+<h4 id="4-respect">4. Respect</h4>
+<p><strong>Respect</strong> means valuing the rights, dignity, and opinions of all individuals.</p>
+<ul>
+<li>Respect your customers' data and privacy.</li>
+<li>Respect your employees' time and wellbeing.</li>
+<li>Respect the environment you operate in.</li>
+</ul>
+<hr>
+<h3 id="sustainable-development-goals-sdgs">🌍 Sustainable Development Goals (SDGs)</h3>
+<h4 id="what-are-the-sdgs">What Are the SDGs?</h4>
+<p>The <strong>Sustainable Development Goals (SDGs)</strong> are a set of <strong>17 global goals</strong> created by the United Nations (UN) in 2015.</p>
+<p>They are a plan to make the world better by 2030 — ending poverty, protecting the planet, and ensuring peace and prosperity for all people.</p>
+<pre><code>[ VISUAL — 17 SDGs at a Glance (Draw as a Grid) ]
+
+ 1  No Poverty            │  10  Reduced Inequalities
+ 2  Zero Hunger           │  11  Sustainable Cities
+ 3  Good Health           │  12  Responsible Consumption
+ 4  Quality Education     │  13  Climate Action
+ 5  Gender Equality       │  14  Life Below Water
+ 6  Clean Water           │  15  Life on Land
+ 7  Clean Energy          │  16  Peace &amp; Justice
+ 8  Decent Work           │  17  Partnerships for Goals
+ 9  Industry &amp; Innovation │
+</code></pre>
+<p>Businesses play a <strong>huge role</strong> in achieving these goals. When entrepreneurs align their businesses with the SDGs, they create what is called <strong>sustainable entrepreneurship</strong>.</p>
+<hr>
+<h3 id="aligning-business-goals-with-the-sdgs">♻️ Aligning Business Goals with the SDGs</h3>
+<p>There are three dimensions of sustainability that entrepreneurs must consider:</p>
+<h4 id="1-social-sustainability">1. Social Sustainability</h4>
+<p><strong>Social sustainability</strong> means your business helps people and communities.</p>
+<ul>
+<li>Pay fair wages.</li>
+<li>Promote equal opportunities for all genders.</li>
+<li>Support local education and skill development.</li>
+<li>Do not exploit cheap labor.</li>
+</ul>
+<p><strong>Example:</strong> A tech startup in Lahore that trains young women from low-income neighborhoods in coding and then hires them contributes to <strong>SDG 4 (Quality Education)</strong> and <strong>SDG 5 (Gender Equality)</strong>.</p>
+<h4 id="2-environmental-sustainability">2. Environmental Sustainability</h4>
+<p><strong>Environmental sustainability</strong> means your business does not damage the planet.</p>
+<ul>
+<li>Reduce the carbon footprint of your operations (use less electricity, less fuel).</li>
+<li>Use renewable resources (solar power, recycled materials).</li>
+<li>Minimize waste — both in production and packaging.</li>
+</ul>
+<p><strong>Example:</strong> A Pakistani startup that provides communities with solar-powered lights instead of diesel generators contributes to <strong>SDG 7 (Affordable and Clean Energy)</strong> and <strong>SDG 13 (Climate Action)</strong>.</p>
+<h4 id="3-economic-sustainability">3. Economic Sustainability</h4>
+<p><strong>Economic sustainability</strong> means your business contributes to the long-term health of the economy.</p>
+<ul>
+<li>Create stable, well-paying jobs.</li>
+<li>Foster innovation that helps other businesses grow.</li>
+<li>Contribute fairly to taxes and public services.</li>
+</ul>
+<p><strong>Example:</strong> A Pakistani software company that trains 500 new developers per year and exports software to international clients contributes to <strong>SDG 8 (Decent Work and Economic Growth)</strong> and <strong>SDG 9 (Industry, Innovation and Infrastructure)</strong>.</p>
+<hr>
+<h3 id="the-triple-bottom-line">🏭 The Triple Bottom Line</h3>
+<p>Ethical, sustainable businesses measure success in three ways — not just profit:</p>
+<pre><code>[ VISUAL — The Triple Bottom Line Triangle ]
+
+              PEOPLE
+             /      \
+            /        \
+           /          \
+      PLANET ───────── PROFIT
+
+A truly successful business balances all three.
+It does not succeed in one by harming the other two.
+</code></pre>
+<ul>
+<li><strong>People:</strong> Fair treatment of all humans involved.</li>
+<li><strong>Planet:</strong> Responsible use of natural resources.</li>
+<li><strong>Profit:</strong> Financial viability and economic contribution.</li>
+</ul>
+<hr>
+<h3 id="pause-think-activity-95">✋ Pause &amp; Think — Activity 9.5</h3>
+<p><strong>SDG Business Match:</strong></p>
+<p>Look at the list of SDGs in the visual above. Now think of a simple business idea.</p>
+<p>Answer these questions:</p>
+<ol>
+<li><strong>Which 1–2 SDGs does your business idea connect to?</strong></li>
+<li><strong>How does your business help people (social sustainability)?</strong></li>
+<li><strong>Does your business harm the environment in any way? If yes, how could you change it?</strong></li>
+<li><strong>How will your business stay financially viable (make enough money to continue)?</strong></li>
+</ol>
+<p>Write your answers in your notebook.</p>
+<hr>
+<h3 id="quick-recap-section-95">📝 Quick Recap — Section 9.5</h3>
+<p>Ethical entrepreneurship means running a business with honesty, integrity, fairness, and respect. Sustainable entrepreneurship means aligning your business with the Sustainable Development Goals — ensuring your business helps people, protects the planet, and creates lasting economic value. True success is not just about profit. It is about the positive impact your business leaves behind.</p>
+<hr>
+<hr>
+<h2 id="chapter-summary">📋 Chapter Summary</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>9.1 Entrepreneurship</strong></td>
+<td>The process of identifying a need, creating a solution, and building a business. Entrepreneurs innovate, take risks, and drive economic growth.</td>
+</tr>
+<tr>
+<td><strong>9.2 Digital Landscape</strong></td>
+<td>Digital tools (social media, apps, cloud, big data) and strategies (SEO, content marketing, e-commerce) help entrepreneurs grow faster and reach global audiences.</td>
+</tr>
+<tr>
+<td><strong>9.3 Business Idea Generation</strong></td>
+<td>Great ideas come from real problems. Use surveys, observation, and market research to find needs. Apply design thinking to create and test solutions.</td>
+</tr>
+<tr>
+<td><strong>9.4 Business Plans</strong></td>
+<td>A business plan maps out your goals, customers, revenue model, and marketing strategy. Prototyping and iteration help you improve before full launch.</td>
+</tr>
+<tr>
+<td><strong>9.5 Ethical Entrepreneurship</strong></td>
+<td>Ethical principles (honesty, integrity, fairness, respect) and the UN's SDGs guide entrepreneurs to build businesses that benefit people and the planet, not just their profits.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="key-terms-glossary">🗂️ Key Terms Glossary</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Entrepreneur</strong></td>
+<td>A person who starts and runs a new business.</td>
+</tr>
+<tr>
+<td><strong>Entrepreneurship</strong></td>
+<td>The process of creating and running a business to solve a problem.</td>
+</tr>
+<tr>
+<td><strong>Innovation</strong></td>
+<td>Creating something new or improving something existing.</td>
+</tr>
+<tr>
+<td><strong>Risk-taking</strong></td>
+<td>Moving forward with a decision despite the chance of failure.</td>
+</tr>
+<tr>
+<td><strong>Digital Entrepreneurship</strong></td>
+<td>Using technology and the internet to start and grow a business.</td>
+</tr>
+<tr>
+<td><strong>Social Media Marketing</strong></td>
+<td>Promoting a business using platforms like Instagram and Facebook.</td>
+</tr>
+<tr>
+<td><strong>E-commerce</strong></td>
+<td>Buying and selling goods and services online.</td>
+</tr>
+<tr>
+<td><strong>SEO</strong></td>
+<td>Optimizing website content to rank higher in search engine results.</td>
+</tr>
+<tr>
+<td><strong>Market Research</strong></td>
+<td>Studying trends and customer behavior to find business opportunities.</td>
+</tr>
+<tr>
+<td><strong>Design Thinking</strong></td>
+<td>A 5-step problem-solving process: Empathize, Define, Ideate, Prototype, Test.</td>
+</tr>
+<tr>
+<td><strong>Prototype</strong></td>
+<td>An early, simple model of a product used for testing.</td>
+</tr>
+<tr>
+<td><strong>Iteration</strong></td>
+<td>Improving a product repeatedly based on user feedback.</td>
+</tr>
+<tr>
+<td><strong>Business Plan</strong></td>
+<td>A written document outlining a business's goals and strategies.</td>
+</tr>
+<tr>
+<td><strong>Revenue Model</strong></td>
+<td>The plan for how a business will earn money.</td>
+</tr>
+<tr>
+<td><strong>Ethical Entrepreneurship</strong></td>
+<td>Running a business with honesty, fairness, and respect for all.</td>
+</tr>
+<tr>
+<td><strong>Sustainable Development Goals (SDGs)</strong></td>
+<td>17 global UN goals for a better, fairer, and greener world by 2030.</td>
+</tr>
+<tr>
+<td><strong>Triple Bottom Line</strong></td>
+<td>Measuring business success by People, Planet, and Profit.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="exercise-questions">📝 Exercise Questions</h2>
+<h3 id="multiple-choice-questions">Multiple Choice Questions</h3>
+<p><strong>1. What is entrepreneurship?</strong></p>
+<p>a) The process of buying and selling stocks<br>
+<strong>(b) The process of starting a new business or organization</strong><br>
+c) The process of working for a large company<br>
+d) The process of creating a marketing campaign</p>
+<hr>
+<p><strong>2. What is a key characteristic of successful entrepreneurs?</strong></p>
+<p>a) Avoiding all risks<br>
+b) Seeking job security above all else<br>
+<strong>(c) Innovation and willingness to take risks</strong><br>
+d) Following only established methods</p>
+<hr>
+<p><strong>3. Which of the following is a digital technology used by modern entrepreneurs?</strong></p>
+<p>a) Newspaper advertisements<br>
+b) Television commercials<br>
+<strong>(c) Mobile apps</strong><br>
+d) Door-to-door sales</p>
+<hr>
+<p><strong>4. Which of the following is NOT a technique for identifying market needs?</strong></p>
+<p>a) Surveys and Questionnaires<br>
+b) Market Research<br>
+c) Observation<br>
+<strong>(d) Brainstorming alone without user feedback</strong></p>
+<hr>
+<p><strong>5. The first step in the design thinking process is:</strong></p>
+<p>a) Prototyping<br>
+b) Testing<br>
+<strong>(c) Empathizing</strong><br>
+d) Defining</p>
+<hr>
+<p><strong>6. The primary purpose of creating a business plan is:</strong></p>
+<p>a) To attract investors only<br>
+<strong>(b) To outline goals and strategies for growth</strong><br>
+c) To study market trends<br>
+d) To implement digital marketing strategies</p>
+<hr>
+<p><strong>7. What does market analysis involve?</strong></p>
+<p>a) Calculating revenue forecasts only<br>
+<strong>(b) Researching competitors and understanding customer needs</strong><br>
+c) Developing pricing strategies only<br>
+d) Implementing digital marketing campaigns only</p>
+<hr>
+<p><strong>8. Which Sustainable Development Goal focuses on affordable and clean energy?</strong></p>
+<p>a) SDG 5<br>
+<strong>(b) SDG 7</strong><br>
+c) SDG 12<br>
+d) SDG 17</p>
+<hr>
+<p><strong>9. What is e-commerce?</strong></p>
+<p>a) Sending promotional emails to customers<br>
+<strong>(b) Buying and selling goods and services on the internet</strong><br>
+c) Tracking social media followers<br>
+d) Creating digital marketing advertisements</p>
+<hr>
+<p><strong>10. A revenue model in a business plan answers the question:</strong></p>
+<p>a) Who is my target customer?<br>
+b) What problem does my business solve?<br>
+<strong>(c) How will my business make money?</strong><br>
+d) Which social media platform should I use?</p>
+<hr>
+<p><strong>11. What is SEO (Search Engine Optimization)?</strong></p>
+<p><strong>(a) Improving website content so it ranks higher in search engine results</strong><br>
+b) Paying celebrities to promote your product<br>
+c) Sending promotional emails to customers<br>
+d) Creating mobile applications</p>
+<hr>
+<p><strong>12. Which of the following is an example of a cloud computing service?</strong></p>
+<p>a) A physical filing cabinet<br>
+b) A USB storage device<br>
+<strong>(c) Google Drive or Dropbox</strong><br>
+d) A printed business catalog</p>
+<hr>
+<p><strong>13. Which of the following best describes a "prototype"?</strong></p>
+<p>a) The final, polished version of a product<br>
+<strong>(b) An early, simple model of a product used for testing</strong><br>
+c) A digital marketing strategy<br>
+d) A type of business plan</p>
+<hr>
+<p><strong>14. The Triple Bottom Line measures business success by:</strong></p>
+<p>a) Profit, Sales, and Market Share<br>
+<strong>(b) People, Planet, and Profit</strong><br>
+c) Product, Price, and Promotion<br>
+d) Speed, Scale, and Profit</p>
+<hr>
+<p><strong>15. What does the principle of "honesty" in ethical entrepreneurship mean?</strong></p>
+<p>a) Keeping all business information secret<br>
+b) Charging the highest possible price<br>
+<strong>(c) Being truthful in all business dealings and not misleading customers</strong><br>
+d) Copying successful competitors</p>
+<hr>
+<h3 id="short-questions">Short Questions</h3>
+<ol>
+<li>What is the meaning of the word "entrepreneur" and where does it come from?</li>
+<li>How do digital technologies help entrepreneurs reach a global audience?</li>
+<li>What is an e-commerce platform? Give one example.</li>
+<li>Why is it important to identify market needs before generating a business idea?</li>
+<li>What is the main purpose of design thinking in creative problem-solving?</li>
+<li>Write about the importance of market analysis in a business plan.</li>
+<li>How can businesses contribute to environmental sustainability according to the SDGs?</li>
+<li>What is a revenue model? Name two types of revenue models.</li>
+<li>What is a prototype and why is it useful for entrepreneurs?</li>
+<li>What does "iteration" mean in the context of developing a product?</li>
+</ol>
+<hr>
+<h3 id="long-questions">Long Questions</h3>
+<ol>
+<li>
+<p>Explain why entrepreneurship is important for economic growth and innovation in a country like Pakistan. Give local examples to support your answer.</p>
+</li>
+<li>
+<p>Explain how market research tools, online marketing strategies, and e-commerce platforms can work together to help a business succeed in the digital world.</p>
+</li>
+<li>
+<p>Choose a local business or startup in Pakistan and discuss how it aligns with one or more Sustainable Development Goals (SDGs). Explain clearly which SDG it relates to and why.</p>
+</li>
+<li>
+<p>Explain digital entrepreneurship. What are the four main digital technologies that support it? Also write the four principles of ethics in business.</p>
+</li>
+<li>
+<p>Write down the five components of a business plan and explain each one briefly. Why is a business plan important for a new entrepreneur?</p>
+</li>
+</ol>
+<hr>
+<blockquote><p><strong>Final Thought from Your Teacher:</strong></p><p>Every business in the world — from Apple to your local samosa stall — started with one person who saw a problem and decided to do something about it.</p><p>You have problems around you every day. You have ideas. You have tools — a smartphone, the internet, and this education.</p><p>The only thing left is for you to begin.</p><p><strong>Start small. Start honest. Start now.</strong></p></blockquote>
+
+</body>
+</html>

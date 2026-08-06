@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 8: Ethical, Social, and Legal Concerns in Computer Usage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 8: Ethical, Social, and Legal Concerns in Computer Usage</div>
+</div>
+
+<h1 id="unit-8-ethical-social-and-legal-concerns-in-computer-usage">Unit 8: Ethical, Social, and Legal Concerns in Computer Usage</h1>
+<h2 id="complete-question-bank">Complete Question Bank</h2>
+<hr>
+<h2 id="multiple-choice-questions-mcqs">Multiple Choice Questions (MCQs)</h2>
+<hr>
+<h3 id="section-a-secure-and-responsible-computer-usage">Section A: Secure and Responsible Computer Usage</h3>
+<p><strong>1. What does safe and responsible computer usage primarily involve?</strong></p>
+<p>a) Using the most expensive hardware available<br>
+<strong>b) Protecting personal information, making wise hardware/software choices, and behaving ethically online</strong><br>
+c) Downloading as many applications as possible<br>
+d) Sharing information freely with everyone online</p>
+<hr>
+<p><strong>2. Why is it important to use computers safely and responsibly?</strong></p>
+<p>a) To ensure we can use them more frequently<br>
+<strong>b) To protect our personal information and make wise choices about hardware and software</strong><br>
+c) To make the computer run faster<br>
+d) To avoid paying for software</p>
+<hr>
+<p><strong>3. What does "responsible computer usage" include?</strong></p>
+<p>a) Choosing the most expensive hardware<br>
+b) Sharing your passwords with friends<br>
+<strong>c) Being cautious about what you share online and protecting yourself and others</strong><br>
+d) Ignoring software updates</p>
+<hr>
+<p><strong>4. In computing, "hardware" refers to:</strong></p>
+<p>a) Programs and applications installed on a computer<br>
+<strong>b) Physical parts of a computer such as the monitor, keyboard, and CPU</strong><br>
+c) Security software that protects data<br>
+d) The internet connection used by a device</p>
+<hr>
+<p><strong>5. In computing, "software" refers to:</strong></p>
+<p>a) The physical casing of a computer<br>
+<strong>b) Programs and applications used on a computer, such as word processors or games</strong><br>
+c) The monitor and keyboard<br>
+d) Network cables and routers</p>
+<hr>
+<p><strong>6. What should you check to ensure hardware and software compatibility?</strong></p>
+<p>a) The color of the hardware<br>
+<strong>b) The system requirements on software packages and match them with your computer's specifications</strong><br>
+c) The price of the hardware<br>
+d) The brand of the hardware</p>
+<hr>
+<p><strong>7. Which of the following is a risk of using outdated or insecure hardware/software?</strong></p>
+<p>a) The computer will run faster<br>
+<strong>b) Viruses or hackers may more easily steal your information</strong><br>
+c) The software will become more compatible<br>
+d) Data storage capacity will increase</p>
+<hr>
+<p><strong>8. What does "efficiency" mean in the context of choosing hardware and software?</strong></p>
+<p>a) Choosing the cheapest options available<br>
+<strong>b) Selecting hardware and software that help you complete tasks quickly and easily</strong><br>
+c) Ensuring the hardware has the most colorful design<br>
+d) Using only the most popular brands</p>
+<hr>
+<p><strong>9. Why is it important to create strong, unique passwords for your accounts?</strong></p>
+<p>a) To make your accounts easy to hack<br>
+b) To help others guess your password<br>
+<strong>c) To make it harder for someone to guess your password and access your accounts</strong><br>
+d) To avoid installing software updates</p>
+<hr>
+<p><strong>10. Which of the following is an example of a strong password?</strong></p>
+<p>a) password123<br>
+b) yourname2024<br>
+<strong>c) B3tterP@ssw0rd!</strong><br>
+d) 12345678</p>
+<hr>
+<p><strong>11. A strong password typically includes:</strong></p>
+<p>a) Only letters<br>
+b) Only numbers<br>
+<strong>c) A mix of letters, numbers, and special characters</strong><br>
+d) Your name and birthdate</p>
+<hr>
+<p><strong>12. What is Two-Factor Authentication (2FA)?</strong></p>
+<p>a) A method to remove the need for a password<br>
+<strong>b) An extra layer of security that requires a second form of verification after entering a password</strong><br>
+c) A type of antivirus software<br>
+d) A way to share passwords securely</p>
+<hr>
+<p><strong>13. What does Two-Factor Authentication (2FA) do?</strong></p>
+<p>a) It makes your password easier to guess<br>
+<strong>b) It adds an extra layer of security by requiring a second form of verification</strong><br>
+c) It removes the need for a password<br>
+d) It reduces the need for software updates</p>
+<hr>
+<p><strong>14. Which of the following is an example of a second factor in 2FA?</strong></p>
+<p><strong>a) A code sent to your phone</strong><br>
+b) Your email address<br>
+c) Your date of birth<br>
+d) Your username</p>
+<hr>
+<p><strong>15. Why should you be cautious when using public Wi-Fi for sensitive transactions?</strong></p>
+<p>a) Public Wi-Fi is usually faster<br>
+<strong>b) Public Wi-Fi networks are often less secure</strong><br>
+c) Public Wi-Fi is free<br>
+d) Public Wi-Fi always provides encryption</p>
+<hr>
+<p><strong>16. Where is it safest to conduct sensitive online transactions such as banking?</strong></p>
+<p>a) Any café with free Wi-Fi<br>
+b) A public library's Wi-Fi<br>
+<strong>c) A secure, private network at home</strong><br>
+d) Any open wireless network</p>
+<hr>
+<p><strong>17. What is a phishing email?</strong></p>
+<p>a) An email from a verified company offering discounts<br>
+<strong>b) An email that pretends to be from a legitimate company to trick you into giving away personal information</strong><br>
+c) An email with harmless marketing content<br>
+d) An official newsletter from a trusted source</p>
+<hr>
+<p><strong>18. What is the best action when you receive a suspicious email asking for personal information?</strong></p>
+<p>a) Provide the information requested<br>
+b) Forward the email to your friends<br>
+<strong>c) Ignore or delete the email and verify the source before responding</strong><br>
+d) Open the email and click on any links</p>
+<hr>
+<p><strong>19. What is one reason to avoid clicking on unknown links or downloading files from untrusted sources?</strong></p>
+<p>a) They might contain helpful software<br>
+<strong>b) They might contain malware that can harm your device or steal your information</strong><br>
+c) They are usually cheaper<br>
+d) They help your device run faster</p>
+<hr>
+<p><strong>20. What does "backing up data" mean?</strong></p>
+<p>a) Deleting files you no longer need<br>
+<strong>b) Saving copies of important data to an external drive or cloud service to prevent loss</strong><br>
+c) Encrypting your passwords<br>
+d) Updating your operating system</p>
+<hr>
+<p><strong>21. Which of the following is a suitable place to back up your data?</strong></p>
+<p>a) Only on your computer's hard drive<br>
+<strong>b) An external hard drive or a cloud storage service like Google Drive or Dropbox</strong><br>
+c) In your email inbox<br>
+d) On a social media profile</p>
+<hr>
+<p><strong>22. What should you do if you notice suspicious login activity on your account?</strong></p>
+<p>a) Wait and see if it happens again<br>
+b) Share your account with a friend to monitor it<br>
+<strong>c) Change your password immediately and report the activity to the platform</strong><br>
+d) Delete the account entirely</p>
+<hr>
+<p><strong>23. Periodically reviewing your account activity helps you:</strong></p>
+<p>a) Increase your internet speed<br>
+<strong>b) Detect unusual activity such as logins from unfamiliar locations</strong><br>
+c) Improve software compatibility<br>
+d) Download applications faster</p>
+<hr>
+<h3 id="section-b-online-behavior-and-digital-platforms">Section B: Online Behavior and Digital Platforms</h3>
+<p><strong>24. Which of the following is an important aspect of responsible use of social media?</strong></p>
+<p>a) Sharing personal information like your home address<br>
+b) Posting photos without considering privacy settings<br>
+<strong>c) Being respectful and avoiding sharing sensitive information publicly</strong><br>
+d) Ignoring privacy settings</p>
+<hr>
+<p><strong>25. What type of information should you avoid sharing publicly on social media?</strong></p>
+<p>a) Your favorite movies<br>
+<strong>b) Your home address and phone number</strong><br>
+c) Your school's name<br>
+d) Your general hobbies</p>
+<hr>
+<p><strong>26. Why should you be careful when opening emails from unknown senders?</strong></p>
+<p>a) Unknown emails are usually irrelevant<br>
+<strong>b) They could contain harmful links or attachments</strong><br>
+c) They take up too much storage space<br>
+d) They slow down your internet connection</p>
+<hr>
+<p><strong>27. When using cloud services, you should:</strong></p>
+<p>a) Share your login credentials with trusted friends<br>
+<strong>b) Use strong passwords and avoid sharing sensitive information through cloud storage</strong><br>
+c) Store all your financial details there without any password<br>
+d) Use the same password as your social media accounts</p>
+<hr>
+<p><strong>28. Apps should be downloaded only from:</strong></p>
+<p><strong>a) Trusted sources like Google Play Store or Apple App Store</strong><br>
+b) Any website that offers a free download<br>
+c) Links shared through emails<br>
+d) Social media advertisements</p>
+<hr>
+<p><strong>29. The "Golden Rule" of online etiquette means:</strong></p>
+<p>a) Always use gold-colored themes for your profile<br>
+<strong>b) Treat others online as you would want to be treated</strong><br>
+c) Share as much information as possible online<br>
+d) Only interact with people you know in real life</p>
+<hr>
+<p><strong>30. What is the recommended action if you are cyberbullied online?</strong></p>
+<p>a) Respond aggressively to the bully<br>
+b) Share the bullying content with others<br>
+<strong>c) Report it to the platform and block the person responsible</strong><br>
+d) Delete your account permanently</p>
+<hr>
+<p><strong>31. How can you support someone being bullied online?</strong></p>
+<p>a) Ignore the situation to avoid conflict<br>
+b) Share the bullying posts to raise awareness<br>
+<strong>c) Report the bullying or offer kind words of support to the victim</strong><br>
+d) Confront the bully publicly in the comments</p>
+<hr>
+<p><strong>32. What is the most responsible approach when you see a post online that you dislike?</strong></p>
+<p>a) Leave a hurtful comment in return<br>
+b) Share the post with negative remarks<br>
+<strong>c) Scroll past it rather than leaving a hurtful comment</strong><br>
+d) Report everyone who liked the post</p>
+<hr>
+<h3 id="section-c-privacy-and-data-security">Section C: Privacy and Data Security</h3>
+<p><strong>33. Privacy settings on digital platforms are important because they:</strong></p>
+<p>a) Make your profile look more attractive<br>
+<strong>b) Help protect your personal information while using digital platforms</strong><br>
+c) Allow other users to find you more easily<br>
+d) Increase the speed of your device</p>
+<hr>
+<p><strong>34. Which of the following best defines data security?</strong></p>
+<p>a) Keeping your devices fully charged<br>
+<strong>b) Protecting personal information from unauthorized access, theft, or loss</strong><br>
+c) Making sure all your data is shared openly<br>
+d) Regularly deleting all your files</p>
+<hr>
+<p><strong>35. Which of the following is a best practice for protecting data on cloud services?</strong></p>
+<p>a) Using the same password for all accounts<br>
+<strong>b) Using strong, unique passwords and enabling two-factor authentication</strong><br>
+c) Storing all files without any password protection<br>
+d) Sharing cloud storage login details with colleagues freely</p>
+<hr>
+<p><strong>36. Why is encryption important in protecting data?</strong></p>
+<p><strong>a) It protects data from being intercepted by unauthorized users</strong><br>
+b) It speeds up data transfer<br>
+c) It reduces the size of files<br>
+d) It allows easier sharing of sensitive data</p>
+<hr>
+<p><strong>37. What is software piracy?</strong></p>
+<p>a) Legally purchasing software at a discount<br>
+<strong>b) Using, copying, or distributing software without authorization or proper licensing</strong><br>
+c) Developing open-source software<br>
+d) Installing free software from official sources</p>
+<hr>
+<p><strong>38. Why is software piracy considered harmful?</strong></p>
+<p>a) It makes computers run slower<br>
+<strong>b) It violates intellectual property rights and deprives creators of rightful earnings</strong><br>
+c) It causes hardware to malfunction<br>
+d) It reduces internet speed</p>
+<hr>
+<h3 id="section-d-intellectual-property-rights">Section D: Intellectual Property Rights</h3>
+<p><strong>39. What is Copyright?</strong></p>
+<p>a) A symbol used by companies to brand their products<br>
+<strong>b) A legal right that gives creators control over their original works such as music, books, and software</strong><br>
+c) A patent filed for a new invention<br>
+d) A government license for using the internet</p>
+<hr>
+<p><strong>40. Which of the following is protected by copyright?</strong></p>
+<p>a) A company's brand logo<br>
+b) A new mechanical invention<br>
+<strong>c) A book, piece of music, movie, or software created by an individual</strong><br>
+d) A product's unique brand name</p>
+<hr>
+<p><strong>41. What does it mean that an author holds the copyright to their book?</strong></p>
+<p>a) Anyone can freely distribute and copy the book<br>
+<strong>b) The author controls how the book is published, shared, or adapted, and others need permission to copy or distribute it</strong><br>
+c) The government owns the book<br>
+d) The publisher has full control over the book</p>
+<hr>
+<p><strong>42. What are Trademarks?</strong></p>
+<p>a) Legal rights protecting new inventions<br>
+b) Rights protecting books and music<br>
+<strong>c) Symbols, names, or slogans used by companies to distinguish their products or services from others</strong><br>
+d) Certificates issued to software developers</p>
+<hr>
+<p><strong>43. Which of the following is an example of a trademark?</strong></p>
+<p>a) A newly written novel<br>
+b) A new car engine design<br>
+<strong>c) The Nike "swoosh" logo</strong><br>
+d) A scientific research paper</p>
+<hr>
+<p><strong>44. What do Patents protect?</strong></p>
+<p>a) Books, movies, and music<br>
+b) Company logos and slogans<br>
+<strong>c) New inventions or processes, giving the inventor exclusive rights to make, use, or sell the invention for a certain period</strong><br>
+d) Personal social media content</p>
+<hr>
+<p><strong>45. How are Trademarks different from Copyrights?</strong></p>
+<p>a) Trademarks protect inventions while copyrights protect brand logos<br>
+<strong>b) Trademarks protect brand identifiers like logos and slogans, while copyrights protect original creative works like books and music</strong><br>
+c) There is no difference between trademarks and copyrights<br>
+d) Copyrights are only for software, while trademarks are for hardware</p>
+<hr>
+<p><strong>46. Intellectual property rights are important because they:</strong></p>
+<p>a) Allow everyone to freely use any creative work<br>
+<strong>b) Protect the creations and ideas of individuals and organizations from unauthorized use</strong><br>
+c) Give the government control over all creative works<br>
+d) Allow companies to use any logo they want</p>
+<hr>
+<h3 id="section-e-ethical-guidelines-for-data">Section E: Ethical Guidelines for Data</h3>
+<p><strong>47. What is "informed consent" in the context of data collection?</strong></p>
+<p>a) Collecting data without the user's knowledge<br>
+<strong>b) Getting a user's explicit permission before collecting, storing, or sharing their data</strong><br>
+c) Automatically enrolling users in data sharing programs<br>
+d) Sharing user data freely with third parties</p>
+<hr>
+<p><strong>48. Which of the following is an ethical guideline for data collection?</strong></p>
+<p>a) Collecting as much data as possible without limits<br>
+<strong>b) Getting informed consent and ensuring data security</strong><br>
+c) Sharing all collected data with any interested party<br>
+d) Storing data indefinitely without user knowledge</p>
+<hr>
+<p><strong>49. Why is it important to follow ethical guidelines when collecting and sharing data?</strong></p>
+<p>a) It helps companies collect more data<br>
+<strong>b) It protects individuals' privacy and builds trust between users and organizations</strong><br>
+c) It allows unrestricted access to user information<br>
+d) It speeds up the data analysis process</p>
+<hr>
+<p><strong>50. Which of the following best describes the purpose of privacy laws?</strong></p>
+<p>a) To allow companies to freely use customer data<br>
+<strong>b) To regulate how personal information is collected, stored, and used in order to protect individuals</strong><br>
+c) To prevent people from using the internet<br>
+d) To monitor all online activity for security purposes</p>
+<hr>
+<h2 id="short-questions">Short Questions</h2>
+<hr>
+<h3 id="section-a-secure-and-responsible-computer-usage_1">Section A: Secure and Responsible Computer Usage</h3>
+<ol>
+<li>
+<p>What is the importance of using computers safely and responsibly?</p>
+</li>
+<li>
+<p>Explain the difference between hardware and software with examples.</p>
+</li>
+<li>
+<p>Why is choosing the right hardware and software important for safety and efficiency?</p>
+</li>
+<li>
+<p>What is meant by "hardware and software compatibility" and why does it matter?</p>
+</li>
+<li>
+<p>Why should you create strong, unique passwords for your accounts?</p>
+</li>
+<li>
+<p>List three characteristics of a strong password.</p>
+</li>
+<li>
+<p>What is Two-Factor Authentication (2FA) and why is it useful?</p>
+</li>
+<li>
+<p>Give an example of how 2FA works in a real-life scenario.</p>
+</li>
+<li>
+<p>Why is it a good idea to avoid using public Wi-Fi for sensitive transactions?</p>
+</li>
+<li>
+<p>What is a phishing email and how can you protect yourself from it?</p>
+</li>
+<li>
+<p>What are online scams and how can you identify them?</p>
+</li>
+<li>
+<p>Why is it important to regularly review your account activity?</p>
+</li>
+<li>
+<p>What does "backing up data" mean and why is it important?</p>
+</li>
+<li>
+<p>Name two places where you can back up your data.</p>
+</li>
+<li>
+<p>What should you do immediately if you notice suspicious login activity on your account?</p>
+</li>
+</ol>
+<hr>
+<h3 id="section-b-online-behavior-and-digital-platforms_1">Section B: Online Behavior and Digital Platforms</h3>
+<ol start="16">
+<li>
+<p>Why is it important to be careful about what you share on social media?</p>
+</li>
+<li>
+<p>What precautions should you take when using email as a communication tool?</p>
+</li>
+<li>
+<p>How should you use cloud services responsibly?</p>
+</li>
+<li>
+<p>Why is it important to download apps only from trusted sources like Google Play Store or Apple App Store?</p>
+</li>
+<li>
+<p>What is the "Golden Rule" of online etiquette and how does it apply to digital interactions?</p>
+</li>
+<li>
+<p>What steps should you take if you experience cyberbullying online?</p>
+</li>
+<li>
+<p>How can you support a classmate or friend who is being bullied online?</p>
+</li>
+<li>
+<p>What does "practicing respectful interactions" mean in the context of online behavior?</p>
+</li>
+</ol>
+<hr>
+<h3 id="section-c-privacy-and-data-security_1">Section C: Privacy and Data Security</h3>
+<ol start="24">
+<li>
+<p>What are privacy settings and why are they important for protecting personal information?</p>
+</li>
+<li>
+<p>What is data security and why is it essential for users of digital platforms?</p>
+</li>
+<li>
+<p>What is the purpose of privacy laws regarding your personal information?</p>
+</li>
+<li>
+<p>How does encryption help protect personal data in digital systems?</p>
+</li>
+<li>
+<p>What is software piracy and why is it harmful?</p>
+</li>
+<li>
+<p>Describe three best practices for protecting your personal data online.</p>
+</li>
+</ol>
+<hr>
+<h3 id="section-d-intellectual-property-rights_1">Section D: Intellectual Property Rights</h3>
+<ol start="30">
+<li>
+<p>What are Intellectual Property Rights and why are they important?</p>
+</li>
+<li>
+<p>Define Copyright and give two examples of works protected by it.</p>
+</li>
+<li>
+<p>What rights does a copyright give to the original creator of a work?</p>
+</li>
+<li>
+<p>What are Trademarks and how do they differ from Copyrights?</p>
+</li>
+<li>
+<p>Give one real-world example of a trademark.</p>
+</li>
+<li>
+<p>What are Patents and what do they protect?</p>
+</li>
+<li>
+<p>How are Patents different from Copyrights and Trademarks?</p>
+</li>
+<li>
+<p>Why is it illegal to copy or distribute someone's copyrighted work without permission?</p>
+</li>
+</ol>
+<hr>
+<h3 id="section-e-ethical-guidelines-for-data_1">Section E: Ethical Guidelines for Data</h3>
+<ol start="38">
+<li>
+<p>What is "informed consent" in relation to data collection, and why is it important?</p>
+</li>
+<li>
+<p>Describe two ethical guidelines that organizations should follow when collecting and storing data.</p>
+</li>
+<li>
+<p>Why is it important to follow ethical guidelines when sharing data with third parties?</p>
+</li>
+</ol>
+<hr>
+<blockquote><p><strong>Study Tip:</strong> For MCQs, pay close attention to definitions and the distinguishing features of terms like Copyright, Trademark, and Patent. For short questions, always define the concept first and then support it with a relevant example or explanation.</p></blockquote>
+
+</body>
+</html>

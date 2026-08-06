@@ -1,0 +1,2550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 1: Introduction to Computational Systems</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 1: Introduction to Computational Systems</div>
+</div>
+
+<h1 id="unit-1-introduction-to-computational-systems">Unit 1: Introduction to Computational Systems</h1>
+<hr>
+<blockquote><p><strong>"Computers are incredibly fast, accurate, and stupid. Human beings are incredibly slow, inaccurate, and brilliant. Together they are powerful beyond imagination."</strong><br>
+— Albert Einstein</p></blockquote>
+<hr>
+<h2 id="student-learning-outcomes">Student Learning Outcomes</h2>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Define and describe <strong>general system theory</strong> — its types, objectives, components, and environment.</li>
+<li>Explain the importance of <strong>system objectives</strong> such as processing information, supporting applications, and achieving specific goals.</li>
+<li>Describe a <strong>computer as a system</strong>, including its objectives, architecture, components, and interactions.</li>
+<li>Recognize the role and importance of <strong>computer system components</strong> and how they interact.</li>
+<li>Understand the <strong>Von Neumann architecture</strong> and its core components: CPU, memory, input/output devices, and the system bus.</li>
+<li>Explain the relationship between the <strong>CPU, memory, and storage</strong>, and how data flows within a system.</li>
+<li>Describe how the CPU <strong>fetches, decodes, executes, and stores</strong> instructions.</li>
+<li>Understand <strong>number systems</strong> — decimal, binary, octal, and hexadecimal — and convert between them.</li>
+<li>Understand how <strong>whole numbers and integers</strong> are represented in binary, including signed and unsigned numbers.</li>
+<li>Perform <strong>binary arithmetic operations</strong>: addition, subtraction, multiplication, and division.</li>
+<li>Explain <strong>1's complement</strong> and <strong>2's complement</strong> and how they represent negative numbers.</li>
+<li>Understand <strong>text encoding schemes</strong> — ASCII and Unicode — and how computers represent characters.</li>
+<li>Differentiate between <strong>system software and application software</strong> and explain their roles.</li>
+</ul>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>Every day, you interact with dozens of systems without realizing it. The traffic lights on the road. The WhatsApp message that reaches your friend in seconds. The refrigerator that keeps your food cold. Your own body, breathing and pumping blood without you thinking about it.</p>
+<p>All of these are <strong>systems</strong> — organized collections of parts working together toward a goal.</p>
+<p>A computer is also a system. But it is a special kind of system — one that can be <strong>programmed</strong> to do almost anything: calculate the trajectory of a rocket, play a game, translate languages, or draw a picture.</p>
+<p>In this chapter, you will learn what a system is, how a computer is built, how it stores and processes information, and how it represents everything — from the letter "A" to a photo — using just two digits: <strong>0</strong> and <strong>1</strong>.</p>
+<p>This is where computer science begins.</p>
+<hr>
+<h2 id="11-theory-of-systems">1.1 Theory of Systems</h2>
+<h3 id="what-is-a-system">What Is a System?</h3>
+<blockquote><p><strong>Definition:</strong> A system is an organized collection of interdependent parts that work together to perform a specific function or achieve a common goal.</p></blockquote>
+<p>The key word is <strong>interdependent</strong> — the parts need each other. Remove one part and the whole system is affected.</p>
+<hr>
+<h4 id="the-hook">🔖 The Hook</h4>
+<p>Think about your school. It has students, teachers, classrooms, timetables, a principal, a canteen, and textbooks. None of these parts alone makes a school. But when they all work together — students attend classes, teachers teach, the timetable organizes everything — the school achieves its goal: <strong>education</strong>.</p>
+<p>Your school is a system.</p>
+<p>Now think about a computer. It has a processor, memory, a keyboard, a screen, and software. None of these alone can do anything useful. But together, they form a <strong>computational system</strong> that can process, store, and display information.</p>
+<hr>
+<h4 id="the-four-basic-concepts-of-a-system">📖 The Four Basic Concepts of a System</h4>
+<p>Every system — simple or complex — can be described using four concepts:</p>
+<hr>
+<h5 id="1-objective">1. Objective</h5>
+<blockquote><p><strong>Definition:</strong> The objective is the <strong>purpose</strong> or <strong>goal</strong> the system exists to achieve.</p></blockquote>
+<p>Understanding a system's objective is the first step to understanding how it works.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>System</th>
+<th>Objective</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transport system</td>
+<td>Move people and goods safely between locations.</td>
+</tr>
+<tr>
+<td>Computer system</td>
+<td>Process data and provide useful information to users.</td>
+</tr>
+<tr>
+<td>Human body</td>
+<td>Sustain life and enable movement, thought, and sensation.</td>
+</tr>
+<tr>
+<td>School</td>
+<td>Educate students and prepare them for the future.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Without an objective, a system has no direction. Every decision about the system's design comes back to: <strong>does this help achieve the goal?</strong></p>
+<hr>
+<h5 id="2-components">2. Components</h5>
+<blockquote><p><strong>Definition:</strong> Components are the <strong>building blocks</strong> of a system. Each component plays a specific role and contributes to the overall function.</p></blockquote>
+<p>Understanding the role of each component helps you:<br>
+- Identify problems when something goes wrong.<br>
+- Improve performance by upgrading key parts.<br>
+- Redesign the system intelligently.</p>
+<p><strong>Example:</strong> In a computer system, the components include the CPU, RAM, hard disk, keyboard, and monitor. Each has a specific job — and when they all work smoothly together, the system meets its objective.</p>
+<hr>
+<h5 id="3-environment">3. Environment</h5>
+<blockquote><p><strong>Definition:</strong> The environment of a system is everything <strong>external</strong> to the system that interacts with it — inputs coming in, outputs going out, and outside factors affecting it.</p></blockquote>
+<p>The environment shapes how a system behaves.</p>
+<p><strong>Example:</strong> A computer's environment includes the user (who gives input), the electricity supply (which powers it), and temperature (overheating can cause failure). Intelligent systems sense their environment and adjust. A laptop's fan speeds up when it detects heat. A phone's screen dims in bright sunlight.</p>
+<hr>
+<h5 id="4-communication">4. Communication</h5>
+<blockquote><p><strong>Definition:</strong> Communication is the way <strong>components interact</strong> with each other to achieve the system's objective.</p></blockquote>
+<p>Without communication between parts, a system falls apart.</p>
+<p><strong>Example (Computer):</strong> The CPU communicates with RAM to fetch and store data. The keyboard sends signals to the CPU when a key is pressed. The CPU sends results to the monitor for display.</p>
+<p><strong>Example (Biological):</strong> Your brain sends electrical signals to your hand muscles when you decide to pick up a pen. That signal is communication between components of the biological system.</p>
+<hr>
+<h4 id="summary-table-the-four-concepts-of-a-system">📝 Summary Table: The Four Concepts of a System</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Question It Answers</th>
+<th>Computer Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Objective</strong></td>
+<td>What is the system trying to do?</td>
+<td>Process data, provide information.</td>
+</tr>
+<tr>
+<td><strong>Components</strong></td>
+<td>What parts make up the system?</td>
+<td>CPU, RAM, keyboard, monitor.</td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td>What surrounds and affects the system?</td>
+<td>User input, electricity, temperature.</td>
+</tr>
+<tr>
+<td><strong>Communication</strong></td>
+<td>How do parts talk to each other?</td>
+<td>CPU ↔ RAM, keyboard → CPU → monitor.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="class-activity-design-a-simple-system">🏫 Class Activity: Design a Simple System</h4>
+<p>Work in pairs. Choose any simple system from daily life (a vending machine, a water pump, a traffic light, a kitchen blender).</p>
+<p>For your chosen system:<br>
+1. <strong>Objective:</strong> What is it trying to do?<br>
+2. <strong>Components:</strong> List all the parts.<br>
+3. <strong>Environment:</strong> What external factors affect it?<br>
+4. <strong>Communication:</strong> How do the components interact?</p>
+<p>Draw a diagram showing your system. Present it to the class.</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Think about the <strong>human digestive system</strong> (the system that processes food).</p>
+<ol>
+<li>What is its <strong>objective</strong>?</li>
+<li>Name four <strong>components</strong> (organs).</li>
+<li>What is the <strong>environment</strong> — what goes in? What comes out?</li>
+<li>How do the components <strong>communicate</strong> (what signals or substances pass between them)?</li>
+</ol>
+<p>Write your answers. Then compare with a partner.</p>
+<hr>
+<h4 id="quick-recap">📌 Quick Recap</h4>
+<blockquote><p><strong>A system is a collection of interdependent parts with a shared goal. Every system has four concepts: objective, components, environment, and communication.</strong></p></blockquote>
+<hr>
+<h2 id="12-software">1.2 Software</h2>
+<h3 id="what-is-software">What Is Software?</h3>
+<blockquote><p><strong>Definition:</strong> Software is a collection of programs and instructions that tell a computer what to do and how to do it.</p></blockquote>
+<p>Without software, a computer is a useless box of metal and plastic. Software is what brings hardware to life.</p>
+<hr>
+<h4 id="the-hook_1">🔖 The Hook</h4>
+<p>In 1971, a programmer created a small program just to see if it could copy itself from one computer to another over a network. It could. The program called itself <strong>"Creeper"</strong> and displayed the message: <em>"I'm the creeper, catch me if you can!"</em></p>
+<p>It was the world's first computer virus — and it was created with software.</p>
+<p>Software can be creative, useful, harmful, or playful. But it is always a set of instructions telling the hardware what to do.</p>
+<hr>
+<h3 id="types-of-software">Types of Software</h3>
+<p>Software is divided into two main categories:</p>
+<hr>
+<h4 id="type-1-system-software">📖 Type 1: System Software</h4>
+<blockquote><p><strong>Definition:</strong> System software manages the computer's hardware resources and provides a platform on which application software can run. It acts as a bridge between the hardware and the user.</p></blockquote>
+<p>Think of system software as the <strong>manager</strong> of the computer. It runs quietly in the background, making sure everything works correctly.</p>
+<p><strong>Examples of system software:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Examples</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Operating System (OS)</strong></td>
+<td>Windows, macOS, Linux, Android</td>
+<td>Controls all hardware; manages files, memory, and programs.</td>
+</tr>
+<tr>
+<td><strong>Device Drivers</strong></td>
+<td>Printer driver, graphics driver, sound driver</td>
+<td>Allows the OS to communicate with specific hardware devices.</td>
+</tr>
+<tr>
+<td><strong>Utility Programs</strong></td>
+<td>Antivirus, disk cleanup, backup software</td>
+<td>Maintains and protects the system.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="type-2-application-software">📖 Type 2: Application Software</h4>
+<blockquote><p><strong>Definition:</strong> Application software is designed to help users perform specific tasks. It runs on top of the system software.</p></blockquote>
+<p>Think of application software as the <strong>tools</strong> you actually use to get work done.</p>
+<p><strong>Examples of application software:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Word Processors</strong></td>
+<td>Microsoft Word, Google Docs</td>
+</tr>
+<tr>
+<td><strong>Web Browsers</strong></td>
+<td>Google Chrome, Mozilla Firefox, Safari</td>
+</tr>
+<tr>
+<td><strong>Games</strong></td>
+<td>Minecraft, Fortnite, Among Us</td>
+</tr>
+<tr>
+<td><strong>Media Players</strong></td>
+<td>VLC Media Player, Windows Media Player</td>
+</tr>
+<tr>
+<td><strong>Spreadsheets</strong></td>
+<td>Microsoft Excel, Google Sheets</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="comparing-system-software-vs-application-software">📖 Comparing System Software vs. Application Software</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>System Software</th>
+<th>Application Software</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Manages hardware; makes the computer run.</td>
+<td>Helps the user complete a specific task.</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Windows OS, device drivers, antivirus</td>
+<td>MS Word, Chrome, Minecraft</td>
+</tr>
+<tr>
+<td><strong>Installation</strong></td>
+<td>Usually pre-installed. Comes with the computer.</td>
+<td>Installed by the user as needed.</td>
+</tr>
+<tr>
+<td><strong>Who uses it directly?</strong></td>
+<td>Mostly works in background; user rarely touches it.</td>
+<td>User directly interacts with it.</td>
+</tr>
+<tr>
+<td><strong>Runs on</strong></td>
+<td>Directly on the hardware.</td>
+<td>Runs on top of system software.</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><p><strong>Important:</strong> Application software <strong>cannot run without system software</strong>. If you remove the operating system, no application — Word, Chrome, games — can run. System software comes first.</p></blockquote>
+<hr>
+<h4 id="class-activity">🏫 Class Activity</h4>
+<p>Make a list of every software program you use on your computer, tablet, or phone. Then sort each one into <strong>system software</strong> or <strong>application software</strong>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Software Name</th>
+<th>System or Application?</th>
+<th>What Does It Do?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows 11</td>
+<td>System</td>
+<td>Manages all hardware and software</td>
+</tr>
+<tr>
+<td>Microsoft Word</td>
+<td>Application</td>
+<td>Writing documents</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table></div>
+<p>Compare your list with a classmate. Which software do you use most?</p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_1">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Your friend says: <em>"I don't need an operating system. I'll just install Microsoft Word directly on the computer."</em></p>
+<p>Is your friend correct? Why or why not? What would happen if you tried to run Word without an operating system?</p>
+<hr>
+<h4 id="quick-recap_1">📌 Quick Recap</h4>
+<blockquote><p><strong>Software tells hardware what to do. System software manages the computer (OS, drivers, utilities). Application software helps users complete specific tasks (Word, Chrome, games). One cannot work without the other.</strong></p></blockquote>
+<hr>
+<h2 id="13-the-von-neumann-architecture">1.3 The Von Neumann Architecture</h2>
+<h3 id="the-blueprint-of-every-modern-computer">The Blueprint of Every Modern Computer</h3>
+<blockquote><p><strong>Definition:</strong> The Von Neumann architecture is a computer design model in which a single memory stores both the program instructions and the data those instructions operate on. The CPU reads from this shared memory to execute programs.</p></blockquote>
+<p>This model was developed in the 1940s by mathematician <strong>John von Neumann</strong>. Before this model, computers were rewired physically every time you wanted to run a different program. Von Neumann's idea — store the program in memory, just like data — changed everything.</p>
+<p><strong>Almost every computer built since the 1950s is based on this architecture.</strong> Your laptop, your phone, your school's computer — all of them are Von Neumann machines.</p>
+<hr>
+<h4 id="the-hook_2">🔖 The Hook</h4>
+<p>Imagine a chef (the CPU) in a kitchen. The chef reads a recipe (the program) from a cookbook (memory). The recipe tells the chef which ingredients (data) to use and what to do with them. The chef follows the steps, one by one, and produces a meal (output).</p>
+<p>Now imagine if the chef had to memorize every possible recipe permanently. That would be impossible. Instead, the cookbook stores all the recipes. The chef reads whichever one is needed.</p>
+<p>That is the Von Neumann idea: <strong>store the instructions in memory, read them as needed, execute them one by one</strong>.</p>
+<hr>
+<h3 id="components-of-the-von-neumann-architecture">Components of the Von Neumann Architecture</h3>
+<hr>
+<h4 id="component-1-memory">📖 Component 1: Memory</h4>
+<blockquote><p><strong>Role:</strong> Stores both the <strong>program instructions</strong> and the <strong>data</strong> the program works with.</p></blockquote>
+<p>When you open a program (like a game or a word processor), it is <strong>loaded from the hard disk into RAM</strong> (Random Access Memory). The CPU then reads instructions and data from RAM — because RAM is much faster than the hard disk.</p>
+<p>Think of RAM as the <strong>chef's countertop</strong> — the working space where everything currently being used is laid out.</p>
+<p><strong>Key point:</strong> Von Neumann architecture uses a <strong>single, shared memory</strong> for both instructions and data. This is called the <strong>stored-program concept</strong>.</p>
+<hr>
+<h4 id="component-2-central-processing-unit-cpu">📖 Component 2: Central Processing Unit (CPU)</h4>
+<blockquote><p><strong>Role:</strong> The brain of the computer. It fetches instructions from memory, decodes them, and executes them.</p></blockquote>
+<p>The CPU has two main sub-units:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Sub-Unit</th>
+<th>Full Name</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ALU</strong></td>
+<td>Arithmetic Logic Unit</td>
+<td>Performs all mathematical calculations (addition, subtraction, etc.) and logical operations (AND, OR, NOT, comparisons).</td>
+</tr>
+<tr>
+<td><strong>CU</strong></td>
+<td>Control Unit</td>
+<td>Controls the flow of instructions. Tells the ALU and memory what to do and when. Acts like a traffic controller for data inside the CPU.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example:</strong> When you calculate 2 + 2 on a calculator app:<br>
+- The <strong>Control Unit</strong> reads the instruction "add these two numbers."<br>
+- The <strong>ALU</strong> performs the actual addition.<br>
+- The <strong>Control Unit</strong> sends the result to the display.</p>
+<hr>
+<h4 id="component-3-input-devices">📖 Component 3: Input Devices</h4>
+<blockquote><p><strong>Role:</strong> Allow users to send data and instructions <strong>into</strong> the computer system.</p></blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Input Device</th>
+<th>What It Sends</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keyboard</td>
+<td>Text and commands</td>
+</tr>
+<tr>
+<td>Mouse</td>
+<td>Cursor position and click actions</td>
+</tr>
+<tr>
+<td>Microphone</td>
+<td>Sound/audio</td>
+</tr>
+<tr>
+<td>Scanner</td>
+<td>Images and documents</td>
+</tr>
+<tr>
+<td>Camera (webcam)</td>
+<td>Video/images</td>
+</tr>
+</tbody>
+</table></div>
+<p>When you press a key on the keyboard, the keystroke is converted to a digital signal and sent to the CPU for processing.</p>
+<hr>
+<h4 id="component-4-output-devices">📖 Component 4: Output Devices</h4>
+<blockquote><p><strong>Role:</strong> Receive the results of the CPU's processing and present them to the user.</p></blockquote>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Output Device</th>
+<th>What It Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monitor</td>
+<td>Visual output (text, images, video)</td>
+</tr>
+<tr>
+<td>Printer</td>
+<td>Physical printed documents</td>
+</tr>
+<tr>
+<td>Speakers</td>
+<td>Sound/audio</td>
+</tr>
+<tr>
+<td>Projector</td>
+<td>Large-screen visual output</td>
+</tr>
+</tbody>
+</table></div>
+<p>After the CPU processes your data, the result travels to the monitor (or other output device) so you can see or hear it.</p>
+<hr>
+<h4 id="component-5-the-system-bus">📖 Component 5: The System Bus</h4>
+<blockquote><p><strong>Definition:</strong> The System Bus is the communication pathway that moves data between all the components inside the computer.</p></blockquote>
+<p>It has three channels:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Bus</th>
+<th>What It Carries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Bus</strong></td>
+<td>The actual data being transferred.</td>
+</tr>
+<tr>
+<td><strong>Address Bus</strong></td>
+<td>The memory address — where to read from or write to.</td>
+</tr>
+<tr>
+<td><strong>Control Bus</strong></td>
+<td>Control signals — timing, read/write instructions.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Think of the system bus as a <strong>highway system</strong> inside the computer. Data, addresses, and control signals all travel on their own dedicated lanes.</p>
+<hr>
+<h4 id="the-von-neumann-architecture-component-map">📝 The Von Neumann Architecture — Component Map</h4>
+<pre><code>┌─────────────────────────────────────┐
+│              MEMORY                 │
+│   (Stores instructions + data)      │
+└──────────────┬──────────────────────┘
+               │  System Bus
+               │  (Data Bus + Address Bus + Control Bus)
+               │
+┌──────────────▼──────────────────────┐
+│                CPU                  │
+│  ┌──────────────┐  ┌─────────────┐  │
+│  │  Control     │  │   ALU       │  │
+│  │  Unit (CU)   │  │ (performs   │  │
+│  │ (manages     │  │ calculations│  │
+│  │ flow)        │  │ &amp; logic)    │  │
+│  └──────────────┘  └─────────────┘  │
+└──────┬──────────────────────┬────────┘
+       │                      │
+┌──────▼──────┐       ┌───────▼──────┐
+│   INPUT     │       │   OUTPUT     │
+│  DEVICES    │       │   DEVICES    │
+│(Keyboard,   │       │(Monitor,     │
+│ Mouse...)   │       │ Printer...)  │
+└─────────────┘       └──────────────┘
+</code></pre>
+<hr>
+<h3 id="working-of-the-von-neumann-architecture-the-fetch-decode-execute-store-cycle">Working of the Von Neumann Architecture: The Fetch-Decode-Execute-Store Cycle</h3>
+<p>The CPU executes instructions in a continuous four-step cycle. This cycle repeats millions — sometimes billions — of times per second.</p>
+<hr>
+<h4 id="the-hook_3">🔖 The Hook</h4>
+<p>Think of a factory assembly line. A worker picks up a part (fetch), reads the instruction sheet (decode), builds it (execute), and places the finished piece in storage (store). Then immediately picks up the next part. Repeat. Forever.</p>
+<p>The CPU works exactly like this — a relentless, high-speed assembly line processing instructions.</p>
+<hr>
+<h4 id="step-1-fetch">📖 Step 1: Fetch</h4>
+<p><strong>What happens:</strong> The CPU retrieves the next instruction from memory.</p>
+<ul>
+<li>The <strong>Program Counter (PC)</strong> — a special register inside the CPU — holds the memory address of the next instruction.</li>
+<li>The instruction is retrieved from that address and placed into the <strong>Instruction Register (IR)</strong>.</li>
+<li>The Program Counter automatically updates to point to the <strong>next</strong> instruction.</li>
+</ul>
+<p><strong>Key components involved:</strong> Memory, Program Counter (PC), Instruction Register (IR).</p>
+<hr>
+<h4 id="step-2-decode">📖 Step 2: Decode</h4>
+<p><strong>What happens:</strong> The Control Unit reads the instruction in the IR and figures out what it means.</p>
+<ul>
+<li>The instruction contains an <strong>opcode</strong> (operation code) — a binary code that tells the CPU what operation to perform (add, subtract, load data, etc.).</li>
+<li>The Control Unit determines what the CPU needs to do and which data to use.</li>
+</ul>
+<p><strong>Key components involved:</strong> Control Unit (CU).</p>
+<hr>
+<h4 id="step-3-execute">📖 Step 3: Execute</h4>
+<p><strong>What happens:</strong> The CPU carries out the instruction.</p>
+<ul>
+<li>If the instruction is a <strong>calculation</strong> (e.g., add two numbers), the ALU performs it.</li>
+<li>If the instruction is a <strong>data movement</strong> (e.g., copy data from one location to another), the Control Unit handles it.</li>
+</ul>
+<p><strong>Key components involved:</strong> ALU, Control Unit (CU).</p>
+<hr>
+<h4 id="step-4-store">📖 Step 4: Store</h4>
+<p><strong>What happens:</strong> The result of the execution is saved — either back to memory or sent to an output device.</p>
+<ul>
+<li>If the result needs to be used later, it goes into <strong>memory (RAM)</strong>.</li>
+<li>If the result is for the user (like text on a screen), it goes to an <strong>output device</strong> (monitor, speakers, printer).</li>
+</ul>
+<p><strong>Key components involved:</strong> Memory, Output Devices.</p>
+<hr>
+<h4 id="the-full-cycle-example-adding-2-2-in-a-calculator-app">📝 The Full Cycle — Example: Adding 2 + 2 in a Calculator App</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What Happens</th>
+<th>Components Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fetch</strong></td>
+<td>CPU reads the "ADD" instruction from RAM. PC points to next instruction.</td>
+<td>Memory, PC, IR</td>
+</tr>
+<tr>
+<td><strong>Decode</strong></td>
+<td>Control Unit identifies this as an addition operation. Identifies the two numbers: 2 and 2.</td>
+<td>Control Unit</td>
+</tr>
+<tr>
+<td><strong>Execute</strong></td>
+<td>ALU adds 2 + 2 = 4.</td>
+<td>ALU</td>
+</tr>
+<tr>
+<td><strong>Store</strong></td>
+<td>Result (4) is sent to the monitor for display.</td>
+<td>Memory / Monitor</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Trace through the Fetch-Decode-Execute-Store cycle for this operation:</p>
+<p><em>"The user types the letter 'A' on the keyboard. The letter appears on the screen."</em></p>
+<p>With your partner, answer:<br>
+1. What is <strong>fetched</strong> from memory?<br>
+2. What does <strong>decoding</strong> determine?<br>
+3. What does <strong>execution</strong> involve?<br>
+4. Where is the result <strong>stored</strong> or sent?</p>
+<hr>
+<h4 id="quick-recap_2">📌 Quick Recap</h4>
+<blockquote><p><strong>The Von Neumann architecture uses a shared memory for instructions and data. The CPU's four-step cycle — Fetch, Decode, Execute, Store — processes every instruction. The ALU does calculations; the Control Unit manages everything.</strong></p></blockquote>
+<hr>
+<h2 id="14-number-systems">1.4 Number Systems</h2>
+<h3 id="why-do-computers-use-different-number-systems">Why Do Computers Use Different Number Systems?</h3>
+<p>Computers work at the hardware level using only two states: <strong>electricity on (1) and electricity off (0)</strong>. Everything a computer stores, processes, or communicates is ultimately represented using these two digits — the <strong>binary</strong> number system.</p>
+<p>But binary numbers are long and hard for humans to read. That is why other number systems — octal and hexadecimal — exist: to give us a more compact, human-readable way to represent binary data.</p>
+<hr>
+<h4 id="the-hook_4">🔖 The Hook</h4>
+<p>When ships communicate at sea, they sometimes use signal flags. Each flag pattern represents a letter or number. The flag system is just a different way of representing the same alphabet — not a different language, just a different representation.</p>
+<p>Number systems work the same way. Decimal, binary, octal, and hexadecimal all represent the <strong>same underlying values</strong> — just in different ways, for different purposes.</p>
+<hr>
+<h3 id="141-decimal-number-system-base-10">1.4.1 Decimal Number System (Base 10)</h3>
+<blockquote><p><strong>Definition:</strong> The decimal system is a <strong>base-10</strong> number system. It uses digits from <strong>0 to 9</strong>. Each digit's value depends on its position (its place value), which is a power of 10.</p></blockquote>
+<p>This is the number system you use every day.</p>
+<p><strong>Example: The number 523</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Digit</th>
+<th>Place Value</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hundreds</td>
+<td>5</td>
+<td>10² = 100</td>
+<td>5 × 100 = 500</td>
+</tr>
+<tr>
+<td>Tens</td>
+<td>2</td>
+<td>10¹ = 10</td>
+<td>2 × 10 = 20</td>
+</tr>
+<tr>
+<td>Units</td>
+<td>3</td>
+<td>10⁰ = 1</td>
+<td>3 × 1 = 3</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>523</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>So 523 = 5×10² + 2×10¹ + 3×10⁰ = 500 + 20 + 3 = <strong>523</strong></p>
+<hr>
+<h3 id="142-binary-number-system-base-2">1.4.2 Binary Number System (Base 2)</h3>
+<blockquote><p><strong>Definition:</strong> The binary system is a <strong>base-2</strong> number system. It uses only two digits: <strong>0</strong> and <strong>1</strong>. Each digit's place value is a power of 2.</p></blockquote>
+<p>Binary is the <strong>native language of computers</strong>. Digital circuits have exactly two states — ON (1) and OFF (0). Every piece of data in a computer — text, images, sound, video — is ultimately stored as binary.</p>
+<p><strong>Example: The binary number 1011</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Digit</th>
+<th>Place Value</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4th from right</td>
+<td>1</td>
+<td>2³ = 8</td>
+<td>1 × 8 = 8</td>
+</tr>
+<tr>
+<td>3rd from right</td>
+<td>0</td>
+<td>2² = 4</td>
+<td>0 × 4 = 0</td>
+</tr>
+<tr>
+<td>2nd from right</td>
+<td>1</td>
+<td>2¹ = 2</td>
+<td>1 × 2 = 2</td>
+</tr>
+<tr>
+<td>1st from right</td>
+<td>1</td>
+<td>2⁰ = 1</td>
+<td>1 × 1 = 1</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>11 in decimal</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>So 1011₂ = 1×8 + 0×4 + 1×2 + 1×1 = <strong>11₁₀</strong></p>
+<hr>
+<h4 id="converting-decimal-to-binary">📝 Converting Decimal to Binary</h4>
+<p><strong>Algorithm:</strong><br>
+1. Divide the decimal number by 2.<br>
+2. Record the remainder (0 or 1).<br>
+3. Divide the quotient by 2 again.<br>
+4. Keep dividing until the quotient reaches 0.<br>
+5. Read the remainders <strong>from bottom to top</strong> — that is your binary number.</p>
+<p><strong>Example: Convert 83 to binary</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Division</th>
+<th>Quotient</th>
+<th>Remainder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>83 ÷ 2</td>
+<td>41</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>41 ÷ 2</td>
+<td>20</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>20 ÷ 2</td>
+<td>10</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>10 ÷ 2</td>
+<td>5</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>5 ÷ 2</td>
+<td>2</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>2 ÷ 2</td>
+<td>1</td>
+<td><strong>0</strong></td>
+</tr>
+<tr>
+<td>1 ÷ 2</td>
+<td>0</td>
+<td><strong>1</strong> ← Start reading here</td>
+</tr>
+</tbody>
+</table></div>
+<p>Read remainders <strong>bottom to top:</strong> <strong>1010011</strong></p>
+<p>So 83₁₀ = <strong>1010011₂</strong></p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_2">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Convert these decimal numbers to binary on your own:<br>
+1. 15<br>
+2. 32<br>
+3. 100</p>
+<p><em>(Check your answers: 15 = 1111₂, 32 = 100000₂, 100 = 1100100₂)</em></p>
+<hr>
+<h3 id="143-octal-number-system-base-8">1.4.3 Octal Number System (Base 8)</h3>
+<blockquote><p><strong>Definition:</strong> The octal system is a <strong>base-8</strong> number system. It uses digits from <strong>0 to 7</strong>. Each digit's place value is a power of 8.</p></blockquote>
+<p>Octal was used in early computing systems because it is easy to convert between octal and binary. (The early PDP-8 computer used octal.) Though not widely used in modern computing, it remains important to understand.</p>
+<p><strong>Example: The octal number 157</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Digit</th>
+<th>Place Value</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3rd from right</td>
+<td>1</td>
+<td>8² = 64</td>
+<td>1 × 64 = 64</td>
+</tr>
+<tr>
+<td>2nd from right</td>
+<td>5</td>
+<td>8¹ = 8</td>
+<td>5 × 8 = 40</td>
+</tr>
+<tr>
+<td>1st from right</td>
+<td>7</td>
+<td>8⁰ = 1</td>
+<td>7 × 1 = 7</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>111 in decimal</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>So 157₈ = 1×64 + 5×8 + 7×1 = <strong>111₁₀</strong></p>
+<hr>
+<h4 id="converting-binary-to-octal">📝 Converting Binary to Octal</h4>
+<p>Each octal digit represents exactly <strong>3 binary bits</strong> (because 8 = 2³).</p>
+<p><strong>Method:</strong><br>
+1. Group the binary digits into groups of <strong>3 bits</strong>, starting from the right.<br>
+2. If the leftmost group has fewer than 3 bits, pad it with zeros on the left.<br>
+3. Convert each 3-bit group to its octal digit.</p>
+<p><strong>Octal-Binary Correspondence Table:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Octal</th>
+<th>Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>010</td>
+</tr>
+<tr>
+<td>3</td>
+<td>011</td>
+</tr>
+<tr>
+<td>4</td>
+<td>100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>101</td>
+</tr>
+<tr>
+<td>6</td>
+<td>110</td>
+</tr>
+<tr>
+<td>7</td>
+<td>111</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example: Convert 110101011₂ to octal</strong></p>
+<pre><code>Group into 3s (from right): 110 | 101 | 011
+Convert each group:
+  110 = 6
+  101 = 5
+  011 = 3
+</code></pre>
+<p>Result: 110101011₂ = <strong>653₈</strong></p>
+<hr>
+<h4 id="converting-decimal-to-octal">📝 Converting Decimal to Octal</h4>
+<p><strong>Algorithm:</strong><br>
+1. Divide the decimal number by 8.<br>
+2. Record the remainder.<br>
+3. Divide the quotient by 8 again.<br>
+4. Repeat until the quotient is 0.<br>
+5. Read remainders <strong>from bottom to top</strong>.</p>
+<p><strong>Example: Convert 83 to octal</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Division</th>
+<th>Quotient</th>
+<th>Remainder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>83 ÷ 8</td>
+<td>10</td>
+<td><strong>3</strong></td>
+</tr>
+<tr>
+<td>10 ÷ 8</td>
+<td>1</td>
+<td><strong>2</strong></td>
+</tr>
+<tr>
+<td>1 ÷ 8</td>
+<td>0</td>
+<td><strong>1</strong> ← Start reading here</td>
+</tr>
+</tbody>
+</table></div>
+<p>Read remainders bottom to top: <strong>123</strong></p>
+<p>So 83₁₀ = <strong>123₈</strong></p>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_1">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Work together to:<br>
+1. Convert 45₁₀ to octal.<br>
+2. Convert 128₁₀ to octal.<br>
+3. Convert 57₈ to decimal.<br>
+4. Convert 124₈ to decimal.</p>
+<p>Compare your answers with another pair.</p>
+<hr>
+<h3 id="144-hexadecimal-number-system-base-16">1.4.4 Hexadecimal Number System (Base 16)</h3>
+<blockquote><p><strong>Definition:</strong> The hexadecimal system is a <strong>base-16</strong> number system. It uses digits <strong>0–9</strong> and letters <strong>A–F</strong> (where A = 10, B = 11, C = 12, D = 13, E = 14, F = 15). Each digit's place value is a power of 16.</p></blockquote>
+<p>Hexadecimal (often called "hex") is the most popular shorthand for binary in computing. Memory addresses, color codes in web design (like <code>#FF5733</code>), and many system values are written in hexadecimal.</p>
+<p><strong>Hexadecimal digit values:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–9</td>
+<td>0–9</td>
+</tr>
+<tr>
+<td>A</td>
+<td>10</td>
+</tr>
+<tr>
+<td>B</td>
+<td>11</td>
+</tr>
+<tr>
+<td>C</td>
+<td>12</td>
+</tr>
+<tr>
+<td>D</td>
+<td>13</td>
+</tr>
+<tr>
+<td>E</td>
+<td>14</td>
+</tr>
+<tr>
+<td>F</td>
+<td>15</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example: The hexadecimal number 1A3</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Digit</th>
+<th>Place Value</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3rd from right</td>
+<td>1</td>
+<td>16² = 256</td>
+<td>1 × 256 = 256</td>
+</tr>
+<tr>
+<td>2nd from right</td>
+<td>A (=10)</td>
+<td>16¹ = 16</td>
+<td>10 × 16 = 160</td>
+</tr>
+<tr>
+<td>1st from right</td>
+<td>3</td>
+<td>16⁰ = 1</td>
+<td>3 × 1 = 3</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>419₁₀</strong></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="converting-hexadecimal-to-binary">📝 Converting Hexadecimal to Binary</h4>
+<p>Each hex digit represents exactly <strong>4 binary bits</strong> (because 16 = 2⁴).</p>
+<p><strong>Hexadecimal-Binary Correspondence Table:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Binary</th>
+<th>Hex</th>
+<th>Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0000</td>
+<td>8</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0001</td>
+<td>9</td>
+<td>1001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0010</td>
+<td>A</td>
+<td>1010</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0011</td>
+<td>B</td>
+<td>1011</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0100</td>
+<td>C</td>
+<td>1100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0101</td>
+<td>D</td>
+<td>1101</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0110</td>
+<td>E</td>
+<td>1110</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0111</td>
+<td>F</td>
+<td>1111</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example: Convert 1101011010110010₂ to hexadecimal</strong></p>
+<pre><code>Group into 4s (from right): 1101 | 0110 | 1011 | 0010
+Convert each group:
+  1101 = D
+  0110 = 6
+  1011 = B
+  0010 = 2
+</code></pre>
+<p>Result: 1101011010110010₂ = <strong>D6B2₁₆</strong></p>
+<hr>
+<h4 id="converting-decimal-to-hexadecimal">📝 Converting Decimal to Hexadecimal</h4>
+<p><strong>Algorithm:</strong><br>
+1. Divide the decimal number by 16.<br>
+2. Record the remainder. If the remainder is 10–15, use A–F.<br>
+3. Divide the quotient by 16.<br>
+4. Repeat until the quotient is 0.<br>
+5. Read remainders <strong>from bottom to top</strong>.</p>
+<p><strong>Example: Convert 2297 to hexadecimal</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Division</th>
+<th>Quotient</th>
+<th>Remainder</th>
+<th>Hex Digit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2297 ÷ 16</td>
+<td>143</td>
+<td>9</td>
+<td><strong>9</strong></td>
+</tr>
+<tr>
+<td>143 ÷ 16</td>
+<td>8</td>
+<td>15</td>
+<td><strong>F</strong></td>
+</tr>
+<tr>
+<td>8 ÷ 16</td>
+<td>0</td>
+<td>8</td>
+<td><strong>8</strong> ← Start reading here</td>
+</tr>
+</tbody>
+</table></div>
+<p>Read remainders bottom to top: <strong>8F9</strong></p>
+<p>So 2297₁₀ = <strong>8F9₁₆</strong></p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_3">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Web designers write colors in hexadecimal. The color red is written as <code>#FF0000</code>.</p>
+<ol>
+<li>Convert FF₁₆ to decimal. What value is that?</li>
+<li>What do you think <code>#000000</code> represents? And <code>#FFFFFF</code>?</li>
+<li>Convert the hex number <code>#1A</code> to decimal.</li>
+</ol>
+<hr>
+<h4 id="quick-recap_3">📌 Quick Recap</h4>
+<blockquote><p><strong>Computers work in binary (base 2). Octal (base 8) and hexadecimal (base 16) are compact shorthand for binary. To convert: group binary into 3 bits for octal, 4 bits for hex. To convert decimal: divide repeatedly and read remainders upward.</strong></p></blockquote>
+<hr>
+<h2 id="15-data-representation-in-computing-systems">1.5 Data Representation in Computing Systems</h2>
+<h3 id="how-computers-store-numbers">How Computers Store Numbers</h3>
+<p>Everything stored in a computer is ultimately binary. But there is a question: how many bits do you use? And how do you represent negative numbers?</p>
+<hr>
+<h4 id="the-hook_5">🔖 The Hook</h4>
+<p>Imagine a set of weighing scales that can only show weights from 0 to 10 kg. If you place 12 kg on it, the scale cannot display the value — it overflows. A computer's memory works similarly: a fixed number of bits can only represent a fixed range of values. Understanding these ranges is essential to writing correct programs.</p>
+<hr>
+<h3 id="151-whole-numbers-w">1.5.1 Whole Numbers (W)</h3>
+<blockquote><p><strong>Definition:</strong> Whole numbers are non-negative integers: {0, 1, 2, 3, ...}</p></blockquote>
+<p>In computing, whole numbers are <strong>unsigned</strong> — they have no sign bit. All bits are used to store the magnitude of the value.</p>
+<p><strong>Formula:</strong> With <strong>n</strong> bits, the maximum value that can be stored is <strong>2ⁿ - 1</strong>.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Storage Size</th>
+<th>Bits (n)</th>
+<th>Maximum Value (2ⁿ - 1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 byte</td>
+<td>8 bits</td>
+<td>255</td>
+</tr>
+<tr>
+<td>2 bytes</td>
+<td>16 bits</td>
+<td>65,535</td>
+</tr>
+<tr>
+<td>4 bytes</td>
+<td>32 bits</td>
+<td>4,294,967,295</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example:</strong> A 1-byte whole number:<br>
+- Maximum: <code>11111111₂</code> = 255₁₀<br>
+- Minimum: <code>00000000₂</code> = 0₁₀</p>
+<hr>
+<h3 id="152-integers-z-signed-numbers">1.5.2 Integers (Z) — Signed Numbers</h3>
+<blockquote><p><strong>Definition:</strong> Integers include both positive and negative numbers: {..., -3, -2, -1, 0, 1, 2, 3, ...}</p></blockquote>
+<p>To store negative numbers, one bit is reserved as the <strong>sign bit</strong> — the leftmost (most significant) bit.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Sign Bit Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Positive number</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Negative number</td>
+</tr>
+</tbody>
+</table></div>
+<p>For a 1-byte signed integer (8 bits):<br>
+- 1 bit is for the sign.<br>
+- 7 bits are for the value.<br>
+- Maximum positive value: <code>01111111₂</code> = <strong>127₁₀</strong><br>
+- <strong>Formula for maximum:</strong> 2^(n-1) - 1</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Storage Size</th>
+<th>Bits</th>
+<th>Maximum Positive</th>
+<th>Minimum Negative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 byte</td>
+<td>8</td>
+<td>+127</td>
+<td>-128</td>
+</tr>
+<tr>
+<td>2 bytes</td>
+<td>16</td>
+<td>+32,767</td>
+<td>-32,768</td>
+</tr>
+<tr>
+<td>4 bytes</td>
+<td>32</td>
+<td>+2,147,483,647</td>
+<td>-2,147,483,648</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="153-1s-complement">1.5.3 1's Complement</h3>
+<blockquote><p><strong>Definition:</strong> 1's complement represents a negative binary number by <strong>inverting all the bits</strong> — changing every 0 to 1 and every 1 to 0.</p></blockquote>
+<p><strong>Example: Find the 1's complement of 00000101₂ (which is +5)</strong></p>
+<pre><code>Original:         0 0 0 0 0 1 0 1
+Invert all bits:  1 1 1 1 1 0 1 0
+</code></pre>
+<p>1's complement of 00000101₂ = <strong>11111010₂</strong></p>
+<p>1's complement is a stepping stone to 2's complement, which is the actual method computers use.</p>
+<hr>
+<h3 id="154-2s-complement-how-computers-store-negative-numbers">1.5.4 2's Complement — How Computers Store Negative Numbers</h3>
+<blockquote><p><strong>Definition:</strong> 2's complement is the standard method computers use to represent negative integers in binary.</p></blockquote>
+<p><strong>Why 2's complement?</strong> Because it allows subtraction to be performed using the same addition circuit — only one type of arithmetic circuit is needed in the CPU.</p>
+<p><strong>Steps to find the 2's complement:</strong><br>
+1. Write the binary of the positive version of the number.<br>
+2. <strong>Invert all bits</strong> (find the 1's complement).<br>
+3. <strong>Add 1</strong> to the result.</p>
+<hr>
+<h4 id="example-represent-5-in-8-bit-binary-using-2s-complement">📝 Example: Represent -5 in 8-bit binary using 2's complement</h4>
+<p><strong>Step 1:</strong> Binary of +5:</p>
+<pre><code>+5 = 00000101₂
+</code></pre>
+<p><strong>Step 2:</strong> Invert all bits (1's complement):</p>
+<pre><code>00000101 → 11111010
+</code></pre>
+<p><strong>Step 3:</strong> Add 1:</p>
+<pre><code>  11111010
++        1
+----------
+  11111011
+</code></pre>
+<p>So <strong>-5 in 8-bit 2's complement = 11111011₂</strong></p>
+<hr>
+<h4 id="minimum-integer-value">📝 Minimum Integer Value</h4>
+<p>For an 8-bit signed integer, the most negative number is represented by:</p>
+<pre><code>10000000₂
+</code></pre>
+<p>This represents <strong>-128₁₀</strong> (negative 128).</p>
+<p><strong>Formula:</strong> Minimum value = <strong>-2^(n-1)</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Minimum Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 byte (8 bits)</td>
+<td>-2⁷ = <strong>-128</strong></td>
+</tr>
+<tr>
+<td>2 bytes (16 bits)</td>
+<td>-2¹⁵ = <strong>-32,768</strong></td>
+</tr>
+<tr>
+<td>4 bytes (32 bits)</td>
+<td>-2³¹ = <strong>-2,147,483,648</strong></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="interactive-stop-point-pause-think_4">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>Find the 8-bit 2's complement representation of these negative numbers:<br>
+1. -3<br>
+2. -10<br>
+3. -1</p>
+<p><em>(Hint for -1: Start with 00000001, invert, add 1. What do you get? Is it surprising?)</em></p>
+<hr>
+<h4 id="quick-recap_4">📌 Quick Recap</h4>
+<blockquote><p><strong>Whole numbers are unsigned (all bits = value). Integers are signed (1 bit = sign). Negative integers are stored using 2's complement: invert all bits, then add 1.</strong></p></blockquote>
+<hr>
+<h2 id="16-binary-arithmetic-operations">1.6 Binary Arithmetic Operations</h2>
+<h3 id="introduction_1">Introduction</h3>
+<p>The CPU performs millions of arithmetic operations every second. All of them are done in binary. Understanding binary arithmetic helps you understand how the CPU actually works.</p>
+<p>There are four operations: addition, subtraction, multiplication, and division.</p>
+<hr>
+<h4 id="the-hook_6">🔖 The Hook</h4>
+<p>Every time you add two numbers on a calculator, play a game, or stream a video — the CPU is performing binary arithmetic. The music coming from your speakers is the result of millions of binary additions per second, processed so fast that it sounds like continuous sound.</p>
+<hr>
+<h3 id="161-binary-addition">1.6.1 Binary Addition</h3>
+<p><strong>The four rules of binary addition:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Result</th>
+<th>Carry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 + 0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0 + 1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1 + 0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1 + 1</td>
+<td>0</td>
+<td>1 (carry 1 to next column)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The special case:</strong> 1 + 1 = 10 in binary (which is 2 in decimal). The "1" carries to the next column, just like in decimal addition when you add 9 + 1 = 10.</p>
+<hr>
+<h4 id="example-add-11012-10112">📝 Example: Add 1101₂ + 1011₂</h4>
+<pre><code>  1 1 0 1
++ 1 0 1 1
+---------
+</code></pre>
+<p>Work from <strong>right to left</strong>:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Bits</th>
+<th>Carry In</th>
+<th>Sum</th>
+<th>Result Bit</th>
+<th>Carry Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1st (units)</td>
+<td>1 + 1</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2nd</td>
+<td>0 + 1</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3rd</td>
+<td>1 + 0</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4th</td>
+<td>1 + 1</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5th (overflow)</td>
+<td>—</td>
+<td>1</td>
+<td>—</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<p>Result: <strong>11000₂</strong></p>
+<p>Let's verify: 1101₂ = 13₁₀, 1011₂ = 11₁₀, and 13 + 11 = 24 = <strong>11000₂</strong>. ✓</p>
+<hr>
+<h3 id="162-binary-subtraction-using-2s-complement">1.6.2 Binary Subtraction (Using 2's Complement)</h3>
+<p>Instead of subtracting directly, computers <strong>add the 2's complement</strong> of the number being subtracted. This means the CPU only needs an addition circuit — subtraction is just addition in disguise.</p>
+<p><strong>Rule:</strong> A - B = A + (2's complement of B)</p>
+<hr>
+<h4 id="example-subtract-6-from-9-ie-9-6">📝 Example: Subtract 6 from 9 (i.e., 9 - 6)</h4>
+<p><strong>Step 1:</strong> Write both numbers in 4-bit binary:</p>
+<pre><code>9 = 1001₂
+6 = 0110₂
+</code></pre>
+<p><strong>Step 2:</strong> Find the 2's complement of 6:</p>
+<pre><code>0110  ← original 6
+1001  ← invert all bits (1's complement)
++  1  ← add 1
+----
+1010  ← 2's complement of 6 (represents -6)
+</code></pre>
+<p><strong>Step 3:</strong> Add 9 + (-6):</p>
+<pre><code>  1001
++ 1010
+------
+ 10011
+</code></pre>
+<p><strong>Step 4:</strong> Discard the carry bit (the extra 1 on the left):</p>
+<pre><code>10011 → discard carry → 0011₂ = 3₁₀
+</code></pre>
+<p>Result: 9 - 6 = <strong>3</strong> ✓</p>
+<hr>
+<h3 id="163-binary-multiplication">1.6.3 Binary Multiplication</h3>
+<p>Binary multiplication follows the same <strong>long multiplication</strong> method as decimal, but with simpler rules:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 × 0 = 0</td>
+</tr>
+<tr>
+<td>0 × 1 = 0</td>
+</tr>
+<tr>
+<td>1 × 0 = 0</td>
+</tr>
+<tr>
+<td>1 × 1 = 1</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Steps:</strong><br>
+1. Multiply each bit of the second number (multiplier) by all bits of the first number (multiplicand) — one row per bit.<br>
+2. Shift each row one place to the left compared to the previous row.<br>
+3. Add all the partial products.</p>
+<hr>
+<h4 id="example-multiply-1012-112">📝 Example: Multiply 101₂ × 11₂</h4>
+<pre><code>    1 0 1   (= 5 in decimal)
+  ×   1 1   (= 3 in decimal)
+  -------
+    1 0 1   (101 × 1 — multiply by rightmost bit, no shift)
+  1 0 1 0   (101 × 1 — multiply by next bit, shift left by 1)
+  -------
+  1 1 1 1   (add the two rows)
+</code></pre>
+<p>Result: 101₂ × 11₂ = <strong>1111₂</strong></p>
+<p>Verify: 5 × 3 = 15 = <strong>1111₂</strong> ✓</p>
+<hr>
+<h3 id="164-binary-division">1.6.4 Binary Division</h3>
+<p>Binary division follows the same <strong>long division</strong> method as decimal, but only uses 0s and 1s.</p>
+<p><strong>Steps:</strong><br>
+1. <strong>Compare:</strong> Compare the divisor with the leftmost portion of the dividend.<br>
+2. <strong>Subtract:</strong> If divisor ≤ current portion, subtract it. Write 1 in the quotient.<br>
+3. <strong>Shift:</strong> Bring down the next bit from the dividend.<br>
+4. If the divisor is larger than the current portion, write 0 in the quotient.<br>
+5. <strong>Repeat</strong> until all bits are processed.</p>
+<hr>
+<h4 id="example-divide-11002-102">📝 Example: Divide 1100₂ ÷ 10₂</h4>
+<pre><code>Dividend: 1100₂ (= 12 in decimal)
+Divisor:    10₂ (= 2 in decimal)
+Expected:   110₂ (= 6 in decimal)
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Current Portion</th>
+<th>Compare with 10₂</th>
+<th>Action</th>
+<th>Quotient Bit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>11</td>
+<td>11 ≥ 10 → subtract</td>
+<td>11 - 10 = 01</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>010 (bring down 0)</td>
+<td>010 ≥ 10 → subtract</td>
+<td>010 - 010 = 000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>000 (bring down 0)</td>
+<td>000 &lt; 10</td>
+<td>No subtraction</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<p>Result: <strong>110₂</strong> = 6 ✓</p>
+<hr>
+<h4 id="class-activity-practicing-binary-division">🏫 Class Activity: Practicing Binary Division</h4>
+<p>Form groups of 3–4 students. Solve these binary division problems. Show every step.</p>
+<ol>
+<li>10101₂ ÷ 10₂</li>
+<li>11100₂ ÷ 11₂</li>
+<li>100110₂ ÷ 101₂</li>
+</ol>
+<p>Present your solutions to the class. Verify by converting to decimal first.</p>
+<hr>
+<h4 id="interactive-stop-point-grab-a-partner_2">✋ Interactive Stop-Point: Grab a Partner</h4>
+<p>Perform these binary operations. Show your working.</p>
+<ol>
+<li>1010₂ + 0110₂</li>
+<li>1111₂ - 0101₂ (use 2's complement)</li>
+<li>110₂ × 101₂</li>
+</ol>
+<p>Verify each answer by converting to decimal and checking.</p>
+<hr>
+<h4 id="quick-recap_5">📌 Quick Recap</h4>
+<blockquote><p><strong>Binary addition uses 4 rules; 1+1=10 with a carry. Subtraction uses 2's complement addition. Multiplication uses long multiplication. Division uses long division. All four follow the same logic as decimal arithmetic — just in base 2.</strong></p></blockquote>
+<hr>
+<h2 id="17-common-text-encoding-schemes">1.7 Common Text Encoding Schemes</h2>
+<h3 id="how-computers-represent-text">How Computers Represent Text</h3>
+<p>Computers only understand numbers (in binary). So how does a computer store the letter "A" or the word "Pakistan"?</p>
+<p>The answer: every character is assigned a number. The agreed-upon system of which number maps to which character is called a <strong>text encoding scheme</strong>.</p>
+<hr>
+<h4 id="the-hook_7">🔖 The Hook</h4>
+<p>Imagine two spies communicating in secret. They agree on a code: A = 1, B = 2, C = 3, and so on. When one spy writes "8-5-12-12-15", the other reads "HELLO."</p>
+<p>This is exactly how text encoding works. The computer and the software agree on a code: A = 65, B = 66, and so on. When the computer stores "A", it stores the number 65 in binary.</p>
+<hr>
+<h3 id="171-ascii">1.7.1 ASCII</h3>
+<blockquote><p><strong>Definition:</strong> ASCII stands for <strong>American Standard Code for Information Interchange</strong>. It is the original standard encoding system for computers, assigning a number (0–127) to every standard character.</p></blockquote>
+<p>ASCII assigns a unique number from <strong>0 to 127</strong> to every:<br>
+- Letter (uppercase and lowercase)<br>
+- Digit (0–9)<br>
+- Punctuation mark (., !, ?, etc.)<br>
+- Special character (space, tab, etc.)</p>
+<p><strong>Key ASCII values to know:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Character</th>
+<th>ASCII Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Space</td>
+<td>32</td>
+</tr>
+<tr>
+<td>A (uppercase)</td>
+<td>65</td>
+</tr>
+<tr>
+<td>B (uppercase)</td>
+<td>66</td>
+</tr>
+<tr>
+<td>Z (uppercase)</td>
+<td>90</td>
+</tr>
+<tr>
+<td>a (lowercase)</td>
+<td>97</td>
+</tr>
+<tr>
+<td>b (lowercase)</td>
+<td>98</td>
+</tr>
+<tr>
+<td>z (lowercase)</td>
+<td>122</td>
+</tr>
+<tr>
+<td>0 (digit)</td>
+<td>48</td>
+</tr>
+<tr>
+<td>9 (digit)</td>
+<td>57</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Example: Encoding "Pakistan" in ASCII</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>ASCII Code</th>
+<th>Binary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td>80</td>
+<td>01010000</td>
+</tr>
+<tr>
+<td>a</td>
+<td>97</td>
+<td>01100001</td>
+</tr>
+<tr>
+<td>k</td>
+<td>107</td>
+<td>01101011</td>
+</tr>
+<tr>
+<td>i</td>
+<td>105</td>
+<td>01101001</td>
+</tr>
+<tr>
+<td>s</td>
+<td>115</td>
+<td>01110011</td>
+</tr>
+<tr>
+<td>t</td>
+<td>116</td>
+<td>01110100</td>
+</tr>
+<tr>
+<td>a</td>
+<td>97</td>
+<td>01100001</td>
+</tr>
+<tr>
+<td>n</td>
+<td>110</td>
+<td>01101110</td>
+</tr>
+</tbody>
+</table></div>
+<p>So the word "Pakistan" is stored in a computer as the sequence of binary numbers above.</p>
+<p><strong>Standard ASCII:</strong> 7 bits, 128 characters (0–127).</p>
+<p><strong>Extended ASCII:</strong> 8 bits, 256 characters (0–255). Adds accented letters, extra symbols.</p>
+<hr>
+<h4 id="class-activity_1">🏫 Class Activity</h4>
+<ol>
+<li>Write your full name.</li>
+<li>Find the ASCII code for each letter (use the ASCII table).</li>
+<li>Convert each ASCII code to binary.</li>
+<li>You have just written your name in binary — the same way a computer stores it!</li>
+</ol>
+<hr>
+<h3 id="172-unicode">1.7.2 Unicode</h3>
+<p><strong>The problem with ASCII:</strong> ASCII was designed for English. It can represent 128 characters — enough for English letters, numbers, and punctuation. But what about Urdu? Arabic? Chinese? Hindi? Japanese? Each of these languages has hundreds or thousands of characters.</p>
+<p>ASCII cannot represent them. A new standard was needed.</p>
+<blockquote><p><strong>Definition:</strong> Unicode is a universal character encoding standard that assigns a unique code to every character in every language in the world. It can represent over <strong>1 million characters</strong>.</p></blockquote>
+<p>Unicode uses the notation <strong>U+</strong> followed by a hexadecimal code for each character.<br>
+- <code>A</code> = U+0041<br>
+- <code>ب</code> (Urdu letter Ba) = U+0628</p>
+<p>Unicode has multiple encoding forms — UTF-8, UTF-16, and UTF-32 — which differ in how many bytes they use per character.</p>
+<hr>
+<h4 id="utf-8">📖 UTF-8</h4>
+<blockquote><p><strong>Definition:</strong> UTF-8 is a <strong>variable-length</strong> encoding. It uses between 1 and 4 bytes per character.</p></blockquote>
+<p><strong>Key property:</strong> UTF-8 is <strong>backward compatible with ASCII</strong>. Any text file written in ASCII can be read by a UTF-8 system without any changes. This made UTF-8 easy to adopt — existing ASCII content worked without modification.</p>
+<p><strong>How many bytes?</strong><br>
+- Standard English characters (like A, B, C): <strong>1 byte</strong> (same as ASCII).<br>
+- Extended characters (accented letters, common symbols): <strong>2 bytes</strong>.<br>
+- Characters from most languages (Arabic, Urdu, Hindi, Chinese): <strong>2–3 bytes</strong>.<br>
+- Rare or ancient characters: <strong>4 bytes</strong>.</p>
+<p><strong>Examples:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Character</th>
+<th>Unicode</th>
+<th>UTF-8 Binary</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>U+0041</td>
+<td>01000001</td>
+<td>1 byte</td>
+</tr>
+<tr>
+<td>ب (Urdu Ba)</td>
+<td>U+0628</td>
+<td>11011000 10101000</td>
+<td>2 bytes</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="utf-16">📖 UTF-16</h4>
+<blockquote><p><strong>Definition:</strong> UTF-16 is a <strong>variable-length</strong> encoding that uses either <strong>2 or 4 bytes</strong> per character.</p></blockquote>
+<p>Unlike UTF-8, UTF-16 is <strong>not</strong> compatible with ASCII. It is commonly used internally by operating systems like Windows and programming languages like Java.</p>
+<p><strong>Examples:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Character</th>
+<th>UTF-16 Binary</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>00000000 01000001</td>
+<td>2 bytes</td>
+</tr>
+<tr>
+<td>ب (Urdu Ba)</td>
+<td>00000110 00101000</td>
+<td>2 bytes</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="utf-32">📖 UTF-32</h4>
+<blockquote><p><strong>Definition:</strong> UTF-32 is a <strong>fixed-length</strong> encoding that always uses exactly <strong>4 bytes</strong> per character.</p></blockquote>
+<p><strong>Advantage:</strong> Very simple. Every character takes the same space.</p>
+<p><strong>Disadvantage:</strong> Uses more memory — even for simple English text, every character uses 4 bytes instead of 1.</p>
+<p><strong>Example:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Character</th>
+<th>UTF-32 Binary</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>00000000 00000000 00000000 01000001</td>
+<td>4 bytes</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="comparison-ascii-vs-unicode-encodings">📝 Comparison: ASCII vs. Unicode Encodings</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>ASCII</th>
+<th>UTF-8</th>
+<th>UTF-16</th>
+<th>UTF-32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Characters</td>
+<td>128</td>
+<td>1,000,000+</td>
+<td>1,000,000+</td>
+<td>1,000,000+</td>
+</tr>
+<tr>
+<td>Bytes per character</td>
+<td>1</td>
+<td>1–4</td>
+<td>2–4</td>
+<td>4 (fixed)</td>
+</tr>
+<tr>
+<td>ASCII compatible?</td>
+<td>—</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>English only</td>
+<td>Web, most uses</td>
+<td>Windows, Java</td>
+<td>Simplicity</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="173-data-storage-units">1.7.3 Data Storage Units</h3>
+<p>All files — text, images, audio, video — are stored as binary data on storage devices. Data size is measured in bytes and its multiples.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 Bit</strong></td>
+<td>A single binary digit: 0 or 1</td>
+</tr>
+<tr>
+<td><strong>1 Byte (B)</strong></td>
+<td>8 bits</td>
+</tr>
+<tr>
+<td><strong>1 Kilobyte (KB)</strong></td>
+<td>1,024 bytes</td>
+</tr>
+<tr>
+<td><strong>1 Megabyte (MB)</strong></td>
+<td>1,024 KB</td>
+</tr>
+<tr>
+<td><strong>1 Gigabyte (GB)</strong></td>
+<td>1,024 MB</td>
+</tr>
+<tr>
+<td><strong>1 Terabyte (TB)</strong></td>
+<td>1,024 GB</td>
+</tr>
+<tr>
+<td><strong>1 Petabyte (PB)</strong></td>
+<td>1,024 TB</td>
+</tr>
+<tr>
+<td><strong>1 Exabyte (EB)</strong></td>
+<td>1,024 PB</td>
+</tr>
+<tr>
+<td><strong>1 Zettabyte (ZB)</strong></td>
+<td>1,024 EB</td>
+</tr>
+<tr>
+<td><strong>1 Yottabyte (YB)</strong></td>
+<td>1,024 ZB</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Common file sizes for reference:</strong><br>
+- A single character in ASCII: <strong>1 byte</strong><br>
+- A typical text document (5 pages): ~<strong>25 KB</strong><br>
+- An MP3 song: ~<strong>4–5 MB</strong><br>
+- A full HD movie: ~<strong>4–8 GB</strong><br>
+- A large hard drive: <strong>1–4 TB</strong></p>
+<hr>
+<h4 id="interactive-stop-point-pause-think_5">✋ Interactive Stop-Point: Pause &amp; Think</h4>
+<p>A school wants to digitize all its text records. They estimate they have 10,000 pages of text. A typical page is about 2,000 characters.</p>
+<ol>
+<li>How many characters total? (10,000 × 2,000 = ?)</li>
+<li>In ASCII, each character = 1 byte. How many bytes total?</li>
+<li>Convert that to KB, then MB.</li>
+<li>Could you fit all these records on a USB drive with 1 GB of storage?</li>
+</ol>
+<hr>
+<h4 id="quick-recap_6">📌 Quick Recap</h4>
+<blockquote><p><strong>ASCII maps 128 characters to numbers (0–127) — enough for English. Unicode extends this to over 1 million characters for all world languages. UTF-8, UTF-16, and UTF-32 are different ways to encode Unicode. All data is stored as binary — measured in bytes and their multiples.</strong></p></blockquote>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>This chapter introduced you to the foundational concepts of computational systems — how computers are designed, how they process information, and how they store and represent all types of data.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Key Takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System Theory</strong></td>
+<td>A system is interdependent parts with a shared goal. Every system has: objective, components, environment, and communication.</td>
+</tr>
+<tr>
+<td><strong>System Software</strong></td>
+<td>Manages hardware. Examples: OS, device drivers, utilities.</td>
+</tr>
+<tr>
+<td><strong>Application Software</strong></td>
+<td>Helps users do tasks. Examples: Word, Chrome, games.</td>
+</tr>
+<tr>
+<td><strong>Von Neumann Architecture</strong></td>
+<td>Shared memory for data and instructions. Components: Memory, CPU (ALU + CU), Input, Output, System Bus.</td>
+</tr>
+<tr>
+<td><strong>Fetch-Decode-Execute-Store</strong></td>
+<td>The four-step cycle the CPU repeats to execute every instruction.</td>
+</tr>
+<tr>
+<td><strong>Decimal (Base 10)</strong></td>
+<td>Digits 0–9. Daily life number system. Place values are powers of 10.</td>
+</tr>
+<tr>
+<td><strong>Binary (Base 2)</strong></td>
+<td>Digits 0–1. Computer's native language. Place values are powers of 2.</td>
+</tr>
+<tr>
+<td><strong>Octal (Base 8)</strong></td>
+<td>Digits 0–7. Each octal digit = 3 binary bits.</td>
+</tr>
+<tr>
+<td><strong>Hexadecimal (Base 16)</strong></td>
+<td>Digits 0–9 and A–F. Each hex digit = 4 binary bits. Compact binary shorthand.</td>
+</tr>
+<tr>
+<td><strong>Whole Numbers</strong></td>
+<td>Unsigned (all bits = value). Max value = 2ⁿ - 1.</td>
+</tr>
+<tr>
+<td><strong>Integers</strong></td>
+<td>Signed (1 bit = sign). Max = 2^(n-1)-1. Min = -2^(n-1).</td>
+</tr>
+<tr>
+<td><strong>1's Complement</strong></td>
+<td>Invert all bits. A stepping stone to 2's complement.</td>
+</tr>
+<tr>
+<td><strong>2's Complement</strong></td>
+<td>Invert all bits, then add 1. Standard method for storing negative numbers.</td>
+</tr>
+<tr>
+<td><strong>Binary Addition</strong></td>
+<td>1+1=10 (carry). Four simple rules.</td>
+</tr>
+<tr>
+<td><strong>Binary Subtraction</strong></td>
+<td>Add the 2's complement. Discard carry.</td>
+</tr>
+<tr>
+<td><strong>Binary Multiplication</strong></td>
+<td>Long multiplication with shifts.</td>
+</tr>
+<tr>
+<td><strong>Binary Division</strong></td>
+<td>Long division — compare, subtract, shift, repeat.</td>
+</tr>
+<tr>
+<td><strong>ASCII</strong></td>
+<td>128 characters, 7 bits. English letters, digits, symbols.</td>
+</tr>
+<tr>
+<td><strong>Unicode (UTF-8/16/32)</strong></td>
+<td>1M+ characters. Covers all world languages. UTF-8 most common.</td>
+</tr>
+<tr>
+<td><strong>Data Storage Units</strong></td>
+<td>Bit → Byte → KB → MB → GB → TB and beyond.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="key-vocabulary">Key Vocabulary</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System</strong></td>
+<td>An organized collection of interdependent parts working toward a common goal.</td>
+</tr>
+<tr>
+<td><strong>Objective</strong></td>
+<td>The goal or purpose a system is designed to achieve.</td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td>Everything external to a system that interacts with it.</td>
+</tr>
+<tr>
+<td><strong>Software</strong></td>
+<td>Programs and instructions that tell a computer what to do.</td>
+</tr>
+<tr>
+<td><strong>System Software</strong></td>
+<td>Software that manages hardware and provides a platform for applications.</td>
+</tr>
+<tr>
+<td><strong>Application Software</strong></td>
+<td>Software that helps users perform specific tasks.</td>
+</tr>
+<tr>
+<td><strong>Von Neumann Architecture</strong></td>
+<td>A computer design with shared memory for both programs and data.</td>
+</tr>
+<tr>
+<td><strong>CPU</strong></td>
+<td>Central Processing Unit — the brain of the computer.</td>
+</tr>
+<tr>
+<td><strong>ALU</strong></td>
+<td>Arithmetic Logic Unit — performs calculations and logical operations.</td>
+</tr>
+<tr>
+<td><strong>Control Unit (CU)</strong></td>
+<td>Manages the flow of instructions through the CPU.</td>
+</tr>
+<tr>
+<td><strong>System Bus</strong></td>
+<td>The communication pathway connecting all computer components.</td>
+</tr>
+<tr>
+<td><strong>Fetch-Decode-Execute-Store</strong></td>
+<td>The four-step cycle the CPU uses to process every instruction.</td>
+</tr>
+<tr>
+<td><strong>Binary</strong></td>
+<td>Base-2 number system using only 0 and 1.</td>
+</tr>
+<tr>
+<td><strong>Decimal</strong></td>
+<td>Base-10 number system (0–9) used in everyday life.</td>
+</tr>
+<tr>
+<td><strong>Octal</strong></td>
+<td>Base-8 number system (0–7). Each digit = 3 binary bits.</td>
+</tr>
+<tr>
+<td><strong>Hexadecimal</strong></td>
+<td>Base-16 number system (0–9, A–F). Each digit = 4 binary bits.</td>
+</tr>
+<tr>
+<td><strong>Unsigned Number</strong></td>
+<td>A binary number with no sign bit — only positive values.</td>
+</tr>
+<tr>
+<td><strong>Signed Number</strong></td>
+<td>A binary number with a sign bit — can store positive and negative values.</td>
+</tr>
+<tr>
+<td><strong>1's Complement</strong></td>
+<td>Inverting all bits of a binary number.</td>
+</tr>
+<tr>
+<td><strong>2's Complement</strong></td>
+<td>Inverting all bits then adding 1 — the standard for storing negative numbers.</td>
+</tr>
+<tr>
+<td><strong>ASCII</strong></td>
+<td>American Standard Code for Information Interchange. 128-character encoding.</td>
+</tr>
+<tr>
+<td><strong>Unicode</strong></td>
+<td>Universal character encoding covering 1M+ characters from all languages.</td>
+</tr>
+<tr>
+<td><strong>UTF-8</strong></td>
+<td>Variable-length Unicode encoding (1–4 bytes). Backward compatible with ASCII.</td>
+</tr>
+<tr>
+<td><strong>UTF-16</strong></td>
+<td>Variable-length Unicode encoding (2–4 bytes).</td>
+</tr>
+<tr>
+<td><strong>UTF-32</strong></td>
+<td>Fixed-length Unicode encoding (4 bytes per character).</td>
+</tr>
+<tr>
+<td><strong>Bit</strong></td>
+<td>A single binary digit: 0 or 1.</td>
+</tr>
+<tr>
+<td><strong>Byte</strong></td>
+<td>8 bits. The basic unit of data storage.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="review-questions">Review Questions</h2>
+<h3 id="multiple-choice-questions">Multiple Choice Questions</h3>
+<ol>
+<li>
+<p>The primary function of a system is:<br>
+   - a) To work independently<br>
+   - b) <strong>To achieve a common goal</strong> ✓<br>
+   - c) To create new systems<br>
+   - d) To provide entertainment</p>
+</li>
+<li>
+<p>One of the fundamental concepts of any system is:<br>
+   - a) Its size<br>
+   - b) <strong>Its objective</strong> ✓<br>
+   - c) Its age<br>
+   - d) Its price</p>
+</li>
+<li>
+<p>An example of a simple system is:<br>
+   - a) A human body<br>
+   - b) A computer network<br>
+   - c) <strong>A thermostat regulating temperature</strong> ✓<br>
+   - d) The Internet</p>
+</li>
+<li>
+<p>The basic concepts used to describe a system are:<br>
+   - a) Users, hardware, software<br>
+   - b) <strong>Objectives, components, environment, communication</strong> ✓<br>
+   - c) Inputs, outputs, processes<br>
+   - d) Sensors, actuators, controllers</p>
+</li>
+<li>
+<p>Which describes the Von Neumann architecture's main characteristic?<br>
+   - a) Separate memory for data and instructions<br>
+   - b) Parallel execution of instructions<br>
+   - c) <strong>Single memory store for both program instructions and data</strong> ✓<br>
+   - d) Multiple CPUs for different tasks</p>
+</li>
+<li>
+<p>ASCII stands for:<br>
+   - a) <strong>American Standard Code for Information Interchange</strong> ✓<br>
+   - b) Advanced Standard Code for Information Interchange<br>
+   - c) American Standard Communication for Information Interchange<br>
+   - d) Advanced Standard Communication for Information Interchange</p>
+</li>
+<li>
+<p>How many bits are used in standard ASCII encoding?<br>
+   - a) <strong>7 bits</strong> ✓<br>
+   - b) 8 bits<br>
+   - c) 16 bits<br>
+   - d) 32 bits</p>
+</li>
+<li>
+<p>How many bytes are typically used to store an integer?<br>
+   - a) 1 byte<br>
+   - b) 2 bytes<br>
+   - c) <strong>4 bytes</strong> ✓<br>
+   - d) 8 bytes</p>
+</li>
+<li>
+<p>Which software is used to enhance system performance and security?<br>
+   - a) Operating system<br>
+   - b) <strong>Utility software</strong> ✓<br>
+   - c) Application software<br>
+   - d) Device drivers</p>
+</li>
+<li>
+<p>Which of the following is an example of application software?</p>
+<ul>
+<li>a) <strong>Microsoft Word</strong> ✓</li>
+<li>b) BIOS</li>
+<li>c) Disk Cleanup</li>
+<li>d) Device Manager</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="short-questions">Short Questions</h3>
+<ol>
+<li>Define a system.</li>
+<li>List the main components of the Von Neumann architecture.</li>
+<li>Name the four main steps in the Von Neumann instruction cycle.</li>
+<li>What is a key advantage of the Von Neumann architecture?</li>
+<li>What is the primary purpose of ASCII?</li>
+<li>Define Unicode. How is it different from ASCII?</li>
+<li>How does the number of bits affect the range of integer values that can be stored?</li>
+<li>Define system software and provide two examples.</li>
+<li>Differentiate between system software and application software. Give two examples of each.</li>
+<li>Add 1100₂ and 1011₂. Show your working.</li>
+<li>Subtract 0011₂ from 1010₂ using 2's complement. Show all steps.</li>
+</ol>
+<hr>
+<h3 id="long-questions">Long Questions</h3>
+<ol>
+<li>Describe the basic concept of a system. Explain its four fundamental concepts with examples.</li>
+<li>Explain the Von Neumann architecture. Name and describe all its key components.</li>
+<li>Explain the working of the Von Neumann architecture using the Fetch-Decode-Execute-Store cycle. Use a real-world example.</li>
+<li>Explain how characters are encoded using Unicode. Discuss UTF-8, UTF-16, and UTF-32 with examples, including an Urdu character.</li>
+<li>Describe in detail how integers (both positive and negative) are stored in computer memory. Explain the role of 2's complement with a worked example.</li>
+<li>Perform the following binary arithmetic operations and verify your answers in decimal:<br>
+   - a. Multiply 101₂ by 11₂<br>
+   - b. Divide 1100₂ by 10₂</li>
+</ol>
+<hr>
+<h2 id="practical-exercises">Practical Exercises</h2>
+<p><strong>Exercise 1 — Number System Conversion Table</strong></p>
+<p>Complete this table without a calculator:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Decimal</th>
+<th>Binary</th>
+<th>Octal</th>
+<th>Hexadecimal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td>25</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td>83</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td>255</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td>16</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Exercise 2 — Binary Arithmetic Practice</strong></p>
+<p>Solve each of the following. Show all working. Verify in decimal.</p>
+<ol>
+<li>10110₂ + 01101₂</li>
+<li>11010₂ - 01011₂ (use 2's complement)</li>
+<li>1011₂ × 101₂</li>
+<li>11010₂ ÷ 10₂</li>
+</ol>
+<p><strong>Exercise 3 — 2's Complement</strong></p>
+<p>Find the 8-bit 2's complement representation of:<br>
+1. -7<br>
+2. -15<br>
+3. -64<br>
+4. -128</p>
+<p><strong>Exercise 4 — ASCII Activity</strong></p>
+<ol>
+<li>Look up the ASCII table.</li>
+<li>Encode your full name in ASCII decimal codes.</li>
+<li>Convert each decimal code to binary.</li>
+<li>Now decode this ASCII message: 72 - 101 - 108 - 108 - 111</li>
+</ol>
+<p><strong>Exercise 5 — Storage Size Calculation</strong></p>
+<p>A digital library wants to store 5,000 books. Each book has an average of 300 pages, and each page has 2,500 characters.</p>
+<ol>
+<li>How many total characters?</li>
+<li>In UTF-8 (assuming all English), how many bytes?</li>
+<li>Convert to MB and then to GB.</li>
+<li>How many USB drives (each 32 GB) would be needed?</li>
+</ol>
+<hr>
+<p><em>End of Unit 1: Introduction to Computational Systems</em></p>
+<hr>
+<blockquote><p><strong>You have just looked inside the machine.</strong> You now know why computers use binary, how the CPU processes instructions one tiny step at a time, how your name is stored as a string of 0s and 1s, and how negative numbers can be represented with clever bit tricks. This is the foundation of everything in computer science. Every program ever written runs on these principles. You have the foundation. Now build on it.</p></blockquote>
+
+</body>
+</html>

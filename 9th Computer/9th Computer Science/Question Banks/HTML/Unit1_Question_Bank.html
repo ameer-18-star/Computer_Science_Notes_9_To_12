@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 1: Introduction to Computational Systems</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 1: Introduction to Computational Systems</div>
+</div>
+
+<h1 id="unit-1-introduction-to-computational-systems">Unit 1: Introduction to Computational Systems</h1>
+<h2 id="question-bank">Question Bank</h2>
+<hr>
+<h2 id="section-a-multiple-choice-questions">Section A: Multiple Choice Questions</h2>
+<blockquote><p><strong>Instructions:</strong> Choose the correct answer from the options given. The correct answer is marked with ✅.</p></blockquote>
+<hr>
+<h3 id="topic-theory-of-systems">Topic: Theory of Systems</h3>
+<p><strong>1.</strong> A system is best described as:</p>
+<ul>
+<li>a) A single component working alone</li>
+<li>b) ✅ An organized collection of interdependent parts working together to achieve a common goal</li>
+<li>c) A machine that processes only numbers</li>
+<li>d) A program installed on a computer</li>
+</ul>
+<hr>
+<p><strong>2.</strong> The primary function of a system is:</p>
+<ul>
+<li>a) To work independently</li>
+<li>b) ✅ To achieve a common goal</li>
+<li>c) To create new systems</li>
+<li>d) To provide entertainment</li>
+</ul>
+<hr>
+<p><strong>3.</strong> One of the fundamental concepts of any system is:</p>
+<ul>
+<li>a) Its size</li>
+<li>b) ✅ Its objective</li>
+<li>c) Its age</li>
+<li>d) Its price</li>
+</ul>
+<hr>
+<p><strong>4.</strong> An example of a simple system is:</p>
+<ul>
+<li>a) A human body</li>
+<li>b) A computer network</li>
+<li>c) ✅ A thermostat regulating temperature</li>
+<li>d) The Internet</li>
+</ul>
+<hr>
+<p><strong>5.</strong> The basic components of a system are:</p>
+<ul>
+<li>a) Users, hardware, software</li>
+<li>b) ✅ Objectives, components, environment, communication</li>
+<li>c) Inputs, outputs, processes</li>
+<li>d) Sensors, actuators, controllers</li>
+</ul>
+<hr>
+<p><strong>6.</strong> The environment of a system refers to:</p>
+<ul>
+<li>a) The internal memory of a computer</li>
+<li>b) The operating system installed on a device</li>
+<li>c) ✅ Everything external to the system that interacts with it</li>
+<li>d) The programming language used to build the system</li>
+</ul>
+<hr>
+<p><strong>7.</strong> Communication among system components is important because:</p>
+<ul>
+<li>a) It increases the cost of the system</li>
+<li>b) It replaces the need for hardware</li>
+<li>c) ✅ It ensures components work together to achieve the system's objectives</li>
+<li>d) It reduces the number of components needed</li>
+</ul>
+<hr>
+<p><strong>8.</strong> An Information System is best described as:</p>
+<ul>
+<li>a) A single computer connected to the internet</li>
+<li>b) A database of employee records</li>
+<li>c) ✅ A combination of technology and people that collects, processes, stores, and shares data</li>
+<li>d) A software program for managing files</li>
+</ul>
+<hr>
+<h3 id="topic-software">Topic: Software</h3>
+<p><strong>9.</strong> Software is defined as:</p>
+<ul>
+<li>a) Physical components of a computer</li>
+<li>b) ✅ A collection of programs and instructions that tell a computer what to do</li>
+<li>c) The screen and keyboard of a computer</li>
+<li>d) The memory chips inside a computer</li>
+</ul>
+<hr>
+<p><strong>10.</strong> Which of the following is an example of system software?</p>
+<ul>
+<li>a) Microsoft Word</li>
+<li>b) Google Chrome</li>
+<li>c) Minecraft</li>
+<li>d) ✅ Microsoft Windows</li>
+</ul>
+<hr>
+<p><strong>11.</strong> Which of the following is an example of application software?</p>
+<ul>
+<li>a) ✅ Microsoft Word</li>
+<li>b) BIOS</li>
+<li>c) Disk Cleanup</li>
+<li>d) Device Manager</li>
+</ul>
+<hr>
+<p><strong>12.</strong> Which software is used to enhance system performance and security?</p>
+<ul>
+<li>a) Operating system</li>
+<li>b) ✅ Utility software</li>
+<li>c) Application software</li>
+<li>d) Device drivers</li>
+</ul>
+<hr>
+<p><strong>13.</strong> Device drivers are a type of:</p>
+<ul>
+<li>a) Application software</li>
+<li>b) ✅ System software</li>
+<li>c) Programming language</li>
+<li>d) Web browser</li>
+</ul>
+<hr>
+<p><strong>14.</strong> The main purpose of system software is to:</p>
+<ul>
+<li>a) Help users write documents</li>
+<li>b) Play multimedia files</li>
+<li>c) ✅ Manage hardware resources and provide a platform for application software</li>
+<li>d) Browse the internet</li>
+</ul>
+<hr>
+<p><strong>15.</strong> Application software is typically:</p>
+<ul>
+<li>a) Pre-installed and cannot be removed</li>
+<li>b) ✅ Installed by the user to perform specific tasks</li>
+<li>c) Part of the CPU</li>
+<li>d) Only used by programmers</li>
+</ul>
+<hr>
+<p><strong>16.</strong> Which of the following is NOT an example of system software?</p>
+<ul>
+<li>a) Operating system</li>
+<li>b) Device driver</li>
+<li>c) ✅ Web browser</li>
+<li>d) Utility program</li>
+</ul>
+<hr>
+<p><strong>17.</strong> Which of the following is NOT an example of application software?</p>
+<ul>
+<li>a) Google Chrome</li>
+<li>b) VLC Media Player</li>
+<li>c) Fortnite</li>
+<li>d) ✅ Linux</li>
+</ul>
+<hr>
+<h3 id="topic-von-neumann-architecture">Topic: Von Neumann Architecture</h3>
+<p><strong>18.</strong> Which of the following describes the Von Neumann architecture's main characteristic?</p>
+<ul>
+<li>a) Separate memory for data and instructions</li>
+<li>b) Parallel execution of instructions</li>
+<li>c) ✅ Single memory store for both program instructions and data</li>
+<li>d) Multiple CPUs for different tasks</li>
+</ul>
+<hr>
+<p><strong>19.</strong> The Von Neumann architecture was developed during the:</p>
+<ul>
+<li>a) 1920s</li>
+<li>b) 1930s</li>
+<li>c) ✅ 1940s</li>
+<li>d) 1960s</li>
+</ul>
+<hr>
+<p><strong>20.</strong> Which component of the CPU performs mathematical and logical calculations?</p>
+<ul>
+<li>a) Control Unit (CU)</li>
+<li>b) Program Counter (PC)</li>
+<li>c) ✅ Arithmetic Logic Unit (ALU)</li>
+<li>d) Instruction Register (IR)</li>
+</ul>
+<hr>
+<p><strong>21.</strong> The Control Unit (CU) is responsible for:</p>
+<ul>
+<li>a) Storing all data permanently</li>
+<li>b) ✅ Governing the activities of the CPU and coordinating its components</li>
+<li>c) Displaying output on the monitor</li>
+<li>d) Connecting the computer to the internet</li>
+</ul>
+<hr>
+<p><strong>22.</strong> Which component stores the memory address of the next instruction to be executed?</p>
+<ul>
+<li>a) Instruction Register (IR)</li>
+<li>b) Arithmetic Logic Unit (ALU)</li>
+<li>c) ✅ Program Counter (PC)</li>
+<li>d) Control Bus</li>
+</ul>
+<hr>
+<p><strong>23.</strong> The correct order of the Von Neumann instruction cycle is:</p>
+<ul>
+<li>a) Execute → Fetch → Decode → Store</li>
+<li>b) Decode → Fetch → Execute → Store</li>
+<li>c) ✅ Fetch → Decode → Execute → Store</li>
+<li>d) Store → Fetch → Decode → Execute</li>
+</ul>
+<hr>
+<p><strong>24.</strong> During the Fetch stage of the Von Neumann cycle, the CPU:</p>
+<ul>
+<li>a) Performs the calculation</li>
+<li>b) ✅ Retrieves an instruction from memory</li>
+<li>c) Sends output to the monitor</li>
+<li>d) Decodes the operation code</li>
+</ul>
+<hr>
+<p><strong>25.</strong> The System Bus is used to:</p>
+<ul>
+<li>a) Power the CPU</li>
+<li>b) Store data permanently</li>
+<li>c) ✅ Facilitate the movement of data between components inside a computer</li>
+<li>d) Connect the computer to the internet</li>
+</ul>
+<hr>
+<p><strong>26.</strong> Which bus carries the actual data being transferred between components?</p>
+<ul>
+<li>a) Address Bus</li>
+<li>b) Control Bus</li>
+<li>c) ✅ Data Bus</li>
+<li>d) System Bus</li>
+</ul>
+<hr>
+<p><strong>27.</strong> Which bus carries information about the destination of data?</p>
+<ul>
+<li>a) Data Bus</li>
+<li>b) ✅ Address Bus</li>
+<li>c) Control Bus</li>
+<li>d) Memory Bus</li>
+</ul>
+<hr>
+<p><strong>28.</strong> RAM is an example of which Von Neumann component?</p>
+<ul>
+<li>a) Input device</li>
+<li>b) Output device</li>
+<li>c) CPU</li>
+<li>d) ✅ Memory</li>
+</ul>
+<hr>
+<p><strong>29.</strong> Which of the following is an input device?</p>
+<ul>
+<li>a) Monitor</li>
+<li>b) Printer</li>
+<li>c) Speaker</li>
+<li>d) ✅ Microphone</li>
+</ul>
+<hr>
+<p><strong>30.</strong> Which of the following is an output device?</p>
+<ul>
+<li>a) Keyboard</li>
+<li>b) Mouse</li>
+<li>c) ✅ Monitor</li>
+<li>d) Scanner</li>
+</ul>
+<hr>
+<h3 id="topic-number-systems">Topic: Number Systems</h3>
+<p><strong>31.</strong> The decimal number system has a base of:</p>
+<ul>
+<li>a) 2</li>
+<li>b) 8</li>
+<li>c) ✅ 10</li>
+<li>d) 16</li>
+</ul>
+<hr>
+<p><strong>32.</strong> The binary number system has a base of:</p>
+<ul>
+<li>a) ✅ 2</li>
+<li>b) 8</li>
+<li>c) 10</li>
+<li>d) 16</li>
+</ul>
+<hr>
+<p><strong>33.</strong> The octal number system uses digits from:</p>
+<ul>
+<li>a) 0 to 6</li>
+<li>b) ✅ 0 to 7</li>
+<li>c) 0 to 8</li>
+<li>d) 0 to 9</li>
+</ul>
+<hr>
+<p><strong>34.</strong> The hexadecimal number system has a base of:</p>
+<ul>
+<li>a) 2</li>
+<li>b) 8</li>
+<li>c) 10</li>
+<li>d) ✅ 16</li>
+</ul>
+<hr>
+<p><strong>35.</strong> In the hexadecimal system, the letter 'A' represents the decimal value:</p>
+<ul>
+<li>a) 9</li>
+<li>b) ✅ 10</li>
+<li>c) 11</li>
+<li>d) 12</li>
+</ul>
+<hr>
+<p><strong>36.</strong> In the hexadecimal system, the letter 'F' represents the decimal value:</p>
+<ul>
+<li>a) 14</li>
+<li>b) ✅ 15</li>
+<li>c) 16</li>
+<li>d) 17</li>
+</ul>
+<hr>
+<p><strong>37.</strong> The binary number 1011 in decimal is:</p>
+<ul>
+<li>a) 9</li>
+<li>b) 10</li>
+<li>c) ✅ 11</li>
+<li>d) 12</li>
+</ul>
+<hr>
+<p><strong>38.</strong> The decimal number 83 in binary is:</p>
+<ul>
+<li>a) 1001011</li>
+<li>b) ✅ 1010011</li>
+<li>c) 1100011</li>
+<li>d) 1011001</li>
+</ul>
+<hr>
+<p><strong>39.</strong> The decimal number 83 in octal is:</p>
+<ul>
+<li>a) 112</li>
+<li>b) ✅ 123</li>
+<li>c) 132</li>
+<li>d) 143</li>
+</ul>
+<hr>
+<p><strong>40.</strong> Each octal digit is represented by how many binary bits?</p>
+<ul>
+<li>a) 2 bits</li>
+<li>b) ✅ 3 bits</li>
+<li>c) 4 bits</li>
+<li>d) 8 bits</li>
+</ul>
+<hr>
+<p><strong>41.</strong> Each hexadecimal digit is represented by how many binary bits?</p>
+<ul>
+<li>a) 2 bits</li>
+<li>b) 3 bits</li>
+<li>c) ✅ 4 bits</li>
+<li>d) 8 bits</li>
+</ul>
+<hr>
+<p><strong>42.</strong> The binary number 110101011 in octal is:</p>
+<ul>
+<li>a) 523</li>
+<li>b) 635</li>
+<li>c) ✅ 653</li>
+<li>d) 563</li>
+</ul>
+<hr>
+<p><strong>43.</strong> The binary number 1101011010110010 in hexadecimal is:</p>
+<ul>
+<li>a) D2B6</li>
+<li>b) 6BD2</li>
+<li>c) B6D2</li>
+<li>d) ✅ D6B2</li>
+</ul>
+<hr>
+<p><strong>44.</strong> The hexadecimal number 1A3 in decimal is:</p>
+<ul>
+<li>a) 413</li>
+<li>b) 429</li>
+<li>c) ✅ 419</li>
+<li>d) 439</li>
+</ul>
+<hr>
+<p><strong>45.</strong> When converting decimal to binary, you divide by:</p>
+<ul>
+<li>a) 8</li>
+<li>b) 10</li>
+<li>c) 16</li>
+<li>d) ✅ 2</li>
+</ul>
+<hr>
+<p><strong>46.</strong> When converting decimal to octal, you divide by:</p>
+<ul>
+<li>a) 2</li>
+<li>b) ✅ 8</li>
+<li>c) 10</li>
+<li>d) 16</li>
+</ul>
+<hr>
+<p><strong>47.</strong> When converting decimal to hexadecimal, you divide by:</p>
+<ul>
+<li>a) 2</li>
+<li>b) 8</li>
+<li>c) 10</li>
+<li>d) ✅ 16</li>
+</ul>
+<hr>
+<p><strong>48.</strong> In decimal-to-binary conversion, the binary result is obtained by reading the remainders:</p>
+<ul>
+<li>a) From top to bottom</li>
+<li>b) Left to right</li>
+<li>c) ✅ From bottom to top</li>
+<li>d) In any order</li>
+</ul>
+<hr>
+<p><strong>49.</strong> Why do computers use the binary system?</p>
+<ul>
+<li>a) Binary is easier for humans to read</li>
+<li>b) Binary has more digits than decimal</li>
+<li>c) ✅ Binary maps directly to the two states of electronic circuits (ON and OFF)</li>
+<li>d) Binary was invented before decimal</li>
+</ul>
+<hr>
+<p><strong>50.</strong> The octal number system was commonly used in:</p>
+<ul>
+<li>a) Modern smartphones</li>
+<li>b) ✅ Early computing systems like the PDP-8</li>
+<li>c) Modern supercomputers</li>
+<li>d) Cloud storage systems</li>
+</ul>
+<hr>
+<h3 id="topic-data-representation">Topic: Data Representation</h3>
+<p><strong>51.</strong> A 1-byte unsigned integer can store a maximum value of:</p>
+<ul>
+<li>a) 127</li>
+<li>b) ✅ 255</li>
+<li>c) 512</li>
+<li>d) 1024</li>
+</ul>
+<hr>
+<p><strong>52.</strong> The maximum value that can be stored in n bits (unsigned) is:</p>
+<ul>
+<li>a) 2n</li>
+<li>b) 2n + 1</li>
+<li>c) ✅ 2ⁿ − 1</li>
+<li>d) 2n − 2</li>
+</ul>
+<hr>
+<p><strong>53.</strong> In a signed integer, which bit is used to indicate a negative number?</p>
+<ul>
+<li>a) The least significant bit (rightmost bit)</li>
+<li>b) ✅ The most significant bit (leftmost bit)</li>
+<li>c) The middle bit</li>
+<li>d) All bits equally</li>
+</ul>
+<hr>
+<p><strong>54.</strong> A 1-byte signed integer can store a maximum positive value of:</p>
+<ul>
+<li>a) 255</li>
+<li>b) ✅ 127</li>
+<li>c) 128</li>
+<li>d) 256</li>
+</ul>
+<hr>
+<p><strong>55.</strong> The minimum value of a 1-byte signed integer is:</p>
+<ul>
+<li>a) −127</li>
+<li>b) ✅ −128</li>
+<li>c) −255</li>
+<li>d) −256</li>
+</ul>
+<hr>
+<p><strong>56.</strong> 1's Complement is obtained by:</p>
+<ul>
+<li>a) Adding 1 to the binary number</li>
+<li>b) Dividing by 2</li>
+<li>c) ✅ Inverting all bits (changing 0s to 1s and 1s to 0s)</li>
+<li>d) Multiplying by −1</li>
+</ul>
+<hr>
+<p><strong>57.</strong> 2's Complement is obtained by:</p>
+<ul>
+<li>a) Inverting all bits only</li>
+<li>b) Adding 2 to the binary number</li>
+<li>c) ✅ Inverting all bits and then adding 1 to the LSB</li>
+<li>d) Subtracting 1 from the binary number</li>
+</ul>
+<hr>
+<p><strong>58.</strong> The 8-bit 2's complement representation of −5 is:</p>
+<ul>
+<li>a) 11111010</li>
+<li>b) ✅ 11111011</li>
+<li>c) 10000101</li>
+<li>d) 00000101</li>
+</ul>
+<hr>
+<p><strong>59.</strong> How many bytes does a typical 4-byte integer use?</p>
+<ul>
+<li>a) 1 byte</li>
+<li>b) 2 bytes</li>
+<li>c) ✅ 4 bytes</li>
+<li>d) 8 bytes</li>
+</ul>
+<hr>
+<p><strong>60.</strong> The maximum value of a 2-byte unsigned integer is:</p>
+<ul>
+<li>a) 255</li>
+<li>b) 32,767</li>
+<li>c) ✅ 65,535</li>
+<li>d) 4,294,967,295</li>
+</ul>
+<hr>
+<h3 id="topic-binary-arithmetic">Topic: Binary Arithmetic</h3>
+<p><strong>61.</strong> In binary addition, 1 + 1 equals:</p>
+<ul>
+<li>a) 2</li>
+<li>b) 10 in decimal</li>
+<li>c) ✅ 0 with a carry of 1</li>
+<li>d) 11</li>
+</ul>
+<hr>
+<p><strong>62.</strong> In binary addition, 1 + 1 + 1 (with carry) equals:</p>
+<ul>
+<li>a) 0 with carry 1</li>
+<li>b) ✅ 1 with carry 1</li>
+<li>c) 11</li>
+<li>d) 10</li>
+</ul>
+<hr>
+<p><strong>63.</strong> The result of binary addition 1101 + 1011 is:</p>
+<ul>
+<li>a) 10110</li>
+<li>b) 11100</li>
+<li>c) ✅ 11000</li>
+<li>d) 10100</li>
+</ul>
+<hr>
+<p><strong>64.</strong> Binary subtraction is most commonly performed using:</p>
+<ul>
+<li>a) 1's complement only</li>
+<li>b) Direct subtraction</li>
+<li>c) ✅ 2's complement addition</li>
+<li>d) Hexadecimal conversion</li>
+</ul>
+<hr>
+<p><strong>65.</strong> When subtracting using 2's complement, after adding the numbers, any carry beyond the word size is:</p>
+<ul>
+<li>a) Added back to the result</li>
+<li>b) ✅ Discarded</li>
+<li>c) Stored in the sign bit</li>
+<li>d) Used as the final answer</li>
+</ul>
+<hr>
+<p><strong>66.</strong> The result of 9 − 6 in binary using 2's complement is:</p>
+<ul>
+<li>a) 0010</li>
+<li>b) ✅ 0011</li>
+<li>c) 0100</li>
+<li>d) 0101</li>
+</ul>
+<hr>
+<p><strong>67.</strong> In binary multiplication, 101 × 11 equals:</p>
+<ul>
+<li>a) 1100</li>
+<li>b) 1110</li>
+<li>c) ✅ 1111</li>
+<li>d) 10001</li>
+</ul>
+<hr>
+<p><strong>68.</strong> In binary division, 1100 ÷ 10 equals:</p>
+<ul>
+<li>a) 101</li>
+<li>b) ✅ 110</li>
+<li>c) 111</li>
+<li>d) 100</li>
+</ul>
+<hr>
+<h3 id="topic-text-encoding">Topic: Text Encoding</h3>
+<p><strong>69.</strong> ASCII stands for:</p>
+<ul>
+<li>a) Advanced Standard Code for Information Interchange</li>
+<li>b) American Standard Communication for Information Interchange</li>
+<li>c) ✅ American Standard Code for Information Interchange</li>
+<li>d) Advanced Standard Communication for Information Interchange</li>
+</ul>
+<hr>
+<p><strong>70.</strong> How many bits are used in the standard ASCII encoding?</p>
+<ul>
+<li>a) ✅ 7 bits</li>
+<li>b) 8 bits</li>
+<li>c) 16 bits</li>
+<li>d) 32 bits</li>
+</ul>
+<hr>
+<p><strong>71.</strong> How many characters can standard ASCII represent?</p>
+<ul>
+<li>a) 64</li>
+<li>b) ✅ 128</li>
+<li>c) 256</li>
+<li>d) 512</li>
+</ul>
+<hr>
+<p><strong>72.</strong> Extended ASCII uses how many bits?</p>
+<ul>
+<li>a) 7 bits</li>
+<li>b) ✅ 8 bits</li>
+<li>c) 16 bits</li>
+<li>d) 32 bits</li>
+</ul>
+<hr>
+<p><strong>73.</strong> Extended ASCII can represent how many characters?</p>
+<ul>
+<li>a) 128</li>
+<li>b) ✅ 256</li>
+<li>c) 512</li>
+<li>d) 1024</li>
+</ul>
+<hr>
+<p><strong>74.</strong> The ASCII code for the uppercase letter 'P' is:</p>
+<ul>
+<li>a) 70</li>
+<li>b) 75</li>
+<li>c) ✅ 80</li>
+<li>d) 85</li>
+</ul>
+<hr>
+<p><strong>75.</strong> The ASCII code for the lowercase letter 'a' is:</p>
+<ul>
+<li>a) 65</li>
+<li>b) ✅ 97</li>
+<li>c) 107</li>
+<li>d) 115</li>
+</ul>
+<hr>
+<p><strong>76.</strong> Unicode was developed to:</p>
+<ul>
+<li>a) Replace binary representation</li>
+<li>b) ✅ Map all graphic characters from all the world's writing systems</li>
+<li>c) Improve CPU speed</li>
+<li>d) Reduce file sizes</li>
+</ul>
+<hr>
+<p><strong>77.</strong> UTF stands for:</p>
+<ul>
+<li>a) Universal Text Format</li>
+<li>b) Unified Transfer Format</li>
+<li>c) ✅ Unicode Transformation Format</li>
+<li>d) Universal Transfer File</li>
+</ul>
+<hr>
+<p><strong>78.</strong> UTF-8 is:</p>
+<ul>
+<li>a) A fixed-length encoding using 8 bytes</li>
+<li>b) ✅ A variable-length encoding using 1 to 4 bytes per character</li>
+<li>c) Compatible only with Unicode</li>
+<li>d) The same as ASCII</li>
+</ul>
+<hr>
+<p><strong>79.</strong> UTF-8 is backward compatible with:</p>
+<ul>
+<li>a) UTF-16</li>
+<li>b) UTF-32</li>
+<li>c) ✅ ASCII</li>
+<li>d) Unicode only</li>
+</ul>
+<hr>
+<p><strong>80.</strong> UTF-16 uses how many bytes per character?</p>
+<ul>
+<li>a) 1 byte only</li>
+<li>b) 4 bytes only</li>
+<li>c) ✅ Either 2 bytes or 4 bytes</li>
+<li>d) 1 to 4 bytes</li>
+</ul>
+<hr>
+<p><strong>81.</strong> UTF-32 uses a fixed size of:</p>
+<ul>
+<li>a) 1 byte per character</li>
+<li>b) 2 bytes per character</li>
+<li>c) ✅ 4 bytes per character</li>
+<li>d) 8 bytes per character</li>
+</ul>
+<hr>
+<p><strong>82.</strong> The Urdu letter 'ب' in UTF-8 occupies:</p>
+<ul>
+<li>a) 1 byte</li>
+<li>b) ✅ 2 bytes</li>
+<li>c) 3 bytes</li>
+<li>d) 4 bytes</li>
+</ul>
+<hr>
+<p><strong>83.</strong> The letter 'A' in Unicode is represented as:</p>
+<ul>
+<li>a) U+0041 in hex, 8 bits in binary</li>
+<li>b) ✅ U+0041, which is 01000001 in binary (1 byte in UTF-8)</li>
+<li>c) U+0065 in hex</li>
+<li>d) U+0100, which is 2 bytes in UTF-8</li>
+</ul>
+<hr>
+<h3 id="topic-storage-and-data-sizes">Topic: Storage and Data Sizes</h3>
+<p><strong>84.</strong> How many bits are in 1 byte?</p>
+<ul>
+<li>a) 4</li>
+<li>b) ✅ 8</li>
+<li>c) 16</li>
+<li>d) 32</li>
+</ul>
+<hr>
+<p><strong>85.</strong> 1 Kilobyte (KB) is equal to:</p>
+<ul>
+<li>a) 1000 bytes</li>
+<li>b) ✅ 1024 bytes</li>
+<li>c) 512 bytes</li>
+<li>d) 2048 bytes</li>
+</ul>
+<hr>
+<p><strong>86.</strong> 1 Gigabyte (GB) is equal to:</p>
+<ul>
+<li>a) 1024 Bytes</li>
+<li>b) 1024 Kilobytes</li>
+<li>c) ✅ 1024 Megabytes</li>
+<li>d) 1024 Terabytes</li>
+</ul>
+<hr>
+<p><strong>87.</strong> Which storage device uses spinning disks to read and write data?</p>
+<ul>
+<li>a) SSD</li>
+<li>b) USB Flash Drive</li>
+<li>c) ✅ HDD (Hard Disk Drive)</li>
+<li>d) Cloud Storage</li>
+</ul>
+<hr>
+<p><strong>88.</strong> Which storage device uses flash memory for faster access?</p>
+<ul>
+<li>a) HDD</li>
+<li>b) ✅ SSD (Solid State Drive)</li>
+<li>c) CD-ROM</li>
+<li>d) Magnetic Tape</li>
+</ul>
+<hr>
+<p><strong>89.</strong> All data stored in a computer is ultimately represented as:</p>
+<ul>
+<li>a) Decimal numbers</li>
+<li>b) Text characters</li>
+<li>c) Hexadecimal codes</li>
+<li>d) ✅ Binary digits (0s and 1s)</li>
+</ul>
+<hr>
+<p><strong>90.</strong> The unit larger than a Terabyte is:</p>
+<ul>
+<li>a) Gigabyte</li>
+<li>b) Megabyte</li>
+<li>c) Kilobyte</li>
+<li>d) ✅ Petabyte</li>
+</ul>
+<hr>
+<hr>
+<h2 id="section-b-short-questions">Section B: Short Questions</h2>
+<blockquote><p><strong>Instructions:</strong> Answer each question in 2–4 sentences.</p></blockquote>
+<ol>
+<li>Define a system.</li>
+<li>What is an Information System?</li>
+<li>What is the role of the environment in a system?</li>
+<li>Why is communication among system components important?</li>
+<li>What is software?</li>
+<li>Define system software and provide two examples.</li>
+<li>Define application software and provide two examples.</li>
+<li>Differentiate between system software and application software.</li>
+<li>Enlist the main components of the Von Neumann architecture.</li>
+<li>Enlist the four main steps in the Von Neumann instruction cycle.</li>
+<li>What is the role of the ALU in a computer system?</li>
+<li>What is the role of the Control Unit (CU)?</li>
+<li>What is a System Bus? Name its three types.</li>
+<li>What is a key advantage of the Von Neumann architecture?</li>
+<li>What is the decimal number system? Give an example of a positional value calculation.</li>
+<li>Why do computers use the binary number system?</li>
+<li>What is the octal number system? What is its base?</li>
+<li>What is the hexadecimal number system? What digits does it use?</li>
+<li>How many binary bits represent one octal digit? Why?</li>
+<li>How many binary bits represent one hexadecimal digit? Why?</li>
+<li>What are whole numbers? Give two examples of how computers use them.</li>
+<li>What are signed integers? How is the sign bit used?</li>
+<li>What is 1's Complement? How is it calculated?</li>
+<li>What is 2's Complement? Write the steps to find it.</li>
+<li>How does the number of bits affect the range of integer values?</li>
+<li>What is the primary purpose of the ASCII encoding scheme?</li>
+<li>How many characters does standard ASCII represent? How many bits does it use?</li>
+<li>What is Extended ASCII? How does it differ from standard ASCII?</li>
+<li>Define Unicode.</li>
+<li>What does UTF stand for? Name three UTF encoding types.</li>
+<li>What is UTF-8? What makes it useful?</li>
+<li>How is UTF-16 different from UTF-8?</li>
+<li>What is UTF-32? What is its main drawback?</li>
+<li>State the four rules of binary addition.</li>
+<li>Add 1100₂ and 1011₂. Show your working.</li>
+<li>Subtract 0011₂ from 1010₂ using 2's complement. Show your working.</li>
+<li>List the steps of binary multiplication.</li>
+<li>List the steps of binary division.</li>
+<li>Name three types of storage devices used in computers.</li>
+<li>What is the difference between an HDD and an SSD?</li>
+<li>Write the data size hierarchy from Bit to Terabyte.</li>
+<li>What is the ASCII code for 'a', 'A', and space? Why are they different?</li>
+</ol>
+<hr>
+<h2 id="section-c-long-questions">Section C: Long Questions</h2>
+<blockquote><p><strong>Instructions:</strong> Answer each question in detail with examples where applicable.</p></blockquote>
+<ol>
+<li>
+<p>Describe the basic concepts of a system, including its objective, components, environment, and communication.</p>
+</li>
+<li>
+<p>Design a simple real-world system of your choice. Identify and explain its objective, components, interactions between components, and its environment.</p>
+</li>
+<li>
+<p>Explain the difference between system software and application software. Include at least three examples of each and describe their roles within a computer system.</p>
+</li>
+<li>
+<p>Explain the Von Neumann Architecture of a computer. Describe all its major components and their roles.</p>
+</li>
+<li>
+<p>Explain the working of the Von Neumann Architecture. Describe all four stages of the instruction cycle (Fetch, Decode, Execute, Store) with a practical example.</p>
+</li>
+<li>
+<p>Explain the four number systems — Decimal, Binary, Octal, and Hexadecimal — including their base values, digits used, and an example of positional value calculation for each.</p>
+</li>
+<li>
+<p>Demonstrate the conversion of the decimal number 156 into:<br>
+   - (a) Binary<br>
+   - (b) Octal<br>
+   - (c) Hexadecimal<br>
+   Show all working steps clearly.</p>
+</li>
+<li>
+<p>Explain how whole numbers and signed integers are stored in computer memory. Include the concept of the sign bit and the range of values for 1-byte and 2-byte representations.</p>
+</li>
+<li>
+<p>Explain the concept of 2's Complement. Why do computers use it to represent negative numbers? Demonstrate with the example of −13 in 8-bit binary.</p>
+</li>
+<li>
+<p>Explain how characters are encoded using ASCII and Unicode. Provide examples from both English and Urdu. Also explain the difference between UTF-8, UTF-16, and UTF-32.</p>
+</li>
+<li>
+<p>Perform the following binary arithmetic operations with full working steps:</p>
+<ul>
+<li>(a) Addition: 11011₂ + 10101₂</li>
+<li>(b) Subtraction: 10110₂ − 01011₂ (using 2's complement)</li>
+<li>(c) Multiplication: 101₂ × 11₂</li>
+<li>(d) Division: 1100₂ ÷ 10₂</li>
+</ul>
+</li>
+<li>
+<p>Describe how different types of data — text, images, audio, and video — are ultimately stored as binary in a computer. Include the role of encoding schemes and storage devices.</p>
+</li>
+</ol>
+<hr>
+<p><em>End of Unit 1 Question Bank</em></p>
+
+</body>
+</html>
