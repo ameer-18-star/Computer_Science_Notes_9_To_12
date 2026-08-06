@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Unit 4 — Computational Structures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Unit 4 — Computational Structures</div>
+</div>
+
+<h1 id="comprehensive-question-bank-unit-4-computational-structures">Comprehensive Question Bank: Unit 4 — Computational Structures</h1>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-41-primitive-computational-structures-overview">Topic 4.1: Primitive Computational Structures (Overview)</h3>
+<ol>
+<li>
+<p>A computational structure (data structure) is best defined as:<br>
+   A) A type of programming language<br>
+<strong>B) An organized way of storing data so it can be accessed and used efficiently</strong><br>
+   C) A hardware component of a computer<br>
+   D) A method of compiling code</p>
+</li>
+<li>
+<p>Which of the following is NOT one of the primitive computational structures discussed in this unit?<br>
+   A) List<br>
+   B) Stack<br>
+<strong>C) Dictionary</strong><br>
+   D) Queue</p>
+</li>
+<li>
+<p>Choosing the correct data structure for a problem primarily depends on:<br>
+   A) The programmer's favorite structure, regardless of the task<br>
+<strong>B) The nature of the data and how it needs to be accessed, organized, and processed</strong><br>
+   C) The number of lines of code available<br>
+   D) The color scheme of the IDE</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-411-lists">Topic 4.1.1: Lists</h3>
+<ol>
+<li>In Python, a list is created using which symbols?<br>
+   A) <code>()</code><br>
+<strong>B) <code>[]</code></strong><br>
+   C) <code>{}</code><br>
+   D) <code>&lt;&gt;</code></li>
+<li>In a list, each individual piece of data is referred to as a(n):<br>
+   A) Node<br>
+<strong>B) Element</strong><br>
+   C) Vertex<br>
+   D) Edge</li>
+<li>What is the index of the first element in a Python list?<br>
+   A) <code>1</code><br>
+<strong>B) <code>0</code></strong><br>
+   C) <code>-1</code><br>
+   D) There is no fixed starting index</li>
+<li>Which list property allows a list to grow or shrink automatically as items are added or removed?<br>
+   A) Ordered Collection<br>
+<strong>B) Dynamic Size</strong><br>
+   C) Index-Based Access<br>
+   D) Static Allocation</li>
+<li>Which list property ensures that items keep their original insertion order unless deliberately changed?<br>
+   A) Dynamic Size<br>
+   B) Index-Based Access<br>
+<strong>C) Ordered Collection</strong><br>
+   D) Random Access</li>
+<li>Which function is used to insert an item at a specific position in a Python list?<br>
+   A) <code>append()</code><br>
+<strong>B) <code>insert()</code></strong><br>
+   C) <code>add()</code><br>
+   D) <code>push()</code></li>
+<li>Given <code>party_list = ["Buy drinks", "Buy decorations", "Buy snacks", "Buy cold drinks"]</code>, what is the output of <code>party_list.insert(0, "Invite friends")</code> followed by <code>print(party_list)</code>?<br>
+   A) <code>["Buy drinks", "Buy decorations", "Buy snacks", "Buy cold drinks", "Invite friends"]</code><br>
+<strong>B) <code>["Invite friends", "Buy drinks", "Buy decorations", "Buy snacks", "Buy cold drinks"]</code></strong><br>
+   C) <code>["Invite friends"]</code><br>
+   D) An error, since insert() cannot be used at index 0</li>
+<li>Which function removes the FIRST occurrence of a specific value from a list?<br>
+   A) <code>pop()</code><br>
+<strong>B) <code>remove()</code></strong><br>
+   C) <code>delete()</code><br>
+   D) <code>clear()</code></li>
+<li>Which function removes an item from a list based on its INDEX position?<br>
+   A) <code>remove()</code><br>
+<strong>B) <code>pop()</code></strong><br>
+   C) <code>discard()</code><br>
+   D) <code>index()</code></li>
+<li>Which keyword is used to check whether an item exists within a list?<br>
+    A) <code>exists</code><br>
+<strong>B) <code>in</code></strong><br>
+    C) <code>contains</code><br>
+    D) <code>has</code></li>
+<li>What is the output of the following code?<br>
+<code>python
+    party_list = ["Invite friends", "Buy decorations", "Buy snacks", "Buy cold drinks"]
+    party_list.remove("Buy snacks")
+    print(party_list)</code><br>
+    A) <code>['Invite friends', 'Buy decorations', 'Buy snacks', 'Buy cold drinks']</code><br>
+<strong>B) <code>['Invite friends', 'Buy decorations', 'Buy cold drinks']</code></strong><br>
+    C) <code>['Buy snacks']</code><br>
+    D) An error</li>
+<li>What is the output of the following code?<br>
+<code>python
+    party_list = ["Invite friends", "Buy decorations", "Buy cold drinks"]
+    party_list.pop(0)
+    print(party_list)</code><br>
+    A) <code>['Invite friends', 'Buy decorations', 'Buy cold drinks']</code><br>
+<strong>B) <code>['Buy decorations', 'Buy cold drinks']</code></strong><br>
+    C) <code>['Invite friends']</code><br>
+    D) An error, since pop() requires no arguments</li>
+<li>Which of the following is a common real-world application of lists?<br>
+    A) Only storing a single fixed value<br>
+<strong>B) Data storage and manipulation, such as managing records or entries</strong><br>
+    C) Representing a strict one-way hierarchy<br>
+    D) Modeling a network with no order at all</li>
+<li>Which two specialized data structures can be implemented using a list as their underlying structure?<br>
+    A) Trees and Graphs<br>
+<strong>B) Stacks and Queues</strong><br>
+    C) Vertices and Edges<br>
+    D) Roots and Leaves</li>
+</ol>
+<hr>
+<h3 id="topic-412-stacks">Topic 4.1.2: Stacks</h3>
+<ol>
+<li>Who is credited with patenting the stack data structure in 1957, to help evaluate arithmetic expressions?<br>
+   A) Alan Turing<br>
+<strong>B) Friedrich L. Bauer</strong><br>
+   C) Guido van Rossum<br>
+   D) Leonhard Euler</li>
+<li>A stack operates on which principle?<br>
+   A) FIFO (First-In, First-Out)<br>
+<strong>B) LIFO (Last-In, First-Out)</strong><br>
+   C) Random access<br>
+   D) Priority-based access</li>
+<li>In a stack, insertion and deletion of elements occur:<br>
+   A) At both ends<br>
+<strong>B) Only at one end, called the "top"</strong><br>
+   C) At the middle of the structure<br>
+   D) At a randomly chosen position</li>
+<li>Which operation adds an item to the top of a stack?<br>
+   A) Pop<br>
+<strong>B) Push</strong><br>
+   C) Enqueue<br>
+   D) Dequeue</li>
+<li>Which operation removes an item from the top of a stack?<br>
+   A) Push<br>
+<strong>B) Pop</strong><br>
+   C) Enqueue<br>
+   D) Peek</li>
+<li>Which stack operation allows you to view the top item WITHOUT removing it?<br>
+   A) Push<br>
+   B) Pop<br>
+<strong>C) Peek</strong><br>
+   D) IsEmpty</li>
+<li>Which operation checks whether a stack currently contains zero items?<br>
+   A) Peek<br>
+   B) Push<br>
+<strong>C) IsEmpty</strong><br>
+   D) Pop</li>
+<li>In Python, which list method is commonly used to implement the "push" operation on a stack?<br>
+   A) <code>insert()</code><br>
+<strong>B) <code>append()</code></strong><br>
+   C) <code>add()</code><br>
+   D) <code>enqueue()</code></li>
+<li>In Python, which list method is commonly used to implement the "pop" operation on a stack?<br>
+   A) <code>remove()</code><br>
+<strong>B) <code>pop()</code></strong><br>
+   C) <code>delete()</code><br>
+   D) <code>discard()</code></li>
+<li>Given the following code, what value is stored in <code>top_book</code> after execution?<br>
+<code>python
+    stack_of_books = []
+    stack_of_books.append('Book A')
+    stack_of_books.append('Book B')
+    top_book = stack_of_books.pop()</code><br>
+    A) <code>Book A</code><br>
+<strong>B) <code>Book B</code></strong><br>
+    C) An empty list<br>
+    D) <code>None</code></li>
+<li>A real-world example commonly used to describe a stack is:<br>
+    A) A line of customers at a bank<br>
+<strong>B) A stack of cafeteria trays</strong><br>
+    C) A family tree<br>
+    D) A road network between cities</li>
+<li>Which feature of a web browser directly mirrors stack (LIFO) behavior?<br>
+    A) Bookmark manager<br>
+<strong>B) The "Back" button, returning to the most recently visited page first</strong><br>
+    C) The address bar<br>
+    D) The download manager</li>
+<li>For designing an "Undo" feature in a text editor, which data structure is most appropriate?<br>
+    A) Queue, because actions must be undone in the order they were performed<br>
+<strong>B) Stack, because the most recently performed action should be undone first</strong><br>
+    C) Tree, because actions form a hierarchy<br>
+    D) Graph, because actions are interconnected</li>
+</ol>
+<hr>
+<h3 id="topic-413-queues">Topic 4.1.3: Queues</h3>
+<ol>
+<li>A queue operates on which principle?<br>
+   A) LIFO (Last-In, First-Out)<br>
+<strong>B) FIFO (First-In, First-Out)</strong><br>
+   C) Random access<br>
+   D) Reverse order access</li>
+<li>In a queue, items are added at the:<br>
+   A) Front<br>
+<strong>B) Back (rear)</strong><br>
+   C) Middle<br>
+   D) Top</li>
+<li>In a queue, items are removed from the:<br>
+<strong>A) Front</strong><br>
+   B) Back (rear)<br>
+   C) Middle<br>
+   D) Top</li>
+<li>Which operation adds an item to a queue?<br>
+   A) Dequeue<br>
+   B) Pop<br>
+<strong>C) Enqueue</strong><br>
+   D) Push</li>
+<li>Which operation removes an item from a queue?<br>
+   A) Enqueue<br>
+   B) Push<br>
+<strong>C) Dequeue</strong><br>
+   D) Peek only</li>
+<li>Which real-world scenario best illustrates a queue?<br>
+   A) A stack of dinner plates<br>
+<strong>B) A line of people at a bank or ticket counter</strong><br>
+   C) A family tree<br>
+   D) A social media friend network</li>
+<li>Which built-in Python module is used to implement queues, as shown in this unit?<br>
+   A) <code>stack</code><br>
+<strong>B) <code>queue</code></strong><br>
+   C) <code>collections.Stack</code><br>
+   D) <code>list_queue</code></li>
+<li>Which method is used to add an item to a Python <code>Queue</code> object?<br>
+   A) <code>add()</code><br>
+<strong>B) <code>put()</code></strong><br>
+   C) <code>push()</code><br>
+   D) <code>enqueue()</code></li>
+<li>Which method is used to remove and return the item at the front of a Python <code>Queue</code> object?<br>
+   A) <code>pop()</code><br>
+<strong>B) <code>get()</code></strong><br>
+   C) <code>remove()</code><br>
+   D) <code>dequeue()</code></li>
+<li>Given the following code, what is printed by <code>front_person</code>?<br>
+<code>python
+    from queue import Queue
+    q = Queue()
+    q.put("Ahmed")
+    q.put("Fatima")
+    front_person = q.queue[0]
+    print(front_person)</code><br>
+    A) <code>Fatima</code><br>
+<strong>B) <code>Ahmed</code></strong><br>
+    C) An empty queue<br>
+    D) An error</li>
+<li>In the same scenario as above, after calling <code>q.get()</code> once, which person is removed and returned?<br>
+    A) <code>Fatima</code><br>
+<strong>B) <code>Ahmed</code></strong><br>
+    C) Both <code>Ahmed</code> and <code>Fatima</code><br>
+    D) Neither, since <code>get()</code> only peeks</li>
+<li>Which of the following is an example of a real-world queue application mentioned historically in this unit?<br>
+    A) A browser's back button<br>
+<strong>B) A printer buffer managing multiple print jobs from a fast processor</strong><br>
+    C) A family tree hierarchy<br>
+    D) A social media connection graph</li>
+<li>What is the key functional difference between <code>enqueue()</code> and <code>dequeue()</code>?<br>
+    A) They perform the exact same operation<br>
+<strong>B) <code>enqueue()</code> adds an item to the back of the queue, while <code>dequeue()</code> removes an item from the front</strong><br>
+    C) <code>enqueue()</code> removes items, while <code>dequeue()</code> adds items<br>
+    D) Both operations only work on the middle of the queue</li>
+</ol>
+<hr>
+<h3 id="topic-414-trees">Topic 4.1.4: Trees</h3>
+<ol>
+<li>In 1969, which operating system introduced a hierarchical tree structure organized under a single root directory <code>/</code>?<br>
+   A) Windows<br>
+<strong>B) UNIX</strong><br>
+   C) MS-DOS<br>
+   D) macOS</li>
+<li>The very first, topmost node in a tree is called the:<br>
+   A) Leaf<br>
+<strong>B) Root node</strong><br>
+   C) Edge<br>
+   D) Subtree</li>
+<li>A node in a tree that has no children is called a:<br>
+   A) Root<br>
+<strong>B) Leaf</strong><br>
+   C) Edge<br>
+   D) Branch</li>
+<li>The connecting lines between nodes in a tree are called:<br>
+   A) Vertices<br>
+<strong>B) Edges</strong><br>
+   C) Roots<br>
+   D) Leaves</li>
+<li>The height of a tree is defined as:<br>
+<strong>A) The longest path from the root node down to the farthest leaf</strong><br>
+   B) The total number of nodes in the tree<br>
+   C) The number of direct children of the root<br>
+   D) The number of leaf nodes only</li>
+<li>The depth of a specific node refers to:<br>
+   A) The total height of the entire tree<br>
+<strong>B) The distance (number of edges) from the root down to that specific node</strong><br>
+   C) The number of children that node has<br>
+   D) The number of leaves in the tree</li>
+<li>A tree is considered "balanced" when:<br>
+   A) All nodes have exactly two children<br>
+<strong>B) The branches on the left and right sides are nearly the same height</strong><br>
+   C) The tree has only one leaf<br>
+   D) The tree has no root node</li>
+<li>Any node in a tree, along with all of its descendants, forms a smaller tree called a:<br>
+   A) Root<br>
+<strong>B) Subtree</strong><br>
+   C) Leaf cluster<br>
+   D) Branch node</li>
+<li>Which traversal method is useful for creating backups of a file system, ensuring directories are backed up before their contents?<br>
+   A) Post-order traversal<br>
+<strong>B) Pre-order traversal</strong><br>
+   C) In-order traversal<br>
+   D) Level-order traversal</li>
+<li>Which traversal method ensures files and directories are deleted in the correct order, by deleting subdirectories and files before the parent directory?<br>
+    A) Pre-order traversal<br>
+<strong>B) Post-order traversal</strong><br>
+    C) In-order traversal<br>
+    D) Random traversal</li>
+<li>Which of the following is a real-world application of trees mentioned in this unit?<br>
+    A) Modeling a two-way friendship network<br>
+<strong>B) Representing hierarchical data such as organizational charts and family trees</strong><br>
+    C) Managing a simple waiting line<br>
+    D) Implementing a LIFO undo feature</li>
+<li>What kind of algorithm uses tree structures, such as decision trees, to make choices based on various conditions and outcomes?<br>
+    A) Sorting algorithms only<br>
+<strong>B) Decision-making algorithms</strong><br>
+    C) Searching algorithms exclusively<br>
+    D) Compression algorithms only</li>
+<li>Why is a family tree considered unsuitable for storage in a simple linear list format?<br>
+    A) Lists cannot store text data<br>
+<strong>B) The complex parent-child relationships require a branching structure, not a straight-line sequence</strong><br>
+    C) Lists are always slower than trees<br>
+    D) Family trees contain no unique data</li>
+</ol>
+<hr>
+<h3 id="topic-415-introduction-to-graphs">Topic 4.1.5: Introduction to Graphs</h3>
+<ol>
+<li>Which mathematician solved the "Seven Bridges of Königsberg" puzzle in 1736, effectively founding graph theory?<br>
+   A) Alan Turing<br>
+<strong>B) Leonhard Euler</strong><br>
+   C) Friedrich L. Bauer<br>
+   D) Ada Lovelace</li>
+<li>In graph theory, individual points representing entities (like cities or people) are called:<br>
+   A) Edges<br>
+<strong>B) Vertices (nodes)</strong><br>
+   C) Roots<br>
+   D) Leaves</li>
+<li>In graph theory, the connections between two vertices are called:<br>
+   A) Nodes<br>
+<strong>B) Edges</strong><br>
+   C) Roots<br>
+   D) Branches</li>
+<li>Which statement correctly differentiates a graph from a tree?<br>
+   A) A graph always has exactly one root; a tree does not<br>
+<strong>B) A tree is hierarchical with a single root and no cycles, while a graph does not require a hierarchy and can contain cycles</strong><br>
+   C) Trees and graphs are identical structures<br>
+   D) A graph can only have one vertex</li>
+<li>The "degree" of a vertex in a graph refers to:<br>
+   A) The total number of vertices in the entire graph<br>
+<strong>B) The number of edges connected to that specific vertex</strong><br>
+   C) The distance from that vertex to the root<br>
+   D) The weight of the heaviest edge in the graph</li>
+<li>In a weighted graph, an edge's weight typically represents:<br>
+   A) The color of the connection<br>
+<strong>B) A value such as distance, time, or cost</strong><br>
+   C) The number of vertices in the graph<br>
+   D) The direction of the connection only</li>
+<li>A "cycle" in a graph refers to:<br>
+   A) A single isolated vertex<br>
+<strong>B) A path that starts and ends at the same vertex, forming a loop</strong><br>
+   C) A graph with no edges at all<br>
+   D) A graph with exactly one edge</li>
+<li>A graph is described as "connected" when:<br>
+   A) Every vertex has the same degree<br>
+<strong>B) There is some path between every pair of vertices in the graph</strong><br>
+   C) All edges are directed<br>
+   D) The graph contains no cycles</li>
+<li>In a directed graph, an edge from vertex A to vertex B means:<br>
+   A) You can always travel from B to A as well<br>
+<strong>B) Travel is only permitted in the specified direction, from A to B, unless a separate reverse edge exists</strong><br>
+   C) Vertices A and B are not actually connected<br>
+   D) The edge has no meaningful direction</li>
+<li>In an undirected graph, if Person A is connected to Person B, then:<br>
+    A) Person B is NOT necessarily connected to Person A<br>
+<strong>B) Person B is automatically also connected to Person A, since the connection works both ways</strong><br>
+    C) The connection only works during even-numbered turns<br>
+    D) A cycle is automatically created</li>
+<li>Which type of graph would best represent a road map where every road allows two-way travel with a known distance?<br>
+    A) A directed, unweighted graph<br>
+<strong>B) An undirected, weighted graph</strong><br>
+    C) A directed, weighted graph only<br>
+    D) A tree</li>
+<li>Which type of graph would best represent a one-way street system in a city?<br>
+    A) Undirected graph<br>
+<strong>B) Directed graph</strong><br>
+    C) A tree<br>
+    D) A stack</li>
+<li>In an adjacency list representation of a graph, each vertex is associated with:<br>
+    A) A single connected vertex only<br>
+<strong>B) A list of all vertices it is directly connected to</strong><br>
+    C) Its total degree only<br>
+    D) The shortest path to every other vertex</li>
+<li>In an adjacency matrix representation of a graph, a <code>1</code> in a given cell typically indicates:<br>
+    A) The two vertices are unrelated<br>
+<strong>B) A connection (edge) exists between the corresponding two vertices</strong><br>
+    C) The vertex has been visited<br>
+    D) The edge has a weight of exactly 1</li>
+<li>For a flight navigation app showing direct flights (which may differ in price/availability by direction) between cities, which graph type is generally most appropriate?<br>
+    A) Undirected and unweighted<br>
+<strong>B) Directed and weighted</strong><br>
+    C) Undirected and weighted only<br>
+    D) A simple tree structure</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-41-primitive-computational-structures-overview_1">Topic 4.1: Primitive Computational Structures (Overview)</h3>
+<ol>
+<li>Define the term "computational structure" (data structure) in your own words.</li>
+<li>Explain briefly why selecting the correct data structure matters when solving a computational problem.</li>
+<li>List the five primitive computational structures introduced in this unit.</li>
+</ol>
+<h3 id="topic-411-lists_1">Topic 4.1.1: Lists</h3>
+<ol>
+<li>Define a list and describe how it is created in Python.</li>
+<li>Explain how the <code>insert()</code> function works in Python lists. Provide an example.</li>
+<li>Differentiate between removing an item by value and removing an item by index in a Python list.</li>
+<li>List and briefly explain the three core properties of a list (Dynamic Size, Index-Based Access, Ordered Collection).</li>
+<li>Explain the potential issues which could arise when two variables reference the same list in a program. Provide an example.</li>
+<li>Explain briefly how the <code>in</code> keyword can be used to search for an item within a list.</li>
+<li>State two real-world applications of lists mentioned in this unit.</li>
+</ol>
+<h3 id="topic-412-stacks_1">Topic 4.1.2: Stacks</h3>
+<ol>
+<li>Define a stack and explain the Last-In, First-Out (LIFO) principle.</li>
+<li>Name two basic operations performed on a stack.</li>
+<li>Differentiate between the Push and Pop operations of a stack.</li>
+<li>Explain briefly what the Peek operation does, and how it differs from Pop.</li>
+<li>Identify a real-world software feature (other than the browser's back button) that behaves like a stack, and briefly justify your choice.</li>
+<li>Predict the final state of the stack after the following operations: <code>Push(5)</code>, <code>Push(10)</code>, <code>Push(15)</code>, <code>Pop()</code>.</li>
+</ol>
+<h3 id="topic-413-queues_1">Topic 4.1.3: Queues</h3>
+<ol>
+<li>Define a queue and explain the First-In, First-Out (FIFO) principle.</li>
+<li>Differentiate between the Enqueue and Dequeue operations of a queue.</li>
+<li>What is the difference between <code>enqueue()</code> and <code>dequeue()</code>?</li>
+<li>Explain briefly why a printer buffer is a good real-world example of a queue.</li>
+<li>Identify which Python module was used in this unit to implement a queue, and name one method from it.</li>
+<li>Predict the front and rear of the queue after the following operations: <code>Enqueue("X")</code>, <code>Enqueue("Y")</code>, <code>Enqueue("Z")</code>, <code>Dequeue()</code>.</li>
+</ol>
+<h3 id="topic-414-trees_1">Topic 4.1.4: Trees</h3>
+<ol>
+<li>Define a tree data structure in your own words.</li>
+<li>Differentiate between the root node and a leaf node in a tree.</li>
+<li>Explain briefly the difference between the height of a tree and the depth of a specific node.</li>
+<li>Define what makes a tree "balanced."</li>
+<li>Explain briefly why pre-order traversal is useful for backing up a file system.</li>
+<li>Explain briefly why post-order traversal is used when deleting files and directories.</li>
+<li>State two real-world applications of trees mentioned in this unit.</li>
+</ol>
+<h3 id="topic-415-introduction-to-graphs_1">Topic 4.1.5: Introduction to Graphs</h3>
+<ol>
+<li>Define a graph in your own words, referring to vertices and edges.</li>
+<li>Differentiate between a directed graph and an undirected graph.</li>
+<li>Explain briefly what a weighted graph represents, with an example.</li>
+<li>Define the term "degree" as it relates to a vertex in a graph.</li>
+<li>Differentiate between a graph and a tree, listing at least two key differences.</li>
+<li>Explain briefly what it means for a graph to be "connected."</li>
+<li>Identify whether a social media friendship network is best modeled as a directed or undirected graph, and briefly justify your answer.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-411-lists_2">Topic 4.1.1: Lists</h3>
+<ol>
+<li>
+<p>Discuss the dynamic size property of lists in Python. How does this property make lists more flexible?<br>
+   a) Explain what "dynamic size" means and how it differs from a fixed-size storage structure.<br>
+   b) Construct a short Python example demonstrating a list growing and then shrinking, and describe the list's state at each step.<br>
+   c) Evaluate a scenario where dynamic sizing could cause unexpected issues, such as two variables referencing the same list, and explain how a programmer might avoid this problem.</p>
+</li>
+<li>
+<p>Analyze the three core list operations — insertion, deletion, and searching — in comprehensive detail.<br>
+   a) Construct Python code examples demonstrating <code>insert()</code>, <code>remove()</code>, <code>pop()</code>, and the <code>in</code> keyword, each with its own scenario.<br>
+   b) Design a trace table showing a list's state before and after each of the four operations above, applied in sequence to the same starting list.<br>
+   c) Discuss why lists are often used as the underlying structure to implement more specialized structures like stacks and queues.</p>
+</li>
+</ol>
+<h3 id="topic-412-stacks_2">Topic 4.1.2: Stacks</h3>
+<ol>
+<li>
+<p>Explain the operations on a stack with a real-life example and Python code.<br>
+   a) Define the LIFO principle and explain, in detail, why it governs all stack behavior.<br>
+   b) Construct a complete Python example that pushes at least three items onto a stack and then pops two of them, including a full trace table showing the "top" position at every step.<br>
+   c) Discuss two real-world software features (e.g., undo functionality, browser history) that rely on stack behavior, explaining precisely why LIFO is the correct principle for each.</p>
+</li>
+<li>
+<p>Analyze the historical development and modern relevance of the stack data structure.<br>
+   a) Discuss the historical contributions of Alan Turing and Friedrich L. Bauer to the development of the stack concept.<br>
+   b) Evaluate why the stack's simple two-operation design (push and pop) has remained essentially unchanged since its invention, despite decades of advances in computing.<br>
+   c) Design a scenario (different from those already covered in the unit) where using a queue instead of a stack would produce an incorrect or undesirable result, and justify your reasoning.</p>
+</li>
+</ol>
+<h3 id="topic-413-queues_2">Topic 4.1.3: Queues</h3>
+<ol>
+<li>
+<p>Write a simple program to implement a queue (insertion and deletion).<br>
+   a) Construct a complete Python program using the <code>queue</code> module that enqueues at least three items and dequeues at least one.<br>
+   b) Design a full trace table showing the <code>front</code> and <code>rear</code> of the queue at every step of your program's execution.<br>
+   c) Discuss a real-world computing scenario (other than a printer buffer) where FIFO order is essential, and explain what could go wrong if items were processed out of order.</p>
+</li>
+<li>
+<p>Evaluate the FIFO principle and its role in fair and efficient system design.<br>
+   a) Explain, in detail, why FIFO is considered a "fair" method of processing items, using the bank line analogy discussed in this unit.<br>
+   b) Compare and contrast queues with stacks, constructing a feature-by-feature comparison table covering order of processing, primary operations, and typical real-world applications.<br>
+   c) Analyze how early computer networks in the 1960s used queues to solve the mismatch between fast processors and slower devices, and discuss whether this same problem still exists in modern computing.</p>
+</li>
+</ol>
+<h3 id="topic-414-trees_2">Topic 4.1.4: Trees</h3>
+<ol>
+<li>
+<p>Define a tree and explain its properties.<br>
+   a) Explain, in detail, the concepts of root node, edges, nodes, leaves, height, depth, and subtrees, using a constructed example tree diagram.<br>
+   b) Discuss the difference between a balanced and an unbalanced tree, and explain why balance matters for efficient searching.<br>
+   c) Evaluate why a hierarchical structure like a family tree cannot be efficiently represented using a simple linear list.</p>
+</li>
+<li>
+<p>Analyze the real-world applications of tree traversal methods in file system management.<br>
+   a) Construct a small example file/folder hierarchy (at least two levels deep) and trace a complete pre-order traversal of it.<br>
+   b) Trace a complete post-order traversal of the same hierarchy, and explain why this order is necessary for safe deletion.<br>
+   c) Discuss at least two additional real-world applications of trees beyond file systems, such as organizational charts or decision-making algorithms, explaining how the tree structure benefits each use case.</p>
+</li>
+</ol>
+<h3 id="topic-415-introduction-to-graphs_2">Topic 4.1.5: Introduction to Graphs</h3>
+<ol>
+<li>
+<p>What is a graph? Explain the differences between directed and undirected graphs.<br>
+   a) Define a graph, referring specifically to vertices and edges, and explain how it differs structurally from a tree.<br>
+   b) Construct an example of a directed graph and an example of an undirected graph (each with at least four vertices), explaining what real-world relationship each one models.<br>
+   c) Evaluate a scenario — such as a road network with a mix of one-way and two-way streets — and justify whether it should be modeled as a purely directed graph, a purely undirected graph, or a combination of both.</p>
+</li>
+<li>
+<p>Analyze graph representation techniques and their use in solving real-world problems.<br>
+   a) Construct both an adjacency list and an adjacency matrix representation for a graph of your own design, with at least five vertices and five edges.<br>
+   b) Discuss the historical origin of graph theory through Leonhard Euler's solution to the Seven Bridges of Königsberg problem, and explain how his abstraction (landmasses as vertices, bridges as edges) applies to modern network problems.<br>
+   c) Evaluate a real-world case study, such as a flight navigation system or a social media platform, discussing whether the underlying graph should be weighted, directed, both, or neither, and justify your reasoning with specific examples.</p>
+</li>
+</ol>
+
+</body>
+</html>

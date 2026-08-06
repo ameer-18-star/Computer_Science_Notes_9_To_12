@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 4: Computational Structures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 4: Computational Structures</div>
+</div>
+
+<h1 id="unit-4-computational-structures">Unit 4: Computational Structures</h1>
+<h3 id="an-11th-class-computer-science-study-guide">An 11th Class Computer Science Study Guide</h3>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>Welcome, computational architect.</p>
+<p>Yes — that's the right title for you now. Up until this point, you've been writing instructions: variables, loops, decisions, functions. But there's a question we haven't tackled yet, and it's one of the biggest questions in all of computer science:</p>
+<p><strong>Where do you actually put your data, and how do you organize it, so that your program can use it quickly and correctly?</strong></p>
+<p>Imagine two students studying for the same exam. One shoves every note, handout, and page into a single giant backpack with no order. The other organizes their notes into labeled folders, sorted by chapter, with an index at the front. Both students have the <em>same information</em>. But one of them will find what they need in two seconds, and the other will be digging through their bag for ten minutes, sweating, while the exam clock ticks.</p>
+<p>That's the entire idea behind this unit. A <strong>computational structure</strong> (also called a <strong>data structure</strong>) is simply an organized way of storing data so it can be accessed and used efficiently. In this unit, we'll explore five foundational structures: <strong>lists</strong>, <strong>stacks</strong>, <strong>queues</strong>, <strong>trees</strong>, and <strong>graphs</strong>. Each one is a different way of organizing the same raw material — data — for a different purpose.</p>
+<p>By the end of this chapter, you won't just know <em>what</em> these structures are. You'll know <em>when</em> to reach for each one, the same way a carpenter knows exactly which tool to pick up for which job. Let's begin building your toolbox.</p>
+<hr>
+<h2 id="41-primitive-computational-structures">4.1 Primitive Computational Structures</h2>
+<p>There are several commonly used computational structures that form the foundation of almost every computer program ever written. Let's meet them one at a time.</p>
+<hr>
+<h3 id="411-lists">4.1.1 Lists</h3>
+<h4 id="4111-list-creation">4.1.1.1 List Creation</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>Open your favorite music app right now — Spotify, YouTube Music, whatever you use. Look at your playlist. Song 1, Song 2, Song 3... each one sits in a specific position. You can drag a song to reorder it, delete a song you're tired of, or add a brand-new one to the end. That playlist, with its ordered, changeable sequence of songs, is a perfect real-world <strong>list</strong>.</p>
+<p><strong>The Explanation:</strong></p>
+<p>A <strong>list</strong> is a data structure used to store multiple pieces of data in a specific sequence. Each individual piece of data is called an <strong>element</strong>, and every element sits at a particular position, called its <strong>index</strong>, inside the list. This positioning is what makes lists so easy to access and manage.</p>
+<p>In Python, lists are created using square brackets <code>[]</code>, with each item separated by a comma:</p>
+<pre><code class="language-python"># Create a list of items
+items = [&quot;Decorations&quot;, &quot;Snacks&quot;, &quot;Cold drinks&quot;, &quot;Plates&quot;, &quot;Balloons&quot;]
+
+# Print the list
+print(items)
+</code></pre>
+<p><strong>Explanation:</strong> <code>items</code> is the name of the list. The individual elements — <code>"Decorations"</code>, <code>"Snacks"</code>, <code>"Cold drinks"</code>, <code>"Plates"</code>, and <code>"Balloons"</code> — are each enclosed in quotes (since they're text) and separated by commas.</p>
+<p><strong>The Practical Walkthrough:</strong></p>
+<ol>
+<li>Open a Python file called <code>list_creation.py</code>.</li>
+<li>Type the <code>items</code> list exactly as shown above.</li>
+<li>Print the list, and then print a single element using its index, like <code>print(items[2])</code>.</li>
+<li>Run the file and observe both outputs.</li>
+</ol>
+<p><em>What just happened?</em> You created your very first computational structure — an ordered container holding five separate pieces of data, each one individually retrievable by its position.</p>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>If you added a sixth item, <code>"Music Speaker"</code>, to the end of your <code>items</code> list, what index number would it receive? What does this tell you about how Python numbers list positions?</p>
+<p><strong>Quick Recap:</strong></p>
+<p>A list stores multiple elements in a specific, ordered sequence, and each element can be individually accessed using its index position.</p>
+<hr>
+<h4 id="4112-list-properties">4.1.1.2 List Properties</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>Think again about that playlist. It's not a fixed, unchangeable object — it's <em>alive</em>. You can add ten more songs tonight. You can delete three you don't like anymore. And no matter what you do, the app never forgets the order you arranged things in. These three behaviors are exactly the three core properties of a list.</p>
+<p><strong>The Explanation:</strong></p>
+<p>A list has three defining properties:</p>
+<ol>
+<li><strong>Dynamic Size</strong> — A list can grow or shrink. You can add new items or remove existing ones without any problem, and the list automatically adjusts to fit the change. You never need to declare, in advance, exactly how many items it will hold.</li>
+<li><strong>Index-Based Access</strong> — Every item has a position, called an index. The first item is at index <code>0</code>, the second at index <code>1</code>, and so on. You can use these indexes to directly retrieve any specific item.</li>
+<li><strong>Ordered Collection</strong> — The order in which you add items is preserved. If you add an item first, it stays in that position unless you deliberately change it.</li>
+</ol>
+<p>Here's a simple memory map of our <code>items</code> list:</p>
+<pre><code> Index:     0              1          2              3          4
+ Value:  &quot;Decorations&quot;  &quot;Snacks&quot;  &quot;Cold drinks&quot;   &quot;Plates&quot;  &quot;Balloons&quot;
+</code></pre>
+<p><strong>The Practical Walkthrough:</strong></p>
+<ol>
+<li>In your <code>list_creation.py</code> file, add a new item to the end of the <code>items</code> list using <code>items.append("Music Speaker")</code>.</li>
+<li>Print the list again — notice the new size.</li>
+<li>Print <code>items[0]</code> and <code>items[4]</code> to confirm the original ordering was preserved.</li>
+</ol>
+<p><em>What just happened?</em> You directly observed all three properties in action: the list's size grew dynamically, each element remained retrievable by its fixed index, and the original order of the first five items never changed.</p>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>If a list's size can change freely, why do we still bother calling it an "ordered" collection? Isn't "ordered" the opposite of "flexible"? Explain the difference between order and size.</p>
+<p><strong>Quick Recap:</strong></p>
+<p>Lists are dynamic (they can grow or shrink), index-based (every element has a retrievable position), and ordered (the sequence you build is preserved until you change it).</p>
+<hr>
+<h4 id="4113-list-operations">4.1.1.3 List Operations</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>Think about managing a real to-do list for a birthday party. You add new tasks as you think of them. You cross off tasks once they're done. And sometimes, you scan the whole list just to check: "Wait, did I already write down 'buy balloons'?" These three everyday actions map directly onto the three core list operations: <strong>insertion</strong>, <strong>deletion</strong>, and <strong>searching</strong>.</p>
+<p><strong>The Explanation:</strong></p>
+<p><strong>1. Insertion</strong></p>
+<p>Adding a new item to a list is like adding a new task to your to-do list. You can insert an item at any specific position using the <code>insert()</code> function.</p>
+<pre><code class="language-python">party_list = [&quot;Buy drinks&quot;, &quot;Buy decorations&quot;, &quot;Buy snacks&quot;, &quot;Buy cold drinks&quot;]
+party_list.insert(0, &quot;Invite friends&quot;)   # add &quot;Invite friends&quot; at the very start
+print(party_list)
+# Output: ['Invite friends', 'Buy drinks', 'Buy decorations', 'Buy snacks', 'Buy cold drinks']
+</code></pre>
+<p><strong>2. Deletion</strong></p>
+<p>Removing an item from a list is like crossing off a completed task. There are two common ways:</p>
+<ul>
+<li><strong>Removing by Value</strong> — use <code>remove()</code> to delete the <em>first occurrence</em> of a specific item.<br>
+<code>python
+  party_list = ["Invite friends", "Buy decorations", "Buy snacks", "Buy cold drinks"]
+  party_list.remove("Buy snacks")   # Removes "Buy snacks" from the list
+  print(party_list)
+  # Output: ['Invite friends', 'Buy decorations', 'Buy cold drinks']</code></li>
+<li><strong>Removing by Index</strong> — use <code>pop()</code> to remove the item sitting at a specific index.<br>
+<code>python
+  party_list = ["Invite friends", "Buy decorations", "Buy cold drinks"]
+  party_list.pop(0)   # Removes the item at index 0
+  print(party_list)
+  # Output: ['Buy decorations', 'Buy cold drinks']</code></li>
+</ul>
+<p><strong>3. Searching</strong></p>
+<p>Finding an item in a list is like scanning your to-do list for a specific task. Use the <code>in</code> keyword to check whether an item exists:</p>
+<pre><code class="language-python">party_list = [&quot;Invite friends&quot;, &quot;Buy decorations&quot;, &quot;Buy cold drinks&quot;]
+if &quot;Buy cold drinks&quot; in party_list:
+    print(&quot;Buy cold drinks is on the list.&quot;)
+else:
+    print(&quot;Buy cold drinks is not on the list.&quot;)
+# Output: Buy cold drinks is on the list.
+</code></pre>
+<p><strong>The Practical Walkthrough — Full State Trace:</strong></p>
+<p>Let's trace every step of the insertion example, showing the list's state at each moment:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Operation</th>
+<th>List State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start</td>
+<td>—</td>
+<td><code>["Buy drinks", "Buy decorations", "Buy snacks", "Buy cold drinks"]</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>party_list.insert(0, "Invite friends")</code></td>
+<td><code>["Invite friends", "Buy drinks", "Buy decorations", "Buy snacks", "Buy cold drinks"]</code></td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li>Create <code>list_operations.py</code>.</li>
+<li>Type the insertion example and run it, confirming the table above.</li>
+<li>Add the deletion-by-value example directly below it, and predict the output before running.</li>
+<li>Add the deletion-by-index example, and predict the output before running.</li>
+<li>Add the searching example, changing the searched item to something <em>not</em> in the list, and observe the <code>else</code> branch execute.</li>
+</ol>
+<p><em>What just happened?</em> You practiced all three fundamental list operations — insertion, deletion (by both value and index), and searching — and confirmed each one's exact effect on the list's state.</p>
+<p><strong>Interactive Stop-Point (Grab a Partner):</strong></p>
+<p>Partner A writes a list of five grocery items. Partner B calls out three operations, one at a time — for example, "insert 'Milk' at index 2," "remove 'Bread' by value," "search for 'Eggs'" — and Partner A must correctly predict and then verify the list's new state after each one.</p>
+<p><strong>Quick Recap:</strong></p>
+<p>Insertion (<code>insert()</code>, <code>append()</code>), deletion (<code>remove()</code>, <code>pop()</code>), and searching (<code>in</code>) are the three fundamental operations that let you build, maintain, and query a list.</p>
+<hr>
+<h4 id="4114-applications-of-lists">4.1.1.4 Applications of Lists</h4>
+<p><strong>The Explanation:</strong></p>
+<p>Lists are one of the most widely used data structures in all of computing because of how flexible they are. Two major applications include:</p>
+<ul>
+<li><strong>Data Storage and Manipulation:</strong> Lists are commonly used to store and manage collections of data — records, entries, or values — allowing easy insertion, deletion, and access to elements.</li>
+<li><strong>Stack and Queue Implementations:</strong> Lists can serve as the underlying structure to implement stacks (LIFO) and queues (FIFO), two more specialized structures we're about to explore in the next two sections.</li>
+</ul>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>Think of three apps on your phone that likely use a list "under the hood" to manage their data (hint: think about anything with a scrollable, ordered set of items — messages, photos, notifications). What do all three examples have in common?</p>
+<p><strong>Quick Recap:</strong></p>
+<p>Because of their flexibility, lists aren't just useful on their own — they're often the <em>building block</em> used to construct more specialized structures, like the stacks and queues we'll build next.</p>
+<hr>
+<h3 id="412-stacks">4.1.2 Stacks</h3>
+<h4 id="4121-stack-operations">4.1.2.1 Stack Operations</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>In 1946, Alan Turing was already experimenting with "reverting" storage registers — a way of storing values so the most recently saved one could be retrieved first. Just over a decade later, in 1957, German computer scientist <strong>Friedrich L. Bauer</strong> formally patented the <strong>stack</strong> data structure, designing it specifically to help evaluate arithmetic expressions using a Last-In, First-Out approach. That single idea — the <em>last thing in is the first thing out</em> — is still running, quietly, inside every calculator, compiler, and web browser you use today.</p>
+<p>Here's an example you already know intuitively: the cafeteria tray dispenser. Trays get stacked one on top of another. When someone needs a tray, they take the one sitting on <em>top</em> — the very last one that was placed there. Nobody digs to the bottom of the pile.</p>
+<p><strong>The Explanation:</strong></p>
+<p>A <strong>stack</strong> is a data structure where items can only be added or removed from one end, called the <strong>top</strong>. Both insertion and deletion happen exclusively at this top end. A stack follows the <strong>LIFO (Last-In, First-Out)</strong> principle: the most recently added element is always the first one removed.</p>
+<p>There are two essential operations:</p>
+<ul>
+<li><strong>Push:</strong> Adding an item to the top of the stack.</li>
+<li><strong>Pop:</strong> Removing the item from the top of the stack.</li>
+</ul>
+<p>Two additional, very common supporting operations:</p>
+<ul>
+<li><strong>Peek (or Top):</strong> Looking at the item currently on top, <em>without</em> removing it.</li>
+<li><strong>IsEmpty:</strong> Checking whether the stack currently has zero items in it.</li>
+</ul>
+<pre><code class="language-python"># Create an empty stack of books
+stack_of_books = []   # Empty stack
+print(&quot;Initial stack:&quot;, stack_of_books)
+
+# Add books to the stack (push operation)
+print(&quot;\nAdding books to the stack (push operation):&quot;)
+stack_of_books.append('Book A')
+print(&quot;Stack after pushing 'Book A':&quot;, stack_of_books)
+
+stack_of_books.append('Book B')
+print(&quot;Stack after pushing 'Book B':&quot;, stack_of_books)
+
+# Remove the top book from the stack (pop operation)
+print(&quot;\nDeletion of top book (pop operation):&quot;)
+top_book = stack_of_books.pop()
+print(&quot;Removed book:&quot;, top_book)
+print(&quot;Stack after popping the top book:&quot;, stack_of_books)
+</code></pre>
+<p><strong>Explanation:</strong> The code creates an empty stack to hold books. It adds <code>"Book A"</code> and <code>"Book B"</code>, one at a time, to the top of the stack. Finally, it removes the top book, <code>"Book B"</code> — proving that the <em>last</em> book pushed onto the stack is the <em>first</em> one popped off.</p>
+<p><strong>Visualizing the "top" pointer as the stack changes:</strong></p>
+<pre><code> Step 0: Empty stack       []                       top -&gt; (nothing)
+
+ Step 1: Push &quot;Book A&quot;     [&quot;Book A&quot;]                top -&gt; &quot;Book A&quot;
+
+ Step 2: Push &quot;Book B&quot;     [&quot;Book A&quot;, &quot;Book B&quot;]       top -&gt; &quot;Book B&quot;
+
+ Step 3: Pop()             [&quot;Book A&quot;]                top -&gt; &quot;Book A&quot;
+                            (removed and returned &quot;Book B&quot;)
+</code></pre>
+<p><strong>The Practical Walkthrough:</strong></p>
+<ol>
+<li>Create <code>stack_demo.py</code>.</li>
+<li>Type the code above and run it, line by line, confirming each printed state against the table above.</li>
+<li>Add a <code>Peek</code> operation manually by printing <code>stack_of_books[-1]</code> <em>without</em> calling <code>.pop()</code> — confirm the top item is visible but the stack size is unchanged.</li>
+<li>Add an <code>IsEmpty</code> check using <code>if len(stack_of_books) == 0:</code>.</li>
+</ol>
+<p><em>What just happened?</em> You traced a stack through push, pop, and peek operations, watching the "top" position shift with every single change — exactly the mental model every programmer uses when reasoning about stacks.</p>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>You are designing an "Undo" feature for a text editor, like Word or Google Docs. Should you use a <strong>Stack</strong> or a <strong>Queue</strong> to store the user's past actions? Think carefully about which action gets reversed <em>first</em> when the user clicks "Undo," and explain your reasoning.</p>
+<p><strong>Quick Recap:</strong></p>
+<p>A stack is LIFO — Last-In, First-Out — like a stack of trays or books: whatever you push on top is exactly what comes off first when you pop.</p>
+<hr>
+<h3 id="413-queues">4.1.3 Queues</h3>
+<h4 id="4131-queue-operations">4.1.3.1 Queue Operations</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>Back in the 1960s, early computer networks and printer systems faced a real, practical problem: a fast processor could generate data far quicker than a slow printer could physically print it. If the processor simply blasted data at the printer, information would be lost. The solution? A <strong>queue</strong> — a waiting line where data patiently lines up, in the exact order it arrived, until the slower device is ready to handle it. This same principle protects your data every single time you send multiple print jobs, or send multiple messages faster than a server can process them.</p>
+<p>You already know this pattern from real life: standing in line at a bank or a ticket counter. The first person to join the line is the first person served. Nobody who joins later gets served before someone who's already been waiting.</p>
+<p><strong>The Explanation:</strong></p>
+<p>A <strong>queue</strong> works exactly like that line. It follows the <strong>FIFO (First-In, First-Out)</strong> principle: the first item added is the first item removed. You add items at the <strong>back</strong> (or <strong>rear</strong>) of the queue, and remove items from the <strong>front</strong>.</p>
+<p>The two primary operations:</p>
+<ul>
+<li><strong>Enqueue (Add an Item):</strong> Like adding a person to the end of the line.</li>
+<li><strong>Dequeue (Remove an Item):</strong> Like serving the person at the front of the line.</li>
+</ul>
+<p>Additional common operations include checking if the queue is empty, peeking at the front item without removing it, and checking the queue's current size.</p>
+<pre><code class="language-python"># Built-in module to implement queues in Python
+from queue import Queue
+
+# Create a new queue
+q = Queue()
+
+# Add people to the queue (Enqueue)
+q.put(&quot;Ahmed&quot;)     # Adds Ahmed to the end of the queue
+q.put(&quot;Fatima&quot;)    # Adds Fatima to the end of the queue
+
+# View the person at the front of the queue (Peek)
+front_person = q.queue[0]   # Looks at the person at the front without removing them
+print(front_person)
+
+# Remove a person from the front of the queue (Dequeue)
+removed_person = q.get()    # Removes and returns the person at the front
+print(removed_person)
+
+# Add another person to the queue (Enqueue)
+q.put(&quot;Sara&quot;)      # Adds Sara to the end of the queue
+
+# View the updated queue
+updated_queue = list(q.queue)
+print(updated_queue)
+</code></pre>
+<p><strong>Explanation:</strong> The code manages a line of people using a queue. It adds people to the back of the line, checks who is currently at the front without removing them, and then serves (removes) that front person. Finally, it adds a new person to the back and shows the updated line.</p>
+<p><strong>Visualizing <code>front</code> and <code>rear</code> as the queue changes:</strong></p>
+<pre><code> Step 0: Empty queue          []                     front -&gt; none   rear -&gt; none
+
+ Step 1: Enqueue &quot;Ahmed&quot;      [&quot;Ahmed&quot;]               front -&gt; Ahmed   rear -&gt; Ahmed
+
+ Step 2: Enqueue &quot;Fatima&quot;     [&quot;Ahmed&quot;, &quot;Fatima&quot;]     front -&gt; Ahmed   rear -&gt; Fatima
+
+ Step 3: Peek (front)         [&quot;Ahmed&quot;, &quot;Fatima&quot;]     (no change; just viewed &quot;Ahmed&quot;)
+
+ Step 4: Dequeue()            [&quot;Fatima&quot;]              front -&gt; Fatima  rear -&gt; Fatima
+                               (removed and returned &quot;Ahmed&quot;)
+
+ Step 5: Enqueue &quot;Sara&quot;       [&quot;Fatima&quot;, &quot;Sara&quot;]      front -&gt; Fatima  rear -&gt; Sara
+</code></pre>
+<p><strong>The Practical Walkthrough:</strong></p>
+<ol>
+<li>Create <code>queue_demo.py</code>.</li>
+<li>Type the code above exactly and run it.</li>
+<li>Compare each printed line against the state table above.</li>
+<li>Add a check using <code>q.empty()</code> to confirm whether the queue is currently empty.</li>
+</ol>
+<p><em>What just happened?</em> You traced a real queue through enqueue, peek, and dequeue operations, and watched the <code>front</code> shift forward while the <code>rear</code> extended — the exact opposite behavior pattern from a stack.</p>
+<p><strong>Interactive Stop-Point (Grab a Partner):</strong></p>
+<p>Partner A acts as a printer buffer (a queue). Partner B sends five print commands, one at a time, each with a different "document name." Partner A must physically write down (or say out loud) the queue's state after each new command arrives, and correctly announce which document gets printed first when "processing" begins.</p>
+<p><strong>Quick Recap:</strong></p>
+<p>A queue is FIFO — First-In, First-Out — like a line at a ticket counter: whoever joins first is served first, with new arrivals always waiting at the back.</p>
+<hr>
+<h3 id="414-trees">4.1.4 Trees</h3>
+<h4 id="4141-properties-of-trees">4.1.4.1 Properties of Trees</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>In 1969, engineers building the UNIX operating system faced a huge organizational challenge: how do you organize potentially millions of files on a single computer, in a way that's easy to navigate? Their answer became one of the most influential ideas in computing history — a <strong>hierarchical tree structure</strong>, where every single file and folder ultimately branches out from one single starting point: the root directory, <code>/</code>. Every time you open a folder on your computer today, you're navigating a tree that traces its design straight back to that 1969 decision.</p>
+<p>You've also lived this structure your whole life, in a completely different context: your <strong>family tree</strong>. There's a starting generation at the top, and it branches downward into children, grandchildren, and so on.</p>
+<p><strong>The Explanation:</strong></p>
+<p>A <strong>tree</strong> data structure organizes information so that it spreads out from a single main point called the <strong>root node</strong>. Each individual piece of information is called a <strong>node</strong>, and nodes connect to other nodes, forming a branching structure — very different from a list, where items sit one after another in a straight line.</p>
+<p><strong>Example:</strong> In a family tree, the oldest ancestors form the root node — the starting point of the entire hierarchy. Each individual may have descendants, forming further levels beneath them. This kind of complex, branching, parent-child relationship simply cannot be represented well in a flat, linear list — which is exactly why the tree structure exists.</p>
+<pre><code>                     Grandfather ── Grandmother
+                    /                          \
+              Father ── Mother              Uncle ── Aunt
+             /       \                        \
+        Brother    Sister      Me            Cousin   Cousin
+</code></pre>
+<p><strong>Key properties of a tree:</strong></p>
+<ol>
+<li><strong>Root Node</strong> — The very first, topmost node in a tree, similar to the main folder on a computer that contains every other folder and file within it.</li>
+<li><strong>Edges and Nodes</strong> — Nodes are the individual elements; the connecting lines between them are called <strong>edges</strong>. A node with no children is called a <strong>leaf</strong>, similar to a file that contains no other files inside it.</li>
+<li><strong>Height</strong> — The length of the longest path from the root node down to the farthest leaf. It tells you how "deep" or "tall" the tree is.</li>
+<li><strong>Depth</strong> — The distance (number of edges) from the root down to one <em>specific</em> node. (Height measures the tree's overall extent; depth measures one particular node's position within it — a distinction that trips up even university engineering students, so don't worry if it takes a few examples to click.)</li>
+<li><strong>Subtrees</strong> — Any node in a tree, along with all of its descendants, forms a smaller tree of its own, called a <strong>subtree</strong>. For example, "Father," "Brother," and "Sister" together form a subtree of the larger family tree above.</li>
+<li><strong>Balanced Trees</strong> — A tree is considered balanced if the branches on the left and right sides are nearly the same height. Balanced trees tend to be far more efficient to search than lopsided ones.</li>
+</ol>
+<p><strong>The Practical Walkthrough:</strong></p>
+<ol>
+<li>Look carefully at the family tree ASCII diagram above.</li>
+<li>Identify the root node. (It should be "Grandfather ── Grandmother," the topmost generation.)</li>
+<li>Identify every leaf node — nodes with no children beneath them. (Brother, Sister, Me, and both Cousins should qualify.)</li>
+<li>Count the height of the tree — the longest path from the root down to any leaf. (It should be 2 edges: Grandfather → Father → Me, for example.)</li>
+<li>Identify the depth of the node "Me" specifically. (It should also be 2, since "Me" sits two edges below the root.)</li>
+</ol>
+<p><em>What just happened?</em> You practiced identifying every core structural property of a tree using a diagram you already intuitively understand — your own family structure.</p>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>Look at the height calculation you just did. Now imagine a <em>different</em> family tree where one branch has five generations of descendants, but another branch has only one. Would this tree be "balanced"? Why does a balanced tree matter for how quickly you can search through it?</p>
+<p><strong>Quick Recap:</strong></p>
+<p>A tree branches outward from a single root node into connected nodes and edges; height measures the tree's overall depth, while depth measures one specific node's distance from the root.</p>
+<hr>
+<h4 id="4142-applications-of-trees">4.1.4.2 Applications of Trees</h4>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>Think about backing up your entire computer, folder by folder. If you accidentally tried to back up a folder's <em>contents</em> before confirming the folder itself exists in the backup, you'd create chaos. Trees solve this ordering problem elegantly, through structured traversal.</p>
+<p><strong>The Explanation:</strong></p>
+<p>Trees show up constantly in real-world computing:</p>
+<ol>
+<li><strong>File Systems (Backup):</strong> <em>Pre-order traversal</em> — visiting the root first, then recursively visiting each branch — is useful for backing up file systems. By visiting the root first and then recursively backing up each directory, it ensures directories are backed up <em>before</em> their contents.</li>
+<li><strong>File System Deletion:</strong> <em>Post-order traversal</em> ensures files and directories are deleted in the correct order, by first deleting all subdirectories and files <em>before</em> deleting the parent directory — the reverse order from backup, and for good reason: you can't delete a folder that Windows or your OS still thinks contains files.</li>
+<li><strong>Hierarchical Data Representation:</strong> Trees represent data with a clear hierarchical relationship, such as organizational charts and family trees.</li>
+<li><strong>Decision Making:</strong> Structures called <em>decision trees</em> are used in algorithms to make decisions based on a chain of conditions and outcomes — a foundational idea you'll encounter again if you study artificial intelligence.</li>
+</ol>
+<p><strong>The Practical Walkthrough:</strong></p>
+<ol>
+<li>Imagine a simple folder structure:<br>
+<code>Documents/
+   ├── Photos/
+   │   ├── Vacation.jpg
+   │   └── Birthday.jpg
+   └── Notes.txt</code></li>
+<li>Trace a <strong>pre-order backup</strong>: visit <code>Documents/</code> first, then <code>Photos/</code>, then <code>Vacation.jpg</code>, then <code>Birthday.jpg</code>, then finally <code>Notes.txt</code>.</li>
+<li>Trace a <strong>post-order deletion</strong>: delete <code>Vacation.jpg</code> first, then <code>Birthday.jpg</code>, then <code>Photos/</code> (now empty), then <code>Notes.txt</code>, and only then <code>Documents/</code> itself.</li>
+</ol>
+<p><em>What just happened?</em> You practiced two opposite traversal orders and saw, very concretely, why the order of visiting nodes matters enormously depending on the real-world task (creating vs. destroying data).</p>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>Why is a file folder system represented as a tree rather than a flat list? What specific problems would occur if a folder were somehow allowed to contain its own parent folder?</p>
+<p><strong>Quick Recap:</strong></p>
+<p>Trees aren't just theoretical — they power real backup systems, safe file deletion, organizational charts, and decision-making algorithms, all thanks to their strict, ordered, branching structure.</p>
+<hr>
+<h3 id="415-introduction-to-graphs">4.1.5 Introduction to Graphs</h3>
+<p><strong>The Hook (Story Mode):</strong></p>
+<p>In 1736, mathematician <strong>Leonhard Euler</strong> was presented with a strange puzzle from the city of Königsberg: the city had seven bridges connecting different landmasses, and locals wondered whether it was possible to take a walk that crossed every single bridge exactly once, and return to your starting point. Euler realized something brilliant — the <em>exact shapes</em> of the landmasses didn't matter at all. All that mattered was which landmasses were <em>connected</em> to which others, and by how many bridges. He simplified each landmass into a single dot (what we now call a <strong>vertex</strong>), and each bridge into a line connecting two dots (what we now call an <strong>edge</strong>). In doing so, Euler proved the walk was impossible — and, almost as a side effect, he invented an entire new branch of mathematics: <strong>graph theory</strong>.</p>
+<p>Every time you open Google Maps, or scroll through your list of followers on social media, you are interacting directly with Euler's 1736 idea.</p>
+<p><strong>The Explanation:</strong></p>
+<p>A <strong>graph</strong> is a data structure made up of a set of <strong>vertices</strong> (also called <strong>nodes</strong>) connected by <strong>edges</strong>. Graphs represent networks of connections, where each edge represents a relationship between two vertices. Vertices can represent anything — cities, people, web pages, or even abstract ideas — and edges represent the relationships or pathways between them.</p>
+<p>Imagine mapping out all the cities in Pakistan and the roads connecting them. Each city is a vertex; each road between two cities is an edge. Unlike a tree, a graph doesn't have a single "root" and doesn't follow a strict hierarchy. In a graph, any two vertices can potentially be connected, forming a complex web of relationships rather than a clean branching structure.</p>
+<p><strong>Example:</strong> In a social network, each person can be connected to many others, forming a graph. There's no single starting point, and people (vertices) can have multiple connections (edges) that don't follow any strict parent-child relationship, unlike a tree.</p>
+<p><strong>Difference from a Tree:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Tree</th>
+<th>Graph</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Root node</td>
+<td>Exactly one, always</td>
+<td>Not required — may have none</td>
+</tr>
+<tr>
+<td>Hierarchy</td>
+<td>Strict, top-down</td>
+<td>None required</td>
+</tr>
+<tr>
+<td>Paths between two nodes</td>
+<td>Exactly one (no cycles/loops)</td>
+<td>Can be multiple, and cycles (loops) are allowed</td>
+</tr>
+<tr>
+<td>Typical real-world use</td>
+<td>Family trees, org charts, file systems</td>
+<td>Social networks, web links, transport/road systems</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="4151-characteristics-of-graphs">4.1.5.1 Characteristics of Graphs</h4>
+<p>Graphs are defined at their core by their two basic building blocks:</p>
+<ul>
+<li><strong>Vertices (Nodes):</strong> The individual points in the graph — the "things" being connected (cities, people, pages).</li>
+<li><strong>Edges:</strong> The connections between two vertices — the "relationships" or "links" between those things.</li>
+</ul>
+<h4 id="4152-properties-of-graphs">4.1.5.2 Properties of Graphs</h4>
+<p>Beyond their basic building blocks, graphs have several structural properties worth knowing:</p>
+<ul>
+<li><strong>Degree:</strong> The number of edges connected to a specific vertex. For example, if a city is connected to three other cities by roads, that city's vertex has a degree of <code>3</code>.</li>
+<li><strong>Path:</strong> A sequence of edges that lets you travel from one vertex to another.</li>
+<li><strong>Cycle:</strong> A path that starts and ends at the <em>same</em> vertex, forming a loop. (Recall: trees never allow cycles, but graphs do.)</li>
+<li><strong>Connectedness:</strong> A graph is considered "connected" if there is <em>some</em> path between every pair of vertices — no vertex is completely isolated from the rest.</li>
+<li><strong>Weight:</strong> In some graphs, edges carry a weight representing a value like distance or cost. For example, if a road between two cities is 50 kilometers long, that edge's weight might be <code>50</code>.</li>
+<li><strong>Direction:</strong> Edges can be directed (one-way) or undirected (two-way). A directed edge from city A to city B does not automatically mean there's a return edge from B to A.</li>
+</ul>
+<h4 id="4153-types-of-graphs">4.1.5.3 Types of Graphs</h4>
+<p>Graphs are classified based on their structure and properties. The three main types:</p>
+<p><strong>1. Directed Graphs</strong></p>
+<p>In a directed graph, edges have a specific direction — they travel from one vertex to another in only one permitted way.</p>
+<pre><code>        10
+   A ────────► B
+   │           │
+ 7 │           │ 20
+   ▼           ▼
+   C ◄──────── D
+        60
+</code></pre>
+<p><strong>Example:</strong> If you want to travel from city A to city B, you can only go in the direction the road allows. If there's no one-way street running from A to B, you simply cannot travel directly that way, even if a road exists in the reverse direction.</p>
+<p><strong>2. Undirected Graphs</strong></p>
+<p>In an undirected graph, edges have no direction — a connection between two vertices allows travel in both directions equally.</p>
+<pre><code>        A ─────── B
+       /           \
+      E             D
+       \           /
+        \         /
+              C
+</code></pre>
+<p><strong>Example:</strong> If Person A is friends with Person B on a social network, then Person B is automatically friends with Person A too. There's no restriction on direction — you can move freely between connected friends.</p>
+<p><strong>3. Weighted Graphs</strong></p>
+<p>In a weighted graph, each edge carries a weight or cost representing something meaningful, like distance, time, or price.</p>
+<p><strong>Example:</strong> Imagine a city map where every road has a different travel distance or time attached. If you want to travel between two landmarks, the map uses these weights to calculate your shortest or quickest possible route — exactly what a navigation app does behind the scenes every single time you request directions.</p>
+<p><strong>The Practical Walkthrough — Representing a Small Graph:</strong></p>
+<p>Let's represent a tiny social graph of four friends — Ali, Bilal, Sara, and Zara — where Ali is friends with Bilal and Sara, and Bilal is friends with Zara.</p>
+<p><strong>As an Adjacency List</strong> (each vertex lists its direct connections):</p>
+<pre><code>Ali   -&gt; [Bilal, Sara]
+Bilal -&gt; [Ali, Zara]
+Sara  -&gt; [Ali]
+Zara  -&gt; [Bilal]
+</code></pre>
+<p><strong>As an Adjacency Matrix</strong> (a grid showing 1 if connected, 0 if not):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Ali</th>
+<th>Bilal</th>
+<th>Sara</th>
+<th>Zara</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ali</strong></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Bilal</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Sara</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Zara</strong></td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<ol>
+<li>Build both representations on paper for the friendship graph described above.</li>
+<li>Confirm that both representations agree with each other — anywhere the adjacency list shows a connection, the matrix should show a <code>1</code> in the matching cell.</li>
+</ol>
+<p><em>What just happened?</em> You represented the exact same graph in two different, commonly used formats — proving that a graph's "shape" can be captured in more than one valid way, depending on what your program needs to do with it.</p>
+<p><strong>Interactive Stop-Point (Pause &amp; Think):</strong></p>
+<p>For a flight navigation app showing direct flights between cities, should the graph be <strong>directed or undirected</strong>? Should it be <strong>weighted or unweighted</strong>? Justify your choice using a real detail about how flights actually work (hint: think about one-way flights and ticket prices).</p>
+<p><strong>Quick Recap:</strong></p>
+<p>A graph is a flexible network of vertices connected by edges — which may be directed or undirected, and weighted or unweighted — making it the ideal structure for modeling real-world networks like roads, social connections, and flight routes, where a strict tree hierarchy simply wouldn't fit.</p>
+<hr>
+<h1 id="chapter-summary-the-big-picture">Chapter Summary — The Big Picture</h1>
+<p>Let's step back and look at the whole toolbox you just built:</p>
+<ul>
+<li><strong>Lists</strong> give you a flexible, ordered, index-based way to store and manage a general collection of data — and they can even serve as the raw material to build other structures.</li>
+<li><strong>Stacks</strong> enforce LIFO (Last-In, First-Out) discipline — perfect for anything involving "undo" actions, reversing steps, or evaluating expressions, using just two core moves: push and pop.</li>
+<li><strong>Queues</strong> enforce FIFO (First-In, First-Out) discipline — perfect for anything involving fair waiting lines, task scheduling, or buffering, using enqueue and dequeue.</li>
+<li><strong>Trees</strong> organize hierarchical, branching relationships from a single root — ideal for file systems, organizational charts, and decision-making logic, with properties like height, depth, and balance shaping how efficiently they perform.</li>
+<li><strong>Graphs</strong> model flexible, non-hierarchical networks of connections — directed or undirected, weighted or unweighted — ideal for social networks, maps, and any system where relationships don't follow a strict chain of command.</li>
+</ul>
+<p>Here's the real skill you've built in this unit: it's not memorizing five definitions. It's developing the instinct to look at a real-world problem and ask, "Which structure actually fits the <em>shape</em> of this data?" That instinct — choosing the right tool before you even start coding — is one of the true marks of a skilled computational architect. Carry it forward.</p>
+<hr>
+<h1 id="end-of-chapter-exercises">End-of-Chapter Exercises</h1>
+<h2 id="multiple-choice-questions">Multiple Choice Questions</h2>
+<ol>
+<li>
+<p>The function used to add an item at the end of a list in Python:<br>
+   a) <code>insert()</code>  b) <code>append()</code>  c) <code>remove()</code>  d) <code>pop()</code></p>
+</li>
+<li>
+<p>The purpose of the <code>in</code> keyword used with a Python list:<br>
+   a) Adds an item to the list  b) Removes an item from the list  c) Checks if an item exists in the list  d) Returns the length of the list</p>
+</li>
+<li>
+<p>An operation that removes an item from the top of the stack:<br>
+   a) Push  b) Pop  c) Peek  d) Add</p>
+</li>
+<li>
+<p>The operation used to add an item to a queue:<br>
+   a) Dequeue  b) Peek  c) Enqueue  d) Remove</p>
+</li>
+<li>
+<p>True statement about the height of a tree:<br>
+   a) Number of edges from the root to the deepest node<br>
+   b) Number of nodes from the root to the deepest node<br>
+   c) Number of children of the root node<br>
+   d) Always equal to the number of nodes in the tree</p>
+</li>
+<li>
+<p>A scenario where a graph data structure is most suitable:<br>
+   a) Managing a to-do list<br>
+   b) Modeling a line of customers in a store<br>
+   c) Representing connections in a social network<br>
+   d) All of the above</p>
+</li>
+</ol>
+<h2 id="short-questions">Short Questions</h2>
+<ol>
+<li>Explain how the <code>insert()</code> function works in Python lists. Provide an example.</li>
+<li>Explain the potential issues which could arise when two variables reference the same list in a program. Provide an example.</li>
+<li>Define a stack and explain the Last-In, First-Out (LIFO) principle.</li>
+<li>Differentiate between the Enqueue and Dequeue operations of a queue.</li>
+<li>Name two basic operations performed on a stack.</li>
+<li>What is the difference between <code>enqueue()</code> and <code>dequeue()</code>?</li>
+</ol>
+<h2 id="long-questions">Long Questions</h2>
+<ol>
+<li>Discuss the dynamic size property of lists in Python. How does this property make lists more flexible?</li>
+<li>Explain the operations on a stack with a real-life example and Python code.</li>
+<li>Write a simple program to implement a queue (insertion and deletion).</li>
+<li>Define a tree and explain its properties.</li>
+<li>What is a graph? Explain the differences between directed and undirected graphs.</li>
+</ol>
+
+</body>
+</html>

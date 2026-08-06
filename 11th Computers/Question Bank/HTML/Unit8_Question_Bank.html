@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Unit 8 — Online Research and Digital Literacy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Unit 8 — Online Research and Digital Literacy</div>
+</div>
+
+<h1 id="comprehensive-question-bank-unit-8-online-research-and-digital-literacy">Comprehensive Question Bank: Unit 8 — Online Research and Digital Literacy</h1>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-81-online-research-and-digital-literacy-overview">Topic 8.1: Online Research and Digital Literacy (Overview)</h3>
+<ol>
+<li>Online research is best defined as:<br>
+   A) The process of writing computer programs<br>
+<strong>B) The activity of finding information on the internet about a particular topic</strong><br>
+   C) The process of designing computer hardware<br>
+   D) A method of encrypting sensitive data</li>
+<li>What is the primary goal of online research, according to this unit?<br>
+   A) To find as much information as possible, regardless of accuracy<br>
+<strong>B) To collect correct, trustworthy, and current information that helps understand a topic or solve a problem</strong><br>
+   C) To only use one single source for every topic<br>
+   D) To avoid using search engines entirely</li>
+</ol>
+<hr>
+<h3 id="topic-811-importance-of-online-research">Topic 8.1.1: Importance of Online Research</h3>
+<ol>
+<li>In 1971, which individual typed the U.S. Declaration of Independence into a mainframe computer, launching Project Gutenberg?<br>
+   A) George Boole<br>
+<strong>B) Michael S. Hart</strong><br>
+   C) Richard Stallman<br>
+   D) Alan Sokal</li>
+<li>Project Gutenberg is significant in the history of online research because it:<br>
+   A) Was the first search engine ever created<br>
+<strong>B) Became the world's first digital library, decades before the modern web existed</strong><br>
+   C) Introduced Boolean logic to computing<br>
+   D) Established the first intellectual property laws</li>
+<li>Why is online research considered important, according to this unit?<br>
+   A) It only benefits professional researchers<br>
+<strong>B) It allows people to access a wide range of information quickly and easily, helping with homework, professional updates, and informed decisions</strong><br>
+   C) It eliminates the need for critical thinking<br>
+   D) It is only useful for entertainment purposes</li>
+</ol>
+<hr>
+<h3 id="topic-812-types-of-online-research">Topic 8.1.2: Types of Online Research</h3>
+<ol>
+<li>Which type of online research involves finding basic information on a topic using search engines like Google?<br>
+<strong>A) General Information Research</strong><br>
+   B) Academic Research<br>
+   C) Market Research<br>
+   D) Fact-Checking Research</li>
+<li>Which type of online research focuses on finding scholarly information for educational purposes, such as books and research papers?<br>
+   A) General Information Research<br>
+<strong>B) Academic Research</strong><br>
+   C) Market Research<br>
+   D) Health Research</li>
+<li>Which type of online research is used by businesses and entrepreneurs to understand market trends, customer behavior, and competition?<br>
+   A) Academic Research<br>
+<strong>B) Market Research</strong><br>
+   C) Fact-Checking Research<br>
+   D) General Information Research</li>
+<li>Which type of online research involves checking multiple reliable sources to confirm the correctness of facts?<br>
+   A) Academic Research<br>
+   B) Market Research<br>
+<strong>C) Fact-Checking Research</strong><br>
+   D) Health Research</li>
+<li>Which type of online research involves finding information related to medical treatments or healthcare services?<br>
+   A) General Information Research<br>
+   B) Market Research<br>
+<strong>C) Health Research</strong><br>
+   D) Fact-Checking Research</li>
+<li>A business wanting to decide whether to launch a new product would most likely conduct which type of online research?<br>
+   A) Academic Research<br>
+<strong>B) Market Research</strong><br>
+   C) Health Research<br>
+   D) General Information Research</li>
+</ol>
+<hr>
+<h3 id="topic-813-digital-literacy">Topic 8.1.3: Digital Literacy</h3>
+<ol>
+<li>Digital literacy is best defined as:<br>
+   A) The ability to type quickly on a keyboard<br>
+<strong>B) The ability to use digital tools, such as computers, smartphones, and the internet, to find, understand, create, and share information</strong><br>
+   C) The ability to write only in digital formats<br>
+   D) The ability to repair computer hardware</li>
+<li>According to the market analogy used in this unit, what does "true" digital literacy resemble?<br>
+   A) Simply knowing how to walk through the market's doors<br>
+<strong>B) Knowing which vendor sells real goods, which sells knockoffs, and how to read the receipts</strong><br>
+   C) Avoiding the market entirely<br>
+   D) Buying only from the first vendor you see</li>
+<li>Which of the following is included as a skill within digital literacy, according to this unit?<br>
+   A) Only using search engines<br>
+<strong>B) Using search engines, assessing source reliability, and protecting personal information</strong><br>
+   C) Only creating digital content<br>
+   D) Only protecting personal information</li>
+</ol>
+<hr>
+<h3 id="topic-814-key-components-of-digital-literacy">Topic 8.1.4: Key Components of Digital Literacy</h3>
+<ol>
+<li>Which key component of digital literacy involves operating devices like computers, tablets, and smartphones?<br>
+<strong>A) Using Technology</strong><br>
+   B) Searching for Information<br>
+   C) Evaluating Sources<br>
+   D) Communication</li>
+<li>Which key component of digital literacy involves entering relevant keywords and refining search results?<br>
+   A) Using Technology<br>
+<strong>B) Searching for Information</strong><br>
+   C) Evaluating Sources<br>
+   D) Creating Digital Content</li>
+<li>Which key component of digital literacy involves checking whether information found online is reliable?<br>
+   A) Using Technology<br>
+   B) Searching for Information<br>
+<strong>C) Evaluating Sources</strong><br>
+   D) Communication</li>
+<li>In the farmer example given in this unit, what were farmers in Punjab searching for?<br>
+   A) Weather forecasts for the season<br>
+<strong>B) Modern irrigation techniques for wheat</strong><br>
+   C) Crop prices in local markets<br>
+   D) Fertilizer suppliers nearby</li>
+<li>According to the "Do You Know?" note in this unit, approximately what portion of the world's population uses the internet?<br>
+   A) Less than a quarter<br>
+<strong>B) More than half</strong><br>
+   C) Exactly one-third<br>
+   D) Nearly all of it</li>
+<li>If Article A on battery technology is written by a university professor in an academic journal, and Article B is from a commercial blog selling power banks, which factor should most influence how carefully you evaluate each source?<br>
+   A) The length of each article<br>
+<strong>B) The differing motivations behind each source (academic accuracy vs. commercial promotion)</strong><br>
+   C) The number of images included<br>
+   D) The publication date only</li>
+</ol>
+<hr>
+<h3 id="topic-821-online-libraries-and-research-databases">Topic 8.2.1: Online Libraries and Research Databases</h3>
+<ol>
+<li>Academic journals are best described as:<br>
+   A) Casual blog posts written by anonymous authors<br>
+<strong>B) Collections of articles written by experts in various fields, usually peer-reviewed</strong><br>
+   C) Advertisements for academic products<br>
+   D) Social media posts about scholarly topics</li>
+<li>What does "peer-reviewed" mean, according to this unit?<br>
+   A) The article was reviewed by the author's family members<br>
+<strong>B) The article was checked by other experts in the field before being published</strong><br>
+   C) The article was reviewed only by a magazine editor<br>
+   D) The article is freely available to the public</li>
+<li>According to this unit, through which of the following can students access many academic journals online?<br>
+   A) Only paid private subscriptions<br>
+<strong>B) School libraries, university portals, or open-access websites</strong><br>
+   C) Only physical library visits<br>
+   D) Only through social media platforms</li>
+<li>Why are peer-reviewed articles generally considered more trustworthy sources of information?<br>
+   A) They are always shorter than other articles<br>
+<strong>B) They have been checked by other experts before publication</strong><br>
+   C) They are always free to access<br>
+   D) They are written faster than other articles</li>
+<li>What is a DOI (Digital Object Identifier) used for?<br>
+   A) To measure a paper's popularity on social media<br>
+<strong>B) To serve as a unique, permanent code for reliably finding or citing a specific academic paper</strong><br>
+   C) To indicate the file size of a document<br>
+   D) To replace the need for an author's name</li>
+<li>According to the "Do You Know?" note in this unit, what do many universities, including those in Pakistan, provide for free?<br>
+   A) Free laptops for students<br>
+<strong>B) Free access to thousands of academic journals and research papers online</strong><br>
+   C) Free internet service for all citizens<br>
+   D) Free software licenses only</li>
+</ol>
+<hr>
+<h3 id="topic-822-effective-navigation-and-managing-digital-information">Topic 8.2.2: Effective Navigation and Managing Digital Information</h3>
+<ol>
+<li>Who developed the binary logic system (AND, OR, NOT) that modern search engines use to filter information?<br>
+   A) Michael S. Hart<br>
+<strong>B) George Boole</strong><br>
+   C) Richard Stallman<br>
+   D) Alan Sokal</li>
+<li>Which Boolean operator requires BOTH search terms to appear in the results?<br>
+<strong>A) AND</strong><br>
+   B) OR<br>
+   C) NOT<br>
+   D) NEITHER</li>
+<li>Which Boolean operator allows EITHER of two search terms to appear in the results?<br>
+   A) AND<br>
+<strong>B) OR</strong><br>
+   C) NOT<br>
+   D) NEITHER</li>
+<li>Which Boolean operator is used to exclude a specific term from search results?<br>
+   A) OR<br>
+   B) AND<br>
+<strong>C) NOT</strong><br>
+   D) NEITHER</li>
+<li>What does placing a search phrase inside quotation marks (<code>"exact phrase"</code>) accomplish?<br>
+   A) It excludes that phrase from the results<br>
+<strong>B) It searches for the exact phrase, in that exact word order</strong><br>
+   C) It searches only academic databases<br>
+   D) It restricts results to PDF files only</li>
+<li>What does the <code>site:</code> search operator do?<br>
+   A) Restricts results to a specific file format<br>
+<strong>B) Restricts results to a specific website or domain</strong><br>
+   C) Excludes a specific term from the search<br>
+   D) Searches only peer-reviewed journals</li>
+<li>What does the <code>filetype:</code> search operator do?<br>
+   A) Restricts results to a specific website<br>
+<strong>B) Restricts results to a specific file format, such as PDF</strong><br>
+   C) Searches for an exact phrase<br>
+   D) Excludes a specific website from results</li>
+<li>In the search string <code>"climate change" AND "crop yield" site:.gov filetype:pdf</code>, what does <code>site:.gov</code> accomplish?<br>
+   A) Excludes all government websites from the results<br>
+<strong>B) Restricts the results to only government websites</strong><br>
+   C) Searches only for PDF files<br>
+   D) Searches for the exact phrase "gov"</li>
+<li>Using the metal detector analogy in this unit, what do Boolean operators and search syntax represent?<br>
+   A) Digging up an entire beach without any filtering<br>
+<strong>B) Calibrated filters that ignore irrelevant results and pinpoint exactly what you're searching for</strong><br>
+   C) A tool that only works on beaches<br>
+   D) A method for encrypting search queries</li>
+<li>What is the primary purpose of a reference manager, as mentioned in this unit?<br>
+    A) To translate documents into other languages<br>
+<strong>B) To automatically format citations and organize research sources</strong><br>
+    C) To generate new research topics automatically<br>
+    D) To replace the need for evaluating sources</li>
+</ol>
+<hr>
+<h3 id="topic-83-831-research-ethics-and-its-importance">Topic 8.3 &amp; 8.3.1: Research Ethics and Its Importance</h3>
+<ol>
+<li>Research ethics are best defined as:<br>
+   A) Rules that only apply to professional scientists<br>
+<strong>B) The principles and guidelines that researchers follow to ensure their work is honest, respectful, and fair</strong><br>
+   C) Legal requirements for patenting inventions<br>
+   D) Technical steps for building statistical models</li>
+<li>In the 1996 Sokal Hoax, what did physicist Alan Sokal do?<br>
+   A) He invented a new search engine<br>
+<strong>B) He submitted a deliberately nonsensical academic paper to test whether it would be published without genuine scrutiny</strong><br>
+   C) He created the first peer-reviewed journal<br>
+   D) He developed Boolean logic for search engines</li>
+<li>What did the Sokal Hoax ultimately expose, according to this unit?<br>
+   A) That peer review is always completely reliable<br>
+<strong>B) Flaws in academic publishing, proving why peer review, transparency, and source verification are vital</strong><br>
+   C) That academic journals should be abolished entirely<br>
+   D) That intellectual property laws are unnecessary</li>
+<li>Why is ethical research considered important, according to this unit?<br>
+   A) It guarantees research will always be published<br>
+<strong>B) It ensures findings are trustworthy and that the rights of those involved are respected</strong><br>
+   C) It eliminates the need for informed consent<br>
+   D) It only matters for market research</li>
+<li>What could happen if researchers do NOT follow ethical guidelines, according to this unit?<br>
+   A) The research automatically becomes more accurate<br>
+<strong>B) They could cause harm, spread misinformation, or be unfair to the people or communities they study</strong><br>
+   C) The research process becomes faster<br>
+   D) Nothing significant changes</li>
+</ol>
+<hr>
+<h3 id="topic-832-key-principles-of-research-ethics">Topic 8.3.2: Key Principles of Research Ethics</h3>
+<ol>
+<li>Which key principle of research ethics requires researchers to inform participants about the purpose of the research and obtain their permission?<br>
+<strong>A) Informed Consent</strong><br>
+   B) Confidentiality<br>
+   C) Integrity<br>
+   D) Respect for Participants</li>
+<li>Which key principle of research ethics requires keeping personal information and participant responses private?<br>
+   A) Informed Consent<br>
+<strong>B) Confidentiality</strong><br>
+   C) Integrity<br>
+   D) Respect for Participants</li>
+<li>Which key principle of research ethics requires researchers to be honest and avoid falsifying data or plagiarizing?<br>
+   A) Informed Consent<br>
+   B) Confidentiality<br>
+<strong>C) Integrity</strong><br>
+   D) Respect for Participants</li>
+<li>Which key principle of research ethics requires treating all participants with respect and ensuring the research does not harm them?<br>
+   A) Informed Consent<br>
+   B) Confidentiality<br>
+   C) Integrity<br>
+<strong>D) Respect for Participants</strong></li>
+<li>If a student rewrites a paragraph from an online article using entirely different words, but keeps the exact same ideas without citing the original author, this is best classified as a violation of which principle?<br>
+   A) Informed Consent<br>
+   B) Confidentiality<br>
+<strong>C) Integrity (plagiarism)</strong><br>
+   D) Respect for Participants</li>
+<li>Using the dinner party analogy in this unit, what does "claiming you created a master chef's recipe yourself" represent?<br>
+   A) A violation of confidentiality<br>
+<strong>B) A violation of integrity, similar to plagiarism</strong><br>
+   C) A violation of informed consent<br>
+   D) An acceptable research practice</li>
+</ol>
+<hr>
+<h3 id="topic-84-understanding-intellectual-property-overview">Topic 8.4: Understanding Intellectual Property (Overview)</h3>
+<ol>
+<li>Intellectual Property (IP) is best defined as:<br>
+   A) Physical property owned by a research institution<br>
+<strong>B) The legal rights that protect creations of the mind, such as inventions, literary and artistic works, designs, symbols, names, and images used in commerce</strong><br>
+   C) A type of academic database<br>
+   D) A method of citing sources in research</li>
+<li>In 1983, which programmer launched the GNU Project and the General Public License (GPL), inventing the concept of "Copyleft"?<br>
+   A) Michael S. Hart<br>
+   B) George Boole<br>
+<strong>C) Richard Stallman</strong><br>
+   D) Alan Sokal</li>
+<li>What does "Copyleft," as introduced by Richard Stallman, demonstrate about intellectual property?<br>
+   A) That intellectual property can only be used to restrict others<br>
+<strong>B) That intellectual property protection can also be used as a tool to protect openness and collaboration</strong><br>
+   C) That software cannot be protected by copyright<br>
+   D) That patents are the only valid form of IP protection</li>
+</ol>
+<hr>
+<h3 id="topic-841-types-of-intellectual-property">Topic 8.4.1: Types of Intellectual Property</h3>
+<ol>
+<li>A patent is best described as:<br>
+   A) A sign or logo distinguishing one company's goods from another's<br>
+<strong>B) An exclusive right granted for an invention, preventing others from making, using, or selling it without permission</strong><br>
+   C) Protection for literary and artistic works<br>
+   D) Confidential business information kept secret</li>
+<li>In the solar panel example in this unit, what did the Pakistani engineer obtain to ensure exclusive manufacturing rights?<br>
+   A) A trademark<br>
+<strong>B) A patent</strong><br>
+   C) A copyright<br>
+   D) A trade secret</li>
+<li>A trademark is best described as:<br>
+   A) An exclusive right granted for an invention<br>
+<strong>B) A sign, logo, or name that distinguishes the goods or services of one company from those of others</strong><br>
+   C) Protection for literary and artistic works<br>
+   D) Confidential information providing a competitive edge</li>
+<li>In this unit, which company's logo is used as an example of a trademark?<br>
+   A) Pakola<br>
+<strong>B) National Foods</strong><br>
+   C) IPO Pakistan<br>
+   D) A Karachi-based design studio</li>
+<li>Copyright is best described as:<br>
+   A) Protection for brand names and logos<br>
+<strong>B) Protection for literary and artistic works, such as books, music, films, and software</strong><br>
+   C) Protection for confidential business recipes<br>
+   D) Protection for the visual design of a product only</li>
+<li>In the novel-writing example in this unit, what does copyright law ensure for the Pakistani author?<br>
+   A) That only the government can publish the novel<br>
+<strong>B) That only the author has the right to publish, sell, or adapt the novel into a movie</strong><br>
+   C) That the novel automatically becomes public domain<br>
+   D) That the author must share royalties with the publisher</li>
+<li>Industrial design rights protect:<br>
+   A) The chemical formula of a product<br>
+<strong>B) The visual design of objects that are not purely utilitarian — shape, configuration, and aesthetic aspects</strong><br>
+   C) A company's brand name only<br>
+   D) A business's confidential financial records</li>
+<li>In the mineral water bottle example in this unit, what type of intellectual property protects the unique bottle shape?<br>
+   A) Patent<br>
+   B) Trademark<br>
+   C) Copyright<br>
+<strong>D) Industrial Design</strong></li>
+<li>A trade secret is best described as:<br>
+   A) Information that must always be publicly disclosed<br>
+<strong>B) Confidential information that provides a business with a competitive edge, never disclosed to the public</strong><br>
+   C) A registered brand name or logo<br>
+   D) A type of literary work protected by copyright</li>
+<li>In this unit, which Pakistani soft drink's recipe is used as an example of a trade secret?<br>
+    A) National Foods sauce<br>
+<strong>B) Pakola</strong><br>
+    C) A Karachi-based mineral water brand<br>
+    D) A solar panel manufacturer's product</li>
+<li>What is the key difference between a patent and a trade secret, based on this unit's descriptions?<br>
+    A) They are identical forms of protection<br>
+<strong>B) A patent requires public disclosure of the invention, while a trade secret is never disclosed to the public</strong><br>
+    C) A trade secret lasts longer than a patent in all cases<br>
+    D) A patent only applies to software</li>
+<li>Using the smartphone example in this unit, which type of intellectual property protects the phone's unique brand logo?<br>
+    A) Patent<br>
+<strong>B) Trademark</strong><br>
+    C) Copyright<br>
+    D) Trade Secret</li>
+<li>Using the smartphone example in this unit, which type of intellectual property protects the phone's software code and manual?<br>
+    A) Patent<br>
+    B) Trademark<br>
+<strong>C) Copyright</strong><br>
+    D) Industrial Design</li>
+<li>A Creative Commons license, such as <code>CC BY-NC-SA</code>, allows a creator to:<br>
+    A) Completely give up all rights to their work<br>
+<strong>B) Keep their copyright while giving specific, clear permission for others to use their work under certain conditions</strong><br>
+    C) Automatically register a patent for their work<br>
+    D) Prevent anyone from ever using their work</li>
+<li>In a <code>CC BY-NC-SA</code> license, what does the "NC" component specifically mean?<br>
+    A) The work cannot be shared at all<br>
+<strong>B) The work cannot be used for commercial purposes</strong><br>
+    C) The work requires no attribution<br>
+    D) The work must be kept confidential</li>
+</ol>
+<hr>
+<h3 id="topic-842-importance-of-intellectual-property">Topic 8.4.2: Importance of Intellectual Property</h3>
+<ol>
+<li>Why is intellectual property considered important, according to this unit?<br>
+   A) It prevents any sharing of ideas whatsoever<br>
+<strong>B) It helps people protect their ideas and creations, ensuring only they can profit from them, which encourages continued innovation</strong><br>
+   C) It only benefits large corporations<br>
+   D) It eliminates the need for creativity</li>
+<li>According to this unit, what does intellectual property protection ultimately encourage?<br>
+   A) People to stop creating new inventions<br>
+<strong>B) People to keep coming up with new ideas and innovations, knowing they will be rewarded for their efforts</strong><br>
+   C) Businesses to avoid registering trademarks<br>
+   D) Researchers to avoid citing their sources</li>
+</ol>
+<hr>
+<h3 id="topic-843-how-to-protect-your-intellectual-property">Topic 8.4.3: How to Protect Your Intellectual Property</h3>
+<ol>
+<li>According to this unit, through which organization should a Pakistani inventor apply for a patent?<br>
+   A) National Foods<br>
+<strong>B) The Intellectual Property Organization of Pakistan (IPO Pakistan)</strong><br>
+   C) A local university<br>
+   D) A private law firm only</li>
+<li>What is recommended in this unit to protect a brand name, logo, or slogan?<br>
+   A) Keeping it confidential and unpublished<br>
+<strong>B) Registering it as a trademark</strong><br>
+   C) Applying for a patent<br>
+   D) Publishing it in an academic journal</li>
+<li>What is recommended in this unit to protect valuable, confidential business information?<br>
+   A) Registering it as a trademark<br>
+   B) Publishing it publicly<br>
+<strong>C) Keeping it confidential and using legal agreements</strong><br>
+   D) Applying for a patent</li>
+<li>According to the "Do You Know?" note in this unit, what organization in Pakistan is responsible for registering and protecting intellectual property rights?<br>
+   A) National Foods<br>
+<strong>B) The Intellectual Property Organization (IPO)</strong><br>
+   C) Project Gutenberg<br>
+   D) GNU Project</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-81-online-research-and-digital-literacy-overview_1">Topic 8.1: Online Research and Digital Literacy (Overview)</h3>
+<ol>
+<li>Define online research in your own words.</li>
+<li>State the primary goal of online research, according to this unit.</li>
+</ol>
+<h3 id="topic-811-importance-of-online-research_1">Topic 8.1.1: Importance of Online Research</h3>
+<ol>
+<li>Identify who launched Project Gutenberg, and briefly explain its historical significance.</li>
+<li>Explain briefly why online research is considered an important skill in today's world.</li>
+<li>List two groups of people (e.g., students, professionals) who benefit from online research, according to this unit.</li>
+</ol>
+<h3 id="topic-812-types-of-online-research_1">Topic 8.1.2: Types of Online Research</h3>
+<ol>
+<li>Define the five types of online research discussed in this unit.</li>
+<li>Differentiate between academic research and market research.</li>
+<li>Explain briefly why fact-checking research typically requires checking multiple sources rather than just one.</li>
+<li>Identify which type of online research would be most appropriate for a business planning to launch a new product.</li>
+</ol>
+<h3 id="topic-813-814-digital-literacy-and-its-key-components">Topic 8.1.3 &amp; 8.1.4: Digital Literacy and Its Key Components</h3>
+<ol>
+<li>Define digital literacy in your own words.</li>
+<li>Using the market analogy from this unit, briefly explain the difference between basic literacy and true digital literacy.</li>
+<li>List the three key components of digital literacy discussed in this unit.</li>
+<li>Differentiate between "using technology" and "evaluating sources" as components of digital literacy.</li>
+<li>Explain briefly why the motivations behind a source (academic vs. commercial) matter when evaluating its reliability.</li>
+</ol>
+<h3 id="topic-821-online-libraries-and-research-databases_1">Topic 8.2.1: Online Libraries and Research Databases</h3>
+<ol>
+<li>Define what an academic journal is.</li>
+<li>Explain briefly what "peer-reviewed" means.</li>
+<li>Differentiate between academic databases and general search engines in terms of source reliability.</li>
+<li>Define what a DOI (Digital Object Identifier) is used for.</li>
+<li>Identify at least two ways students can access academic journals online, according to this unit.</li>
+</ol>
+<h3 id="topic-822-effective-navigation-and-managing-digital-information_1">Topic 8.2.2: Effective Navigation and Managing Digital Information</h3>
+<ol>
+<li>Identify who developed the binary logic system used by modern search engines, and briefly explain its historical origin.</li>
+<li>Differentiate between the Boolean operators AND, OR, and NOT, with an example of each.</li>
+<li>Explain briefly what placing a phrase in quotation marks accomplishes in a search query.</li>
+<li>Differentiate between the <code>site:</code> and <code>filetype:</code> search operators.</li>
+<li>Predict the type of results returned by the search string: <code>"machine learning" site:.edu filetype:pdf</code>.</li>
+<li>Explain briefly why managing and organizing digital information (e.g., using reference managers) is important after finding sources.</li>
+</ol>
+<h3 id="topic-83-831-research-ethics-and-its-importance_1">Topic 8.3 &amp; 8.3.1: Research Ethics and Its Importance</h3>
+<ol>
+<li>Define research ethics in your own words.</li>
+<li>Briefly explain what happened during the 1996 Sokal Hoax, and what it revealed about academic publishing.</li>
+<li>Explain briefly why ethical research is important for maintaining trustworthy findings.</li>
+<li>State one consequence that could occur if a researcher fails to follow ethical guidelines.</li>
+</ol>
+<h3 id="topic-832-key-principles-of-research-ethics_1">Topic 8.3.2: Key Principles of Research Ethics</h3>
+<ol>
+<li>Define the four key principles of research ethics discussed in this unit.</li>
+<li>Differentiate between informed consent and confidentiality.</li>
+<li>Using the dinner party analogy from this unit, briefly explain why plagiarism is a violation of integrity even when the wording is changed.</li>
+<li>Explain briefly how "respect for participants" applies to conducting a classroom survey.</li>
+</ol>
+<h3 id="topic-84-understanding-intellectual-property-overview_1">Topic 8.4: Understanding Intellectual Property (Overview)</h3>
+<ol>
+<li>Define intellectual property in your own words.</li>
+<li>Identify who launched the GNU Project and the General Public License (GPL), and briefly explain the concept of "Copyleft."</li>
+</ol>
+<h3 id="topic-841-types-of-intellectual-property_1">Topic 8.4.1: Types of Intellectual Property</h3>
+<ol>
+<li>Define patent, trademark, copyright, industrial design, and trade secret.</li>
+<li>Differentiate between a patent and a trademark.</li>
+<li>Differentiate between a patent and a trade secret, focusing on public disclosure.</li>
+<li>Using the smartphone example from this unit, identify which type of intellectual property protects the brand logo, the internal hardware design, the software code, and the battery manufacturing process.</li>
+<li>Explain briefly what a Creative Commons license allows a creator to do.</li>
+<li>Predict what a <code>CC BY-NC-SA</code> license would and would not allow someone else to do with a creative work.</li>
+</ol>
+<h3 id="topic-842-importance-of-intellectual-property_1">Topic 8.4.2: Importance of Intellectual Property</h3>
+<ol>
+<li>Explain briefly why intellectual property protection is considered important for encouraging innovation.</li>
+<li>State what intellectual property laws ensure for inventors and creators, according to this unit.</li>
+</ol>
+<h3 id="topic-843-how-to-protect-your-intellectual-property_1">Topic 8.4.3: How to Protect Your Intellectual Property</h3>
+<ol>
+<li>Identify the organization through which a Pakistani inventor can apply for a patent.</li>
+<li>List the four methods discussed in this unit for protecting different types of intellectual property.</li>
+<li>Explain briefly why trade secrets are protected through confidentiality agreements rather than public registration.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-81-online-research-and-digital-literacy">Topic 8.1: Online Research and Digital Literacy</h3>
+<ol>
+<li>
+<p>Discuss the different types of online research and their purposes, providing examples for each type.<br>
+   a) Define each of the five types of online research discussed in this unit (General Information, Academic, Market, Fact-Checking, and Health Research).<br>
+   b) Construct a scenario for each type, describing a specific real-world situation where that type of research would be used.<br>
+   c) Evaluate why using the wrong type of research approach for a given goal (for example, using only general information research for a medical decision) could lead to poor outcomes.</p>
+</li>
+<li>
+<p>Explain the concept of digital literacy and its key components. How does it contribute to effective use of digital tools and resources?<br>
+   a) Define digital literacy and describe each of its three key components: using technology, searching for information, and evaluating sources.<br>
+   b) Using the farmer and student examples from this unit, construct a detailed explanation of how each key component was applied in a real scenario.<br>
+   c) Evaluate why digital literacy is becoming an increasingly essential life skill in a world where, according to this unit, more than half the global population uses the internet.</p>
+</li>
+</ol>
+<h3 id="topic-821-822-utilizing-digital-resources">Topic 8.2.1 &amp; 8.2.2: Utilizing Digital Resources</h3>
+<ol>
+<li>
+<p>Discuss in detail how online libraries, research databases, and search techniques support effective research.<br>
+   a) Explain what academic journals and peer review are, and discuss why peer-reviewed sources are generally more trustworthy than general web content.<br>
+   b) Construct a comparison table evaluating academic databases versus general search engines across source quality, typical content, and best use cases.<br>
+   c) Design a complete advanced search string using Boolean operators, exact phrases, and at least one additional search operator (<code>site:</code> or <code>filetype:</code>) for a research topic of your choice, explaining what each part of your search string accomplishes.</p>
+</li>
+<li>
+<p>Analyze the role of Boolean logic and information management in effective online research.<br>
+   a) Explain the historical origin of Boolean logic, and describe how the AND, OR, and NOT operators each affect search results differently.<br>
+   b) Using the metal detector analogy from this unit, explain in detail why calibrated search filtering produces better research outcomes than an unfiltered, broad search.<br>
+   c) Discuss why managing digital information (through digital folders, note-taking apps, or reference managers) is just as important as finding the information in the first place, and evaluate what could go wrong in a research project without proper organization.</p>
+</li>
+</ol>
+<h3 id="topic-83-832-research-ethics">Topic 8.3 &amp; 8.3.2: Research Ethics</h3>
+<ol>
+<li>
+<p>Discuss the importance of research ethics in maintaining the credibility and reliability of research findings. Explain how unethical practices could affect the research community and society.<br>
+   a) Define research ethics, and explain the historical lesson of the 1996 Sokal Hoax in relation to academic publishing integrity.<br>
+   b) Describe each of the four key principles of research ethics (Informed Consent, Confidentiality, Integrity, Respect for Participants), providing a specific example of a violation for each.<br>
+   c) Evaluate a real-world scenario (such as a school survey on social media habits) and discuss how failing to follow each of the four principles could specifically harm participants, the research itself, or the wider community.</p>
+</li>
+<li>
+<p>Analyze the concept of plagiarism and academic integrity in online research.<br>
+   a) Explain why rewriting a paragraph in different words, without citing the original author, still counts as plagiarism.<br>
+   b) Using the dinner party analogy from this unit, construct your own additional analogy that illustrates the difference between properly crediting a source and plagiarizing it.<br>
+   c) Discuss the long-term consequences, both for an individual researcher and for the broader research community, of failing to maintain academic integrity.</p>
+</li>
+</ol>
+<h3 id="topic-84-understanding-intellectual-property">Topic 8.4: Understanding Intellectual Property</h3>
+<ol>
+<li>
+<p>Discuss the various types of intellectual property and provide examples of each. Explain how each type helps in protecting different kinds of creations and innovations.<br>
+   a) Define patents, trademarks, copyrights, industrial designs, and trade secrets, using the specific Pakistani examples provided in this unit (the solar panel engineer, National Foods, the novelist, the Karachi bottle designer, and Pakola).<br>
+   b) Construct a detailed comparison table evaluating all five intellectual property types across what they protect, how they are obtained or maintained, and whether they require public disclosure.<br>
+   c) Evaluate the smartphone example from this unit, explaining how a single product can simultaneously be protected by multiple different types of intellectual property at once.</p>
+</li>
+<li>
+<p>Analyze the importance of intellectual property protection and the methods available to secure it.<br>
+   a) Explain why intellectual property protection is considered essential for encouraging continued creativity and innovation, referencing the historical example of Richard Stallman and the GNU Project's "Copyleft" concept.<br>
+   b) Describe the specific steps outlined in this unit for protecting patents, trademarks, copyrights, and trade secrets.<br>
+   c) Design a complete intellectual property protection plan for a new invention of your choice (for example, a mobile app or a physical gadget), identifying which types of IP protection would apply to different aspects of your creation, and explaining how you would go about securing each one.</p>
+</li>
+</ol>
+
+</body>
+</html>
