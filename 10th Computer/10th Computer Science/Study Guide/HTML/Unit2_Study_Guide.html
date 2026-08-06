@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 2: System Recovery and Advanced Maintenance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Chapter 2: System Recovery and Advanced Maintenance</div>
+</div>
+
+<h1 id="chapter-2-system-recovery-and-advanced-maintenance">Chapter 2: System Recovery and Advanced Maintenance</h1>
+<h3 id="an-interactive-learning-journey-for-10th-class-computer-science"><em>An Interactive Learning Journey for 10th Class Computer Science</em></h3>
+<hr>
+<blockquote><p><strong>A Note Before We Begin:</strong><br>
+Every expert computer technician you have ever seen — the person who fixes your school's computers, the IT guy at the office, the engineer at the repair shop — they all started exactly where you are right now. They did not know any of this. They learned it one step at a time.</p><p>In this chapter, you will make mistakes. You might get confused. That is 100% normal. Confusion means your brain is working hard. Keep going. By the end of this chapter, you will understand how computers fix themselves, protect themselves, and recover from problems — and so will you.</p></blockquote>
+<hr>
+<h2 id="21-introduction-to-post-troubleshooting">2.1 Introduction to Post-Troubleshooting</h2>
+<hr>
+<h3 id="the-hook-story-mode">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: The World's First Computer "Bug"</strong></p>
+<p>The year was <strong>1947</strong>. A brilliant scientist named <strong>Grace Hopper</strong> was working on one of the earliest computers in the world, called the <strong>Mark II</strong>. It was a huge machine — as big as an entire room — filled with switches, wires, and metal parts.</p>
+<p>One day, the machine stopped working. Grace and her team searched and searched for the problem. After hours of looking, they finally found it: a <strong>real moth</strong> — a tiny flying insect — was trapped inside one of the machine's switches. The moth was causing the circuit to fail.</p>
+<p>Grace carefully removed the moth with a pair of tweezers. She taped it into the team's logbook and wrote next to it: <em>"First actual case of bug being found."</em></p>
+<p>That is where the word <strong>"bug"</strong> in computing comes from. And that is where the word <strong>"debugging"</strong> — fixing a computer problem — comes from too.</p>
+<p>But here is the important part: <strong>after removing the moth, the team did not just walk away.</strong> They checked all the other switches. They cleaned the machine. They made notes about what happened. They wanted to make sure the same problem never happened again.</p>
+<p>That careful work <em>after</em> fixing the problem? That is exactly what this chapter is about.</p>
+<hr>
+<p><strong>A Relatable Scenario: The Bicycle Chain</strong></p>
+<p>Imagine your bicycle chain slips off. You put it back on — problem solved, right?</p>
+<p>But a smart cyclist does not stop there. They ask:</p>
+<ul>
+<li><em>Why did the chain slip?</em></li>
+<li><em>Is the chain too loose? Is it worn out?</em></li>
+<li><em>When was the last time I oiled it?</em></li>
+</ul>
+<p>If they do not think about these questions, the chain will slip again next week, and then again the week after. Real fixing means fixing the <strong>root cause</strong> and then <strong>taking care of things regularly</strong> so the problem does not return.</p>
+<p>Computers work the exact same way.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT is Post-Troubleshooting Maintenance?</strong></p>
+<p><strong>Troubleshooting</strong> means finding and fixing a computer problem. For example: restarting the system, checking cables, or reinstalling a program.</p>
+<p><strong>Post-troubleshooting maintenance</strong> means the <em>additional care</em> you give the computer <em>after</em> the problem is already fixed.</p>
+<p>Think of it this way:<br>
+- Troubleshooting = treating the illness.<br>
+- Post-troubleshooting = the recovery plan after leaving the hospital.</p>
+<p>This maintenance includes: cleaning up the system, checking for future risks, updating software, and making sure the same problem does not return.</p>
+<hr>
+<p><strong>WHY do we need it?</strong></p>
+<p>Without regular maintenance, a computer becomes like a room that is never cleaned. Problems silently build up:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>What Happens Without Maintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Slow Performance</strong></td>
+<td>Temporary files pile up, unused programs run in the background, RAM gets wasted. The computer becomes slow and unresponsive.</td>
+</tr>
+<tr>
+<td><strong>System Failures</strong></td>
+<td>Important updates are missed. The computer may freeze, crash, or refuse to start.</td>
+</tr>
+<tr>
+<td><strong>Security Risks</strong></td>
+<td>Old, unpatched software has security holes. Viruses and harmful programs can enter easily.</td>
+</tr>
+<tr>
+<td><strong>Data Loss</strong></td>
+<td>Without backups, a single crash can destroy months of school work or family photos.</td>
+</tr>
+<tr>
+<td><strong>Hardware Damage</strong></td>
+<td>Dust builds up inside the computer. Heat cannot escape. Components overheat and get damaged permanently.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<p><strong>WHO uses it?</strong></p>
+<p>Post-troubleshooting maintenance is done by:</p>
+<ul>
+<li><strong>Everyday users</strong> (like you!) who want their home computer to stay fast and safe.</li>
+<li><strong>Students</strong> who store school work and want to keep it safe.</li>
+<li><strong>School IT staff</strong> who manage many computers in a computer lab.</li>
+<li><strong>Office workers</strong> who rely on computers for their daily tasks.</li>
+<li><strong>Professional computer technicians</strong> who are hired to repair and maintain systems.</li>
+</ul>
+<p>You do not have to be an expert. You just have to be consistent.</p>
+<hr>
+<p><strong>WHERE does it happen?</strong></p>
+<p>Maintenance happens in several places:</p>
+<ul>
+<li><strong>Inside the computer</strong> — cleaning dust from fans and vents (physical maintenance).</li>
+<li><strong>In the operating system</strong> — using Windows tools like Task Manager, Disk Cleanup, and Windows Defender.</li>
+<li><strong>In software settings</strong> — checking for updates, managing startup programs, and reviewing error logs.</li>
+</ul>
+<hr>
+<p><strong>WHEN do we do it?</strong></p>
+<p>You should perform maintenance:</p>
+<ul>
+<li><strong>After fixing a problem</strong> — always. This prevents the same issue from coming back.</li>
+<li><strong>On a regular schedule</strong> — for example, once a week or once a month (we will build a maintenance calendar in Section 2.6).</li>
+<li><strong>When the computer feels slow</strong> — before the problem gets serious.</li>
+<li><strong>Before major events</strong> — before exams, presentations, or important work, check that everything is running well.</li>
+</ul>
+<hr>
+<p><strong>HOW does it work? — The System Health Monitoring Concept</strong></p>
+<p>Modern operating systems like <strong>Microsoft Windows</strong> have built-in tools that help you watch the health of your computer. This is called <strong>System Health Monitoring</strong>.</p>
+<p>These tools allow you to:</p>
+<ul>
+<li>See how much memory (RAM) and processing power (CPU) are being used right now.</li>
+<li>Watch which programs are running quietly in the background.</li>
+<li>Read warning and error messages the computer has recorded.</li>
+<li>Find which programs are slowing your computer down.</li>
+</ul>
+<p>By checking these things regularly, you can catch small problems before they become big ones.</p>
+<hr>
+<h3 id="the-practical-walkthrough-your-first-health-check">🛠️ The Practical Walkthrough — Your First Health Check</h3>
+<p>Here is a simple first step to check the health of your computer right now:</p>
+<p><strong>Step 1:</strong> Look at your computer. Is it running slowly? Are any programs frozen?</p>
+<p><strong>Step 2:</strong> Think about when you last restarted it. Restarting clears temporary memory and is the simplest form of maintenance.</p>
+<p><strong>Step 3:</strong> Think about when you last deleted old files or emptied the Recycle Bin.</p>
+<p><strong>Step 4:</strong> Think about when the computer last received a software update.</p>
+<p>If you answered "I don't know" to most of these, that is okay! By the end of this chapter, you will have a clear plan. Let's start building it together.</p>
+<hr>
+<h3 id="pause-think-stop-point-1">💡 Pause &amp; Think — Stop Point #1</h3>
+<blockquote><p><strong>Challenge:</strong> You fixed your computer — it was running slowly, and you deleted some old files. It feels better now.</p><p>But three weeks later, it is slow again.</p><p><strong>Question:</strong> What did you probably forget to do? Write down at least <strong>3 things</strong> you should have done <em>after</em> fixing the problem the first time that might have prevented the slowness from coming back.</p><p>Discuss your answers with a partner. There are no wrong answers here — just thinking.</p></blockquote>
+<hr>
+<h2 id="22-using-built-in-diagnostic-tools">2.2 Using Built-in Diagnostic Tools</h2>
+<hr>
+<h3 id="the-hook-story-mode_1">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: The Cockpit Dashboard</strong></p>
+<p>When the Wright Brothers flew the first airplane in 1903, the pilot had almost no information. He could feel the wind. He could see the ground. That was it. If something went wrong, he found out the hard way — by crashing.</p>
+<p>Today, a modern airplane cockpit is filled with hundreds of instruments: screens, gauges, warning lights, and sensors. The pilot does not need to "feel" if something is wrong. The instruments tell them <em>exactly</em> what is happening — which engine is working, how much fuel is left, what the temperature is.</p>
+<p>This completely changed aviation safety. Problems are caught early, before they become disasters.</p>
+<p>Your computer has its own "cockpit" — a set of built-in tools that show you exactly what is happening inside. You just need to know how to read them.</p>
+<hr>
+<p><strong>A Relatable Scenario: Your School Report Card</strong></p>
+<p>Imagine you are a teacher, and you want to know if a student is struggling. You do not just guess. You look at their <strong>report card</strong> — marks, attendance, behavior notes.</p>
+<p>A computer's diagnostic tools are its "report card." They show you which programs are using too much memory, which ones are misbehaving, and what errors have occurred.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h_1">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT are Built-in Diagnostic Tools?</strong></p>
+<p>These are special programs that come <strong>already installed</strong> inside Windows. You do not need to download anything. They let you see what is happening inside your computer in real time.</p>
+<p>There are three main tools you need to know:</p>
+<ol>
+<li><strong>Task Manager</strong> — the quick overview tool.</li>
+<li><strong>Resource Monitor</strong> — the detailed investigation tool.</li>
+<li><strong>Event Viewer</strong> — the error history tool.</li>
+</ol>
+<p>Think of them as three different types of doctors:<br>
+- Task Manager is like a general doctor — gives you a quick checkup.<br>
+- Resource Monitor is like a specialist — goes deep into one specific area.<br>
+- Event Viewer is like a historian — shows you everything that happened in the past.</p>
+<hr>
+<p><strong>WHY do we need them?</strong></p>
+<p>Without these tools, you would have to guess why your computer is slow or why it crashed. These tools remove the guessing. They give you <strong>exact facts</strong>:</p>
+<ul>
+<li>Which program is using 90% of your RAM?</li>
+<li>Which background process is secretly downloading data?</li>
+<li>What error message appeared at 3:00 AM when the computer crashed?</li>
+</ul>
+<p>With this information, you can fix problems correctly — not randomly.</p>
+<hr>
+<p><strong>WHO uses them?</strong></p>
+<ul>
+<li>Students and home users — to end frozen programs and check system health.</li>
+<li>IT technicians — to diagnose slow or crashing systems professionally.</li>
+<li>Network administrators — to monitor which programs are using internet bandwidth.</li>
+</ul>
+<hr>
+<p><strong>WHERE are they found?</strong></p>
+<p>All three tools are built into <strong>Microsoft Windows</strong>. They do not require installation. You access them through keyboard shortcuts or the Windows search bar.</p>
+<hr>
+<p><strong>WHEN do we use them?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Use It When...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Task Manager</strong></td>
+<td>Your computer is slow or a program has stopped responding ("Not Responding").</td>
+</tr>
+<tr>
+<td><strong>Resource Monitor</strong></td>
+<td>You need more detail — e.g., the computer is hot, using a lot of memory, but you do not know why.</td>
+</tr>
+<tr>
+<td><strong>Event Viewer</strong></td>
+<td>The computer crashed or showed an error, and you want to find out exactly what happened and when.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<p><strong>HOW does each tool work?</strong></p>
+<p>Let us go through each one.</p>
+<hr>
+<h3 id="tool-1-task-manager-the-quick-overview">🛠️ Tool 1: Task Manager — The Quick Overview</h3>
+<p><strong>How to Open Task Manager:</strong></p>
+<p>There are two easy ways:</p>
+<ul>
+<li><strong>Method A:</strong> Press <strong>Ctrl + Shift + Esc</strong> on your keyboard simultaneously. Task Manager opens immediately.</li>
+<li><strong>Method B:</strong> Right-click on the <strong>Taskbar</strong> (the bar at the bottom of your screen). Select <strong>"Task Manager"</strong> from the menu.</li>
+</ul>
+<hr>
+<p><strong>What you will see inside Task Manager:</strong></p>
+<p>Task Manager has several tabs. The two most important for you are:</p>
+<p><strong>The Processes Tab:</strong></p>
+<ul>
+<li>Shows a <strong>list of every program currently running</strong> on your computer.</li>
+<li>For each program, it shows how much <strong>CPU</strong> (processing power) and <strong>Memory</strong> (RAM) it is using.</li>
+<li>Programs using very high percentages are the ones slowing your computer down.</li>
+</ul>
+<p><strong>The Performance Tab:</strong></p>
+<ul>
+<li>Shows <strong>live graphs</strong> — moving lines that go up and down in real time.</li>
+<li>You can see CPU usage, RAM usage, Disk usage, and Network usage — all happening right now.</li>
+<li>If the CPU graph is near 100% all the time, your computer is working too hard.</li>
+</ul>
+<hr>
+<p><strong>How to End a Frozen Program (Step by Step):</strong></p>
+<p>This is the most common thing you will use Task Manager for.</p>
+<ul>
+<li><strong>Step 1:</strong> Open Task Manager using <strong>Ctrl + Shift + Esc</strong>.</li>
+<li><strong>Step 2:</strong> Click on the <strong>"Processes"</strong> tab at the top.</li>
+<li><strong>Step 3:</strong> Look through the list. Find the program that is frozen or not responding. It may say <strong>"(Not Responding)"</strong> next to its name.</li>
+<li><strong>Step 4:</strong> Click on that program's name once to select it (it will be highlighted in blue).</li>
+<li><strong>Step 5:</strong> Click the <strong>"End Task"</strong> button at the bottom right of the window.</li>
+<li><strong>Step 6:</strong> The program will close. The computer may feel faster immediately.</li>
+</ul>
+<blockquote><p>⚠️ <strong>Important:</strong> Only end a task if you are sure it is a program you recognize. Do NOT end tasks with names like "System," "Windows Explorer," or "Antimalware Service." These are important for Windows to work.</p></blockquote>
+<hr>
+<h3 id="tool-2-resource-monitor-the-detailed-investigation">🛠️ Tool 2: Resource Monitor — The Detailed Investigation</h3>
+<p><strong>How to Open Resource Monitor:</strong></p>
+<ul>
+<li><strong>Method A:</strong> Open Task Manager → Click the <strong>"Performance"</strong> tab → At the very bottom, click <strong>"Open Resource Monitor."</strong></li>
+<li><strong>Method B:</strong> Press <strong>Windows key + R</strong>. A small box appears. Type <strong><code>resmon</code></strong> and press <strong>Enter</strong>.</li>
+</ul>
+<hr>
+<p><strong>What you will see inside Resource Monitor:</strong></p>
+<p>Resource Monitor has four tabs. Each one shows a different part of your computer's activity:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>What It Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU Tab</strong></td>
+<td>Which processes and services are using the processor.</td>
+</tr>
+<tr>
+<td><strong>Memory Tab</strong></td>
+<td>How much RAM is being used, how much is free, and how much is reserved.</td>
+</tr>
+<tr>
+<td><strong>Disk Tab</strong></td>
+<td>Which programs are reading from or writing to the hard drive right now.</td>
+</tr>
+<tr>
+<td><strong>Network Tab</strong></td>
+<td>Which applications are sending or receiving data over the internet.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>When is this useful?</strong></p>
+<p>If your computer is extremely slow and Task Manager shows memory usage is high, open Resource Monitor. Go to the Memory tab. Find the program using the most memory. That is your culprit.</p>
+<hr>
+<h3 id="tool-3-event-viewer-the-history-book">🛠️ Tool 3: Event Viewer — The History Book</h3>
+<p><strong>How to Open Event Viewer:</strong></p>
+<ul>
+<li>Press <strong>Windows key + R</strong>.</li>
+<li>Type <strong><code>eventvwr</code></strong> in the box.</li>
+<li>Press <strong>Enter</strong>.</li>
+</ul>
+<hr>
+<p><strong>What you will see inside Event Viewer:</strong></p>
+<p>Event Viewer is like a diary that Windows keeps automatically. Every time something important happens — an error, a warning, a program crash — Windows writes it down here with the exact <strong>date and time</strong>.</p>
+<p>The entries are organized into types:</p>
+<ul>
+<li><strong>Error</strong> — Something went wrong. Red circle with an X.</li>
+<li><strong>Warning</strong> — A potential problem was detected. Yellow triangle.</li>
+<li><strong>Information</strong> — A normal event was recorded. Blue circle with an "i."</li>
+</ul>
+<p><strong>When is this useful?</strong></p>
+<p>Your computer crashed last night while you were sleeping. In the morning, you want to know why. Open Event Viewer, look at the errors from that time, and you will see exactly what happened.</p>
+<hr>
+<h3 id="grab-a-partner-stop-point-2">💡 Grab a Partner — Stop Point #2</h3>
+<blockquote><p><strong>Challenge:</strong> Open Task Manager right now on your computer.</p><ol>
+<li>Go to the <strong>Processes</strong> tab. Write down the <strong>top 3 programs using the most CPU</strong> and the <strong>top 3 programs using the most Memory</strong>.</li>
+<li>Now switch to the <strong>Performance</strong> tab. Look at the CPU graph. Is it mostly flat (low usage) or going up and down a lot (high usage)?</li>
+<li>Compare your answers with a partner. Are the same programs appearing on both computers? Why or why not?</li>
+</ol><p><strong>Discussion question:</strong> If one program is using 80% of the CPU, what do you think would happen if you ended that task?</p></blockquote>
+<hr>
+<h2 id="23-system-recovery-options">2.3 System Recovery Options</h2>
+<hr>
+<h3 id="the-hook-story-mode_2">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: The NASA Apollo 13 Mission</strong></p>
+<p>In April 1970, three astronauts were flying to the Moon on Apollo 13. Suddenly, an oxygen tank inside the spacecraft exploded.</p>
+<p>The mission to land on the Moon was immediately cancelled. But the real question now was: <em>how do we get these three astronauts home alive?</em></p>
+<p>The team at NASA in Houston did not panic. They had <strong>backup plans</strong>. They had <strong>recovery procedures</strong>. They switched the astronauts from the main spacecraft into the small Lunar Module — a backup vehicle that was designed for landing on the Moon, not for traveling home. They used it as a "lifeboat."</p>
+<p>They also had to restart the main spacecraft — which had been turned off to save power — using a very careful, step-by-step checklist. One wrong step could have been fatal.</p>
+<p>The three astronauts returned home safely.</p>
+<p>The lesson: <strong>Good systems always have recovery options.</strong> When the main plan fails, you fall back to the backup plan. Windows is built exactly this way.</p>
+<hr>
+<p><strong>A Relatable Scenario: The School Notebook</strong></p>
+<p>Imagine you accidentally spilled water on your notebook and some pages got damaged. But you had been making <strong>photocopies</strong> of important pages every week. You go to your folder, pull out the photocopy from last week, and you are safe.</p>
+<p>System recovery options are Windows's way of making photocopies of your system before things go wrong.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h_2">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT are System Recovery Options?</strong></p>
+<p>These are special tools built into Windows that help you <strong>restore the computer to a working state</strong> when something has gone badly wrong — beyond what basic troubleshooting can fix.</p>
+<p>There are three main recovery options:</p>
+<ol>
+<li><strong>Safe Mode</strong> — Start Windows in a minimal, stripped-down version to fix problems.</li>
+<li><strong>System Restore</strong> — Take the computer back to how it was on a specific earlier date.</li>
+<li><strong>Bootable Recovery Media</strong> — Start the computer from a USB drive when Windows cannot even load.</li>
+</ol>
+<hr>
+<p><strong>WHY do we need them?</strong></p>
+<p>Some problems are too serious for a simple restart. For example:</p>
+<ul>
+<li>You installed a driver and now Windows crashes every time it starts.</li>
+<li>A virus has infected the system and it keeps freezing.</li>
+<li>Windows will not load at all — you just see a black screen.</li>
+</ul>
+<p>In these cases, recovery options are your safety net.</p>
+<hr>
+<p><strong>WHO uses them?</strong></p>
+<p>Any computer user may need these one day. IT technicians use them daily. Students who install software from untrusted sources may need them. Parents who accidentally install a bad program may need them.</p>
+<hr>
+<p><strong>WHERE are they found?</strong></p>
+<ul>
+<li>Safe Mode: accessed during the startup process or through Windows Settings.</li>
+<li>System Restore: found in Control Panel &gt; System and Security &gt; System &gt; System Protection.</li>
+<li>Bootable Media: created in advance on a USB drive.</li>
+</ul>
+<hr>
+<p><strong>WHEN do we use each one?</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Recovery Option</th>
+<th>Use It When...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Safe Mode</strong></td>
+<td>The system keeps crashing or freezing. You want to uninstall a bad program or scan for a virus.</td>
+</tr>
+<tr>
+<td><strong>System Restore</strong></td>
+<td>After installing a program or driver, Windows started behaving badly. You want to go back to before you made that change.</td>
+</tr>
+<tr>
+<td><strong>Bootable Recovery Media</strong></td>
+<td>Windows will not even start. Safe Mode is not accessible. You need to repair or reinstall Windows.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="practical-walkthrough-1-using-safe-mode">🛠️ Practical Walkthrough 1: Using Safe Mode</h3>
+<p><strong>WHAT is Safe Mode?</strong></p>
+<p>Safe Mode starts Windows using only the <strong>most essential programs and drivers</strong>. All unnecessary background software is disabled. This makes it much easier to find and fix a problem caused by a bad app or setting.</p>
+<p>Think of Safe Mode like this: imagine your house has hundreds of lights on. Something is wrong, but you cannot tell which light is causing the electrical problem. So you turn <strong>almost all the lights off</strong>, leave only the important ones on, and now you can find the problem much more easily. Safe Mode turns off most of Windows's extra programs so you can see what is causing the trouble.</p>
+<hr>
+<p><strong>HOW to Enter Safe Mode (Modern Windows 10 / 11):</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Click the <strong>Start</strong> button (Windows logo in the bottom left corner).</li>
+<li><strong>Step 2:</strong> Click the <strong>Settings</strong> gear icon.</li>
+<li><strong>Step 3:</strong> Go to <strong>Update &amp; Security</strong>.</li>
+<li><strong>Step 4:</strong> On the left side, click <strong>Recovery</strong>.</li>
+<li><strong>Step 5:</strong> Under "Advanced Startup," click <strong>"Restart Now."</strong></li>
+<li><strong>Step 6:</strong> Your computer will restart and show a blue menu. Choose <strong>Troubleshoot</strong>.</li>
+<li><strong>Step 7:</strong> Click <strong>Advanced Options</strong>.</li>
+<li><strong>Step 8:</strong> Click <strong>Startup Settings</strong>.</li>
+<li><strong>Step 9:</strong> Click <strong>Restart</strong>.</li>
+<li><strong>Step 10:</strong> Your computer restarts again and shows a numbered list. Press the <strong>F4</strong> key to enter Safe Mode.</li>
+</ul>
+<p><strong>Alternative for older computers:</strong></p>
+<p>Restart the computer. Before the Windows logo appears, press <strong>F8</strong> repeatedly. Select <strong>Safe Mode</strong> from the menu and press <strong>Enter</strong>.</p>
+<hr>
+<h2 id="method-1-the-shift-restart-shortcut-fastest">Method 1: The Shift + Restart Shortcut (Fastest)</h2>
+<p>If you can see a power button anywhere on your screen (either on the desktop Start menu or on the login screen before you even sign in), you can skip the Settings menu entirely.</p>
+<ol>
+<li>
+<p><strong>Find a Power Button:</strong> On desktop or login screen.<br>
+Open your Start menu OR look at the bottom-right corner of your sign-in screen to find the <strong>Power</strong> icon.</p>
+</li>
+<li>
+<p><strong>Shift + Click Restart:</strong> Crucial timing dependency.<br>
+Press and <strong>hold down the Shift key</strong> on your keyboard, and while holding it, click <strong>Restart</strong>.</p>
+</li>
+<li>
+<p><strong>Navigate the Blue Menu:</strong> Familiar recovery screen.<br>
+Keep holding Shift until the blue "Choose an option" screen appears. From here, follow the same path as your original list: <strong>Troubleshoot</strong> &gt; <strong>Advanced options</strong> &gt; <strong>Startup Settings</strong> &gt; <strong>Restart</strong>.</p>
+</li>
+</ol>
+<hr>
+<h2 id="method-2-system-configuration-tool-msconfig">Method 2: System Configuration Tool (<code>msconfig</code>)</h2>
+<p>This method is useful if you want Windows to automatically boot into Safe Mode every single time you restart, without pressing any special keys.</p>
+<blockquote><p>⚠️ <strong>Important Note:</strong> Once you turn this on, your PC will <em>keep</em> booting into Safe Mode until you go back into this tool and turn it off.</p></blockquote>
+<ol>
+<li>
+<p><strong>Open Run:</strong> Shortcut.<br>
+Press the <strong>Windows Key + R</strong> on your keyboard to open the Run dialog box.</p>
+</li>
+<li>
+<p><strong>Launch System Configuration:</strong> Command.<br>
+Type <code>msconfig</code> into the box and press <strong>Enter</strong>.</p>
+</li>
+<li>
+<p><strong>Enable Safe Boot:</strong> Configuration.<br>
+Click on the <strong>Boot</strong> tab at the top of the window. Under "Boot options" at the bottom, check the box next to <strong>Safe boot</strong>. Leave it on "Minimal" for standard Safe Mode.</p>
+</li>
+<li>
+<p><strong>Apply and Restart:</strong> Execution.<br>
+Click <strong>Apply</strong>, then click <strong>OK</strong>. A prompt will pop up asking if you want to restart now. Click <strong>Restart</strong>.</p>
+</li>
+</ol>
+<hr>
+<h2 id="method-3-the-hard-hard-reboots-emergency-failsafe">Method 3: The Hard Hard Reboots (Emergency Failsafe)</h2>
+<p>If Windows is completely frozen, crashing on startup, or showing a blank screen, you can force the system into the recovery menu using the physical power button on your computer.</p>
+<ol>
+<li>
+<p><strong>Force Shutdown:</strong> Interrupted boot 1.<br>
+Press and hold your PC's physical power button for about 10 seconds to force it completely off.</p>
+</li>
+<li>
+<p><strong>Interrupt the Boot:</strong> Interrupted boot 2.<br>
+Turn the PC back on. The moment you see the manufacturer logo (like HP, Dell, Lenovo) or the spinning Windows loading circles, <strong>immediately press and hold the physical power button again</strong> to force it off.</p>
+</li>
+<li>
+<p><strong>Repeat Once More:</strong> Interrupted boot 3.<br>
+Repeat Step 2 one more time. (You are intentionally interrupting the boot process twice in a row).</p>
+</li>
+<li>
+<p><strong>Access Recovery Mode:</strong> Automatic trigger.<br>
+Turn the PC on a third time and let it boot completely. Windows will detect the failed startups and automatically load the <strong>Preparing Automatic Repair</strong> screen, followed by the blue recovery menu. Select <strong>Advanced options</strong> &gt; <strong>Troubleshoot</strong> to reach your Startup Settings.</p>
+</li>
+</ol>
+<hr>
+<p><strong>Safe Mode with Networking:</strong></p>
+<p>This is a special version of Safe Mode that also allows internet access. You use it when:</p>
+<ul>
+<li>You need to download a driver or update to fix the problem.</li>
+<li>You want to use an online antivirus scanner.</li>
+</ul>
+<p>To enter Safe Mode with Networking, follow all the same steps above but press <strong>F5</strong> instead of F4 in Step 10.</p>
+<hr>
+<blockquote><p>⚠️ <strong>Safety Rules for Using Safe Mode:</strong><br>
+- Do not delete files unless your teacher or a trusted expert tells you to.<br>
+- Do not change settings you do not understand.<br>
+- When finished, restart the computer normally — Safe Mode is not meant for regular use.</p></blockquote>
+<hr>
+<h3 id="practical-walkthrough-2-system-restore">🛠️ Practical Walkthrough 2: System Restore</h3>
+<p><strong>WHAT is System Restore?</strong></p>
+<p>System Restore takes your computer's settings back to how they were on a specific earlier date. It does <strong>not</strong> delete your personal files (photos, documents, etc.). It only reverses changes to system settings, installed programs, and drivers.</p>
+<p><strong>What is a Restore Point?</strong></p>
+<p>A restore point is like a <strong>photograph of your system</strong> taken at a specific moment. It captures what programs are installed, what settings are in place, and how drivers are configured.</p>
+<p>Windows creates restore points automatically:</p>
+<ul>
+<li>Before a system update is installed.</li>
+<li>Before a new driver is installed.</li>
+<li>On a regular schedule.</li>
+</ul>
+<p>You can also create one manually whenever you want.</p>
+<hr>
+<p><strong>HOW to Create a Restore Point Manually (Step by Step):</strong></p>
+<p>Do this BEFORE making any major changes to your computer (like installing a new program or driver).</p>
+<ul>
+<li><strong>Step 1:</strong> Click the <strong>Start</strong> button and search for <strong>"Control Panel."</strong> Open it.</li>
+<li><strong>Step 2:</strong> Click on <strong>"System and Security."</strong></li>
+<li><strong>Step 3:</strong> Click on <strong>"System."</strong></li>
+<li><strong>Step 4:</strong> On the left side, click <strong>"System Protection."</strong> A new window opens.</li>
+<li><strong>Step 5:</strong> Make sure the drive (usually C:) shows <strong>"Protection: On."</strong> If not, click "Configure" and turn it on.</li>
+<li><strong>Step 6:</strong> Click the <strong>"Create"</strong> button.</li>
+<li><strong>Step 7:</strong> Type a name that will help you remember when and why you created this restore point. For example: <em>"Before installing printer driver – 4 June 2026."</em></li>
+<li><strong>Step 8:</strong> Click <strong>"Create."</strong> Wait a few seconds.</li>
+<li><strong>Step 9:</strong> A message will say "The restore point was created successfully." Click <strong>Close.</strong></li>
+</ul>
+<hr>
+<p><em>Some other methods</em></p>
+<h2 id="method-1-the-windows-search-shortcut-fastest-gui-route">Method 1: The Windows Search Shortcut (Fastest GUI Route)</h2>
+<p>You can skip the Control Panel entirely by using Windows Search to jump directly to the <strong>System Properties</strong> window where restore points are managed.</p>
+<ol>
+<li>
+<p><strong>Open Windows Search:</strong> Shortcut.<br>
+Press the <strong>Windows Key</strong> on your keyboard or click the Start menu.</p>
+</li>
+<li>
+<p><strong>Search for the Tool:</strong> Keyword.<br>
+Type <strong>"Restore Point"</strong> or <strong>"Create a restore point"</strong> into the search bar.</p>
+</li>
+<li>
+<p><strong>Jump Directly to the Settings:</strong> Execution.<br>
+Press <strong>Enter</strong> or click the top match. This bypasses the Control Panel entirely and opens the exact <strong>System Protection</strong> window you need. From here, follow your original steps to click <strong>Create</strong> and name it.</p>
+</li>
+</ol>
+<hr>
+<h2 id="method-2-using-command-prompt-admin">Method 2: Using Command Prompt (Admin)</h2>
+<p>If you prefer using the command line or need to create a restore point when the standard desktop interface isn't responding well, you can do it with a single command line.</p>
+<ol>
+<li>
+<p><strong>Open Command Prompt as Admin:</strong> Elevated access.<br>
+Press the <strong>Windows Key</strong>, type <code>cmd</code>, right-click on <strong>Command Prompt</strong>, and select <strong>Run as administrator</strong>.</p>
+</li>
+<li>
+<p><strong>Run the WMI Command:</strong> Command string.<br>
+Copy and paste the following command, then press <strong>Enter</strong>:</p>
+</li>
+</ol>
+<pre><code class="language-cmd">wmic.exe /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint &quot;Manual Restore Point&quot;, 100, 7
+
+</code></pre>
+<ol start="3">
+<li><strong>Check the Output:</strong> Verification.<br>
+The terminal will execute the command. If successful, you will see a return value of <code>0</code>, meaning your restore point has been created in the background.</li>
+</ol>
+<hr>
+<h2 id="method-3-using-powershell-best-for-automation">Method 3: Using PowerShell (Best for Automation)</h2>
+<p>PowerShell offers a clean, modern cmdlet to handle restore points. This is especially useful if you want to understand how Windows handles automation scripts.</p>
+<ol>
+<li>
+<p><strong>Open PowerShell as Admin:</strong> Elevated access.<br>
+Right-click the <strong>Start button</strong> (or press <code>Win + X</code>) and select <strong>Terminal (Admin)</strong> or <strong>Windows PowerShell (Admin)</strong>.</p>
+</li>
+<li>
+<p><strong>Execute the Cmdlet:</strong> Command string.<br>
+Type the following command (you can change the text inside the quotes to whatever description you prefer) and press <strong>Enter</strong>:</p>
+</li>
+</ol>
+<pre><code class="language-powershell">Checkpoint-Computer -Description &quot;BeforeMajorChange&quot; -RestorePointType &quot;MODIFY_SETTINGS&quot;
+
+</code></pre>
+<ol start="3">
+<li><strong>Wait for the Progress Bar:</strong> Progress indicator.<br>
+A progress bar will appear at the top of the PowerShell window. Once it reaches 100% and returns to the command prompt, your restore point is safe and active.</li>
+</ol>
+<hr>
+<p><strong>HOW to Use a Restore Point to Fix a Problem (Step by Step):</strong></p>
+<p>Use this when your computer started behaving badly after a recent change.</p>
+<ul>
+<li><strong>Step 1:</strong> Open <strong>Control Panel.</strong></li>
+<li><strong>Step 2:</strong> Click <strong>"Recovery."</strong></li>
+<li><strong>Step 3:</strong> Click <strong>"Open System Restore."</strong> A wizard (step-by-step guide) opens.</li>
+<li><strong>Step 4:</strong> Click <strong>"Next."</strong></li>
+<li><strong>Step 5:</strong> A list of restore points appears. Select the most recent one that was created <strong>before</strong> the problem started.</li>
+<li><strong>Step 6:</strong> Click <strong>"Next"</strong>, then click <strong>"Finish."</strong></li>
+<li><strong>Step 7:</strong> A warning will appear: "Once started, System Restore cannot be interrupted." Click <strong>"Yes."</strong></li>
+<li><strong>Step 8:</strong> Your computer will restart automatically. The restoration process will happen. When it finishes, Windows will load normally and show a confirmation message.</li>
+</ul>
+<hr>
+<h3 id="practical-walkthrough-3-bootable-recovery-media">🛠️ Practical Walkthrough 3: Bootable Recovery Media</h3>
+<p><strong>WHAT is Bootable Recovery Media?</strong></p>
+<p>This is a <strong>USB flash drive or DVD</strong> that contains special system files. It can start your computer even if the hard drive or Windows is completely broken.</p>
+<p><strong>Think of it like an emergency key.</strong> If the main door to your house is broken, you use a spare key you kept somewhere safe. Bootable media is that spare key for your computer.</p>
+<hr>
+<p><strong>WHAT can you do with it?</strong></p>
+<p>When you boot from a recovery USB, you can:</p>
+<ul>
+<li><strong>Startup Repair</strong> — Fix problems that stop Windows from loading.</li>
+<li><strong>System Restore</strong> — Use a restore point even when Windows will not start.</li>
+<li><strong>Command Prompt</strong> — Advanced troubleshooting (for experts).</li>
+<li><strong>System Reset or Reinstallation</strong> — Reinstall Windows completely as a last resort.</li>
+</ul>
+<hr>
+<p><strong>UNDERSTANDING GPT vs MBR — The Partition Styles:</strong></p>
+<p>Before creating a bootable USB, you must know one important concept.</p>
+<p>Every storage drive (hard drive or SSD) needs to be organized using a <strong>partition style</strong> — a system that tells the computer how data is arranged on the drive.</p>
+<p>There are two types:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>MBR (Master Boot Record)</th>
+<th>GPT (GUID Partition Table)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Age</strong></td>
+<td>Older (from the 1980s)</td>
+<td>Modern standard</td>
+</tr>
+<tr>
+<td><strong>Maximum Disk Size</strong></td>
+<td>Up to 2 TB only</td>
+<td>More than 2 TB</td>
+</tr>
+<tr>
+<td><strong>Maximum Partitions</strong></td>
+<td>Only 4 primary partitions</td>
+<td>Over 100 partitions</td>
+</tr>
+<tr>
+<td><strong>Used With</strong></td>
+<td>Older BIOS systems</td>
+<td>Modern UEFI systems</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Why does this matter for your bootable USB?</strong></p>
+<p>If your computer uses <strong>UEFI</strong>, you must create the USB with <strong>GPT</strong> format.<br>
+If your computer uses <strong>older BIOS</strong>, you must create the USB with <strong>MBR</strong> format.<br>
+If they do not match, the computer will not be able to boot from the USB.</p>
+<hr>
+<p><strong>HOW to Check Your Computer's Partition Style:</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Press <strong>Windows key + X</strong> on your keyboard. A menu appears.</li>
+<li><strong>Step 2:</strong> Click <strong>"Disk Management."</strong></li>
+<li><strong>Step 3:</strong> Look at the list of disks. Find <strong>"Disk 0"</strong> — that is usually where Windows is installed.</li>
+<li><strong>Step 4:</strong> Right-click on the <strong>"Disk 0"</strong> label on the left side of the screen.</li>
+<li><strong>Step 5:</strong> Select <strong>"Properties."</strong></li>
+<li><strong>Step 6:</strong> Click the <strong>"Volumes"</strong> tab.</li>
+<li><strong>Step 7:</strong> Look at the <strong>"Partition Style"</strong> field. It will say either <strong>GUID Partition Table (GPT)</strong> or <strong>Master Boot Record (MBR).</strong> Now you know which format to use.</li>
+</ul>
+<hr>
+<p><strong>HOW to Create a Bootable USB Using Rufus (Step by Step):</strong></p>
+<p><em>Rufus is a free, safe tool for creating bootable USB drives. It is only for Windows.</em></p>
+<ul>
+<li><strong>Step 1:</strong> Get a USB drive with at least <strong>16 GB</strong> of storage space. Warning: all files on the USB will be deleted, so back them up first.</li>
+<li><strong>Step 2:</strong> Download the Windows ISO file (system image) from the official Microsoft website.</li>
+<li><strong>Step 3:</strong> Download <strong>Rufus</strong> from its official website: <strong>https://rufus.ie/en/</strong></li>
+<li><strong>Step 4:</strong> Plug the USB drive into your computer.</li>
+<li><strong>Step 5:</strong> Open Rufus.</li>
+<li><strong>Step 6:</strong> Under <strong>"Device,"</strong> select your USB drive from the dropdown list.</li>
+<li><strong>Step 7:</strong> Under <strong>"Boot selection,"</strong> click <strong>"SELECT"</strong> and choose the ISO file you downloaded.</li>
+<li><strong>Step 8:</strong> Under <strong>"Partition scheme,"</strong> select <strong>GPT</strong> (for modern UEFI computers) or <strong>MBR</strong> (for older BIOS computers), based on what you found in your Disk Management check.</li>
+<li><strong>Step 9:</strong> Click <strong>"START."</strong></li>
+<li><strong>Step 10:</strong> A warning will appear saying all data on the USB will be destroyed. Click <strong>"OK"</strong> to confirm.</li>
+<li><strong>Step 11:</strong> Wait for Rufus to finish. When it says <strong>"READY"</strong> at the bottom, your bootable USB is complete.</li>
+</ul>
+<p>Here are the alternative methods for both checking your partition style and creating a bootable USB drive, optimized for speed, terminal usage, and cross-platform flexibility.</p>
+<hr>
+<h2 id="part-1-alternate-methods-to-check-your-partition-style">Part 1: Alternate Methods to Check Your Partition Style</h2>
+<p>The Disk Management GUI is reliable, but using the command line is significantly faster, especially if you are working with multiple disks or remote systems.</p>
+<h3 id="method-1-using-powershell-fastest-clearest">Method 1: Using PowerShell (Fastest &amp; Clearest)</h3>
+<p>PowerShell provides a clean, readable table that lists all connected drives and their partition styles instantly.</p>
+<ol>
+<li>
+<p><strong>Open PowerShell as Admin:</strong> Elevated access.<br>
+Right-click the <strong>Start button</strong> (or press <code>Win + X</code>) and select <strong>Terminal (Admin)</strong> or <strong>Windows PowerShell (Admin)</strong>.</p>
+</li>
+<li>
+<p><strong>Run the Get-Disk Cmdlet:</strong> Command string.<br>
+Type the following command and press <strong>Enter</strong>:</p>
+</li>
+</ol>
+<pre><code class="language-powershell">Get-Disk
+
+</code></pre>
+<ol start="3">
+<li><strong>Read the Style Column:</strong> Verification.<br>
+Look at the output table under the <strong>Partition Style</strong> column. It will clearly list <strong>GPT</strong> or <strong>MBR</strong> for every disk connected to your system.</li>
+</ol>
+<hr>
+<h3 id="method-2-using-command-prompt-diskpart">Method 2: Using Command Prompt (<code>diskpart</code>)</h3>
+<p>This traditional method works on any modern or legacy version of Windows, including recovery environments where PowerShell might not be available.</p>
+<ol>
+<li>
+<p><strong>Open Command Prompt as Admin:</strong> Elevated access.<br>
+Press the <strong>Windows Key</strong>, type <code>cmd</code>, right-click on <strong>Command Prompt</strong>, and select <strong>Run as administrator</strong>.</p>
+</li>
+<li>
+<p><strong>Launch Diskpart:</strong> Utility initialization.<br>
+Type <code>diskpart</code> and press <strong>Enter</strong>. The prompt will change to <code>DISKPART&gt;</code>.</p>
+</li>
+<li>
+<p><strong>List Connected Disks:</strong> Inventory query.<br>
+Type <code>list disk</code> and press <strong>Enter</strong>.</p>
+</li>
+<li>
+<p><strong>Check the GPT Column:</strong> Analysis.<br>
+Look at the far-right column labeled <strong>Gpt</strong>. If there is an <strong>asterisk (*)</strong> next to a disk, it is using <strong>GPT</strong>. If the column is blank for that disk, it is using <strong>MBR</strong>.</p>
+</li>
+</ol>
+<hr>
+<h2 id="part-2-alternate-methods-to-create-a-bootable-usb">Part 2: Alternate Methods to Create a Bootable USB</h2>
+<p>While Rufus is the go-to tool on Windows, these alternatives offer automation or cross-platform compatibility (working on Linux and macOS as well).</p>
+<h3 id="method-1-the-official-windows-media-creation-tool-easiest">Method 1: The Official Windows Media Creation Tool (Easiest)</h3>
+<p>If you are installing Windows on a modern GPT/UEFI system, Microsoft’s official tool handles downloading the ISO and burning it to the USB all in one automated process, skipping Rufus entirely.</p>
+<ol>
+<li>
+<p><strong>Connect Storage:</strong> Preparation.<br>
+Plug in your blank 16GB+ USB drive.</p>
+</li>
+<li>
+<p><strong>Download the Tool:</strong> Acquisition.<br>
+Go to the official Microsoft software download page and download the <strong>Media Creation Tool</strong> for your specific Windows version.</p>
+</li>
+<li>
+<p><strong>Launch and Accept Terms:</strong> Initialization.<br>
+Run the downloaded tool and accept the license terms.</p>
+</li>
+<li>
+<p><strong>Choose Media Creation Type:</strong> Selection.<br>
+When asked what you want to do, select <strong>"Create installation media (USB flash drive, DVD, or ISO file) for another PC"</strong> and click Next.</p>
+</li>
+<li>
+<p><strong>Target the USB Drive:</strong> Execution.<br>
+Choose <strong>USB flash drive</strong>, select your drive letter from the list, and click Next. The tool will automatically download the correct, updated Windows installer file and configure the USB partition scheme.</p>
+</li>
+</ol>
+<hr>
+<h3 id="method-2-using-ventoy-best-multi-boot-drag-and-drop-method">Method 2: Using Ventoy (Best Multi-Boot / Drag-and-Drop Method)</h3>
+<p>Ventoy is a game-changing alternative. Instead of formatting your USB every time you want a new installer, you install Ventoy to the USB <em>once</em>, and then you simply <strong>copy and paste raw ISO files</strong> onto the drive like a regular flash drive. It even allows you to store multiple operating systems (e.g., Windows 10, Windows 11, and Linux) on a single USB.</p>
+<ol>
+<li>
+<p><strong>Download Ventoy:</strong> Acquisition.<br>
+Download and extract the Ventoy tool from its official site or GitHub repository.</p>
+</li>
+<li>
+<p><strong>Install Ventoy to the USB:</strong> Setup.<br>
+Open <code>Ventoy2Disk.exe</code>, select your USB flash drive, and click <strong>Install</strong>. This creates a special, secure boot partition on the drive.</p>
+</li>
+<li>
+<p><strong>Drag and Drop ISO Files:</strong> Deployment.<br>
+Open your regular Windows File Explorer, click on your newly formatted Ventoy USB drive, and simply drag and drop your downloaded Windows ISO file directly into the drive space.</p>
+</li>
+</ol>
+<blockquote><p>💡 <strong>Why Ventoy shines:</strong> When you boot from this USB, a clean text menu appears letting you choose which ISO you want to run. If a new version of Windows drops, you just delete the old ISO file and paste the new one in—no reinstalling or re-flashing required.</p></blockquote>
+<hr>
+<h3 id="pause-think-stop-point-3">💡 Pause &amp; Think — Stop Point #3</h3>
+<blockquote><p><strong>Challenge:</strong> You installed a new graphics driver three days ago. Since then, your screen flickers every few minutes. You want to fix it.</p><p><strong>Question:</strong> Which recovery option would you use — Safe Mode, System Restore, or Bootable Media? Write out the <strong>exact reason</strong> for your choice.</p><p>Bonus: At what point in the process would it have been smart to create a restore point? Before or after installing the driver? Why?</p></blockquote>
+<hr>
+<h2 id="24-biosuefi-and-boot-process-awareness">2.4 BIOS/UEFI and Boot Process Awareness</h2>
+<hr>
+<h3 id="the-hook-story-mode_3">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: The Birth of BIOS</strong></p>
+<p>In the early 1980s, IBM was building the very first <strong>IBM Personal Computer</strong> (IBM PC 5150). The engineers faced a critical challenge: how does a computer "wake up"?</p>
+<p>When you flip a light switch, electricity immediately flows. But a computer is far more complicated. It has a CPU, RAM, a hard drive, a keyboard, a display — many different parts. When power turns on, <em>something</em> must tell the computer how to check all these parts and get everything ready before Windows can even start loading.</p>
+<p>The engineers created a small chip on the motherboard — the main circuit board of the computer — with a tiny program burned into it. This program would run <strong>immediately</strong> when power turned on, before anything else. It would check the hardware, prepare everything, and then hand control over to the operating system.</p>
+<p>They called it the <strong>BIOS</strong> — Basic Input/Output System.</p>
+<p>It was a revolutionary idea in 1981. Today, almost every computer in the world still uses a descendant of that idea — either a BIOS or its modern replacement, the UEFI.</p>
+<hr>
+<p><strong>A Relatable Scenario: The School Morning Routine</strong></p>
+<p>Before your first class begins, the school does a set of morning checks: the security guard unlocks the gates, the teachers arrive, the classrooms are unlocked, the attendance system is turned on.</p>
+<p>Nobody can start learning until all these preparations are complete.</p>
+<p>The BIOS/UEFI is the computer's "morning routine." Before Windows can load, it checks that all the hardware is ready to go.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h_3">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT is BIOS/UEFI?</strong></p>
+<p><strong>Firmware</strong> is a special type of software that is stored <strong>permanently on a chip on the computer's motherboard.</strong> It is not stored on the hard drive. It does not get deleted when the computer is turned off or when Windows is reinstalled.</p>
+<p>There are two types of firmware:</p>
+<ul>
+<li>
+<p><strong>BIOS (Basic Input/Output System):</strong> The older type. It shows a simple, text-only menu with a black or blue background. You can only control it with the keyboard. It was standard in computers from the 1980s through the early 2000s.</p>
+</li>
+<li>
+<p><strong>UEFI (Unified Extensible Firmware Interface):</strong> The modern replacement for BIOS. It shows a graphical menu — often with colors, mouse support, and even images. It is faster, supports larger hard drives, and is more secure. Most computers made after 2012 use UEFI.</p>
+</li>
+</ul>
+<hr>
+<p><strong>WHY do we need BIOS/UEFI?</strong></p>
+<p>BIOS/UEFI serves three critical functions:</p>
+<ol>
+<li><strong>Hardware Check:</strong> It checks that all the essential hardware — RAM, keyboard, hard drive — is connected and working correctly.</li>
+<li><strong>Boot Device Selection:</strong> It finds which device has the operating system (e.g., the hard drive or a USB) and tells the computer to start loading from it.</li>
+<li><strong>System Configuration:</strong> It stores basic settings like the date, time, and boot order.</li>
+</ol>
+<p>Without BIOS/UEFI, the computer would turn on and have absolutely no idea what to do.</p>
+<hr>
+<p><strong>WHO uses it?</strong></p>
+<p>Most users never need to touch BIOS/UEFI. But it becomes important when:</p>
+<ul>
+<li>A technician is setting up a new computer.</li>
+<li>You need to boot from a USB drive to reinstall Windows.</li>
+<li>You want to change the order in which the computer looks for a bootable device.</li>
+<li>Something is wrong at the hardware level and you need to diagnose it.</li>
+</ul>
+<hr>
+<p><strong>WHERE is it found?</strong></p>
+<p>BIOS/UEFI is stored on a small chip on the <strong>motherboard</strong> — the main circuit board inside the computer. You access its settings screen by pressing a specific key during startup, before Windows loads.</p>
+<hr>
+<p><strong>WHEN do we access it?</strong></p>
+<ul>
+<li>When you need to <strong>change the boot order</strong> (e.g., to boot from a USB drive first).</li>
+<li>When you need to <strong>reset BIOS settings to default</strong> after something went wrong.</li>
+<li>When a <strong>POST error</strong> occurs and you need to investigate.</li>
+</ul>
+<hr>
+<h3 id="the-post-test-your-computers-pre-flight-check">🛠️ The POST Test — Your Computer's Pre-Flight Check</h3>
+<p><strong>WHAT is POST?</strong></p>
+<p><strong>POST</strong> stands for <strong>Power-On Self-Test.</strong></p>
+<p>Every single time your computer turns on, before Windows even begins to load, the BIOS/UEFI automatically runs the POST. This is a quick internal test that checks the most important hardware components.</p>
+<p><strong>HOW does POST work?</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Power is turned on.</li>
+<li><strong>Step 2:</strong> BIOS/UEFI chip wakes up immediately.</li>
+<li><strong>Step 3:</strong> POST begins — it checks:</li>
+<li>Is the CPU (processor) working?</li>
+<li>Is the RAM (memory) present and functional?</li>
+<li>Is the keyboard connected?</li>
+<li>Is the hard drive present?</li>
+<li><strong>Step 4:</strong> If <strong>everything passes</strong>, POST finishes silently. You see the computer manufacturer's logo, and then Windows begins to load.</li>
+<li><strong>Step 5:</strong> If <strong>something fails</strong>, the computer cannot continue. It alerts you in one of two ways:</li>
+<li><strong>Beep codes</strong> — a series of beeps (e.g., one long beep followed by two short beeps means a specific problem). Different BIOS manufacturers have different beep patterns.</li>
+<li><strong>Error message on screen</strong> — a text message describing what failed.</li>
+</ul>
+<p><strong>Example:</strong> If the RAM is not properly connected, the computer will beep continuously and refuse to start. Reconnecting the RAM and restarting allows POST to pass successfully.</p>
+<hr>
+<h3 id="practical-walkthrough-accessing-biosuefi">🛠️ Practical Walkthrough: Accessing BIOS/UEFI</h3>
+<p><strong>HOW to Open BIOS/UEFI Settings:</strong></p>
+<p>The key to press depends on your computer's brand. Common keys are listed below:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Computer Brand</th>
+<th>BIOS/UEFI Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dell</td>
+<td>F2 or F12</td>
+</tr>
+<tr>
+<td>HP</td>
+<td>Esc or F10</td>
+</tr>
+<tr>
+<td>Lenovo</td>
+<td>F1 or F2</td>
+</tr>
+<tr>
+<td>ASUS</td>
+<td>Del or F2</td>
+</tr>
+<tr>
+<td>Acer</td>
+<td>Del or F2</td>
+</tr>
+<tr>
+<td>MSI</td>
+<td>Del</td>
+</tr>
+<tr>
+<td>Surface (Microsoft)</td>
+<td>Volume Down button</td>
+</tr>
+</tbody>
+</table></div>
+<p>You must press the key <strong>very quickly</strong> — the window is only about 1-2 seconds during startup.</p>
+<p><strong>Step-by-Step:</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Completely shut down your computer (not sleep — fully shut down).</li>
+<li><strong>Step 2:</strong> Press the <strong>Power button</strong> to turn it on.</li>
+<li><strong>Step 3:</strong> Immediately and repeatedly press the BIOS key for your computer brand (e.g., <strong>Del</strong> or <strong>F2</strong>).</li>
+<li><strong>Step 4:</strong> The BIOS/UEFI screen appears. You are now inside the firmware settings.</li>
+<li><strong>Step 5:</strong> Use your keyboard (BIOS) or mouse (UEFI) to navigate. Do not change anything unless you know exactly what it does.</li>
+<li><strong>Step 6:</strong> To exit without saving changes, press <strong>Esc</strong> or select <strong>"Exit Without Saving."</strong></li>
+</ul>
+<hr>
+<p><strong>HOW to Change the Boot Order:</strong></p>
+<p>You need to change the boot order when you want the computer to start from a USB drive (e.g., to use a bootable recovery USB) instead of the hard drive.</p>
+<ul>
+<li><strong>Step 1:</strong> Enter BIOS/UEFI settings using the steps above.</li>
+<li><strong>Step 2:</strong> Look for a tab or section called <strong>"Boot"</strong> or <strong>"Boot Options."</strong></li>
+<li><strong>Step 3:</strong> You will see a list of devices — for example: Hard Drive, USB Drive, CD/DVD Drive, Network.</li>
+<li><strong>Step 4:</strong> Move your USB drive to the <strong>top of the list</strong> (the computer tries devices from top to bottom).</li>
+<li><strong>Step 5:</strong> Press <strong>F10</strong> to save and exit (or find the "Save and Exit" option in the menu).</li>
+<li><strong>Step 6:</strong> Your computer restarts and now boots from the USB drive first.</li>
+</ul>
+<hr>
+<p><strong>HOW to Reset BIOS to Default Settings:</strong></p>
+<p>If wrong settings have been saved and the computer is behaving strangely:</p>
+<ul>
+<li>Enter BIOS/UEFI.</li>
+<li>Look for an option called <strong>"Load Setup Defaults"</strong>, <strong>"Reset to Default"</strong>, or <strong>"Restore Defaults."</strong></li>
+<li>Select it and confirm.</li>
+<li>Save and exit.</li>
+</ul>
+<p>This resets all settings to factory defaults — the same settings the computer had when it left the factory.</p>
+<hr>
+<h3 id="pause-think-stop-point-4">💡 Pause &amp; Think — Stop Point #4</h3>
+<blockquote><p><strong>Challenge:</strong> Your computer is beeping three times every time you turn it on, and it does not load Windows. The screen stays black.</p><p><strong>Questions:</strong><br>
+1. What part of the boot process is this happening in — before or after POST?<br>
+2. What do the beeps mean?<br>
+3. What is your first step to try to fix this problem?</p><p>Hint: Think about what POST is checking and what a "beep code" means.</p></blockquote>
+<hr>
+<h2 id="25-data-recovery-techniques">2.5 Data Recovery Techniques</h2>
+<hr>
+<h3 id="the-hook-story-mode_4">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: The Voyager 1 Spacecraft</strong></p>
+<p>NASA launched the Voyager 1 spacecraft in 1977. It is now the farthest human-made object in space — billions of kilometers from Earth.</p>
+<p>In 2023, scientists on Earth noticed that Voyager 1 was sending back garbled, meaningless data. The spacecraft was so far away that a radio signal took 22.5 hours just to travel from Earth to Voyager and back. </p>
+<p>What had happened? A chip in one of Voyager's three onboard computers had developed a <strong>memory corruption problem</strong> — like a kind of data damage in space. The engineers could not physically go to the spacecraft. They had to figure out how to recover the data and fix the computer from 24 billion kilometers away.</p>
+<p>After months of careful work, they figured out the problem, rerouted the data around the damaged memory chip, and Voyager began sending correct data again.</p>
+<p>If NASA can recover data from a spacecraft 24 billion kilometers away, you can absolutely recover a deleted file from your computer.</p>
+<hr>
+<p><strong>A Relatable Scenario: Dropping Your Notebook in a Puddle</strong></p>
+<p>You accidentally drop your school notebook in a muddy puddle. Some pages are fine. Some are damaged. A few are completely destroyed.</p>
+<p>Data recovery is like carefully drying out the notebook, seeing which pages can still be read, and photographing the ones that survived. Not everything may be saved — but you might recover more than you expect.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h_4">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT is Data Recovery?</strong></p>
+<p>Data recovery is the process of <strong>finding and restoring files</strong> that have been accidentally deleted, lost due to a system crash, or damaged by a hardware or software problem.</p>
+<hr>
+<p><strong>WHY do we need it?</strong></p>
+<p>Because accidents happen. A student accidentally deletes their final project file. A crash happens and the file is gone. A USB drive is removed improperly and files become corrupted.</p>
+<p>Data recovery gives us a second chance to get those files back.</p>
+<hr>
+<p><strong>WHO uses it?</strong></p>
+<p>Everyone. Students, office workers, photographers, small business owners — anyone who has ever accidentally deleted something important.</p>
+<hr>
+<p><strong>WHERE do we find recovery tools?</strong></p>
+<ul>
+<li><strong>Built-in tools</strong> are already inside Windows — Recycle Bin, File History, Previous Versions.</li>
+<li><strong>Third-party tools</strong> are programs you download and install — like <strong>Tenorshare 4DDiG.</strong></li>
+</ul>
+<hr>
+<p><strong>WHEN do we use data recovery?</strong></p>
+<ul>
+<li>When you accidentally delete a file.</li>
+<li>When a file becomes corrupted (opens but shows garbage characters).</li>
+<li>After a system crash causes files to disappear.</li>
+<li>When a USB drive or memory card fails.</li>
+</ul>
+<hr>
+<p><strong>HOW does data recovery actually work? — The Science Behind It</strong></p>
+<p>This is fascinating. When you delete a file in Windows, the computer does <strong>not</strong> immediately destroy the data.</p>
+<p>Instead, it does something clever: it simply <strong>removes the "label"</strong> — the file name and location record — and marks that storage space as "available for reuse."</p>
+<p>The actual data is still there on the drive. It is just like removing the label from a box in a warehouse. The box (and its contents) is still physically there — it is just not listed in the catalog anymore. Anyone who looks carefully can still find it.</p>
+<p>Data recovery software works by <strong>scanning the drive and looking for these "unlabeled boxes."</strong> It finds data that is still physically present but no longer indexed, and it rebuilds the connection.</p>
+<p><strong>Important:</strong> This only works if the computer has not yet <strong>written new data over that space.</strong> Once new data fills that area, the old file is truly gone. This is why speed matters in data recovery — the sooner you try to recover a file, the better your chances.</p>
+<hr>
+<h3 id="practical-walkthrough-1-built-in-recovery-tools">🛠️ Practical Walkthrough 1: Built-in Recovery Tools</h3>
+<p><strong>Method A — The Recycle Bin (Easiest Method)</strong></p>
+<p>When you delete a file in Windows, it goes to the <strong>Recycle Bin</strong> first. It stays there until you manually empty the Recycle Bin.</p>
+<ul>
+<li><strong>Step 1:</strong> Find the <strong>Recycle Bin</strong> icon on your desktop (it looks like a trash can).</li>
+<li><strong>Step 2:</strong> Double-click it to open it.</li>
+<li><strong>Step 3:</strong> Look through the files listed inside.</li>
+<li><strong>Step 4:</strong> Find the file you want to recover. Right-click on it.</li>
+<li><strong>Step 5:</strong> Select <strong>"Restore."</strong></li>
+<li><strong>Step 6:</strong> The file will instantly return to its original location on your computer.</li>
+</ul>
+<blockquote><p>📝 This method only works if you have NOT already emptied the Recycle Bin.</p></blockquote>
+<hr>
+<p><strong>Method B — File History (For Scheduled Backups)</strong></p>
+<p>File History is a feature in Windows that automatically saves copies of your files at regular intervals to an external drive. If it was turned on before the problem occurred, you can recover older versions of files.</p>
+<p><strong>How to Turn On File History (do this NOW before problems happen):</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Go to <strong>Settings</strong> (press Windows key + I).</li>
+<li><strong>Step 2:</strong> Click <strong>"Update &amp; Security."</strong></li>
+<li><strong>Step 3:</strong> Click <strong>"Backup"</strong> on the left side.</li>
+<li><strong>Step 4:</strong> Connect an external USB hard drive or flash drive to your computer.</li>
+<li><strong>Step 5:</strong> Under "Back up using File History," click <strong>"Add a drive."</strong></li>
+<li><strong>Step 6:</strong> Select your external drive from the list.</li>
+<li><strong>Step 7:</strong> Turn on the toggle that says <strong>"Automatically back up my files."</strong></li>
+</ul>
+<p>Windows will now automatically back up your Documents, Pictures, Desktop, and other important folders to that drive at regular intervals.</p>
+<p><strong>How to Recover a File Using File History:</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Go to <strong>Settings &gt; Update &amp; Security &gt; Backup.</strong></li>
+<li><strong>Step 2:</strong> Click <strong>"More options."</strong></li>
+<li><strong>Step 3:</strong> Scroll down and click <strong>"Restore files from a current backup."</strong></li>
+<li><strong>Step 4:</strong> Browse through the backup history to find the version of the file you need.</li>
+<li><strong>Step 5:</strong> Select the file and click the <strong>green Restore button.</strong></li>
+</ul>
+<hr>
+<p><strong>Method C — Previous Versions</strong></p>
+<p>This feature lets you recover an earlier saved version of a specific file or folder.</p>
+<ul>
+<li><strong>Step 1:</strong> Navigate to the file or folder that you want to recover.</li>
+<li><strong>Step 2:</strong> Right-click on it.</li>
+<li><strong>Step 3:</strong> Select <strong>"Properties."</strong></li>
+<li><strong>Step 4:</strong> Click the <strong>"Previous Versions"</strong> tab.</li>
+<li><strong>Step 5:</strong> If previous versions are available, they will be listed with their dates.</li>
+<li><strong>Step 6:</strong> Select the version you want to restore.</li>
+<li><strong>Step 7:</strong> Click <strong>"Restore."</strong></li>
+</ul>
+<blockquote><p>📝 Previous Versions only works if System Protection or File History was previously enabled.</p></blockquote>
+<hr>
+<h3 id="practical-walkthrough-2-using-tenorshare-4ddig-third-party-tool">🛠️ Practical Walkthrough 2: Using Tenorshare 4DDiG (Third-Party Tool)</h3>
+<p>When the Recycle Bin has been emptied and no backup exists, you need a third-party recovery tool. <strong>Tenorshare 4DDiG</strong> is a safe, beginner-friendly option.</p>
+<p><strong>HOW to Use Tenorshare (Step by Step):</strong></p>
+<ul>
+<li>
+<p><strong>Step 1:</strong> Download and install Tenorshare from its official website. <strong>Important:</strong> Install it on a <strong>different drive</strong> than the one where you lost the file. For example, if your file was lost from the <strong>C: drive</strong>, install Tenorshare on the <strong>D: drive</strong> or on an external USB. Installing on the same drive could overwrite the lost data.</p>
+</li>
+<li>
+<p><strong>Step 2:</strong> Open Tenorshare.</p>
+</li>
+<li>
+<p><strong>Step 3:</strong> The program will ask you to <strong>select a location.</strong> Choose the drive or folder where the lost file was saved (e.g., Desktop, C: drive, USB drive).</p>
+</li>
+<li>
+<p><strong>Step 4:</strong> Choose the <strong>type of file</strong> you are looking for — Pictures, Documents, Videos, Audio, etc. Selecting a specific type makes the scan faster.</p>
+</li>
+<li>
+<p><strong>Step 5:</strong> Click the <strong>"Scan"</strong> button. The program will begin scanning the drive for deleted or lost files. This may take a few minutes depending on the drive size.</p>
+</li>
+<li>
+<p><strong>Step 6:</strong> When the scan finishes, a list of recoverable files will appear. Browse through them to find your file.</p>
+</li>
+<li>
+<p><strong>Step 7:</strong> Select the file(s) you want to recover.</p>
+</li>
+<li>
+<p><strong>Step 8:</strong> Click <strong>"Recover."</strong> A dialog box will ask where to save the recovered files. Choose a <strong>different drive</strong> or a different folder — do not save to the same location where the file was lost.</p>
+</li>
+</ul>
+<hr>
+<p><strong>Limitations of Data Recovery — The Honest Truth:</strong></p>
+<p>Data recovery is powerful, but it is not magic. You should know its limits:</p>
+<ul>
+<li>If the file was deleted <strong>a long time ago</strong> and the computer has been used heavily since then, the data may have been overwritten by new files. Recovery may fail.</li>
+<li>If the <strong>hard drive is physically damaged</strong> (dropped, water damaged), software recovery tools may not work. Physical repair by a specialist is required.</li>
+<li>If the Recycle Bin was emptied <strong>and no backup was ever made</strong>, and the space has been overwritten, the file is <strong>permanently gone.</strong></li>
+</ul>
+<hr>
+<blockquote><p>💡 <strong>Two Golden Rules of Data Recovery:</strong></p><p><strong>Rule 1:</strong> Check the Recycle Bin FIRST. It is the easiest and fastest method. Do not skip it.</p><p><strong>Rule 2:</strong> Never install recovery software on the same drive where your lost file was stored. This can overwrite the deleted data and make recovery impossible.</p></blockquote>
+<hr>
+<h3 id="pause-think-stop-point-5">💡 Pause &amp; Think — Stop Point #5</h3>
+<blockquote><p><strong>Challenge:</strong> Your younger sister was working on a school project. She saved the file on the Desktop. Then she accidentally pressed <strong>Delete</strong> and then emptied the Recycle Bin. She is crying.</p><p><strong>Question:</strong> Walk through the recovery process, step by step, from easiest to hardest option:<br>
+1. What is the first thing you check? (Already done — Recycle Bin is empty)<br>
+2. What is your second option? (Think: did anyone set up File History on this computer?)<br>
+3. What is your third option if no backup exists?<br>
+4. What is the most important rule to remember when you try to recover the file?</p></blockquote>
+<hr>
+<h2 id="26-best-practices-for-preventive-maintenance">2.6 Best Practices for Preventive Maintenance</h2>
+<hr>
+<h3 id="the-hook-story-mode_5">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: The Titanic and Predictable Disasters</strong></p>
+<p>On April 14, 1912, the Titanic — the largest and most advanced ship of its time — struck an iceberg and sank. More than 1,500 people lost their lives.</p>
+<p>Historians have studied this disaster for over a century. And one of the most important findings is this: <strong>the disaster was preventable.</strong> The ship was traveling too fast in dangerous waters. The crew had received iceberg warnings and did not slow down. There were not enough lifeboats. Maintenance of the watertight compartments was inadequate.</p>
+<p>The Titanic disaster was not just bad luck. It was the result of <strong>a failure to take preventive action</strong> when the warning signs were there.</p>
+<p>Computer failures are rarely sudden surprises. They almost always give warnings first — a computer getting slower, a hard drive making strange noises, a virus warning popping up. <strong>Preventive maintenance</strong> means listening to those warnings and acting before the disaster happens.</p>
+<hr>
+<p><strong>A Relatable Scenario: Your Health</strong></p>
+<p>A doctor does not just treat you when you are sick. They also tell you: wash your hands regularly, eat vegetables, exercise, get enough sleep. These are <strong>preventive measures</strong> — they stop you from getting sick in the first place.</p>
+<p>Computer maintenance is the same idea. You do not just fix problems when they appear. You do small, regular tasks that stop problems from appearing at all.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h_5">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT is Preventive Maintenance?</strong></p>
+<p>Preventive maintenance means performing <strong>regular, scheduled tasks</strong> to keep a computer running well — before any problem actually occurs.</p>
+<p>These tasks include: cleaning up disk space, installing software updates, scanning for viruses, and keeping a maintenance schedule.</p>
+<hr>
+<p><strong>WHY do we need it?</strong></p>
+<p>Because prevention is always easier than cure.</p>
+<ul>
+<li>A disk cleanup done monthly takes 5 minutes. A system rebuild after a failure caused by full storage takes hours or days.</li>
+<li>A security update installed today takes 5 minutes. Recovering from a virus attack caused by not installing that update can take days and may result in permanent data loss.</li>
+</ul>
+<hr>
+<p><strong>WHO does it?</strong></p>
+<p>All computer users should practice basic preventive maintenance. In schools and offices, IT staff perform these tasks on all computers on a regular schedule.</p>
+<hr>
+<p><strong>WHERE do the maintenance tasks happen?</strong></p>
+<p>Inside the Windows operating system using built-in tools.</p>
+<hr>
+<p><strong>WHEN should maintenance be done?</strong></p>
+<p>On a regular schedule. We will build a specific maintenance calendar at the end of this section.</p>
+<hr>
+<h3 id="maintenance-task-1-disk-cleanup">🛠️ Maintenance Task 1: Disk Cleanup</h3>
+<p><strong>WHAT is Disk Cleanup?</strong></p>
+<p>Over time, your computer silently collects unnecessary files:</p>
+<ul>
+<li><strong>Temporary internet files</strong> — pieces of websites saved on your drive to load pages faster.</li>
+<li><strong>System cache files</strong> — temporary data created by Windows during normal operation.</li>
+<li><strong>Windows Update files</strong> — old update packages that are no longer needed.</li>
+<li><strong>Recycle Bin contents</strong> — files you deleted but that are still taking up space.</li>
+</ul>
+<p>These files do nothing useful. They just take up valuable storage space and can slow the computer down.</p>
+<p><strong>Disk Cleanup</strong> is a built-in Windows tool that finds and safely removes all these unnecessary files.</p>
+<hr>
+<p><strong>HOW to Run Disk Cleanup (Step by Step):</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Click the <strong>Windows search bar</strong> (bottom left of the screen, next to the Start button).</li>
+<li><strong>Step 2:</strong> Type <strong>"Disk Cleanup"</strong> and press <strong>Enter.</strong> The tool opens.</li>
+<li><strong>Step 3:</strong> A small window appears asking you to choose which drive to clean. Select <strong>"C:"</strong> (this is usually where Windows and your main files are stored). Click <strong>"OK."</strong></li>
+<li><strong>Step 4:</strong> Wait a few seconds while the tool calculates how much space can be freed.</li>
+<li><strong>Step 5:</strong> A list of file categories appears with checkboxes. Each category shows how much space will be freed. Common ones include:</li>
+<li>Temporary Internet Files</li>
+<li>Recycle Bin</li>
+<li>Temporary Files</li>
+<li>System error memory dump files</li>
+<li><strong>Step 6:</strong> Check the boxes next to the categories you want to delete.</li>
+<li><strong>Step 7:</strong> Click <strong>"OK."</strong> A confirmation message appears.</li>
+<li><strong>Step 8:</strong> Click <strong>"Delete Files."</strong> The cleanup runs and the selected files are deleted.</li>
+</ul>
+<blockquote><p>✅ <strong>Recommended:</strong> Run Disk Cleanup once a month for best performance.</p></blockquote>
+<hr>
+<h3 id="maintenance-task-2-software-updates-patch-management">🛠️ Maintenance Task 2: Software Updates (Patch Management)</h3>
+<p><strong>WHAT are software updates?</strong></p>
+<p>Software developers regularly release <strong>updates</strong> — also called <strong>patches</strong> — for their programs. These updates:</p>
+<ul>
+<li>Fix security holes that hackers could exploit.</li>
+<li>Fix bugs (errors) in the software.</li>
+<li>Add new features and improvements.</li>
+<li>Improve how the program works with other software.</li>
+</ul>
+<p>There are two types of updates:</p>
+<ol>
+<li><strong>Operating System Updates</strong> — Updates for Windows itself (or macOS, Linux, etc.).</li>
+<li><strong>Application Updates</strong> — Updates for individual programs (like your web browser, media player, PDF reader, etc.).</li>
+</ol>
+<hr>
+<p><strong>HOW to Check for and Install Windows Updates (Step by Step):</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Press <strong>Windows key + I</strong> to open <strong>Settings.</strong></li>
+<li><strong>Step 2:</strong> Click <strong>"Update &amp; Security."</strong></li>
+<li><strong>Step 3:</strong> Make sure you are on the <strong>"Windows Update"</strong> section (it is usually selected by default).</li>
+<li><strong>Step 4:</strong> Click <strong>"Check for updates."</strong></li>
+<li><strong>Step 5:</strong> Windows will check Microsoft's servers for any new updates.</li>
+<li><strong>Step 6:</strong> If updates are available, they will be listed. Click <strong>"Download and Install."</strong></li>
+<li><strong>Step 7:</strong> Some updates require a restart. When prompted, save your work and restart the computer.</li>
+</ul>
+<blockquote><p>✅ <strong>Recommended:</strong> Check for updates once a week. Turn on automatic updates if you tend to forget.</p></blockquote>
+<hr>
+<h3 id="maintenance-task-3-virus-scanning-with-windows-defender">🛠️ Maintenance Task 3: Virus Scanning with Windows Defender</h3>
+<p><strong>WHAT is Windows Defender?</strong></p>
+<p><strong>Windows Defender</strong> (also called <strong>Windows Security</strong>) is the built-in antivirus and security program in Windows. It protects your computer from:</p>
+<ul>
+<li><strong>Viruses</strong> — programs that damage files or spread to other computers.</li>
+<li><strong>Malware</strong> — harmful software that spies on you, steals data, or takes control of your computer.</li>
+<li><strong>Spyware</strong> — programs that secretly monitor what you type and do.</li>
+<li><strong>Ransomware</strong> — programs that lock your files and demand payment.</li>
+</ul>
+<hr>
+<p><strong>HOW to Run a Virus Scan (Step by Step):</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Click the <strong>Windows search bar</strong> and type <strong>"Windows Security."</strong> Press <strong>Enter.</strong></li>
+<li><strong>Step 2:</strong> Click <strong>"Virus &amp; threat protection."</strong></li>
+<li><strong>Step 3:</strong> You will see two scan options:</li>
+<li><strong>Quick Scan</strong> — checks the most common locations where viruses hide. Faster (usually a few minutes).</li>
+<li><strong>Full Scan</strong> — checks every single file on your computer. Thorough but slow (can take 1-2 hours).</li>
+<li><strong>Step 4:</strong> Click <strong>"Quick Scan"</strong> for a routine check. Click <strong>"Scan options"</strong> → <strong>"Full Scan"</strong> for a deep check.</li>
+<li><strong>Step 5:</strong> Click <strong>"Scan now."</strong> Windows Defender will scan and report any threats found.</li>
+<li><strong>Step 6:</strong> If threats are found, follow the on-screen instructions to remove or quarantine them.</li>
+</ul>
+<hr>
+<p><strong>Real-Time Protection — Your 24-Hour Guard:</strong></p>
+<p>Windows Defender also has a feature called <strong>Real-Time Protection.</strong> This means it is constantly watching in the background — even when you are not running a scan. If it detects a suspicious file being downloaded or opened, it immediately blocks it and alerts you.</p>
+<p>To make sure Real-Time Protection is active:</p>
+<ul>
+<li>Open <strong>Windows Security.</strong></li>
+<li>Click <strong>"Virus &amp; threat protection."</strong></li>
+<li>Click <strong>"Virus &amp; threat protection settings."</strong></li>
+<li>Make sure <strong>"Real-time protection"</strong> is toggled <strong>ON.</strong></li>
+</ul>
+<blockquote><p>✅ <strong>Recommended:</strong> Run a Quick Scan once a week. Run a Full Scan once a month.</p></blockquote>
+<hr>
+<h3 id="maintenance-task-4-your-personal-maintenance-calendar">🛠️ Maintenance Task 4: Your Personal Maintenance Calendar</h3>
+<p>A maintenance calendar is a simple schedule that tells you <strong>when to do which maintenance task.</strong> It prevents you from forgetting important tasks.</p>
+<p>Here is a suggested maintenance calendar you can follow:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Frequency</th>
+<th>Task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Every week</strong></td>
+<td>Check for Windows and app updates. Run a Quick Scan in Windows Defender.</td>
+</tr>
+<tr>
+<td><strong>Every month</strong></td>
+<td>Run Disk Cleanup. Run a Full Scan in Windows Defender. Check available storage space.</td>
+</tr>
+<tr>
+<td><strong>Every 3 months</strong></td>
+<td>Create a manual System Restore point. Check all cables and physical connections.</td>
+</tr>
+<tr>
+<td><strong>Every 6 months</strong></td>
+<td>Clean dust from the computer vents (using compressed air). Review and delete old files you no longer need.</td>
+</tr>
+<tr>
+<td><strong>Every year</strong></td>
+<td>Review all installed programs — uninstall anything you no longer use.</td>
+</tr>
+</tbody>
+</table></div>
+<p>You can write this in a paper planner, set reminders on your phone, or use the calendar app on your computer. The tool does not matter. The habit does.</p>
+<hr>
+<h3 id="grab-a-partner-stop-point-6">💡 Grab a Partner — Stop Point #6</h3>
+<blockquote><p><strong>Challenge:</strong> You and your partner are the new IT managers of your school's computer lab. The lab has 30 computers. Students use them daily.</p><p><strong>Task:</strong> Create a maintenance plan for the lab. Answer these questions together:</p><ol>
+<li>Which tasks need to be done <strong>every week?</strong></li>
+<li>Which tasks need to be done <strong>every month?</strong></li>
+<li>Who is responsible for doing each task — the students, the teacher, or the IT manager?</li>
+<li>What would happen to the computers after <strong>6 months of no maintenance?</strong> List at least 3 specific problems you would expect.</li>
+</ol></blockquote>
+<hr>
+<h2 id="27-system-documentation-and-logs">2.7 System Documentation and Logs</h2>
+<hr>
+<h3 id="the-hook-story-mode_6">🎬 The Hook — Story Mode</h3>
+<p><strong>A Historical Story: A Doctor's Medical Records</strong></p>
+<p>Imagine you go to a new doctor because your regular doctor moved to another city. The new doctor sits down with you and says: "I need to know your medical history." </p>
+<p>If your previous doctor kept good records — every visit, every medicine, every test result — the new doctor can pick up exactly where the last one left off. They know what treatments worked and which ones did not. They can make better decisions faster.</p>
+<p>But if your previous doctor kept no records, the new doctor starts from zero. They might repeat tests you already had. They might not know you are allergic to a certain medicine. They might miss something important.</p>
+<p><strong>Medical records save lives.</strong> Computer maintenance logs serve the same purpose.</p>
+<hr>
+<p><strong>A Relatable Scenario: The Recipe Book</strong></p>
+<p>Your grandmother makes an amazing biryani. The secret is in the exact amounts and method. If she keeps a recipe book, anyone can make the same biryani — even after she is gone. If she remembers it only in her head, the recipe is lost the moment she cannot cook anymore.</p>
+<p>A system log is your computer's recipe book. It records exactly what was done, when, and why — so that anyone who comes later (including future you) can understand what happened and continue from there.</p>
+<hr>
+<h3 id="the-core-blueprint-5w1h_6">📘 The Core Blueprint — 5W1H</h3>
+<p><strong>WHAT is System Documentation and Logs?</strong></p>
+<p><strong>System documentation</strong> means keeping organized written records of everything you do to a computer — installations, repairs, updates, errors, and maintenance tasks.</p>
+<p><strong>System logs</strong> (generated automatically by the computer) are records that Windows writes on its own — recording errors, warnings, and system events with exact timestamps.</p>
+<p>Together, these records create a complete history of a computer system.</p>
+<hr>
+<p><strong>WHY do we need it?</strong></p>
+<p>Imagine a computer in your school has been fixed three times this year for the same problem. If nobody wrote down what was done each time, the technician fixes the same thing over and over without understanding the root cause.</p>
+<p>With proper documentation:</p>
+<ul>
+<li>You can see patterns — "This computer keeps failing every 3 months. It must be a hardware issue."</li>
+<li>A new technician can understand the computer's history without starting from scratch.</li>
+<li>You can prove that maintenance was done (important for organizations and businesses).</li>
+<li>You can track which software was installed and when — useful for troubleshooting.</li>
+</ul>
+<hr>
+<p><strong>WHO does it?</strong></p>
+<ul>
+<li>IT technicians and system administrators in schools, offices, and businesses.</li>
+<li>Any responsible user who wants to keep track of their computer's health.</li>
+<li>Students learning computer maintenance (like you — right now).</li>
+</ul>
+<hr>
+<p><strong>WHERE is it kept?</strong></p>
+<ul>
+<li><strong>Manually:</strong> In a notebook, a spreadsheet, or a simple Word/Google Docs file.</li>
+<li><strong>Automatically:</strong> Windows Event Viewer records logs automatically (as we learned in Section 2.2).</li>
+<li><strong>In organizations:</strong> In dedicated IT management software or databases.</li>
+</ul>
+<hr>
+<p><strong>WHEN do we document?</strong></p>
+<ul>
+<li><strong>Immediately after</strong> every maintenance task — disk cleanup, update, virus scan.</li>
+<li><strong>Immediately after</strong> fixing any problem — describe the problem and the solution.</li>
+<li><strong>When installing</strong> any new software or hardware.</li>
+<li><strong>When an error occurs</strong> — note the error message, the date, and what was done.</li>
+</ul>
+<p>The key word is <strong>immediately.</strong> If you wait too long, you will forget the details.</p>
+<hr>
+<p><strong>HOW do we document? — Creating a Maintenance Log</strong></p>
+<p>A maintenance log does not need to be complicated. It just needs to be <strong>consistent.</strong></p>
+<p>Here is a simple template for a maintenance log entry:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example Entry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Date</strong></td>
+<td>4 June 2026</td>
+</tr>
+<tr>
+<td><strong>Computer / Device Name</strong></td>
+<td>Lab Computer #12 / Student HP Laptop</td>
+</tr>
+<tr>
+<td><strong>Task Performed</strong></td>
+<td>Disk Cleanup, Windows Update, Full Virus Scan</td>
+</tr>
+<tr>
+<td><strong>Problem Found (if any)</strong></td>
+<td>3 virus threats detected by Windows Defender</td>
+</tr>
+<tr>
+<td><strong>Action Taken</strong></td>
+<td>Threats quarantined and removed. Windows Defender updated.</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>System running normally. No threats remaining.</td>
+</tr>
+<tr>
+<td><strong>Next Scheduled Maintenance</strong></td>
+<td>4 July 2026</td>
+</tr>
+<tr>
+<td><strong>Technician / Person Name</strong></td>
+<td>[Your Name]</td>
+</tr>
+</tbody>
+</table></div>
+<p>This can be written in a notebook, a spreadsheet, or even a simple text document. The format does not matter as much as the <strong>habit</strong> of writing it.</p>
+<hr>
+<h3 id="practical-walkthrough-reading-windows-event-viewer-logs">🛠️ Practical Walkthrough: Reading Windows Event Viewer Logs</h3>
+<p>Windows keeps its own automatic log in the <strong>Event Viewer</strong> (which we introduced in Section 2.2). Here is how to find and read useful information from it:</p>
+<p><strong>Step by Step — Reading Event Viewer:</strong></p>
+<ul>
+<li><strong>Step 1:</strong> Press <strong>Windows key + R.</strong> Type <strong><code>eventvwr</code></strong> and press <strong>Enter.</strong></li>
+<li><strong>Step 2:</strong> Event Viewer opens. On the left side, you see a folder tree.</li>
+<li><strong>Step 3:</strong> Expand <strong>"Windows Logs"</strong> by clicking the arrow next to it.</li>
+<li><strong>Step 4:</strong> Click on <strong>"System"</strong> — this shows events related to Windows itself (startup, shutdown, driver issues, hardware problems).</li>
+<li><strong>Step 5:</strong> Click on <strong>"Application"</strong> — this shows events related to programs (crashes, errors in software).</li>
+<li><strong>Step 6:</strong> In the middle panel, you will see a list of events with:</li>
+<li><strong>Level:</strong> Error (red), Warning (yellow), or Information (blue).</li>
+<li><strong>Date and Time:</strong> Exactly when it happened.</li>
+<li><strong>Source:</strong> Which part of Windows or which program caused the event.</li>
+<li><strong>Event ID:</strong> A specific number that identifies the type of event. You can search this number online to understand exactly what it means.</li>
+<li><strong>Step 7:</strong> Click on any event to see its full details in the lower panel.</li>
+</ul>
+<p><strong>Practical use:</strong> If your computer crashed yesterday at 10:30 PM, open Event Viewer, filter the System logs for that time, and look for red "Error" events. The description and Event ID will tell you exactly what caused the crash.</p>
+<hr>
+<h3 id="your-final-task-creating-a-personal-system-documentation-file">🛠️ Your Final Task: Creating a Personal System Documentation File</h3>
+<p>Let us create your own maintenance record right now.</p>
+<p><strong>Step 1:</strong> Open a blank document on your computer (Word, Notepad, or Google Docs).</p>
+<p><strong>Step 2:</strong> Create a table with these column headers:</p>
+<p><em>Date | Computer Name | Task Done | Problem Found | Action Taken | Result | Next Due Date | Done By</em></p>
+<p><strong>Step 3:</strong> Fill in your first entry based on what you did today in class — even if it was just opening Task Manager and checking system performance.</p>
+<p><strong>Step 4:</strong> Save the file with the name: <strong>"Maintenance_Log_[YourName].docx"</strong></p>
+<p><strong>Step 5:</strong> Commit to adding to this log every time you perform maintenance on a computer — at school or at home. In six months, you will have a professional, organized history of everything you have done.</p>
+<hr>
+<h3 id="final-pause-think-stop-point-7">💡 Final Pause &amp; Think — Stop Point #7</h3>
+<blockquote><p><strong>The Big Challenge — Putting It All Together:</strong></p><p>A friend says to you: <em>"My computer has been crashing a lot lately. It started after I installed a new game last week. Also, it's been really slow, and I noticed the hard drive is almost full. I haven't updated Windows in months. And I have no idea what I did to it last year when it had a similar problem."</em></p><p>Based on everything you learned in this chapter, write a <strong>complete action plan</strong> for your friend. Include:</p><ol>
+<li>Which diagnostic tool would you open first, and what would you look for?</li>
+<li>Which recovery option would help with the crashing caused by the new game?</li>
+<li>Which maintenance task would you perform to address the slow speed and full hard drive?</li>
+<li>How would you protect the system going forward?</li>
+<li>What document would you create so that next time a similar problem happens, you have a record to look back at?</li>
+</ol><p>Write at least <strong>one full paragraph</strong> for each point. Then share your plan with the class.</p></blockquote>
+<hr>
+<h2 id="chapter-summary">📚 Chapter Summary</h2>
+<p>Congratulations. You have completed one of the most practical chapters in all of Computer Science.</p>
+<p>Here is what you now know:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Key Takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>2.1 Post-Troubleshooting</strong></td>
+<td>Fixing a problem is only the first step. Regular care prevents problems from returning.</td>
+</tr>
+<tr>
+<td><strong>2.2 Diagnostic Tools</strong></td>
+<td>Task Manager, Resource Monitor, and Event Viewer are your computer's cockpit — they show you exactly what is happening inside.</td>
+</tr>
+<tr>
+<td><strong>2.3 System Recovery</strong></td>
+<td>Safe Mode, System Restore, and Bootable Media are your safety net when things go seriously wrong.</td>
+</tr>
+<tr>
+<td><strong>2.4 BIOS/UEFI</strong></td>
+<td>Every computer starts with a hidden check (POST). BIOS/UEFI controls the boot process and can be adjusted when needed.</td>
+</tr>
+<tr>
+<td><strong>2.5 Data Recovery</strong></td>
+<td>Deleted files can often be recovered — but speed matters. Check the Recycle Bin first. Use Tenorshare for deeper recovery.</td>
+</tr>
+<tr>
+<td><strong>2.6 Preventive Maintenance</strong></td>
+<td>Disk Cleanup, software updates, and virus scans done regularly prevent disasters before they happen.</td>
+</tr>
+<tr>
+<td><strong>2.7 Documentation &amp; Logs</strong></td>
+<td>Writing down what you do creates a history that helps everyone — including future you — manage systems better.</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<blockquote><p><strong>One Final Thought:</strong></p><p>Every skill in this chapter is a skill used by real professionals every single day. System administrators. IT helpdesk staff. Network engineers. Cybersecurity analysts. They all use these exact tools and techniques.</p><p>You are not just studying for an exam. You are building a foundation for a career, a hobby, and a life skill that will be useful for as long as computers exist — which is likely to be a very long time.</p><p>Well done. Keep going.</p></blockquote>
+<hr>
+<p><em>End of Chapter 2 — System Recovery and Advanced Maintenance</em></p>
+
+</body>
+</html>

@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNIT 4: Control Structures in Python</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">UNIT 4: Control Structures in Python</div>
+</div>
+
+<h1 id="unit-4-control-structures-in-python">UNIT 4: Control Structures in Python</h1>
+<hr>
+<h2 id="student-learning-outcomes">Student Learning Outcomes</h2>
+<p>By the end of this chapter, you will be able to:</p>
+<ul>
+<li>Implement control structures such as decision-making statements and loops in Python.</li>
+<li>Work with Python modules, functions, and built-in data structures like lists.</li>
+<li>Apply modular programming techniques in Python.</li>
+<li>Handle exceptions, perform testing, and apply debugging techniques in Python.</li>
+</ul>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<p>Think about what you did this morning before coming to school.</p>
+<p>Maybe you checked the weather. If it was raining, you grabbed an umbrella. If not, you left without one. Then you repeated a task — maybe brushing your teeth, or packing your bag item by item.</p>
+<p>You just used two of the most powerful ideas in programming: <strong>making a decision</strong> and <strong>repeating an action</strong>.</p>
+<p>In programming, we call these <strong>control structures</strong> — and they are what turn a static list of instructions into a living, thinking program.</p>
+<p>Without control structures, a program runs from top to bottom, one line at a time, and stops. That is it. Every line runs exactly once. No decisions. No repetition. No intelligence.</p>
+<p>Control structures change that. They let your program:</p>
+<ul>
+<li><strong>Ask a question</strong> ("Is the temperature above 30?") and choose what to do based on the answer.</li>
+<li><strong>Repeat an action</strong> ("Print this line 100 times") without you writing it 100 times.</li>
+</ul>
+<p>There are two main types of control structures you will learn in this chapter:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it does</th>
+<th>Python tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Decision Making</strong></td>
+<td>Runs different code depending on a condition</td>
+<td><code>if</code>, <code>if-else</code>, nested <code>if</code></td>
+</tr>
+<tr>
+<td><strong>Looping</strong></td>
+<td>Repeats code again and again</td>
+<td><code>while</code>, <code>for</code>, <code>range()</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>You will also learn about <strong>libraries</strong> (toolboxes of pre-built code), <strong>lists</strong> (organized collections of data), and <strong>testing and debugging</strong> (how to check your code and fix it when it breaks).</p>
+<p>Let us begin.</p>
+<hr>
+<h2 id="41-decision-making">4.1 Decision Making</h2>
+<p>Every single day, you make hundreds of decisions. Should I wear a jacket? Should I study now or later? Should I take the bus or walk?</p>
+<p>Your brain checks a <strong>condition</strong> — a question with a yes/no answer — and then chooses what to do.</p>
+<p>Python can do exactly the same thing. You give Python a condition, and Python checks it. If the condition is <strong>True</strong>, Python runs one block of code. If it is <strong>False</strong>, Python might run a different block — or skip it entirely.</p>
+<p>This is called <strong>decision making</strong>, and it is how your programs become smart.</p>
+<hr>
+<h3 id="411-the-if-statement">4.1.1 The <code>if</code> Statement</h3>
+<hr>
+<h4 id="the-hook-a-story-from-history">🕰️ The Hook — A Story from History</h4>
+<p>In the 1950s, aircraft began using early <strong>autopilot systems</strong>. These systems were not humans. They were machines — and they had to make decisions on their own.</p>
+<p>Here is roughly what an early autopilot checked:</p>
+<blockquote><p><em>"If the altitude is falling below 3,000 feet — activate the climb engine."</em></p></blockquote>
+<p>Just one condition. One action. But this simple rule, checked hundreds of times per second, kept aeroplanes in the sky.</p>
+<p>Today, when you write a Python <code>if</code> statement, you are using the exact same logic that engineers wired into those 1950s aircraft — one condition, one outcome.</p>
+<hr>
+<h4 id="the-explanation">The Explanation</h4>
+<p>The <strong><code>if</code> statement</strong> is the most basic decision in Python.</p>
+<p>It says: <strong>"Check this condition. If it is True, run this code."</strong></p>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-python">if condition:
+    code to run if condition is True
+</code></pre>
+<p>Two things to notice:</p>
+<ol>
+<li><strong>The condition</strong> — a question that Python can answer as <code>True</code> or <code>False</code>. Examples: <code>temperature &gt; 30</code>, <code>age &gt;= 18</code>, <code>name == "Ali"</code>.</li>
+<li><strong>The indented block</strong> — the lines of code that are pushed inward (4 spaces or one Tab). This is called <strong>indentation</strong>. In Python, indentation is <strong>not optional</strong> — it tells Python which lines belong to the <code>if</code> statement. If you skip indentation, Python will give you an <code>IndentationError</code>.</li>
+</ol>
+<blockquote><p>💡 <strong>Plain-language summary:</strong> An <code>if</code> statement is Python's way of asking a yes/no question. If the answer is yes (True), the indented code runs. If the answer is no (False), Python skips it.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-writing-your-first-if-statement">The Practical Walkthrough — Writing Your First <code>if</code> Statement</h4>
+<p>Let us write a program that checks if the temperature is hot.</p>
+<p><strong>Step 1:</strong> Open your Python editor (IDLE, VS Code, or any tool your teacher uses). Create a new file.</p>
+<p><strong>Step 2:</strong> Type this code:</p>
+<pre><code class="language-python">temperature = 35
+
+if temperature &gt; 30:
+    print(&quot;It's a hot day!&quot;)
+</code></pre>
+<p><strong>Step 3:</strong> Save and run the program.</p>
+<p><strong>Expected Output:</strong></p>
+<pre><code>It's a hot day!
+</code></pre>
+<p><strong>What just happened?</strong><br>
+Python looked at <code>temperature &gt; 30</code>. Since <code>temperature</code> is <code>35</code>, this is <code>35 &gt; 30</code>, which is <code>True</code>. So Python ran the indented line and printed the message.</p>
+<p><strong>Step 4:</strong> Now change <code>temperature = 35</code> to <code>temperature = 20</code>. Run again.</p>
+<p><strong>Expected Output:</strong></p>
+<pre><code>(nothing — the program runs but prints nothing)
+</code></pre>
+<p><strong>What just happened?</strong><br>
+Now <code>temperature &gt; 30</code> is <code>20 &gt; 30</code>, which is <code>False</code>. The condition failed, so Python <strong>skipped</strong> the indented block entirely.</p>
+<hr>
+<h4 id="flowchart-how-the-if-statement-works">🔍 Flowchart — How the <code>if</code> Statement Works</h4>
+<pre><code>         ┌─────────────────────┐
+         │  Start               │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  Check condition:    │
+         │  temperature &gt; 30 ?  │
+         └──────────┬──────────┘
+              True  │      False
+        ┌───────────┘          └───────────┐
+        │                                  │
+┌───────▼──────────┐              ┌────────▼────────┐
+│ Print:           │              │ Skip the block   │
+│ &quot;It's a hot day!&quot;│              │ (do nothing)     │
+└───────┬──────────┘              └────────┬────────┘
+        │                                  │
+        └─────────────┬────────────────────┘
+                      │
+              ┌───────▼───────┐
+              │     End        │
+              └───────────────┘
+</code></pre>
+<hr>
+<h4 id="pause-think-411">✋ Pause &amp; Think — 4.1.1</h4>
+<blockquote><p>A school library only lends books to students who have a valid library card.</p><p><strong>Step 1:</strong> Write this rule in plain English as an "if" sentence.<br>
+<em>(Example: "If the student has a library card, then lend the book.")</em></p><p><strong>Step 2:</strong> Now write it in Python. Assume you have a variable called <code>has_library_card</code> that is either <code>True</code> or <code>False</code>.</p><p><strong>Hint:</strong> Your condition will use a variable, not a number this time.</p></blockquote>
+<hr>
+<h4 id="quick-recap">Quick Recap</h4>
+<ul>
+<li>The <code>if</code> statement checks a condition. If the condition is <strong>True</strong>, the indented block runs. If it is <strong>False</strong>, Python skips it.</li>
+<li><strong>Indentation is mandatory</strong> in Python. Always indent the code inside your <code>if</code> block.</li>
+</ul>
+<hr>
+<h3 id="412-the-if-else-statement">4.1.2 The <code>if-else</code> Statement</h3>
+<hr>
+<h4 id="the-hook-the-traffic-light">🚦 The Hook — The Traffic Light</h4>
+<p>Imagine a traffic light at a busy intersection.</p>
+<p>It does not simply flash green forever. It makes a decision:</p>
+<blockquote><p><em>"If the road is clear — show green. Otherwise — show red."</em></p></blockquote>
+<p>There are exactly <strong>two outcomes</strong>. One condition. Two possibilities. The light must always do one thing or the other — it cannot do nothing.</p>
+<p>This is exactly what the <code>if-else</code> statement does in Python.</p>
+<hr>
+<h4 id="the-explanation_1">The Explanation</h4>
+<p>The <strong><code>if-else</code> statement</strong> handles both sides of a decision.</p>
+<ul>
+<li>If the condition is <strong>True</strong> — run the first block.</li>
+<li>If the condition is <strong>False</strong> — run the second block (<code>else</code>).</li>
+</ul>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-python">if condition:
+    code to run if condition is True
+else:
+    code to run if condition is False
+</code></pre>
+<blockquote><p>💡 <strong>Plain-language summary:</strong> <code>if-else</code> is like a fork in the road. Your program will always take one path or the other — it will never stand still.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-if-else-in-action">The Practical Walkthrough — <code>if-else</code> in Action</h4>
+<pre><code class="language-python">temperature = 15
+
+if temperature &gt; 30:
+    print(&quot;It's a hot day!&quot;)
+else:
+    print(&quot;It's not a hot day.&quot;)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>It's not a hot day.
+</code></pre>
+<p><strong>What just happened?</strong><br>
+<code>temperature</code> is <code>15</code>. So <code>15 &gt; 30</code> is <code>False</code>. Python skipped the <code>if</code> block and ran the <code>else</code> block instead.</p>
+<p><strong>Now try it yourself:</strong> Change <code>temperature</code> to <code>40</code>. What output do you expect? Run it and check.</p>
+<hr>
+<h4 id="flowchart-how-if-else-works">🔍 Flowchart — How <code>if-else</code> Works</h4>
+<pre><code>         ┌─────────────────────┐
+         │  Start               │
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  Check condition:    │
+         │  temperature &gt; 30 ?  │
+         └──────────┬──────────┘
+              True  │      False
+        ┌───────────┘          └───────────┐
+        │                                  │
+┌───────▼──────────┐              ┌────────▼──────────────┐
+│ Print:           │              │ Print:                 │
+│ &quot;It's a hot day!&quot;│              │ &quot;It's not a hot day.&quot;  │
+└───────┬──────────┘              └────────┬──────────────┘
+        │                                  │
+        └─────────────┬────────────────────┘
+                      │
+              ┌───────▼───────┐
+              │     End        │
+              └───────────────┘
+</code></pre>
+<hr>
+<h4 id="grab-a-partner-412">👥 Grab a Partner — 4.1.2</h4>
+<blockquote><p><strong>One partner:</strong> Think of a real-life decision that has exactly <strong>two outcomes</strong>. Write it in plain English.</p><p><em>(Examples: "If I have money, I buy a samosa. Otherwise I skip the canteen." or "If the alarm rings, I wake up. Otherwise I keep sleeping.")</em></p><p><strong>Other partner:</strong> Take that sentence and write it as a Python <code>if-else</code> block. Use any variable name and value that fits.</p><p><strong>Swap roles</strong> and repeat with a new scenario.</p><p><strong>Bonus question:</strong> Can you think of a real-life decision that has MORE than two outcomes? (We will learn how to handle that with nested conditions next!)</p></blockquote>
+<hr>
+<h4 id="quick-recap_1">Quick Recap</h4>
+<ul>
+<li><code>if-else</code> gives your program <strong>two paths</strong>: one for <code>True</code>, one for <code>False</code>.</li>
+<li>Your program will <strong>always</strong> take one of the two paths — never both, never neither.</li>
+</ul>
+<hr>
+<h3 id="413-nested-conditions">4.1.3 Nested Conditions</h3>
+<hr>
+<h4 id="the-hook-the-school-gate-guard">🏫 The Hook — The School Gate Guard</h4>
+<p>Imagine a school gate guard with two jobs:</p>
+<ol>
+<li>First, check if the student has their <strong>ID card</strong>.</li>
+<li>If yes — then check if they are wearing the <strong>proper uniform</strong>.</li>
+</ol>
+<p>Only if <strong>both</strong> checks pass does the student get in.</p>
+<p>Notice the structure: one check happens <strong>inside</strong> another check. The second question only gets asked if the first one is already answered "yes."</p>
+<p>This is <strong>nesting</strong> — and in Python, it means putting one <code>if</code> statement <strong>inside</strong> another.</p>
+<hr>
+<h4 id="the-explanation_2">The Explanation</h4>
+<p>A <strong>nested condition</strong> is simply an <code>if</code> (or <code>if-else</code>) statement placed <strong>inside</strong> another <code>if</code> block.</p>
+<p>Python checks the <strong>outer condition</strong> first. Only if it is <code>True</code> does Python move inside and check the <strong>inner condition</strong>.</p>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-python">if condition1:
+    if condition2:
+        code to run if BOTH condition1 AND condition2 are True
+    else:
+        code to run if condition1 is True but condition2 is False
+else:
+    code to run if condition1 is False
+</code></pre>
+<blockquote><p>💡 <strong>Plain-language summary:</strong> Nested conditions are checks inside checks. Python only reads the inner check if the outer check is already True.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-nested-if-in-action">The Practical Walkthrough — Nested <code>if</code> in Action</h4>
+<p>Let us code the weather scenario from the textbook:</p>
+<pre><code class="language-python">weather = &quot;rainy&quot;
+temperature = 10
+
+if weather == &quot;rainy&quot;:
+    if temperature &lt; 15:
+        print(&quot;Wear a raincoat!&quot;)
+    else:
+        print(&quot;Take an umbrella.&quot;)
+else:
+    print(&quot;Enjoy your day!&quot;)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Wear a raincoat!
+</code></pre>
+<p><strong>Let us trace through this step by step:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What Python checks</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>weather == "rainy"</code> → is <code>"rainy" == "rainy"</code>?</td>
+<td><strong>True</strong> → enter the outer <code>if</code> block</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>temperature &lt; 15</code> → is <code>10 &lt; 15</code>?</td>
+<td><strong>True</strong> → print <code>"Wear a raincoat!"</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Now experiment:</strong></p>
+<ul>
+<li>Change <code>temperature = 10</code> to <code>temperature = 20</code>. What happens? (Outer condition is still True, but inner condition is now False → "Take an umbrella.")</li>
+<li>Change <code>weather = "rainy"</code> to <code>weather = "sunny"</code>. What happens now? (Outer condition is False → skip everything → "Enjoy your day!")</li>
+</ul>
+<hr>
+<h4 id="pause-think-413">✋ Pause &amp; Think — 4.1.3</h4>
+<blockquote><p>You want to grant access to the school computer lab. But there are <strong>two rules</strong>:</p><ul>
+<li>Rule 1: The student must have a <strong>lab pass</strong>.</li>
+<li>Rule 2: It must <strong>not be a holiday</strong>.</li>
+</ul><p><strong>Step 1:</strong> Write this logic in plain English using "if" sentences.</p><p><strong>Step 2:</strong> Write it in Python. Use variables <code>has_lab_pass = True</code> and <code>is_holiday = False</code>. Try changing their values and predicting the output before you run.</p></blockquote>
+<hr>
+<h4 id="quick-recap_2">Quick Recap</h4>
+<ul>
+<li>Nested conditions put one <code>if</code> statement <strong>inside</strong> another.</li>
+<li>The <strong>inner check only runs if the outer check is True</strong>.</li>
+<li>Use nested conditions when a second question only makes sense after the first one is answered.</li>
+</ul>
+<hr>
+<h2 id="42-looping-constructs">4.2 Looping Constructs</h2>
+<p>Imagine you are a teacher. You need to call out every student's name from a register of 40 students. You say each name, wait for the student to respond, then move to the next.</p>
+<p>Would you write 40 separate <code>print()</code> statements? Of course not.</p>
+<p>That is what <strong>loops</strong> are for. A loop lets you repeat an action — once, ten times, a million times — without copying and pasting the same code over and over.</p>
+<p>Loops are one of the most powerful tools in any programming language. Let us learn both kinds Python gives us.</p>
+<hr>
+<h3 id="421-the-while-loop">4.2.1 The <code>while</code> Loop</h3>
+<hr>
+<h4 id="the-hook-the-punishment-lines">✏️ The Hook — The Punishment Lines</h4>
+<p>You are caught talking in class. Your teacher says:</p>
+<blockquote><p><em>"Write 'I will not talk in class' fifty times."</em></p></blockquote>
+<p>So you pick up your pen. You write the line. You check your count. Is it 50 yet? No. You write again. You check again. Still not 50. You keep going — until finally, after the 50th line, the condition is met and you stop.</p>
+<p>This is <strong>exactly</strong> how a <code>while</code> loop works.</p>
+<hr>
+<h4 id="the-explanation_3">The Explanation</h4>
+<p>A <strong><code>while</code> loop</strong> keeps running a block of code <strong>as long as a condition is True</strong>. It checks the condition before every single repetition. The moment the condition becomes <strong>False</strong>, the loop stops.</p>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-python">while condition:
+    code to run while condition is True
+</code></pre>
+<blockquote><p>💡 <strong>Plain-language summary:</strong> A <code>while</code> loop asks "is this still True?" before every round. As soon as the answer is "no," it stops.</p></blockquote>
+<p><strong>Three key ingredients every <code>while</code> loop needs:</strong></p>
+<ol>
+<li>A <strong>starting value</strong> (e.g., <code>number = 1</code>)</li>
+<li>A <strong>condition</strong> to check (e.g., <code>number &lt; 10</code>)</li>
+<li>An <strong>update</strong> that changes the value so the condition eventually becomes False (e.g., <code>number = number + 1</code>)</li>
+</ol>
+<blockquote><p>⚠️ <strong>Important warning — The Infinite Loop:</strong> If you forget ingredient 3 (the update), your condition will <strong>never</strong> become False. The loop will run forever. This is called an <strong>infinite loop</strong>. Every programmer accidentally writes one at some point. Do not panic — just press <strong>Ctrl + C</strong> to stop the program, then fix your code. It is not a disaster. It is a learning moment.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-counting-with-a-while-loop">The Practical Walkthrough — Counting with a <code>while</code> Loop</h4>
+<pre><code class="language-python">number = 1
+
+while number &lt; 10:
+    print(number)
+    number = number + 1
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+<p><strong>Trace Table — what happens at each step:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Iteration</th>
+<th>Value of <code>number</code> before check</th>
+<th><code>number &lt; 10</code>?</th>
+<th>Action</th>
+<th>Value of <code>number</code> after update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>True</td>
+<td>Print <code>1</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>True</td>
+<td>Print <code>2</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>True</td>
+<td>Print <code>3</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>True</td>
+<td>Print <code>4</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td>True</td>
+<td>Print <code>5</code></td>
+<td>6</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+<td>True</td>
+<td>Print <code>6</code></td>
+<td>7</td>
+</tr>
+<tr>
+<td>7</td>
+<td>7</td>
+<td>True</td>
+<td>Print <code>7</code></td>
+<td>8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>8</td>
+<td>True</td>
+<td>Print <code>8</code></td>
+<td>9</td>
+</tr>
+<tr>
+<td>9</td>
+<td>9</td>
+<td>True</td>
+<td>Print <code>9</code></td>
+<td>10</td>
+</tr>
+<tr>
+<td>10</td>
+<td>10</td>
+<td><strong>False</strong></td>
+<td><strong>Stop — loop ends</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>Notice that <code>10</code> is <strong>never printed</strong>, because the condition <code>number &lt; 10</code> becomes False when <code>number</code> reaches <code>10</code>, and the loop stops before printing.</p>
+<hr>
+<h4 id="pause-think-421">✋ Pause &amp; Think — 4.2.1</h4>
+<blockquote><p>A water tank is empty. It fills at <strong>10 litres per minute</strong>. The tank is full at <strong>100 litres</strong>.</p><p>Write a <code>while</code> loop that:<br>
+- Starts at 0 litres<br>
+- Adds 10 litres each minute<br>
+- Prints the current water level after each minute<br>
+- Stops when the tank is full (100 litres)</p><p><strong>Before you code:</strong> Draw your trace table on paper first. What will the output look like?</p></blockquote>
+<hr>
+<h4 id="quick-recap_3">Quick Recap</h4>
+<ul>
+<li>A <code>while</code> loop runs <strong>as long as its condition is True</strong> and stops the moment it becomes False.</li>
+<li>Always include an <strong>update</strong> inside the loop, or it will run forever.</li>
+</ul>
+<hr>
+<h3 id="422-the-for-loop">4.2.2 The <code>for</code> Loop</h3>
+<hr>
+<h4 id="the-hook-the-teacher-calling-the-register">📋 The Hook — The Teacher Calling the Register</h4>
+<p>Every morning, your teacher opens the class register. It has 40 names. The teacher calls name number 1, waits, marks attendance. Then name number 2. Then number 3. All the way to the end.</p>
+<p>The teacher does not decide when to stop — the register decides. When the list is finished, the teacher stops.</p>
+<p>This is the <strong><code>for</code> loop</strong>. It goes through a sequence — a list, a range of numbers, or any collection of items — one item at a time, from beginning to end.</p>
+<hr>
+<h4 id="the-explanation_4">The Explanation</h4>
+<p>A <strong><code>for</code> loop</strong> repeats code for each item in a sequence. It automatically moves from one item to the next and stops when it reaches the end.</p>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-python">for variable in sequence:
+    code to run for each item
+</code></pre>
+<ul>
+<li><code>variable</code> — a temporary name that holds the <strong>current item</strong> during each repetition. You choose the name.</li>
+<li><code>sequence</code> — a collection of items (like a list or a range of numbers).</li>
+</ul>
+<blockquote><p>💡 <strong>Plain-language summary:</strong> A <code>for</code> loop visits every item in a sequence, one by one, and runs your code for each one. When there are no more items, it stops.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-greeting-each-friend">The Practical Walkthrough — Greeting Each Friend</h4>
+<pre><code class="language-python">friends = [&quot;Sami&quot;, &quot;Raza&quot;, &quot;Moosa&quot;]
+
+for friend in friends:
+    print(&quot;Welcome:&quot;, friend)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Welcome: Sami
+Welcome: Raza
+Welcome: Moosa
+</code></pre>
+<p><strong>Trace Table — what happens each round:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Round</th>
+<th>Value of <code>friend</code></th>
+<th>What prints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>"Sami"</code></td>
+<td><code>Welcome: Sami</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>"Raza"</code></td>
+<td><code>Welcome: Raza</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>"Moosa"</code></td>
+<td><code>Welcome: Moosa</code></td>
+</tr>
+<tr>
+<td>—</td>
+<td>(list is empty)</td>
+<td><strong>Loop ends</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Notice: you wrote the <code>print()</code> line <strong>once</strong>, but it ran <strong>three times</strong> — once for each friend.</p>
+<hr>
+<h4 id="grab-a-partner-422">👥 Grab a Partner — 4.2.2</h4>
+<blockquote><p><strong>One partner:</strong> On a piece of paper, write a list of <strong>five Pakistani cities</strong>.</p><p><strong>Other partner:</strong> Write a <code>for</code> loop in Python that prints each city along with its position number (1, 2, 3, 4, 5).</p><p><em>(Hint: you may need to create a variable outside the loop to keep track of the position number. Can you figure out how?)</em></p><p><strong>Discuss together:</strong> What would change in your code if the list had 10 cities instead of 5? Would you need to change the loop at all?</p></blockquote>
+<hr>
+<h4 id="quick-recap_4">Quick Recap</h4>
+<ul>
+<li>A <code>for</code> loop visits <strong>each item in a sequence</strong>, one by one, and runs your code for each.</li>
+<li>It <strong>automatically stops</strong> when all items have been visited — no condition needed.</li>
+</ul>
+<hr>
+<h3 id="423-the-range-function">4.2.3 The <code>range()</code> Function</h3>
+<hr>
+<h4 id="the-hook-the-pe-teachers-instructions">🏃 The Hook — The PE Teacher's Instructions</h4>
+<p>Your PE teacher blows the whistle and says:</p>
+<blockquote><p><em>"Do 10 jumping jacks. Start from 1. Count up by 1 each time. Stop at 10."</em></p></blockquote>
+<p>Three pieces of information: where to start, where to stop, and how many to count per step.</p>
+<p>Python's <code>range()</code> function works exactly like this. You give it a start, a stop, and a step — and it generates a sequence of numbers for you.</p>
+<hr>
+<h4 id="the-explanation_5">The Explanation</h4>
+<p>The <strong><code>range()</code> function</strong> generates a sequence of numbers. It is almost always used with a <code>for</code> loop to repeat code a specific number of times.</p>
+<p><strong>Three ways to use <code>range()</code>:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>What it does</th>
+<th>Example output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>range(stop)</code></td>
+<td>Counts from <strong>0</strong> to <code>stop - 1</code></td>
+<td><code>range(5)</code> → 0, 1, 2, 3, 4</td>
+</tr>
+<tr>
+<td><code>range(start, stop)</code></td>
+<td>Counts from <code>start</code> to <code>stop - 1</code></td>
+<td><code>range(1, 6)</code> → 1, 2, 3, 4, 5</td>
+</tr>
+<tr>
+<td><code>range(start, stop, step)</code></td>
+<td>Counts from <code>start</code> to <code>stop - 1</code>, jumping by <code>step</code></td>
+<td><code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><p>⚠️ <strong>Important:</strong> <code>range()</code> always stops <strong>before</strong> the stop number. So <code>range(5)</code> gives you 0, 1, 2, 3, 4 — <strong>not</strong> 5. This trips up almost every beginner. You are not alone.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-using-range-in-a-for-loop">The Practical Walkthrough — Using <code>range()</code> in a <code>for</code> Loop</h4>
+<p><strong>Example 1: Print 0 to 4</strong></p>
+<pre><code class="language-python">for i in range(5):
+    print(i)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>0
+1
+2
+3
+4
+</code></pre>
+<p><strong>Example 2: Print 1 to 5</strong></p>
+<pre><code class="language-python">for i in range(1, 6):
+    print(i)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>1
+2
+3
+4
+5
+</code></pre>
+<p><strong>Example 3: Print even numbers from 2 to 10, on one line</strong></p>
+<pre><code class="language-python">for i in range(2, 11, 2):
+    print(i, end=&quot; &quot;)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>2 4 6 8 10
+</code></pre>
+<blockquote><p>💡 <strong>What is <code>end=" "</code>?</strong> By default, <code>print()</code> moves to a new line after each output. Adding <code>end=" "</code> tells <code>print()</code> to put a <strong>space</strong> instead of a new line. This keeps everything on one line.</p></blockquote>
+<p><strong>Trace Table — for <code>range(2, 11, 2)</code>:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Round</th>
+<th>Value of <code>i</code></th>
+<th><code>i &lt; 11</code>?</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>True</td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>True</td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>6</td>
+<td>True</td>
+<td><code>6</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>8</td>
+<td>True</td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>10</td>
+<td>True</td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>12</td>
+<td><strong>False</strong></td>
+<td><strong>Loop ends</strong></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="pause-think-423">✋ Pause &amp; Think — 4.2.3</h4>
+<blockquote><p>Look at this: <code>range(1, 20, 3)</code></p><p><strong>Before you run it:</strong> On paper, write down every number you think this will produce. Explain your reasoning.</p><p><strong>Then:</strong> Write a <code>for</code> loop that uses <code>range(1, 20, 3)</code> and prints each number. Run the code.</p><p><strong>Were you right?</strong> If not — which part of the <code>range()</code> rule did you misunderstand? (That is the part to remember!)</p></blockquote>
+<hr>
+<h4 id="quick-recap_5">Quick Recap</h4>
+<ul>
+<li><code>range()</code> generates a sequence of numbers — useful for repeating something a set number of times.</li>
+<li>It always <strong>stops before</strong> the stop number.</li>
+<li>Use <code>range(start, stop, step)</code> when you need more control over the sequence.</li>
+</ul>
+<hr>
+<h3 id="424-nested-loops">4.2.4 Nested Loops</h3>
+<hr>
+<h4 id="the-hook-the-school-timetable">📅 The Hook — The School Timetable</h4>
+<p>Picture your school timetable. For every <strong>day of the week</strong> (Monday to Friday), there are <strong>6 periods</strong> per day.</p>
+<p>If you want to list every single period of every single day, you go through it like this:</p>
+<ul>
+<li>Monday: Period 1, Period 2, Period 3, Period 4, Period 5, Period 6</li>
+<li>Tuesday: Period 1, Period 2, ... Period 6</li>
+<li>Wednesday: Period 1, Period 2, ... Period 6</li>
+<li>...</li>
+</ul>
+<p>An <strong>outer loop</strong> runs through the days. For <strong>each day</strong>, an <strong>inner loop</strong> runs through all the periods. The inner loop completes its full cycle <strong>every single time</strong> the outer loop takes one step.</p>
+<p>This is a <strong>nested loop</strong> — a loop inside a loop.</p>
+<hr>
+<h4 id="the-explanation_6">The Explanation</h4>
+<p>A <strong>nested loop</strong> is simply a loop placed <strong>inside another loop</strong>.</p>
+<ul>
+<li>The <strong>outer loop</strong> controls the big repetition (e.g., days of the week).</li>
+<li>The <strong>inner loop</strong> controls the small repetition (e.g., periods in each day).</li>
+<li>For <strong>every single iteration</strong> of the outer loop, the <strong>inner loop runs completely from start to finish</strong>.</li>
+</ul>
+<blockquote><p>💡 <strong>Plain-language summary:</strong> In nested loops, the inner loop finishes its entire job before the outer loop takes its next step.</p></blockquote>
+<hr>
+<h4 id="the-practical-walkthrough-nested-loops-in-action">The Practical Walkthrough — Nested Loops in Action</h4>
+<p><strong>Example 1: A Number Grid Pattern</strong></p>
+<pre><code class="language-python">print(&quot;Basic Number Pattern&quot;)
+
+for i in range(3):           # Outer loop — runs 3 times
+    for j in range(4):       # Inner loop — runs 4 times for EACH outer loop step
+        print(f&quot;({i},{j})&quot;, end=&quot; &quot;)
+    print()                  # Move to next line after inner loop finishes
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Basic Number Pattern
+(0,0) (0,1) (0,2) (0,3) 
+(1,0) (1,1) (1,2) (1,3) 
+(2,0) (2,1) (2,2) (2,3) 
+</code></pre>
+<p><strong>Example 2: A Right-Angled Triangle of Stars</strong></p>
+<pre><code class="language-python">n = 5
+
+for i in range(1, n + 1):       # Outer loop: i goes from 1 to 5
+    for j in range(i):           # Inner loop: runs 'i' times
+        print(&quot;*&quot;, end=&quot; &quot;)
+    print()                      # New line after each row
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>* 
+* * 
+* * * 
+* * * * 
+* * * * * 
+</code></pre>
+<p><strong>Trace Table — for the triangle (outer loop only):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Outer loop value (<code>i</code>)</th>
+<th>Inner loop runs how many times?</th>
+<th>Row printed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td><code>*</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td><code>* *</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td><code>* * *</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td><code>* * * *</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+<td><code>* * * * *</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="grab-a-partner-424">👥 Grab a Partner — 4.2.4</h4>
+<blockquote><p><strong>Before writing any code:</strong></p><p>On paper, <strong>draw the output</strong> of this nested loop:</p><p><code>python
+for i in range(3):
+    for j in range(3):
+        print("*", end=" ")
+    print()</code></p><p>Draw exactly what you think will appear on the screen — a grid of asterisks.</p><p><strong>Then:</strong> Type the code and run it. Does your drawing match?</p><p><strong>Discuss:</strong> How would you change the code to make the grid 5×5 instead of 3×3?</p></blockquote>
+<hr>
+<h4 id="quick-recap_6">Quick Recap</h4>
+<ul>
+<li>A nested loop is a <strong>loop inside a loop</strong>.</li>
+<li>The <strong>inner loop runs completely</strong> every time the outer loop takes one step.</li>
+<li>Use nested loops for patterns, grids, and any task that has "for each X, do Y repeatedly."</li>
+</ul>
+<hr>
+<h2 id="43-libraries-in-python">4.3 Libraries in Python</h2>
+<h3 id="431-using-libraries-in-python">4.3.1 Using Libraries in Python</h3>
+<hr>
+<h4 id="the-hook-ada-lovelace-and-the-first-reusable-algorithm">🔧 The Hook — Ada Lovelace and the First Reusable Algorithm</h4>
+<p>In 1843, a mathematician named <strong>Ada Lovelace</strong> did something no one had done before. She was writing instructions for a mechanical computing machine, and she noticed a problem: some calculations needed to be repeated over and over in different parts of the program.</p>
+<p>Instead of writing the same calculation ten times, she wrote it <strong>once</strong> — in a reusable block of code that could be called from anywhere. This idea — write something once, use it anywhere — is the foundation of what we now call a <strong>library</strong>.</p>
+<p>Over 150 years later, when you type <code>import math</code> in Python, you are using Ada Lovelace's idea. Someone wrote that code once, carefully, and made it available to every programmer in the world.</p>
+<hr>
+<h4 id="the-explanation_7">The Explanation</h4>
+<p>A <strong>library</strong> (also called a <strong>module</strong>) is a collection of ready-made code that someone else has already written and tested. Instead of building every tool from scratch, you <strong>import</strong> a library and use its tools.</p>
+<p>Think of it like a <strong>toolbox</strong>. You do not build a screwdriver from raw metal every time you need to tighten a screw. You reach into your toolbox and pick it up.</p>
+<p><strong>How to import a library:</strong></p>
+<pre><code class="language-python">import library_name
+</code></pre>
+<p><strong>How to use a function from a library:</strong></p>
+<pre><code class="language-python">library_name.function_name(arguments)
+</code></pre>
+<hr>
+<h4 id="the-practical-walkthrough-three-essential-libraries">The Practical Walkthrough — Three Essential Libraries</h4>
+<p><strong>Library 1: <code>math</code> — for mathematical calculations</strong></p>
+<pre><code class="language-python">import math
+
+# Calculate square root
+result = math.sqrt(25)
+print(&quot;Square root of 25:&quot;, result)
+
+# Use the value of pi
+print(&quot;Value of pi:&quot;, math.pi)
+
+# Calculate power
+print(&quot;2 to the power of 8:&quot;, math.pow(2, 8))
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Square root of 25: 5.0
+Value of pi: 3.141592653589793
+2 to the power of 8: 256.0
+</code></pre>
+<p><strong>Library 2: <code>random</code> — for generating random numbers</strong></p>
+<pre><code class="language-python">import random
+
+# Generate a random whole number between 1 and 10
+number = random.randint(1, 10)
+print(&quot;The random number is:&quot;, number)
+</code></pre>
+<p><strong>Expected Output (will vary each time — that is the point!):</strong></p>
+<pre><code>The random number is: 7
+</code></pre>
+<p><strong>Library 3: <code>statistics</code> — for analysing data</strong></p>
+<pre><code class="language-python">import statistics
+
+data = [23, 45, 67, 89, 12, 44, 56]
+
+mean_value = statistics.mean(data)
+print(&quot;The mean value is:&quot;, mean_value)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>The mean value is: 48
+</code></pre>
+<hr>
+<h4 id="a-useful-shortcut-from-import">A Useful Shortcut — <code>from ... import ...</code></h4>
+<p>Sometimes you only need one specific tool from a library. You can import just that tool:</p>
+<pre><code class="language-python">from math import sqrt, pi
+
+print(sqrt(49))
+print(pi)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>7.0
+3.141592653589793
+</code></pre>
+<p>This way, you can write <code>sqrt()</code> instead of <code>math.sqrt()</code> — it is shorter and faster when you only need a few tools.</p>
+<hr>
+<h4 id="pause-think-431">✋ Pause &amp; Think — 4.3.1</h4>
+<blockquote><p>You need to calculate the area of a circle. The formula is:<br>
+<strong>Area = π × radius²</strong></p><p><strong>Without the <code>math</code> library:</strong> What would you have to type every time you use the value of pi? (Think about how many decimal places you would need to remember!)</p><p><strong>With <code>import math</code>:</strong> Write the Python code that calculates the area of a circle with radius = 7. Use <code>math.pi</code> and <code>math.pow()</code>.</p><p><strong>Bonus:</strong> What other calculations might become easier with the <code>math</code> library? Can you name two?</p></blockquote>
+<hr>
+<h4 id="quick-recap_7">Quick Recap</h4>
+<ul>
+<li>A <strong>library</strong> is a collection of ready-made code you can use in your own programs.</li>
+<li>Use <code>import library_name</code> to load a library.</li>
+<li>Use <code>library_name.function_name()</code> to call a function from it.</li>
+</ul>
+<hr>
+<h2 id="44-lists-in-python">4.4 Lists in Python</h2>
+<h3 id="441-creating-lists">4.4.1 Creating Lists</h3>
+<hr>
+<h4 id="the-hook-the-first-databases">🗃️ The Hook — The First Databases</h4>
+<p>In the early days of computing — the 1950s and 1960s — businesses needed to store customer records. Engineers solved this by setting aside a <strong>sequence of slots in memory</strong>, one after another, each holding one piece of data.</p>
+<p>Customer #1 in slot 1. Customer #2 in slot 2. And so on.</p>
+<p>You needed to know the <strong>position number</strong> of a record to find it instantly. It was fast, ordered, and expandable.</p>
+<p>Today, Python's <strong>list</strong> is the direct descendant of that idea. A list is an ordered collection of items, stored in numbered positions. You can add to it, remove from it, change it, and search through it — all with simple commands.</p>
+<hr>
+<h4 id="the-explanation_8">The Explanation</h4>
+<p>A <strong>list</strong> is a variable that holds <strong>multiple values</strong> in a specific order.</p>
+<ul>
+<li>Lists are created using <strong>square brackets <code>[]</code></strong>.</li>
+<li>Items inside the list are separated by <strong>commas</strong>.</li>
+<li>A list can hold <strong>any type of data</strong> — numbers, text, or a mix.</li>
+</ul>
+<p><strong>Syntax:</strong></p>
+<pre><code class="language-python">list_name = [item1, item2, item3]
+</code></pre>
+<hr>
+<h4 id="the-practical-walkthrough-creating-and-printing-a-list">The Practical Walkthrough — Creating and Printing a List</h4>
+<pre><code class="language-python">fruits = [&quot;Mango&quot;, &quot;Apple&quot;, &quot;Banana&quot;]
+print(fruits)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>['Mango', 'Apple', 'Banana']
+</code></pre>
+<p><strong>An empty list (a list with nothing in it yet):</strong></p>
+<pre><code class="language-python">empty_list = []
+print(empty_list)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>[]
+</code></pre>
+<p><strong>A list with mixed types:</strong></p>
+<pre><code class="language-python">mixed = [&quot;Ali&quot;, 17, True, 3.14]
+print(mixed)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>['Ali', 17, True, 3.14]
+</code></pre>
+<hr>
+<h4 id="quick-recap_8">Quick Recap</h4>
+<ul>
+<li>A list holds <strong>multiple values</strong> in one variable, in order.</li>
+<li>Create a list with square brackets: <code>my_list = [item1, item2, item3]</code>.</li>
+</ul>
+<hr>
+<h3 id="442-accessing-list-items">4.4.2 Accessing List Items</h3>
+<hr>
+<h4 id="the-explanation_9">The Explanation</h4>
+<p>Every item in a list has an <strong>index</strong> — a number that tells you its position.</p>
+<blockquote><p>⚠️ <strong>Critical fact:</strong> Python counts from <strong>0, not 1</strong>. The first item is at index <code>0</code>, the second at index <code>1</code>, and so on. This surprises almost every beginner. You are not alone — even professional programmers double-check this sometimes.</p></blockquote>
+<p><strong>Index diagram:</strong></p>
+<pre><code>fruits = [&quot;Mango&quot;, &quot;Apple&quot;, &quot;Banana&quot;, &quot;Guava&quot;]
+           ↑         ↑        ↑         ↑
+         [0]       [1]      [2]       [3]
+</code></pre>
+<p><strong>Negative indexes count from the end:</strong></p>
+<pre><code>fruits = [&quot;Mango&quot;, &quot;Apple&quot;, &quot;Banana&quot;, &quot;Guava&quot;]
+           ↑         ↑        ↑         ↑
+          [-4]      [-3]    [-2]      [-1]
+</code></pre>
+<ul>
+<li><code>fruits[-1]</code> gives the <strong>last</strong> item: <code>"Guava"</code></li>
+<li><code>fruits[-2]</code> gives the <strong>second to last</strong>: <code>"Banana"</code></li>
+</ul>
+<hr>
+<h4 id="the-practical-walkthrough-accessing-items-by-index">The Practical Walkthrough — Accessing Items by Index</h4>
+<pre><code class="language-python">fruits = [&quot;Mango&quot;, &quot;Apple&quot;, &quot;Banana&quot;, &quot;Guava&quot;]
+
+print(fruits[0])    # First item
+print(fruits[1])    # Second item
+print(fruits[-1])   # Last item
+print(fruits[-2])   # Second to last item
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Mango
+Apple
+Guava
+Banana
+</code></pre>
+<p><strong>What happens if you use an index that does not exist?</strong></p>
+<pre><code class="language-python">print(fruits[10])
+</code></pre>
+<p><strong>Error Output:</strong></p>
+<pre><code>IndexError: list index out of range
+</code></pre>
+<p>Python is telling you: "I looked for position 10, but this list only has 4 items (positions 0 to 3). Position 10 does not exist."</p>
+<blockquote><p>💡 <strong>Remember:</strong> An <code>IndexError</code> is Python helping you. It is not shouting — it is telling you exactly what went wrong and where.</p></blockquote>
+<hr>
+<h4 id="pause-think-442">✋ Pause &amp; Think — 4.4.2</h4>
+<blockquote><p>Given this list:<br>
+<code>python
+fruits = ["Mango", "Apple", "Banana", "Guava"]</code></p><p><strong>Predict first — then test:</strong><br>
+- What is <code>fruits[0]</code>?<br>
+- What is <code>fruits[-1]</code>?<br>
+- What would happen if you tried <code>fruits[10]</code>?</p><p>Write your predictions on paper, <strong>then</strong> run the code. Were you right? What did the error message tell you?</p></blockquote>
+<hr>
+<h4 id="quick-recap_9">Quick Recap</h4>
+<ul>
+<li>List indexes start at <strong>0</strong>, not 1. The first item is <code>list[0]</code>.</li>
+<li>Use <strong>negative indexes</strong> to count from the end. <code>list[-1]</code> is always the last item.</li>
+<li>Trying an index that does not exist gives an <code>IndexError</code>.</li>
+</ul>
+<hr>
+<h3 id="443-modifying-lists">4.4.3 Modifying Lists</h3>
+<hr>
+<h4 id="the-explanation_10">The Explanation</h4>
+<p>Lists in Python are <strong>mutable</strong> — that means you can <strong>change</strong> them after they are created.</p>
+<p>You can:<br>
+- <strong>Change</strong> an existing item by assigning a new value to its index.<br>
+- <strong>Add</strong> a new item to the end using <code>.append()</code>.</p>
+<hr>
+<h4 id="the-practical-walkthrough-changing-and-adding-items">The Practical Walkthrough — Changing and Adding Items</h4>
+<pre><code class="language-python">fruits = [&quot;Mango&quot;, &quot;Apple&quot;, &quot;Banana&quot;]
+
+# Change the first item
+fruits[0] = &quot;Orange&quot;
+print(fruits)
+
+# Add a new item to the end
+fruits.append(&quot;Pineapple&quot;)
+print(fruits)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>['Orange', 'Apple', 'Banana']
+['Orange', 'Apple', 'Banana', 'Pineapple']
+</code></pre>
+<p><strong>What just happened?</strong></p>
+<ol>
+<li><code>fruits[0] = "Orange"</code> replaced <code>"Mango"</code> (at position 0) with <code>"Orange"</code>.</li>
+<li><code>.append("Pineapple")</code> added <code>"Pineapple"</code> to the <strong>end</strong> of the list.</li>
+</ol>
+<hr>
+<h4 id="quick-recap_10">Quick Recap</h4>
+<ul>
+<li>Change an item: <code>list[index] = new_value</code>.</li>
+<li>Add an item to the end: <code>list.append(new_value)</code>.</li>
+</ul>
+<hr>
+<h3 id="444-operations-on-lists">4.4.4 Operations on Lists</h3>
+<hr>
+<h4 id="the-hook-the-shopping-list">🛒 The Hook — The Shopping List</h4>
+<p>Think of a paper shopping list. You can:<br>
+- <strong>Add</strong> a new item when you remember something.<br>
+- <strong>Remove</strong> an item when you bought it.<br>
+- <strong>Sort</strong> the list alphabetically to make shopping easier.<br>
+- <strong>Flip</strong> the list order if you want to start from the bottom of the shop.</p>
+<p>Python lists work exactly the same way — with built-in methods for each of these operations.</p>
+<hr>
+<h4 id="the-explanation_11">The Explanation</h4>
+<p>Python gives you built-in <strong>methods</strong> (actions) to work with lists:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.append(item)</code></td>
+<td>Adds an item to the <strong>end</strong> of the list</td>
+</tr>
+<tr>
+<td><code>.remove(item)</code></td>
+<td>Removes the <strong>first occurrence</strong> of the item</td>
+</tr>
+<tr>
+<td><code>.sort()</code></td>
+<td>Sorts the list in <strong>ascending order</strong> (A to Z, smallest to largest)</td>
+</tr>
+<tr>
+<td><code>.reverse()</code></td>
+<td>Reverses the <strong>order</strong> of the list</td>
+</tr>
+<tr>
+<td><code>len(list)</code></td>
+<td>Returns the <strong>number of items</strong> in the list</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="the-practical-walkthrough-all-four-operations">The Practical Walkthrough — All Four Operations</h4>
+<p><strong>Example 1: <code>.append()</code> — Adding a student</strong></p>
+<pre><code class="language-python">students = [&quot;Ahmed&quot;, &quot;Sara&quot;, &quot;Ali&quot;]
+students.append(&quot;Hina&quot;)
+print(students)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>['Ahmed', 'Sara', 'Ali', 'Hina']
+</code></pre>
+<hr>
+<p><strong>Example 2: <code>.remove()</code> — Removing a student</strong></p>
+<pre><code class="language-python">students = [&quot;Ahmed&quot;, &quot;Sara&quot;, &quot;Ali&quot;, &quot;Hina&quot;, &quot;Sara&quot;]
+students.remove(&quot;Sara&quot;)
+print(students)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>['Ahmed', 'Ali', 'Hina', 'Sara']
+</code></pre>
+<blockquote><p>⚠️ <strong>Note:</strong> <code>.remove()</code> only removes the <strong>first</strong> occurrence. Notice that the second <code>"Sara"</code> is still in the list!</p></blockquote>
+<hr>
+<p><strong>Example 3: <code>.sort()</code> — Sorting numbers</strong></p>
+<pre><code class="language-python">numbers = [34, 12, 5, 89, 23]
+numbers.sort()
+print(numbers)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>[5, 12, 23, 34, 89]
+</code></pre>
+<hr>
+<p><strong>Example 4: <code>.reverse()</code> — Reversing a list</strong></p>
+<pre><code class="language-python">fruits = [&quot;Apple&quot;, &quot;Banana&quot;, &quot;Orange&quot;, &quot;Mango&quot;]
+fruits.reverse()
+print(fruits)
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>['Mango', 'Orange', 'Banana', 'Apple']
+</code></pre>
+<hr>
+<p><strong>Example 5: <code>len()</code> — Counting items</strong></p>
+<pre><code class="language-python">fruits = [&quot;Apple&quot;, &quot;Banana&quot;, &quot;Mango&quot;]
+print(&quot;Number of fruits:&quot;, len(fruits))
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Number of fruits: 3
+</code></pre>
+<hr>
+<p><strong>Putting it all together — a complete example:</strong></p>
+<pre><code class="language-python"># Start with a class list
+students = [&quot;Ahmed&quot;, &quot;Sara&quot;, &quot;Ali&quot;]
+
+# Add a new student
+students.append(&quot;Hina&quot;)
+
+# One student left
+students.remove(&quot;Sara&quot;)
+
+# Sort alphabetically
+students.sort()
+
+print(&quot;Final class list:&quot;, students)
+print(&quot;Number of students:&quot;, len(students))
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code>Final class list: ['Ahmed', 'Ali', 'Hina']
+Number of students: 3
+</code></pre>
+<hr>
+<h4 id="grab-a-partner-444">👥 Grab a Partner — 4.4.4</h4>
+<blockquote><p><strong>One partner:</strong> Write a list of <strong>five numbers</strong> on paper — any five numbers you like.</p><p><strong>Other partner:</strong> Using only the list operations from this section, write Python code that finds:<br>
+- The <strong>largest</strong> number (Hint: sort the list first, then access the last item)<br>
+- The <strong>sum</strong> of all numbers (Hint: Python has a built-in <code>sum()</code> function!)<br>
+- The <strong>length</strong> of the list (how many numbers)</p><p><strong>Swap roles</strong> with a different set of five numbers.</p></blockquote>
+<hr>
+<h4 id="quick-recap_11">Quick Recap</h4>
+<ul>
+<li>Python lists have powerful built-in methods: <code>.append()</code>, <code>.remove()</code>, <code>.sort()</code>, <code>.reverse()</code>.</li>
+<li><code>len()</code> tells you how many items are in a list.</li>
+<li><code>.remove()</code> only removes the <strong>first matching item</strong>, not all of them.</li>
+</ul>
+<hr>
+<h2 id="45-testing-and-debugging-in-python">4.5 Testing and Debugging in Python</h2>
+<h3 id="451-testing">4.5.1 Testing</h3>
+<hr>
+<h4 id="the-hook-re-reading-the-exam-paper">📝 The Hook — Re-Reading the Exam Paper</h4>
+<p>You finish your exam with 10 minutes to spare. A good student does not sit back and relax. They go back through every answer — checking, verifying, trying to catch mistakes before the teacher does.</p>
+<p>This is <strong>testing</strong>.</p>
+<p>In programming, testing means <strong>running your code with different inputs to make sure it behaves correctly in all situations</strong> — not just the obvious ones.</p>
+<hr>
+<h4 id="the-explanation_12">The Explanation</h4>
+<p><strong>Testing</strong> is the process of checking that your program does what it is supposed to do.</p>
+<p>Here is an important truth: <strong>no program is correct just because it ran without errors.</strong> A program can run perfectly and still give the wrong answer. Testing is how you catch these problems before they cause real harm.</p>
+<p><strong>Types of Testing:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it checks</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unit Testing</strong></td>
+<td>One small part of the code in isolation (e.g., one function)</td>
+<td>Test that <code>add(2, 3)</code> returns <code>5</code></td>
+</tr>
+<tr>
+<td><strong>Integration Testing</strong></td>
+<td>How different parts of the code work together</td>
+<td>Test that the login system works with the database</td>
+</tr>
+<tr>
+<td><strong>Functional Testing</strong></td>
+<td>Whether the software does what the user expects</td>
+<td>Test that clicking "Submit" actually saves the form</td>
+</tr>
+<tr>
+<td><strong>Regression Testing</strong></td>
+<td>That fixing one bug did not accidentally break something else</td>
+<td>After fixing the login page, check the signup page still works</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h4 id="the-practical-walkthrough-writing-test-cases">The Practical Walkthrough — Writing Test Cases</h4>
+<p>A <strong>test case</strong> is one specific input + the expected output you would check against.</p>
+<p>Imagine you write this function to add two numbers:</p>
+<pre><code class="language-python">def add(a, b):
+    return a + b
+</code></pre>
+<p>Good test cases to write:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Test case</th>
+<th>Input</th>
+<th>Expected output</th>
+<th>Why this test?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Normal case</td>
+<td><code>add(2, 3)</code></td>
+<td><code>5</code></td>
+<td>Basic functionality</td>
+</tr>
+<tr>
+<td>Zero</td>
+<td><code>add(0, 5)</code></td>
+<td><code>5</code></td>
+<td>Edge case — does zero cause problems?</td>
+</tr>
+<tr>
+<td>Negative numbers</td>
+<td><code>add(-3, 7)</code></td>
+<td><code>4</code></td>
+<td>Are negatives handled?</td>
+</tr>
+<tr>
+<td>Large numbers</td>
+<td><code>add(999999, 1)</code></td>
+<td><code>1000000</code></td>
+<td>Does it work at scale?</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Using Python's <code>unittest</code> module:</strong></p>
+<pre><code class="language-python">import unittest
+
+def add(a, b):
+    return a + b
+
+class TestAdd(unittest.TestCase):
+    def test_normal(self):
+        self.assertEqual(add(2, 3), 5)
+
+    def test_zero(self):
+        self.assertEqual(add(0, 5), 5)
+
+    def test_negative(self):
+        self.assertEqual(add(-3, 7), 4)
+
+if __name__ == &quot;__main__&quot;:
+    unittest.main()
+</code></pre>
+<p><strong>Expected Output (if all tests pass):</strong></p>
+<pre><code>...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK
+</code></pre>
+<p>Each <code>.</code> represents one passed test. <code>OK</code> means all tests passed.</p>
+<hr>
+<h4 id="pause-think-451">✋ Pause &amp; Think — 4.5.1</h4>
+<blockquote><p>You write a program to calculate the <strong>average</strong> of three numbers. The formula is:</p><p><code>average = (number1 + number2 + number3) / 3</code></p><p><strong>Your task:</strong> Think of <strong>at least three test cases</strong> you would use to check this program. For each one, write:<br>
+- The three input numbers<br>
+- The expected average output</p><p><strong>Challenge:</strong> Can you think of an input that might cause a problem or produce an unexpected result? (Hint: what if all three numbers are 0?)</p></blockquote>
+<hr>
+<h4 id="quick-recap_12">Quick Recap</h4>
+<ul>
+<li><strong>Testing</strong> is running your code with various inputs to make sure it works correctly.</li>
+<li>Always test <strong>normal cases</strong>, <strong>edge cases</strong> (unusual values like 0 or very large numbers), and <strong>cases that might break the program</strong>.</li>
+</ul>
+<hr>
+<h3 id="452-debugging">4.5.2 Debugging</h3>
+<hr>
+<h4 id="the-hook-grace-hopper-and-the-actual-bug">🦗 The Hook — Grace Hopper and the Actual Bug</h4>
+<p>On <strong>September 9th, 1947</strong>, engineers at Harvard University were working on a large computer called the <strong>Mark II</strong>. The machine kept producing errors. After hours of searching, they found the problem: a <strong>real moth</strong> had flown inside the computer and gotten stuck in one of the electrical relays, stopping it from working.</p>
+<p>The lead engineer, <strong>Grace Hopper</strong>, carefully removed the moth and taped it into the logbook with a note: <em>"First actual case of bug being found."</em></p>
+<p>That is where programmers get the word <strong>"bug"</strong> — and why fixing a bug is called <strong>"debugging."</strong></p>
+<p>Today, your bugs are not moths. They are typos, wrong conditions, and logical mistakes. But Grace Hopper's approach is still exactly right: <strong>find the bug, remove it, and write down what you learned.</strong></p>
+<hr>
+<h4 id="the-explanation_13">The Explanation</h4>
+<p><strong>Debugging</strong> is the process of finding and fixing errors in your code.</p>
+<p>There are two main types of errors in Python:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Error Type</th>
+<th>What it means</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Syntax Error</strong></td>
+<td>Python cannot understand your code — it is grammatically wrong</td>
+<td>Missing colon, wrong spelling of a keyword</td>
+</tr>
+<tr>
+<td><strong>Logic Error</strong></td>
+<td>Python runs the code without crashing, but the output is wrong</td>
+<td>Using <code>+</code> instead of <code>-</code>, wrong condition</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote><p>💡 <strong>The most important mindset shift:</strong> An error message is <strong>not Python insulting you</strong>. It is Python pointing a finger at the line where it got confused and asking for help. A programmer who can read an error message and act on it is already thinking like a professional.</p></blockquote>
+<p><strong>Three debugging techniques:</strong></p>
+<ol>
+<li><strong>Print Statements</strong> — Add <code>print()</code> lines inside your code to see the value of variables at different stages.</li>
+<li><strong>Read the Error Message</strong> — Python tells you the <strong>line number</strong> and the <strong>type of error</strong>. Start there.</li>
+<li><strong>Trace Through Manually</strong> — Go through your code line by line on paper, pretending to be Python. What is the value of each variable at each step?</li>
+</ol>
+<hr>
+<h4 id="the-practical-walkthrough-two-worked-debugging-examples">The Practical Walkthrough — Two Worked Debugging Examples</h4>
+<hr>
+<p><strong>Debugging Example 1: Syntax Error</strong></p>
+<p><strong>The broken code:</strong></p>
+<pre><code class="language-python">temperature = 35
+
+if temperature &gt; 30
+    print(&quot;It's a hot day!&quot;)
+</code></pre>
+<p><strong>The error message Python gives:</strong></p>
+<pre><code>  File &quot;example.py&quot;, line 3
+    if temperature &gt; 30
+                       ^
+SyntaxError: expected ':'
+</code></pre>
+<p><strong>Diagnosis:</strong></p>
+<ul>
+<li>Python says the error is on <strong>line 3</strong>.</li>
+<li>The error type is <strong><code>SyntaxError</code></strong>.</li>
+<li>The message says <strong><code>expected ':'</code></strong> — Python expected a colon at the end of the <code>if</code> statement, but did not find one.</li>
+</ul>
+<p><strong>The fix:</strong></p>
+<pre><code class="language-python">temperature = 35
+
+if temperature &gt; 30:       # ← Added the missing colon here
+    print(&quot;It's a hot day!&quot;)
+</code></pre>
+<p><strong>Corrected Output:</strong></p>
+<pre><code>It's a hot day!
+</code></pre>
+<p><strong>What we learned:</strong> Every <code>if</code>, <code>while</code>, <code>for</code>, and <code>else</code> line in Python <strong>must end with a colon <code>:</code></strong>. Forgetting it is one of the most common beginner mistakes — and one of the easiest to fix.</p>
+<hr>
+<p><strong>Debugging Example 2: Logic Error</strong></p>
+<p><strong>The task:</strong> Write a program that counts down from 10 to 1 and prints "Lift off!" at the end.</p>
+<p><strong>The broken code:</strong></p>
+<pre><code class="language-python">number = 10
+
+while number &gt; 0:
+    print(number)
+    number = number + 1     # ← Bug is here
+
+print(&quot;Lift off!&quot;)
+</code></pre>
+<p><strong>What happens when you run this?</strong></p>
+<p>The output starts:</p>
+<pre><code>10
+11
+12
+13
+...
+</code></pre>
+<p>And keeps going forever. <strong>This is an infinite loop.</strong></p>
+<p>There is <strong>no error message</strong> — Python is not confused. It is doing exactly what you told it to do. The bug is in your <strong>logic</strong>, not your grammar.</p>
+<p><strong>Diagnosis:</strong></p>
+<ul>
+<li>The loop should be counting <strong>down</strong> (towards 0), but <code>number = number + 1</code> is making it count <strong>up</strong> (away from 0).</li>
+<li>The condition <code>number &gt; 0</code> will never become False because <code>number</code> is growing, not shrinking.</li>
+</ul>
+<p><strong>The fix:</strong></p>
+<pre><code class="language-python">number = 10
+
+while number &gt; 0:
+    print(number)
+    number = number - 1     # ← Changed + to -
+
+print(&quot;Lift off!&quot;)
+</code></pre>
+<p><strong>Corrected Output:</strong></p>
+<pre><code>10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+Lift off!
+</code></pre>
+<p><strong>What we learned:</strong> Logic errors do not produce error messages — they produce <strong>wrong output</strong> (or in this case, infinite output). Always trace through your loop logic manually on paper first: "Is my variable moving towards making the condition False, or away from it?"</p>
+<hr>
+<h4 id="pause-think-452">✋ Pause &amp; Think — 4.5.2</h4>
+<blockquote><p>The code below is supposed to print the sum of all numbers from 1 to 5. But something is wrong.</p><p>```python<br>
+total = 0</p><p>for i in range(1, 5):<br>
+    total = total + i</p><p>print("Sum:", total)<br>
+```</p><p><strong>The output is:</strong><br>
+<code>Sum: 10</code></p><p><strong>But the correct answer should be 15</strong> (1 + 2 + 3 + 4 + 5 = 15).</p><ul>
+<li>Can you find the bug?</li>
+<li>Is it a syntax error or a logic error?</li>
+<li>What is the fix?</li>
+<li>Write down what you learned from this bug.</li>
+</ul></blockquote>
+<hr>
+<h4 id="quick-recap_13">Quick Recap</h4>
+<ul>
+<li><strong>Debugging</strong> is finding and fixing errors. There are two main types: <strong>syntax errors</strong> (bad grammar — Python cannot run the code) and <strong>logic errors</strong> (bad thinking — Python runs but gives wrong output).</li>
+<li><strong>Read error messages carefully</strong> — they tell you the line number and the type of problem.</li>
+<li><strong>Logic errors are sneakier</strong> — use print statements and trace tables to hunt them down.</li>
+</ul>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>Congratulations. You have just covered the most important building blocks of programming logic.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>What you learned</th>
+<th>The key idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>if</code> statement</td>
+<td>Runs code <strong>only if</strong> a condition is True</td>
+</tr>
+<tr>
+<td><code>if-else</code> statement</td>
+<td>Chooses between <strong>two paths</strong> based on a condition</td>
+</tr>
+<tr>
+<td>Nested conditions</td>
+<td>Checks <strong>inside checks</strong> — one condition inside another</td>
+</tr>
+<tr>
+<td><code>while</code> loop</td>
+<td>Repeats <strong>as long as</strong> a condition is True</td>
+</tr>
+<tr>
+<td><code>for</code> loop</td>
+<td>Repeats <strong>for each item</strong> in a sequence</td>
+</tr>
+<tr>
+<td><code>range()</code> function</td>
+<td>Generates a <strong>sequence of numbers</strong> for use in loops</td>
+</tr>
+<tr>
+<td>Nested loops</td>
+<td>A loop <strong>inside a loop</strong> — inner loop runs fully each outer step</td>
+</tr>
+<tr>
+<td>Libraries</td>
+<td>Ready-made <strong>toolboxes</strong> of code you can import and use</td>
+</tr>
+<tr>
+<td>Lists</td>
+<td>Ordered <strong>collections</strong> of items, changeable, indexed from 0</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>Checking your code with <strong>various inputs</strong> to verify it works</td>
+</tr>
+<tr>
+<td>Debugging</td>
+<td><strong>Finding and fixing</strong> errors — syntax errors and logic errors</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<blockquote><p><strong>One final thought from your instructor:</strong></p><p>Every concept in this chapter — every <code>if</code>, every loop, every list — was once new and confusing to a professional programmer. The engineers at NASA, the developers at Google, the security researchers at top firms — they all learned these exact same ideas in their first programming course.</p><p>What made them professionals was not talent. It was persistence. They ran the code. They read the error message. They fixed it. They ran it again.</p><p>That is the entire process. You already started it.</p></blockquote>
+<hr>
+<p><em>End of Chapter 4: Control Structures in Python</em></p>
+
+</body>
+</html>

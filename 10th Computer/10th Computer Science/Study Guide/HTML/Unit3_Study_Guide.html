@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 3 — Introduction to Python Programming</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Unit 3 — Introduction to Python Programming</div>
+</div>
+
+<h1 id="unit-3-introduction-to-python-programming">Unit 3 — Introduction to Python Programming</h1>
+<p><em>A complete beginner's journey — from zero code experience to writing your own Python programs.</em></p>
+<p><strong>Student Learning Outcomes — By the End of This Chapter You Will Be Able To:</strong></p>
+<ul>
+<li><strong>Understand</strong> basic programming concepts and set up a Python development environment.</li>
+<li><strong>Write and interpret</strong> basic Python syntax and structure, including variables, data types, and input/output operations.</li>
+<li><strong>Use</strong> various operators and expressions in Python — arithmetic, comparison, assignment, logical operators, and operator precedence.</li>
+</ul>
+<hr>
+<h2 id="introduction">Introduction</h2>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>In December 1989, a programmer in the Netherlands named <strong>Guido van Rossum</strong> was bored during the Christmas holiday. He decided to spend his free time building a programming language — something simpler and more readable than what existed at the time. He named it <strong>Python</strong>, not after the snake, but after his favourite TV show: <em>Monty Python's Flying Circus</em>.</p><p>He had no idea that this holiday project would one day become one of the most popular programming languages on the planet — used by NASA scientists, Netflix engineers, and now — you.</p></div>
+<p>Welcome. You are about to write your first Python program. And that sentence is more exciting than it sounds, because programming is genuinely one of the most powerful skills a human being can have in the 21st century.</p>
+<p>Think about every app on your phone. Every website you visit. Every game you play. Every YouTube recommendation algorithm that somehow already knows what you want to watch next. All of it — at its core — is someone giving instructions to a computer in a language the computer can understand.</p>
+<p>Python is that language. And you are going to learn it, step by step, starting right now.</p>
+<p>This chapter covers everything you need to go from zero — no code experience, no technical background — to writing real, working Python programs. Take your time. Don't skip the "Pause &amp; Think" sections. Try every code example yourself. The only way to learn programming is to actually do it.</p>
+<p>Let's begin.</p>
+<hr>
+<h2 id="31-introduction-to-python-programming">3.1 Introduction to Python Programming</h2>
+<p><strong>Python</strong> is a <strong>high-level programming language</strong>. Let's break that phrase down immediately, because it contains two terms worth understanding.</p>
+<div class="keyword-def"><span class="kd-term">high-level</span><span class="kd-body">This means Python is designed for humans — not machines. It uses words from the English language (like <code>print</code>, <code>input</code>, <code>if</code>, <code>while</code>) instead of the 0s and 1s that computers actually understand. Python translates your human-readable code into machine instructions automatically.</span></div><div class="keyword-def"><span class="kd-term">programming language</span><span class="kd-body">A set of rules and symbols that let you write instructions for a computer to follow. Just like Urdu or English is a language for communication between people, Python is a language for communication between a person and a computer.</span></div>
+<p>Python is <strong>versatile</strong> — meaning it works for many different types of tasks. Developers use Python to build websites and web apps, to analyze large amounts of data, to create artificial intelligence models, to automate boring repetitive tasks, and to control robots. You will begin with the fundamentals, and those fundamentals open every single one of those doors.</p>
+<p>Python's biggest strength is its <strong>readability</strong>. Compare these two lines of code — both do the same thing (display a message):</p>
+<pre><code class="language-python"># Python (readable):
+print(&quot;Hello, students!&quot;)
+</code></pre>
+<pre><code class="language-java">// Java (the same thing — much more code):
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(&quot;Hello, students!&quot;);
+    }
+}
+</code></pre>
+<p>Python says: here is what you want to do — say it clearly, and let's get it done. That philosophy makes it the perfect starting point.</p>
+<h3 id="311-basic-programming-concepts">3.1.1 Basic Programming Concepts</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>In the 1940s, the world's first electronic computers — enormous machines the size of entire rooms — had no keyboards, no screens, and no way to type instructions. Programmers had to <strong>physically rewire the machine</strong> using cables and plugboards to change what it calculated. A single new calculation could take hours of rewiring work.</p><p>Then people realized: what if the machine could store its own instructions internally? What if you could write a program — a list of steps — and the machine would just follow it? That idea changed everything. Today, you can write a program in seconds that would have taken those early engineers days to set up.</p><p>And it all comes down to one core idea: <strong>a program is a set of clear, precise instructions for a computer to follow.</strong></p></div>
+<p><strong>Computer programming</strong> is the process of writing instructions that tell a computer how to perform a task. The computer does exactly what you tell it — no more, no less. It does not guess. It does not assume. It follows your instructions precisely, in the exact order you wrote them.</p>
+<p>Think of it like giving directions to a friend who has never visited your house before. You cannot say "just find it." You must say: "Turn right at the bakery. Go straight for 200 metres. Turn left at the red gate. My house is the third one on the right." The computer is like that friend — incredibly capable, but it needs exact, step-by-step guidance.</p>
+<p>A <strong>program</strong> is that set of steps, written in a programming language. When Python reads your program and executes it, we say Python is <strong>interpreting</strong> your code.</p>
+<div class="keyword-def"><span class="kd-term">interpreter</span><span class="kd-body">The program that reads your Python code and translates it into actions the computer can perform — one line at a time. When you "run" your Python program, the interpreter does this translation automatically.</span></div>
+<h4 id="setting-up-your-python-development-environment">Setting Up Your Python Development Environment</h4>
+<p>Before you write any code, you need to prepare your computer. This preparation is called setting up your <strong>development environment</strong> — it means installing the tools that let you write, run, and fix Python programs.</p>
+<p>There are two ways to get started:</p>
+<p><strong>Option A — Install Python on your computer.</strong> This gives you full control and works without an internet connection.</p>
+<p><strong>Step-by-Step: Installing Python on Windows</strong></p>
+<ol>
+<li><strong>Open your browser and go to python.org.</strong> At the top of the site, click on the <strong>Downloads</strong> section. You will see a large button showing the latest version (e.g., Python 3.13). Click it.<br>
+<em>What happened: Your browser will download an installer file ending in <code>.exe</code>.</em></li>
+<li><strong>Run the installer.</strong> Find the downloaded file (usually in your Downloads folder) and double-click it to open it.</li>
+<li><strong>Check the box that says "Add Python to PATH."</strong> This is very important. You will see this option at the bottom of the first screen. If you skip this, Python may not work from your command prompt later.<br>
+<em>What happened: This setting tells Windows where to find Python when you run it from the command line.</em></li>
+<li><strong>Click "Install Now"</strong> and wait for the installation to finish. When done, click "Close."</li>
+<li><strong>Download an IDE.</strong> An <strong>IDE</strong> (Integrated Development Environment) is a program where you write and run your code. Think of it as a Word Processor — but for code instead of essays. Popular choices are:<br>
+   - <strong>VS Code</strong> — free, lightweight, widely used (recommended for beginners)<br>
+   - <strong>PyCharm</strong> — powerful, designed specifically for Python<br>
+   - <strong>IDLE</strong> — simple, included automatically when you install Python</li>
+<li><strong>Test your installation.</strong> Open your IDE, create a new file called <code>test.py</code>, and type:</li>
+</ol>
+<p><code>python
+   print("Hello, Python!")</code></p>
+<p>Click the Run button (or press F5 in VS Code).<br>
+<em>What happened: If you see the words <code>Hello, Python!</code> appear in the output area at the bottom, congratulations — Python is working.</em></p>
+<p><strong>Option B — Use Google Colab (no installation needed).</strong></p>
+<p>Google Colab is a free platform on the internet where you can write and run Python code directly in your browser — no installation, no setup. This is perfect if you are on a school computer or a device with limited storage.</p>
+<p><strong>Step-by-Step: Getting Started with Google Colab</strong></p>
+<ol>
+<li><strong>Open your browser and visit:</strong> <code>colab.research.google.com</code></li>
+<li><strong>Sign in</strong> with a Google/Gmail account.</li>
+<li><strong>Click "New Notebook."</strong> A notebook is a document where you write code in small boxes called <strong>cells</strong>.</li>
+<li><strong>Click inside a cell,</strong> type your Python code, then press <strong>Shift + Enter</strong> to run it.<br>
+<em>What happened: The output appears directly below the cell. Python is already installed in the cloud — no setup required from you.</em></li>
+</ol>
+<div class="did-you-know"><span class="callout-label">💡 Did You Know?</span><p>Google Colab comes with popular Python libraries like NumPy, Pandas, and Matplotlib already installed. These are powerful tools used in data science and artificial intelligence — and you can start using them without installing anything.</p></div><div class="stop-point"><span class="callout-label">⏸ Pause & Think</span><p>You have just set up Python (either on your computer or on Colab). Before moving on — run this one line and observe what happens:</p><p><code>python
+print("My name is [your name] and I just ran my first Python program.")</code></p><p>Replace <code>[your name]</code> with your actual name. What appeared on screen? Why do you think <code>print</code> is the right word to use here — what is it actually doing to the text you gave it?</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Python is a high-level, readable programming language. A program is a set of precise instructions for a computer. Before writing code, you need an environment — either Python installed locally or Google Colab in your browser. The Python interpreter reads your code and executes it line by line.</p></div>
+<hr>
+<h2 id="32-basic-python-syntax-and-structure">3.2 Basic Python Syntax and Structure</h2>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>Every language has rules about how sentences must be structured. In English, you write <em>"The cat sat on the mat"</em> — not <em>"Sat the on mat cat the."</em> The words exist, but the structure is wrong. Python works the same way. It has a <strong>syntax</strong> — a set of rules for how code must be written. If you follow them, Python understands you perfectly. If you break them, Python will pause and tell you something is wrong.</p><p>The best part? Python's syntax errors are not judgements. They are questions. Python is saying: <em>"I got a little confused here — can you clarify?"</em> Every programmer who has ever existed has seen a syntax error. It is part of the process.</p></div>
+<p><strong>Syntax</strong> means the rules and structure of the Python language — how code must be written for Python to understand it. Let's look at the simplest, most important piece of Python syntax: the <strong>print statement</strong>.</p>
+<pre><code class="language-python">print(&quot;K2 is the second-highest mountain in the world.&quot;)
+print(&quot;Edhi Foundation runs the world's largest volunteer ambulance network.&quot;)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>K2 is the second-highest mountain in the world.
+Edhi Foundation runs the world's largest volunteer ambulance network.
+</code></pre>
+<p>The <code>print()</code> function takes the text you give it — surrounded by quotation marks — and displays it on the screen. That's it. One function. One clear, simple rule.</p>
+<p>Notice the structure:</p>
+<ul>
+<li><code>print</code> — the function name (always lowercase)</li>
+<li><code>(  )</code> — parentheses that contain what you want to print</li>
+<li><code>"..."</code> — quotation marks around text (called a <strong>string</strong>)</li>
+</ul>
+<p>Python also has a rule about <strong>indentation</strong>. Unlike most languages, Python uses the empty space at the start of a line to define the structure of your code. For now, just remember: never add random spaces at the beginning of a line.</p>
+<div class="caution"><span class="callout-label">⚠️ Caution</span><p>In Python, indentation defines the structure and scope of your code. Incorrect indentation can cause errors. We will see this in action when we learn about <code>if</code> statements and loops in later chapters.</p></div>
+<h4 id="python-comments">Python Comments</h4>
+<p>A <strong>comment</strong> is a line in your code that Python ignores completely. It is there for you — and other humans reading your code — not for the computer. Comments are used to leave notes, explanations, and reminders inside your programs.</p>
+<p>In Python, a single-line comment starts with the <strong>#</strong> (hash) symbol. Everything after the # on that line is ignored by Python.</p>
+<pre><code class="language-python"># This is a comment. Python will not run this line.
+print(&quot;This line WILL run and appear on screen.&quot;)
+
+# Comments help explain what our code does:
+print(&quot;Hello, students!&quot;)   # This prints a greeting
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>This line WILL run and appear on screen.
+Hello, students!
+</code></pre>
+<div class="did-you-know"><span class="callout-label">💡 Did You Know?</span><p>You can also write multiline text using triple quotes <code>"""like this"""</code> — but they are technically strings that Python reads and then ignores (because nothing is done with them). Use <code>#</code> for proper comments.</p></div><div class="stop-point"><span class="callout-label">⏸ Pause & Think</span><p>Look at the code below. Without running it, predict: how many lines will appear in the output?</p><p>```python</p><h1 id="pakistans-national-game">Pakistan's national game</h1><p>print("Field Hockey")</p><h1 id="pakistans-national-flower">Pakistan's national flower</h1><p>print("Jasmine")</p><h1 id="this-comment-is-about-the-national-animal">This comment is about the national animal</h1><h1 id="markhor-is-pakistans-national-animal">Markhor is Pakistan's national animal</h1><p>```</p><p>How many lines of output will appear? Why? Now run it and check if your prediction was correct.</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Syntax is the set of rules Python uses to understand your code. The <code>print()</code> function displays text on screen. Comments start with <code>#</code> and are ignored by Python — they are notes for human readers.</p></div>
+<h3 id="321-variables-in-python">3.2.1 Variables in Python</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>Imagine your school bag. You put your textbook in it in the morning. After class, you take the textbook out and put your notebook in. The bag itself stays the same — what's inside changes. A variable in Python works exactly like that bag. It is a container that can hold a value, and you can change what's inside it at any time.</p><p>Every computer program works with information — a student's name, a test score, a temperature reading. Variables are how you store and keep track of that information while your program runs.</p></div>
+<p>A <strong>variable</strong> is a named container in the computer's memory that holds a piece of data. You give the container a name, and you can put any value inside it. You can also replace that value later.</p>
+<p>In Python, you create a variable and give it a value using the <strong>=</strong> sign (called the <strong>assignment operator</strong>):</p>
+<pre><code class="language-python"># Creating a variable called &quot;age&quot; and storing the value 71
+age = 71
+print(&quot;Azam lived for&quot;, age, &quot;years&quot;)
+
+# Changing what's stored in the same variable
+age = 60
+print(&quot;Iqbal lived for&quot;, age, &quot;years&quot;)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Azam lived for 71 years
+Iqbal lived for 60 years
+</code></pre>
+<p>Notice: the same variable <code>age</code> held two different values at different points. That is the power of a variable — it can change. That is exactly why it is called a <em>variable</em>.</p>
+<div class="caution"><span class="callout-label">⚠️ Caution</span><p>The <code>=</code> sign in Python does <strong>not</strong> mean "equals" in the mathematical sense. It means <strong>"store this value in this variable."</strong> Read <code>age = 25</code> as <em>"age gets 25"</em>, not <em>"age equals 25."</em> This is one of the most common points of confusion for beginners — and for the record, every professional programmer was confused by this at first.</p></div>
+<h4 id="variable-naming-rules">Variable Naming Rules</h4>
+<p>You can name a variable almost anything — but Python has rules. Break these rules and Python will show an error.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Correct Example</th>
+<th>Incorrect Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Must start with a letter or underscore _</td>
+<td><code>name</code>, <code>_score</code></td>
+<td><code>1name</code>, <code>2score</code></td>
+</tr>
+<tr>
+<td>Can contain letters, digits, underscores</td>
+<td><code>student_age</code>, <code>score2</code></td>
+<td><code>student-age</code>, <code>score@2</code></td>
+</tr>
+<tr>
+<td>Case-sensitive (age ≠ Age ≠ AGE)</td>
+<td><code>age</code> and <code>Age</code> are different</td>
+<td>Mixing up causes bugs</td>
+</tr>
+<tr>
+<td>Cannot be a Python keyword</td>
+<td><code>my_if</code>, <code>is_true</code></td>
+<td><code>if</code>, <code>while</code>, <code>for</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="did-you-know"><span class="callout-label">💡 Did You Know?</span><p>Python's reserved keywords — words you cannot use as variable names — include: <code>if</code>, <code>else</code>, <code>elif</code>, <code>for</code>, <code>while</code>, <code>break</code>, <code>continue</code>, <code>and</code>, <code>or</code>, <code>not</code>, <code>in</code>, <code>is</code>, <code>True</code>, <code>False</code>, <code>None</code>. These words are already claimed by Python itself.</p></div>
+<h4 id="types-of-variables-data-types">Types of Variables (Data Types)</h4>
+<p>Not all variables hold the same kind of data. Python automatically knows what type of data you are storing based on the value you give it.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>What It Stores</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int (integer)</td>
+<td>Whole numbers — no decimal point</td>
+<td><code>age = 16</code></td>
+</tr>
+<tr>
+<td>float</td>
+<td>Numbers with a decimal point</td>
+<td><code>price = 19.99</code></td>
+</tr>
+<tr>
+<td>str (string)</td>
+<td>Text — always inside quotation marks</td>
+<td><code>name = "Ali"</code></td>
+</tr>
+<tr>
+<td>bool (boolean)</td>
+<td>Only two possible values: True or False</td>
+<td><code>is_student = True</code></td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-python"># Different types of variables
+age = 16               # int
+price = 19.99          # float
+name = &quot;Fatima&quot;        # string
+is_student = True      # boolean
+
+print(name, &quot;is&quot;, age, &quot;years old.&quot;)
+print(&quot;Is she a student?&quot;, is_student)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Fatima is 16 years old.
+Is she a student? True
+</code></pre>
+<h4 id="input-and-output-operations">Input and Output Operations</h4>
+<p>A program that shows the same thing every time it runs is not very useful. Real programs interact with the person using them. Python has two key functions for this interaction:</p>
+<div class="keyword-def"><span class="kd-term">input()</span><span class="kd-body">Displays a message, then <strong>waits</strong> for the user to type something and press Enter. Whatever the user types is captured and stored in a variable.</span></div><div class="keyword-def"><span class="kd-term">print()</span><span class="kd-body">Displays one or more values on the screen. This is Python talking back to the user.</span></div>
+<pre><code class="language-python"># Ask the user for their name, then greet them
+name = input(&quot;Enter your name: &quot;)
+print(&quot;Hello, &quot; + name + &quot;!&quot;)
+</code></pre>
+<p><strong>Example Run:</strong></p>
+<pre><code>Enter your name: Maryam Ashraf
+Hello, Maryam Ashraf!
+</code></pre>
+<p>Notice the <code>+</code> sign between the strings. In Python, <code>+</code> between two text values <strong>joins them together</strong>. This is called <strong>string concatenation</strong>.</p>
+<h4 id="handling-number-inputs">Handling Number Inputs</h4>
+<p>Here is something important: <code>input()</code> <strong>always gives you text</strong> — even if the user types a number. If you need to do math with the input, you must convert it first.</p>
+<pre><code class="language-python"># Convert input to an integer
+user_age = int(input(&quot;Enter your age: &quot;))
+print(&quot;Your age is:&quot;, user_age)
+
+# Convert input to a float (decimal number)
+user_height = float(input(&quot;Enter your height in metres: &quot;))
+print(&quot;Your height is&quot;, user_height, &quot;metres&quot;)
+</code></pre>
+<p><strong>Example Run:</strong></p>
+<pre><code>Enter your age: 16
+Your age is: 16
+Enter your height in metres: 1.65
+Your height is 1.65 metres
+</code></pre>
+<div class="stop-point"><span class="callout-label">⏸ Pause & Think</span><p>You are storing a student's age in a variable called <code>age</code>. Halfway through the school year, the student has a birthday. Do you need to create a new variable called <code>new_age</code>, or can you reuse the same variable <code>age</code> and change its value?</p><p>What does your answer tell you about the word "variable" — why is it called that and not "constant"?</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>A variable is a named container that stores a value. Python has four basic data types: int, float, str, and bool. Use <code>input()</code> to receive data from the user and <code>print()</code> to display data. Always convert numeric input using <code>int()</code> or <code>float()</code> when you need to do math with it.</p></div>
+<hr>
+<h2 id="33-operators-and-expressions">3.3 Operators and Expressions</h2>
+<p>A calculator has buttons: <code>+</code>, <code>−</code>, <code>×</code>, <code>÷</code>. Each button is an <strong>operator</strong> — a symbol that performs an operation. Python has those same operators, plus many more powerful ones.</p>
+<div class="keyword-def"><span class="kd-term">operator</span><span class="kd-body">A symbol that tells Python to perform a specific operation on one or more values. Examples: <code>+</code> adds, <code>*</code> multiplies, <code>&gt;</code> compares.</span></div><div class="keyword-def"><span class="kd-term">expression</span><span class="kd-body">A combination of values, variables, and operators that produces a result. <code>5 + 3</code> is an expression. So is <code>age &gt; 18</code>. Python evaluates (calculates) an expression and gives you the result.</span></div>
+<p>Python has five families of operators. Let's learn them one by one.</p>
+<h3 id="331-arithmetic-operators">3.3.1 Arithmetic Operators</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>The first electronic calculator was built in 1961 and cost the equivalent of thousands of dollars. It could only add, subtract, multiply, and divide. Today, your Python program can perform all of those operations — plus a few more — in microseconds, for free, with two lines of code. Those 1961 engineers would be astounded.</p></div>
+<p>Arithmetic operators perform mathematical calculations. Here is the complete set:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Name</th>
+<th>What It Does</th>
+<th>Example</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>Addition</td>
+<td>Adds two numbers</td>
+<td><code>10 + 3</code></td>
+<td><code>13</code></td>
+</tr>
+<tr>
+<td>-</td>
+<td>Subtraction</td>
+<td>Subtracts second from first</td>
+<td><code>10 - 3</code></td>
+<td><code>7</code></td>
+</tr>
+<tr>
+<td>*</td>
+<td>Multiplication</td>
+<td>Multiplies two numbers</td>
+<td><code>10 * 3</code></td>
+<td><code>30</code></td>
+</tr>
+<tr>
+<td>/</td>
+<td>Division</td>
+<td>Divides — always returns a float</td>
+<td><code>10 / 3</code></td>
+<td><code>3.333...</code></td>
+</tr>
+<tr>
+<td>//</td>
+<td>Floor Division</td>
+<td>Divides — discards the decimal</td>
+<td><code>10 // 3</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>%</td>
+<td>Modulus</td>
+<td>Returns the remainder after division</td>
+<td><code>10 % 3</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>**</td>
+<td>Exponentiation</td>
+<td>Raises to a power</td>
+<td><code>10 ** 3</code></td>
+<td><code>1000</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The three that might be new to you are <code>//</code>, <code>%</code>, and <code>**</code>. Let's look at them:</p>
+<p><strong>Floor division (<code>//</code>)</strong> — When 10 ÷ 3 = 3.33, floor division just gives you the whole number part: 3. Imagine cutting a pizza into 10 slices and sharing them equally among 3 friends. Each friend gets 3 slices, with 1 left over.</p>
+<p><strong>Modulus (<code>%</code>)</strong> — This gives you the <em>remainder</em> of a division. <code>10 % 3 = 1</code> because 10 divided by 3 is 3 with 1 remaining. Modulus is incredibly useful — for example, to check if a number is even (<code>number % 2 == 0</code>).</p>
+<p><strong>Exponentiation (<code>**</code>)</strong> — This is "to the power of." <code>2 ** 10</code> means 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 1024. No need to multiply ten times by hand.</p>
+<pre><code class="language-python"># All arithmetic operators in action
+a = 10
+b = 3
+
+print(&quot;Addition:&quot;,       a + b)    # 13
+print(&quot;Subtraction:&quot;,    a - b)    # 7
+print(&quot;Multiplication:&quot;, a * b)    # 30
+print(&quot;Division:&quot;,       a / b)    # 3.3333333333333335
+print(&quot;Floor Division:&quot;, a // b)   # 3
+print(&quot;Modulus:&quot;,        a % b)    # 1
+print(&quot;Exponentiation:&quot;, a ** b)   # 1000
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Addition: 13
+Subtraction: 7
+Multiplication: 30
+Division: 3.3333333333333335
+Floor Division: 3
+Modulus: 1
+Exponentiation: 1000
+</code></pre>
+<div class="stop-point"><span class="callout-label">⏸ Pause & Think</span><p>A shopkeeper has 47 candies and wants to put them equally into bags of 5. How many full bags will they have? How many candies will be left over? Write two Python lines — one using <code>//</code> and one using <code>%</code> — to answer both questions without doing any mental math yourself.</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Python has 7 arithmetic operators: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> (true division), <code>//</code> (floor division), <code>%</code> (remainder), and <code>**</code> (power). Regular division always returns a float. Floor division and modulus work together to describe division completely.</p></div>
+<h3 id="332-comparison-operators">3.3.2 Comparison Operators</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>Every day, your brain makes dozens of comparisons. Is it hot or cold today? Is this price higher or lower than my budget? Is this road faster or slower than the other? Comparison is how we make decisions. In Python, comparison operators do the same thing — they compare two values and answer a simple question: is this statement True or False?</p></div>
+<p><strong>Comparison operators</strong> compare two values and return a <strong>Boolean result</strong> — either <code>True</code> or <code>False</code>. There are six comparison operators:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Example</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>==</td>
+<td>Equal to</td>
+<td><code>10 == 10</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td>!=</td>
+<td>Not equal to</td>
+<td><code>10 != 5</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>Greater than</td>
+<td><code>10 &gt; 5</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>Less than</td>
+<td><code>10 &lt; 5</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>Greater than or equal to</td>
+<td><code>10 &gt;= 10</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>Less than or equal to</td>
+<td><code>10 &lt;= 5</code></td>
+<td><code>False</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="caution"><span class="callout-label">⚠️ Caution</span><p>The comparison operator is <code>==</code> (double equals). The assignment operator is <code>=</code> (single equals). They look similar but do completely different things. <code>x = 10</code> stores 10 in x. <code>x == 10</code> asks: "Is x equal to 10?" Mixing these up is the most classic beginner mistake — and professional programmers still do it occasionally too.</p></div>
+<pre><code class="language-python"># Comparison operators in action
+x = 10
+y = 5
+
+print(&quot;Is x equal to y?&quot;,              x == y)   # False
+print(&quot;Is x not equal to y?&quot;,           x != y)   # True
+print(&quot;Is x greater than y?&quot;,           x &gt; y)    # True
+print(&quot;Is x less than y?&quot;,              x &lt; y)    # False
+print(&quot;Is x greater than or equal to y?&quot;, x &gt;= y) # True
+print(&quot;Is x less than or equal to y?&quot;,  x &lt;= y)   # False
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Is x equal to y? False
+Is x not equal to y? True
+Is x greater than y? True
+Is x less than y? False
+Is x greater than or equal to y? True
+Is x less than or equal to y? False
+</code></pre>
+<div class="stop-point"><span class="callout-label">⏸ Pause & Think</span><p>A student needs 40 marks to pass an exam. Write a single Python line that checks whether a score of 38 is enough to pass. The result should be True or False. Which comparison operator will you use?</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Comparison operators compare two values and always return True or False. Remember: <code>==</code> means "is equal to?" while <code>=</code> means "store this value." These two are different — don't confuse them.</p></div>
+<h3 id="333-assignment-operators">3.3.3 Assignment Operators</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>Imagine you are keeping score in a cricket match. Every time your team scores a run, you add 1 to the score. You wouldn't erase the whole scoreboard and rewrite "7" after every ball. You would just add to whatever number is already there. Python's <strong>compound assignment operators</strong> work exactly like that — they update a variable's existing value in one short step.</p></div>
+<p>You already know the basic assignment operator: <code>=</code>. It stores a value in a variable. But Python also has <strong>compound assignment operators</strong> that combine a mathematical operation with assignment in one step.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>What It Means</th>
+<th>Example</th>
+<th>Same As</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>Assign a value</td>
+<td><code>a = 10</code></td>
+<td>Store 10 in a</td>
+</tr>
+<tr>
+<td>+=</td>
+<td>Add and assign</td>
+<td><code>a += 5</code></td>
+<td><code>a = a + 5</code></td>
+</tr>
+<tr>
+<td>-=</td>
+<td>Subtract and assign</td>
+<td><code>a -= 5</code></td>
+<td><code>a = a - 5</code></td>
+</tr>
+<tr>
+<td>*=</td>
+<td>Multiply and assign</td>
+<td><code>a *= 2</code></td>
+<td><code>a = a * 2</code></td>
+</tr>
+<tr>
+<td>/=</td>
+<td>Divide and assign</td>
+<td><code>a /= 2</code></td>
+<td><code>a = a / 2</code></td>
+</tr>
+<tr>
+<td>//=</td>
+<td>Floor divide and assign</td>
+<td><code>a //= 3</code></td>
+<td><code>a = a // 3</code></td>
+</tr>
+<tr>
+<td>%=</td>
+<td>Modulus and assign</td>
+<td><code>a %= 3</code></td>
+<td><code>a = a % 3</code></td>
+</tr>
+<tr>
+<td>**=</td>
+<td>Exponentiate and assign</td>
+<td><code>a **= 2</code></td>
+<td><code>a = a ** 2</code></td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-python"># Compound assignment operators — step by step
+a = 10
+b = 5
+print(&quot;Starting value of a:&quot;, a)
+
+a += b
+print(&quot;After a += b:&quot;, a)       # 10 + 5 = 15
+
+a -= b
+print(&quot;After a -= b:&quot;, a)       # 15 - 5 = 10
+
+a *= b
+print(&quot;After a *= b:&quot;, a)       # 10 * 5 = 50
+
+a /= b
+print(&quot;After a /= b:&quot;, a)       # 50 / 5 = 10.0
+
+a **= 2
+print(&quot;After a **= 2:&quot;, a)      # 10.0 ** 2 = 100.0
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Starting value of a: 10
+After a += b: 15
+After a -= b: 10
+After a *= b: 50
+After a /= b: 10.0
+After a **= 2: 100.0
+</code></pre>
+<div class="stop-point"><span class="callout-label">⏸ Grab a Partner</span><p>One of you tracks a bank account. Start with <code>balance = 1000</code>. Your partner reads out these events one at a time, and you write the correct Python compound assignment line for each one:</p><ul>
+<li>Deposit 500 rupees</li>
+<li>Pay a bill of 200 rupees</li>
+<li>Double the balance (bonus month!)</li>
+</ul><p>What is the final balance? Write and run the code to confirm.</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Compound assignment operators like <code>+=</code>, <code>-=</code>, and <code>*=</code> combine a math operation with storing the result back into the same variable. They are shorthand — <code>a += 5</code> means exactly the same as <code>a = a + 5</code>.</p></div>
+<h3 id="334-logical-operators">3.3.4 Logical Operators</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>You and your best friend are deciding whether to go to the cinema. You make your decision with conditions: "I can go if it is Saturday <strong>AND</strong> I finish my homework." Your friend says: "I can go if it is Saturday <strong>OR</strong> if my mother gives permission." Those words — AND, OR — are logical operators. They let you combine two conditions into one decision. Python uses them the same way.</p></div>
+<p><strong>Logical operators</strong> combine multiple True/False conditions to produce one final True/False result. There are three logical operators in Python:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Meaning</th>
+<th>Result is True when...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>and</td>
+<td>Both conditions must be true</td>
+<td>BOTH sides are True</td>
+</tr>
+<tr>
+<td>or</td>
+<td>At least one condition must be true</td>
+<td>At least ONE side is True</td>
+</tr>
+<tr>
+<td>not</td>
+<td>Reverses the Boolean value</td>
+<td>The original value was False</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="truth-tables-how-logical-operators-work">Truth Tables — How Logical Operators Work</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>x</th>
+<th>y</th>
+<th>x and y</th>
+<th>x or y</th>
+<th>not x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-python"># Logical operators in Python
+x = True
+y = False
+
+# AND: both must be True
+print(&quot;x and y:&quot;, x and y)     # False (one is False)
+print(&quot;x and x:&quot;, x and x)     # True  (both are True)
+
+# OR: at least one must be True
+print(&quot;x or y:&quot;,  x or y)      # True  (x is True)
+print(&quot;y or y:&quot;,  y or y)      # False (both are False)
+
+# NOT: flip the value
+print(&quot;not x:&quot;,   not x)       # False (flips True → False)
+print(&quot;not y:&quot;,   not y)       # True  (flips False → True)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>x and y: False
+x and x: True
+x or y: True
+y or y: False
+not x: False
+not y: True
+</code></pre>
+<h4 id="practical-example-combining-comparisons-with-logic">Practical Example — Combining Comparisons with Logic</h4>
+<pre><code class="language-python"># Is a student eligible for a scholarship?
+# Condition: score must be 80 or above AND attendance must be above 75%
+
+score = 85
+attendance = 80
+
+eligible = (score &gt;= 80) and (attendance &gt; 75)
+print(&quot;Is the student eligible for scholarship?&quot;, eligible)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Is the student eligible for scholarship? True
+</code></pre>
+<div class="stop-point"><span class="callout-label">⏸ Pause & Think</span><p>A school canteen has a special deal: a free juice if today is Friday <strong>OR</strong> if you are a prefect. Complete this scenario in Python:</p><p><code>python
+is_friday = True
+is_prefect = False
+gets_juice = ???   # What goes here?
+print("Gets free juice?", gets_juice)</code></p><p>What is the result? Now change <code>is_friday</code> to <code>False</code>. Does the result change? Why?</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Logical operators combine True/False conditions. <code>and</code> requires both sides to be True. <code>or</code> requires at least one side to be True. <code>not</code> flips a Boolean value. These operators let your programs make complex, multi-condition decisions.</p></div>
+<h3 id="335-operator-precedence-in-python">3.3.5 Operator Precedence in Python</h3>
+<div class="story-hook"><span class="callout-label">📖 Story Mode</span><p>Here is a question. What is the answer to <strong>2 + 3 × 4</strong>? If you answered 20, you calculated it left to right: (2 + 3) = 5, then 5 × 4 = 20. But the correct mathematical answer is <strong>14</strong> — because multiplication happens before addition. This rule — which operation to do first — is called <strong>order of operations</strong>. Python follows exactly the same rules as mathematics. Knowing these rules is the difference between code that gives you the right answer and code that gives you a surprise.</p></div>
+<p><strong>Operator precedence</strong> is the set of rules that determines which operation Python performs first when an expression contains multiple operators.</p>
+<p>Here is Python's order — from highest priority (done first) to lowest priority (done last):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Operator(s)</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (Highest)</td>
+<td><code>( )</code></td>
+<td>Parentheses — always first</td>
+<td><code>(2 + 3) * 4 = 20</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>**</code></td>
+<td>Exponentiation</td>
+<td><code>2 ** 3 = 8</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>* / // %</code></td>
+<td>Multiplication, Division, Modulus</td>
+<td><code>10 / 2 * 3 = 15.0</code></td>
+</tr>
+<tr>
+<td>4 (Lowest)</td>
+<td><code>+ -</code></td>
+<td>Addition, Subtraction</td>
+<td><code>3 + 2 - 1 = 4</code></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="step-by-step-trace-how-python-evaluates-an-expression">Step-by-Step Trace: How Python Evaluates an Expression</h4>
+<p>Let's carefully trace through this expression: <code>4 + 10 / 2 - 11 % 3</code></p>
+<pre><code class="language-python"># Step 1: Division and Modulus first (same level, left to right)
+# 10 / 2 = 5.0
+# 11 % 3 = 2  (because 11 = 3×3 + 2, remainder is 2)
+
+# Step 2: Now the expression is: 4 + 5.0 - 2
+# Step 3: Addition and Subtraction left to right
+# 4 + 5.0 = 9.0
+# 9.0 - 2 = 7.0
+
+result = 4 + 10 / 2 - 11 % 3
+print(result)     # 7.0
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>7.0
+</code></pre>
+<h4 id="using-parentheses-to-change-the-order">Using Parentheses to Change the Order</h4>
+<pre><code class="language-python"># Without parentheses — Python uses default precedence
+print(3 + 2 * 5)    # 13  (multiplication first: 2*5=10, then 3+10=13)
+
+# With parentheses — force addition first
+print((3 + 2) * 5)  # 25  (parentheses first: 3+2=5, then 5*5=25)
+
+# Exponentiation example
+print(2 ** 3 * 4)    # 32  (exponent first: 2**3=8, then 8*4=32)
+print(2 ** (3 * 4))   # 4096  (parentheses: 3*4=12 first, then 2**12=4096)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>13
+25
+32
+4096
+</code></pre>
+<div class="did-you-know"><span class="callout-label">💡 Did You Know?</span><p>Exponentiation in Python is <strong>right-associative</strong>. That means <code>2 ** 3 ** 2</code> is evaluated as <code>2 ** (3 ** 2)</code> = <code>2 ** 9</code> = 512 — not <code>(2 ** 3) ** 2</code> = 64. Python works from right to left for chained <code>**</code> operators. This matches standard mathematical notation.</p></div>
+<h4 id="full-precedence-demonstration">Full Precedence Demonstration</h4>
+<pre><code class="language-python"># Let's trace through multiple examples
+print(f&quot;3 + 2 * 5       = {3 + 2 * 5}&quot;)        # 13  (multiply first)
+print(f&quot;(3 + 2) * 5     = {(3 + 2) * 5}&quot;)      # 25  (parentheses first)
+print(f&quot;15 / 3 * 2      = {15 / 3 * 2}&quot;)       # 10.0 (left to right)
+print(f&quot;15 // 4 + 2     = {15 // 4 + 2}&quot;)      # 5   (floor div first)
+print(f&quot;17 % 5 * 2      = {17 % 5 * 2}&quot;)       # 4   (modulus first: 17%5=2, 2*2=4)
+print(f&quot;2 ** 3 + 1      = {2 ** 3 + 1}&quot;)       # 9   (exponent first: 2**3=8, 8+1=9)
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>3 + 2 * 5       = 13
+(3 + 2) * 5     = 25
+15 / 3 * 2      = 10.0
+15 // 4 + 2     = 5
+17 % 5 * 2      = 4
+2 ** 3 + 1      = 9
+</code></pre>
+<div class="did-you-know"><span class="callout-label">💡 Did You Know?</span><p>In Python, the letter <code>f</code> before a string creates an <strong>f-string</strong> (formatted string). It lets you embed the result of an expression directly inside text using curly braces <code>{}</code>. So <code>f"Answer: {2 + 3}"</code> automatically calculates <code>2 + 3</code> and places the result — 5 — inside the string. Very handy for showing results cleanly.</p></div><div class="stop-point"><span class="callout-label">⏸ Grab a Partner</span><p>Write the expression <strong>2 + 3 * 4</strong> on paper. One of you calculates it left to right, ignoring precedence rules: (2 + 3) = 5, then 5 * 4 = 20. The other follows Python's rules: multiplication first, 3 * 4 = 12, then 2 + 12 = 14.</p><p>You get different answers. Now type <code>print(2 + 3 * 4)</code> in Python and run it. Whose answer does Python agree with? Why does operator precedence matter in real programs?</p></div><div class="recap"><span class="callout-label">Quick Recap</span><p>Operator precedence determines which operations Python performs first. The order is: Parentheses → Exponentiation → Multiplication/Division/Modulus → Addition/Subtraction. When in doubt, use parentheses to make your intention crystal clear — they always take highest priority and make your code easier to read.</p></div>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python Language</td>
+<td>High-level, readable, versatile — used in web dev, data science, AI, automation</td>
+</tr>
+<tr>
+<td>Programming</td>
+<td>Writing precise, step-by-step instructions for a computer to follow</td>
+</tr>
+<tr>
+<td>Development Environment</td>
+<td>Install Python + an IDE (VS Code, PyCharm, IDLE) or use Google Colab online</td>
+</tr>
+<tr>
+<td>print()</td>
+<td>Displays output to the screen</td>
+</tr>
+<tr>
+<td>input()</td>
+<td>Receives input from the user — always returns a string</td>
+</tr>
+<tr>
+<td>Comments (#)</td>
+<td>Notes for humans; ignored by Python</td>
+</tr>
+<tr>
+<td>Variables</td>
+<td>Named containers in memory that store values — values can change</td>
+</tr>
+<tr>
+<td>Data Types</td>
+<td>int (whole numbers), float (decimals), str (text), bool (True/False)</td>
+</tr>
+<tr>
+<td>Arithmetic Operators</td>
+<td>+  -  *  /  //  %  **</td>
+</tr>
+<tr>
+<td>Comparison Operators</td>
+<td>==  !=  &gt;  &lt;  &gt;=  &lt;=  — always return True or False</td>
+</tr>
+<tr>
+<td>Assignment Operators</td>
+<td>=  +=  -=  <em>=  /=  //=  %=  </em>*=</td>
+</tr>
+<tr>
+<td>Logical Operators</td>
+<td>and  or  not — combine Boolean conditions</td>
+</tr>
+<tr>
+<td>Operator Precedence</td>
+<td>Parentheses → Exponent → Mult/Div/Mod → Add/Sub</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="exercise-questions">Exercise Questions</h2>
+<h3 id="multiple-choice">Multiple Choice</h3>
+<ol>
+<li>What is the output of <code>age = 25; print("Age:", age)</code>?<br>
+   (a) Age: 25 ✓  (b) 25  (c) Age  (d) age</li>
+<li>Which symbol is used for single-line comments in Python?<br>
+   (a) <code>//</code>  (b) <code>*</code>  (c) <code>--</code>  (d) <code>#</code> ✓</li>
+<li>What does the <code>%</code> operator return?<br>
+   (a) Decimal result of division  (b) Floor of division  (c) Remainder of division ✓  (d) Power</li>
+<li>Which of the following is a valid variable name?<br>
+   (a) <code>2name</code>  (b) <code>_student</code> ✓  (c) <code>for</code>  (d) <code>student-age</code></li>
+<li>What is the result of <code>2 + 3 * 4</code>?<br>
+   (a) 20  (b) 14 ✓  (c) 24  (d) 9</li>
+</ol>
+<h3 id="short-answer-questions">Short Answer Questions</h3>
+<ol>
+<li>Why are comments important in programming?</li>
+<li>Discuss three basic data types in Python with examples.</li>
+<li>Describe the difference between the integer and float data types.</li>
+<li>What are logical operators? Name all three and give an example of each.</li>
+<li>How do you get user input in Python? What function do you use?</li>
+<li>What is the purpose of the <code>print()</code> statement?</li>
+<li>What is operator precedence? Give one example that shows why it matters.</li>
+<li>Write three rules for naming variables in Python.</li>
+<li>What is the difference between <code>=</code> and <code>==</code> in Python?</li>
+</ol>
+<h3 id="long-answer-practical-questions">Long Answer / Practical Questions</h3>
+<ol>
+<li>What are the basic data types in Python? Explain integers, floats, strings, and Booleans with a code example for each.</li>
+<li>What are arithmetic operators in Python? List all seven with a code example showing each one in use.</li>
+<li>Explain the <code>input()</code> and <code>print()</code> functions. Write a program that asks the user for their name and favourite subject, then prints a personalised message.</li>
+<li>Explain how comparison and logical operators can work together. Write a program that checks whether a student (with a given score and attendance percentage) qualifies for a school award.</li>
+<li><strong>Program:</strong> Write a Python program that asks the user for their name and prints a greeting message.</li>
+<li><strong>Program:</strong> Write a Python program that takes two numbers from the user and prints their sum.</li>
+<li><strong>Program:</strong> Write a Python program that takes five numbers from the user and calculates their average.</li>
+<li><strong>Solve:</strong> Evaluate the following expressions step by step and write what Python would print:<br>
+   - <code>10 // 3</code><br>
+   - <code>2 + 3 * 4 - 1</code><br>
+   - <code>2 ** 3 + 10 % 3</code><br>
+   - <code>(4 + 6) * 2 - 5</code></li>
+</ol>
+
+</body>
+</html>
