@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter2 Computational Thinking And Algorithms StudyGuide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Chapter2 Computational Thinking And Algorithms StudyGuide</div>
+</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 2: Computational Thinking &amp; Algorithms</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Chapter 2: Computational Thinking &amp; Algorithms</div>
+</div>
+
+<h1 id="chapter-2-computational-thinking-algorithms">Chapter 2: Computational Thinking &amp; Algorithms</h1>
+<p><em>A CS50-style guide to thinking like a problem solver — and like a machine</em></p>
+<h2 id="introduction">Introduction</h2>
+<p>Every great programmer, before writing a single line of code, does something much more important: they <em>think</em>. Not randomly — systematically. This chapter teaches you two closely related superpowers.</p>
+<p>First, <strong>computational thinking</strong> — a structured way to break down any problem, from planning a birthday party to designing a search engine, into pieces small enough to solve one at a time.</p>
+<p>Second, <strong>logic</strong> — the formal language that lets you describe true and false with total precision, so that a rule you write is never ambiguous, whether it's read by a human, a computer chip, or an entire security system.</p>
+<p>By the end of this chapter, you'll be able to translate messy, ambiguous English sentences ("free shipping if you spend $50 and you're a member, or it's your first order") into crisp, testable logical expressions — the exact same skill that powers every <code>if</code> statement, every database search, and every AI reasoning engine on Earth. Let's begin.</p>
+<hr>
+<h2 id="21-introduction-to-computational-thinking">2.1 Introduction to Computational Thinking</h2>
+<h3 id="the-hook-story-mode">The Hook (Story Mode)</h3>
+<p>In 1847, a self-taught English mathematician named George Boole published a small book with a huge idea: that human thought — reasoning, logic, true and false — could be captured using algebra, with just two values: 1 and 0. At the time, this seemed like a strange, purely academic exercise. Nobody could have guessed that, roughly a century later, every single transistor inside every computer chip on the planet would be built directly on Boole's "Boolean algebra." Every time you unlock your phone, you're using George Boole's 175-year-old idea, running billions of times per second.</p>
+<h3 id="the-explanation">The Explanation</h3>
+<p><strong>Computational thinking</strong> is a way of thinking that helps you solve problems clearly and logically — not just with computers, but in daily life. It's not about typing code; it's about the <em>thought process</em> that happens before any code gets written.</p>
+<p>Computational thinking has four core habits:</p>
+<ul>
+<li><strong>Decomposition</strong> — breaking a big problem into smaller, manageable parts.</li>
+<li><strong>Pattern Recognition</strong> — noticing similarities between problems you've already solved.</li>
+<li><strong>Abstraction</strong> — ignoring unimportant details and focusing on what actually matters.</li>
+<li><strong>Algorithm Design</strong> — creating clear, step-by-step instructions to reach a solution.</li>
+</ul>
+<pre><code>   Computational Thinking in Daily Life
+   -------------------------------------
+   1. Decomposition        --&gt; Break the problem down
+   2. Pattern Recognition  --&gt; Find similarities/patterns
+   3. Abstraction          --&gt; Focus on what matters
+   4. Algorithm Design     --&gt; Create step-by-step instructions
+</code></pre>
+<p><em>Link:</em> This is not a "computer science only" skill. Scientists use it to design experiments. Chefs use it to plan a five-course meal. Engineers use it to build bridges. You already use it — this chapter just gives it a name and a method.</p>
+<h3 id="real-life-examples-of-computational-thinking">Real-Life Examples of Computational Thinking</h3>
+<ul>
+<li><strong>Making a daily timetable</strong> — deciding what to do and when, in a logical order.</li>
+<li><strong>Cooking a recipe</strong> — following exact step-by-step instructions to get a reliable result.</li>
+<li><strong>Planning a trip</strong> — breaking a big goal ("visit Lahore") into smaller tasks (book transport, book hotel, plan sightseeing).</li>
+<li><strong>Sorting books</strong> by subject or size — this is pattern recognition in action.</li>
+<li><strong>Fixing a phone problem</strong> — using logical elimination ("is it the battery? the software? the charger?").</li>
+<li><strong>Managing money</strong> — planning a budget requires decomposition and decision-making.</li>
+<li><strong>Playing strategy games</strong> — chess or strategy video games require thinking several steps ahead.</li>
+</ul>
+<h3 id="the-practical-walkthrough">The Practical Walkthrough</h3>
+<p>Let's apply all four habits to one real task: <strong>"Plan a class trip to a science museum."</strong></p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Habit</th>
+<th>Applied to the class trip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decomposition</td>
+<td>Break into: transport, tickets, food, schedule, permission slips</td>
+</tr>
+<tr>
+<td>Pattern Recognition</td>
+<td>"This is similar to how we planned last year's sports day"</td>
+</tr>
+<tr>
+<td>Abstraction</td>
+<td>Ignore irrelevant details (what color the bus is); focus on capacity, cost, and timing</td>
+</tr>
+<tr>
+<td>Algorithm Design</td>
+<td>Step 1: Get budget approved → Step 2: Book bus → Step 3: Buy tickets → Step 4: Confirm headcount → Step 5: Distribute schedule</td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>What just happened?</strong> A vague, overwhelming goal ("plan a trip") became five clear, doable steps — this exact process is what programmers do every single day before writing any code.</p>
+<h3 id="interactive-stop-point">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> Pick any everyday activity you did this week (studying for a test, organizing your room, planning a workout). Identify which of the four computational thinking habits (decomposition, pattern recognition, abstraction, algorithm design) you used, even without realizing it.</p>
+<h3 id="quick-recap">Quick Recap</h3>
+<p>Computational thinking is a universal problem-solving method built on four habits — decomposition, pattern recognition, abstraction, and algorithm design — used by everyone from chefs to computer scientists, not just programmers.</p>
+<hr>
+<h2 id="22-problem-solving-using-computational-thinking">2.2 Problem Solving Using Computational Thinking</h2>
+<h3 id="the-hook-story-mode_1">The Hook (Story Mode)</h3>
+<p>Imagine handing a computer a vague instruction like "make things better." It would have no idea what to do — computers need painfully precise instructions. Interestingly, humans struggle with vague problems too. Give someone the task "fix the printer" with no other information, and they'll likely freeze, unsure where to start. Computational thinking exists to solve exactly this: turning vague chaos into clear, solvable steps — for humans and computers alike.</p>
+<h3 id="the-explanation_1">The Explanation</h3>
+<p>Problem solving using computational thinking follows four connected stages, each building on the last.</p>
+<p><strong>1. Identifying a Problem Clearly</strong></p>
+<p>Before solving anything, you must understand exactly what's being asked. What information do you already have? What result are you trying to reach? Ignore irrelevant details. A well-understood problem is already halfway solved.</p>
+<p><strong>2. Breaking a Problem into Smaller Parts (Decomposition)</strong></p>
+<p>A big, scary problem becomes manageable once split into smaller pieces. Each piece can be tackled on its own, in order, without feeling overwhelmed by the whole.</p>
+<p><strong>3. Creating Step-by-Step Solutions</strong></p>
+<p>The ordered steps used to solve a problem are called an <strong>algorithm</strong>. Each step must be simple, unambiguous, and in the correct order — this is exactly the discipline computers require, and exactly the discipline this chapter builds in you.</p>
+<pre><code>Step-by-Step Algorithm Example: Making Tea
+-------------------------------------------
+1. Boil water
+2. Add tea leaves
+3. Let it steep
+4. Add milk or lemon
+5. Serve
+</code></pre>
+<p><strong>4. Evaluating and Improving Solutions</strong></p>
+<p>Once a solution exists, test it. Does it actually work? Can it be made simpler or faster? Evaluation catches mistakes and drives improvement — this is exactly why software gets "updates" after release.</p>
+<p><em>Link:</em> This four-stage cycle is literally what a programmer does building an app feature: understand the request → break it into functions → write the step-by-step code → test and refine it.</p>
+<h3 id="the-practical-walkthrough_1">The Practical Walkthrough</h3>
+<p>Let's solve a real problem end-to-end: <strong>"My WhatsApp keeps freezing."</strong></p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Applied</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Identify clearly</td>
+<td>What exactly happens? Does it freeze on all chats, or just one with lots of images?</td>
+</tr>
+<tr>
+<td>2. Decompose</td>
+<td>Possible causes: (a) low phone storage, (b) outdated app version, (c) too many cached images, (d) weak internet</td>
+</tr>
+<tr>
+<td>3. Step-by-step solution</td>
+<td>Step 1: Check storage → Step 2: Update the app → Step 3: Clear cached media → Step 4: Restart phone</td>
+</tr>
+<tr>
+<td>4. Evaluate</td>
+<td>Did the freezing stop? If not, which cause haven't you tested yet? Repeat from Step 2 with the next possible cause</td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>What just happened?</strong> A frustrating, vague complaint ("it keeps freezing") became a testable, structured troubleshooting process — the same logic real tech support and QA engineers use every day.</p>
+<h3 id="interactive-stop-point_1">Interactive Stop-Point</h3>
+<p><strong>Grab a Partner:</strong> Partner A describes a real problem they're currently facing (schoolwork, a hobby, a daily routine issue). Partner B guides them through all four stages out loud: identify, decompose, create steps, evaluate. Swap roles.</p>
+<h3 id="quick-recap_1">Quick Recap</h3>
+<p>Solving a problem with computational thinking means clearly identifying it, decomposing it into smaller parts, building an ordered step-by-step algorithm, and then testing and improving that solution.</p>
+<hr>
+<h2 id="23-logic-as-a-knowledge-representation-framework">2.3 Logic as a Knowledge Representation Framework</h2>
+<h3 id="the-hook-story-mode_2">The Hook (Story Mode)</h3>
+<p>Alan Turing — the mathematician often called the father of computer science — spent much of his career asking a bold question: could a machine reason the way humans do? His famous "Turing Test" imagined a machine convincing a human, through pure conversation, that it could think. But underneath any "thinking" machine lies something much more basic: <strong>logic</strong> — the precise rules that let a system decide what's true, what's false, and what follows from what. Without logic, there is no reasoning — human or artificial.</p>
+<h3 id="the-explanation_2">The Explanation</h3>
+<p><strong>Logic</strong> is the formal science of correct reasoning. In computer science, logic gives us a way to represent facts and rules so that a system — human or machine — can make correct, consistent decisions.</p>
+<p><strong>Logic in Computer Science</strong></p>
+<p>Logic helps computers understand <em>true</em> and <em>false</em> conditions, and controls how programs behave. Every <code>if</code> statement, every search filter, every security check in software is, underneath, a logical statement being evaluated as true or false.</p>
+<p><strong>Role of Logic in Reasoning and Decision Making</strong></p>
+<p>Logic removes guesswork. Instead of "maybe" or "it depends," logic forces a decision to be based on clear facts and clear rules. This consistency is exactly why logic underlies expert systems, artificial intelligence, and even legal or medical decision-support software — fields where an incorrect or inconsistent decision could be costly or dangerous.</p>
+<p><em>Link:</em> Every time your streaming app decides "show this movie" or "don't show this movie" based on your age, subscription, and region, it's applying pure logic — no gut feelings involved.</p>
+<h3 id="the-practical-walkthrough_2">The Practical Walkthrough</h3>
+<p>Let's build a simple "if-then" statement about school life and see how logic controls a decision:</p>
+<p><strong>Statement:</strong> "If it rains, then we will stay indoors."</p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Condition (input)</th>
+<th>Rule applied</th>
+<th>Decision (output)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>It is raining = TRUE</td>
+<td>IF raining THEN stay indoors</td>
+<td>Stay indoors</td>
+</tr>
+<tr>
+<td>It is raining = FALSE</td>
+<td>IF raining THEN stay indoors</td>
+<td>Rule doesn't trigger — no forced decision</td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>What just happened?</strong> A simple English sentence became a testable rule with a clear input and a clear, predictable output — this is the exact building block every computer program is made of, repeated millions of times over.</p>
+<h3 id="interactive-stop-point_2">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> Write two of your own "if-then" statements about your daily school or home life (e.g., "If my alarm doesn't ring, then I will be late"). For each, identify the condition and the resulting decision.</p>
+<h3 id="quick-recap_2">Quick Recap</h3>
+<p>Logic is the formal framework that lets both humans and computers represent facts and rules clearly, enabling consistent, correct decision-making instead of guesswork.</p>
+<hr>
+<h2 id="24-propositional-logic">2.4 Propositional Logic</h2>
+<h3 id="the-hook-story-mode_3">The Hook (Story Mode)</h3>
+<p>Think about logging into a streaming platform. Behind the scenes, the system silently checks something like: <em>"User has the correct password AND (has an active subscription OR is on a free trial)."</em> If that whole statement comes out true, you get in. If it's false, you're blocked. This single sentence — built from smaller true/false pieces joined together — is a perfect real-world example of <strong>propositional logic</strong> in action, running behind almost every login screen you've ever used.</p>
+<h3 id="the-explanation_3">The Explanation</h3>
+<p><strong>Propositional logic</strong> is the branch of logic that deals with <strong>propositions</strong> — statements that are either true or false, and never both.</p>
+<p><strong>Proposition</strong></p>
+<p>A proposition is a statement with a clear, single truth value. "The sun rises in the east" is a proposition (it's true). Questions ("Is it raining?") and commands ("Close the door!") are <em>not</em> propositions — they don't have a truth value. Propositions are usually represented using capital letters like P, Q, or R.</p>
+<pre><code>Let P = &quot;The sky is blue&quot;
+P is TRUE (on a clear day) or FALSE (on a cloudy day) — never both.
+</code></pre>
+<p><strong>Simple and Compound Propositions</strong></p>
+<p>A <strong>simple proposition</strong> contains just one statement and cannot be broken down further — e.g., "It is raining." A <strong>compound proposition</strong> combines two or more simple propositions using <strong>logical connectives</strong> — e.g., "It is raining AND it is cold."</p>
+<p><strong>Logical Connectives</strong></p>
+<p>Logical connectives are the "glue" words that join propositions together. Modern computer science and mathematics use five essential connectives:</p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Name</th>
+<th>Meaning</th>
+<th>True when...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>∧</td>
+<td>AND</td>
+<td>Conjunction</td>
+<td>Both statements are true</td>
+</tr>
+<tr>
+<td>∨</td>
+<td>OR</td>
+<td>Disjunction</td>
+<td>At least one statement is true</td>
+</tr>
+<tr>
+<td>¬</td>
+<td>NOT</td>
+<td>Negation</td>
+<td>Reverses the truth value</td>
+</tr>
+<tr>
+<td>→</td>
+<td>IMPLIES</td>
+<td>Conditional</td>
+<td>False only when the first is true and the second is false</td>
+</tr>
+<tr>
+<td>↔</td>
+<td>BICONDITIONAL</td>
+<td>Biconditional ("if and only if")</td>
+<td>Both statements have the <em>same</em> truth value</td>
+</tr>
+</tbody>
+</table></div></div>
+<pre><code>P AND Q  (P ∧ Q)   --&gt;  True only if BOTH P and Q are true
+P OR Q   (P ∨ Q)   --&gt;  True if P or Q is true (or both)
+NOT P    (¬P)      --&gt;  True if P is false
+P -&gt; Q   (P → Q)   --&gt;  &quot;If P then Q&quot; — false only when P is true but Q is false
+P &lt;-&gt; Q  (P ↔ Q)   --&gt;  True only when P and Q share the same truth value
+</code></pre>
+<p><em>Reassurance:</em> These symbols (∧, ∨, ¬, →, ↔) look intimidating at first, but they're just international shorthand — a universal, compact way of writing "and," "or," "not," "if...then," and "exactly when," so mathematicians and computer scientists worldwide can write the same idea without translation.</p>
+<h3 id="the-practical-walkthrough_3">The Practical Walkthrough</h3>
+<p>Let's translate a real app rule into formal propositional logic.</p>
+<p><strong>English rule:</strong> "You get free shipping if your order is over $50 and you are a Premium Member, OR if it is your first purchase."</p>
+<p><strong>Step 1 — Identify the simple propositions:</strong><br>
+* Let O = "Order is over $50"<br>
+* Let M = "You are a Premium Member"<br>
+* Let F = "It is your first purchase"</p>
+<p><strong>Step 2 — Translate connectors:</strong><br>
+* "and" → ∧<br>
+* "or" → ∨</p>
+<p><strong>Step 3 — Build the compound proposition:</strong></p>
+<pre><code>(O ∧ M) ∨ F
+</code></pre>
+<p><strong>Step 4 — Test it with a real scenario:</strong><br>
+A user orders $80 (O = TRUE), is not a Premium Member (M = FALSE), and it's their 5th order (F = FALSE).</p>
+<p><code>(TRUE ∧ FALSE) ∨ FALSE = FALSE ∨ FALSE = FALSE</code> → No free shipping.</p>
+<p><strong>What just happened?</strong> A slightly confusing marketing sentence became an exact, testable formula — exactly what a developer would type directly into the app's checkout code.</p>
+<h3 id="interactive-stop-point_3">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> Translate this real-world condition into a symbolic proposition using P, Q, R and the correct connectives: <em>"You get free shipping if your order is over $50 and you are a Premium Member, OR if it is your first purchase."</em> (Try building it yourself before checking the walkthrough above.)</p>
+<h3 id="quick-recap_3">Quick Recap</h3>
+<p>Propositional logic represents statements as true or false, and combines simple propositions into compound ones using AND (∧), OR (∨), NOT (¬), IMPLIES (→), and BICONDITIONAL (↔) — the exact building blocks behind every <code>if</code> condition in software.</p>
+<hr>
+<h2 id="25-truth-tables">2.5 Truth Tables</h2>
+<h3 id="the-hook-story-mode_4">The Hook (Story Mode)</h3>
+<p>Imagine you're a digital circuit designer at a chip manufacturing company. Before physically building a single transistor, you need to be <strong>100% certain</strong> your logic behaves correctly in <em>every</em> possible scenario — not just the cases you happen to think of. A truth table is that guarantee: it forces you to check every single possible combination of inputs, leaving zero room for a hidden bug.</p>
+<h3 id="the-explanation_4">The Explanation</h3>
+<p>A <strong>truth table</strong> is a table that shows the truth value (True or False) of a logical expression for every possible combination of its input propositions. If an expression has <strong>n</strong> propositions, the truth table will always have <strong>2ⁿ rows</strong> — because each proposition can independently be True or False.</p>
+<p><strong>Purpose of Truth Tables</strong></p>
+<p>Truth tables let us see, with total certainty, exactly when an expression is true and when it's false. They remove all ambiguity, help compare different logical statements, and are essential for verifying that logic in software (or hardware) behaves correctly in every situation.</p>
+<p><strong>Creating Truth Tables for Logical Expressions</strong></p>
+<ol>
+<li>Identify all the propositions involved (e.g., P and Q).</li>
+<li>List every possible combination of True/False for those propositions.</li>
+<li>Apply the logical connectives step by step, building up sub-expressions as needed.</li>
+<li>Write the final result for each row.</li>
+</ol>
+<p><strong>Truth Values of Propositions</strong></p>
+<p>Each proposition can independently be True (T) or False (F). With 2 propositions, there are 2² = 4 rows. With 3 propositions, there are 2³ = 8 rows, and so on.</p>
+<h3 id="the-practical-walkthrough-building-a-full-truth-table-for-and-or-and-not">The Practical Walkthrough: Building a Full Truth Table for AND, OR, and NOT</h3>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>P</th>
+<th>Q</th>
+<th>P ∧ Q (AND)</th>
+<th>P ∨ Q (OR)</th>
+<th>¬P (NOT P)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+</tr>
+</tbody>
+</table></div></div>
+<p>Reading this table:<br>
+* <strong>P ∧ Q</strong> is only True in row 1, where <em>both</em> P and Q are True.<br>
+* <strong>P ∨ Q</strong> is True in every row except the last, where both are False.<br>
+* <strong>¬P</strong> simply flips P's value in every row.</p>
+<h3 id="the-practical-walkthrough-truth-table-for-implies-and-biconditional">The Practical Walkthrough: Truth Table for IMPLIES (→) and BICONDITIONAL (↔)</h3>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>P</th>
+<th>Q</th>
+<th>P → Q</th>
+<th>P ↔ Q</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>What just happened?</strong> Notice something students often find surprising: P → Q is <em>True</em> whenever P is False, no matter what Q is! In plain English: "If P is false, the promise 'if P then Q' can't be broken — it's automatically considered kept." (Think of it like a promise: "If it rains, I'll bring an umbrella." If it <em>doesn't</em> rain, you haven't broken your promise either way.)</p>
+<h3 id="interactive-stop-point_4">Interactive Stop-Point</h3>
+<p><strong>Grab a Partner:</strong> Partner A writes a mystery compound proposition using two variables (e.g., <code>¬P ∨ Q</code>, or <code>(P ∧ Q) → P</code>). Partner B builds the complete truth table for it and determines whether it's a <strong>Tautology</strong> (always True), a <strong>Contradiction</strong> (always False), or a <strong>Contingency</strong> (True in some rows, False in others). Swap and repeat.</p>
+<h3 id="quick-recap_4">Quick Recap</h3>
+<p>A truth table lists every possible input combination for a logical expression and shows the resulting output for each, giving total certainty about when an expression is true — with 2ⁿ rows for n propositions.</p>
+<hr>
+<h2 id="26-propositional-equivalence">2.6 Propositional Equivalence</h2>
+<h3 id="the-hook-story-mode_5">The Hook (Story Mode)</h3>
+<p>In the 1840s, mathematician Augustus De Morgan discovered something that would, over a century later, save chip manufacturers millions of transistors: he proved that negating an AND statement is logically the <em>same</em> as an OR statement of the negations — and vice versa. Today, every time a circuit designer simplifies a digital chip's logic using <strong>De Morgan's Laws</strong>, they're using a 180-year-old mathematical trick to make phones faster, cheaper, and more power-efficient.</p>
+<h3 id="the-explanation_5">The Explanation</h3>
+<p><strong>Propositional equivalence</strong> means two logical expressions — even if they <em>look</em> completely different — always produce the exact same truth value, in every single row of their truth tables. The symbol <strong>≡</strong> is used to show equivalence.</p>
+<p><strong>Identifying Equivalent Logical Expressions</strong></p>
+<p>To check if two expressions are equivalent, build a truth table for each and compare the final output columns row by row. If they match in every row, the expressions are equivalent.</p>
+<p><strong>Importance of Equivalence in Logic</strong></p>
+<p>Equivalence lets us simplify complex expressions into simpler, easier-to-read (or easier-to-compute) ones without changing their meaning. This saves time, improves code efficiency, and prevents logical errors.</p>
+<p><strong>De Morgan's Laws</strong></p>
+<p>These are two of the most important equivalence rules in all of computer science:</p>
+<pre><code>¬(P ∧ Q)  ≡  ¬P ∨ ¬Q     (&quot;NOT (P AND Q)&quot; is the same as &quot;(NOT P) OR (NOT Q)&quot;)
+¬(P ∨ Q)  ≡  ¬P ∧ ¬Q     (&quot;NOT (P OR Q)&quot; is the same as &quot;(NOT P) AND (NOT Q)&quot;)
+</code></pre>
+<p><em>Link:</em> Imagine a security rule: "Access denied unless (username is valid AND password is valid)." Using De Morgan's Law, "NOT (valid username AND valid password)" is logically identical to "invalid username OR invalid password" — the exact same access check, written differently, and sometimes easier for a programmer to implement one way over the other.</p>
+<p><strong>Tautologies and Contradictions</strong></p>
+<ul>
+<li>A <strong>tautology</strong> is an expression that is <strong>always True</strong>, no matter the input values (e.g., <code>P ∨ ¬P</code> — "P or not P" is always true).</li>
+<li>A <strong>contradiction</strong> is an expression that is <strong>always False</strong>, no matter the input values (e.g., <code>P ∧ ¬P</code> — "P and not P" can never be true).</li>
+<li>A <strong>contingency</strong> is an expression that is sometimes True and sometimes False, depending on the inputs — most everyday expressions fall into this category.</li>
+</ul>
+<h3 id="the-practical-walkthrough-proving-de-morgans-law-with-a-truth-table">The Practical Walkthrough: Proving De Morgan's Law with a Truth Table</h3>
+<p>Let's prove <code>¬(P ∧ Q) ≡ ¬P ∨ ¬Q</code> using a complete 4-row truth table.</p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>P</th>
+<th>Q</th>
+<th>P ∧ Q</th>
+<th>¬(P ∧ Q)</th>
+<th>¬P</th>
+<th>¬Q</th>
+<th>¬P ∨ ¬Q</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><strong>F</strong></td>
+<td>F</td>
+<td>F</td>
+<td><strong>F</strong></td>
+</tr>
+<tr>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td><strong>T</strong></td>
+<td>F</td>
+<td>T</td>
+<td><strong>T</strong></td>
+</tr>
+<tr>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td><strong>T</strong></td>
+<td>T</td>
+<td>F</td>
+<td><strong>T</strong></td>
+</tr>
+<tr>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><strong>T</strong></td>
+<td>T</td>
+<td>T</td>
+<td><strong>T</strong></td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>What just happened?</strong> Compare the two bolded columns — <code>¬(P ∧ Q)</code> and <code>¬P ∨ ¬Q</code> — row by row. They match perfectly in all 4 rows. That's a formal, airtight proof that these two expressions are logically equivalent, even though they're written completely differently.</p>
+<h3 id="interactive-stop-point_5">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> Using the same method, try proving the second De Morgan's Law, <code>¬(P ∨ Q) ≡ ¬P ∧ ¬Q</code>, by building your own 4-row truth table. Do the final columns match?</p>
+<h3 id="quick-recap_5">Quick Recap</h3>
+<p>Propositional equivalence means two differently-written expressions always share the same truth values — proven using truth tables — and De Morgan's Laws are the most important equivalence rules, letting AND/OR statements be rewritten as their negated opposites.</p>
+<hr>
+<h2 id="27-propositional-satisfiability">2.7 Propositional Satisfiability</h2>
+<h3 id="the-hook-story-mode_6">The Hook (Story Mode)</h3>
+<p>Every time you board a plane, its autopilot software has been checked by a category of tool called a <strong>SAT solver</strong> — a program built entirely on the concept of <strong>satisfiability</strong>. SAT solvers can take millions of logical constraints (safety rules, hardware limits, flight conditions) and determine: is there <em>any</em> possible combination of values that satisfies all of them at once, without contradiction? This exact idea — tracing back to centuries-old logic puzzles like the Knight's Tour — now keeps modern airplanes, chip designs, and security software provably correct.</p>
+<h3 id="the-explanation_6">The Explanation</h3>
+<p><strong>Propositional satisfiability</strong> asks a simple but powerful question: <strong>is there at least one combination of truth values that makes this expression True?</strong></p>
+<ul>
+<li>If <strong>yes</strong> — at least one True outcome exists — the expression is <strong>satisfiable</strong>.</li>
+<li>If <strong>no</strong> — every possible combination results in False — the expression is <strong>unsatisfiable</strong> (a contradiction).</li>
+</ul>
+<p><strong>Conditions for a Proposition to be Satisfiable</strong></p>
+<p>A proposition is satisfiable if, when you check every row of its truth table, at least one row results in True. This depends entirely on the connectives used and how the propositions are combined.</p>
+<p><strong>Examples of Satisfiable and Unsatisfiable Expressions</strong></p>
+<ul>
+<li><code>P ∨ Q</code> — <strong>Satisfiable.</strong> True whenever P or Q (or both) are true.</li>
+<li><code>P ∧ Q</code> — <strong>Satisfiable.</strong> True when both P and Q are true.</li>
+<li><code>P ∧ ¬P</code> — <strong>Unsatisfiable.</strong> P can never be simultaneously true and false — every row results in False.</li>
+</ul>
+<p><strong>The SAT Problem</strong></p>
+<p>Determining whether a complex logical expression (with potentially thousands of variables) is satisfiable is called the <strong>SAT problem</strong> — one of the most important problems in all of computer science. It's used to verify software correctness, design digital circuits, solve scheduling puzzles, and even crack certain types of security codes.</p>
+<h3 id="the-practical-walkthrough-testing-satisfiability-of-p-q-p-q">The Practical Walkthrough: Testing Satisfiability of <code>(P ∨ Q) ∧ (¬P ∨ ¬Q)</code></h3>
+<p><strong>Step 1 — List the propositions:</strong> P and Q.</p>
+<p><strong>Step 2 — Build the truth table, evaluating sub-expressions first:</strong></p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>P</th>
+<th>Q</th>
+<th>P ∨ Q</th>
+<th>¬P</th>
+<th>¬Q</th>
+<th>¬P ∨ ¬Q</th>
+<th>(P ∨ Q) ∧ (¬P ∨ ¬Q)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><strong>F</strong></td>
+</tr>
+<tr>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td><strong>T</strong></td>
+</tr>
+<tr>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td><strong>T</strong></td>
+</tr>
+<tr>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><strong>F</strong></td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>Step 3 — Check the final column for at least one True.</strong><br>
+Rows 2 and 3 both result in True.</p>
+<p><strong>Conclusion:</strong> The expression <code>(P ∨ Q) ∧ (¬P ∨ ¬Q)</code> is <strong>satisfiable</strong> — in fact, this expression is a famous one: it's logically equivalent to <strong>XOR</strong> ("exclusive or" — true when exactly one of P, Q is true, but not both).</p>
+<p><strong>What just happened?</strong> Instead of guessing, you methodically tested all 4 possible input combinations and found concrete proof — 2 out of 4 rows — that a satisfying assignment exists.</p>
+<h3 id="interactive-stop-point_6">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> A food delivery app has this rule: "Bring pizza OR (burger AND do NOT bring soda)." Is this expression satisfiable? Find one combination of choices that makes it True. Then try the rule: "You must bring pizza AND you must NOT bring pizza." Is this one satisfiable? Why or why not?</p>
+<h3 id="quick-recap_6">Quick Recap</h3>
+<p>An expression is satisfiable if at least one combination of truth values makes it True, and unsatisfiable if no such combination exists — a concept at the heart of modern SAT solvers that verify software, chip designs, and safety-critical systems.</p>
+<hr>
+<h2 id="28-predicate-logic">2.8 Predicate Logic</h2>
+<h3 id="the-hook-story-mode_7">The Hook (Story Mode)</h3>
+<p>Propositional logic is powerful, but it has a serious limitation: it can only handle whole, fixed statements — it can't "look inside" a sentence. Consider the proposition A = "Ali is tall." Propositional logic treats this as one indivisible block: A is either True or False, full stop. It can't separate the <em>subject</em> (Ali) from the <em>property</em> (tall). <strong>Predicate logic</strong> was developed precisely to fix this — allowing logic to reach inside a sentence and reason about individual objects, their properties, and their relationships to each other. This upgrade is what allows modern databases, search engines, and AI systems to reason about millions of individual entities, not just fixed yes/no facts.</p>
+<h3 id="the-explanation_7">The Explanation</h3>
+<p><strong>Predicate logic</strong> (also called first-order logic) extends propositional logic by introducing <strong>variables</strong> and <strong>predicates</strong>, allowing us to express detailed statements about objects and their properties.</p>
+<p><strong>Introduction to Predicate Logic</strong></p>
+<p>A <strong>predicate</strong> is a statement whose truth depends on the value of one or more variables. For example, <code>IsEven(x)</code> is true or false <em>depending on what x is</em>: <code>IsEven(4)</code> is True, but <code>IsEven(7)</code> is False. Predicate logic lets us express general statements like "All students are hardworking" or "Some books are interesting" — statements propositional logic simply cannot capture precisely.</p>
+<p><strong>Difference Between Propositional and Predicate Logic</strong></p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Propositional Logic</th>
+<th>Predicate Logic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic unit</td>
+<td>Whole fixed statements (P, Q)</td>
+<td>Predicates with variables, e.g., <code>Tall(x)</code></td>
+</tr>
+<tr>
+<td>Can see inside a statement?</td>
+<td>No — treats "Ali is tall" as one block</td>
+<td>Yes — separates subject (Ali) from property (Tall)</td>
+</tr>
+<tr>
+<td>Expressiveness</td>
+<td>Limited</td>
+<td>Much more expressive and flexible</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>A = "Ali is Tall"</td>
+<td><code>Tall(Ali)</code></td>
+</tr>
+<tr>
+<td>Can generalize across many objects?</td>
+<td>No</td>
+<td>Yes, using quantifiers (see 2.9)</td>
+</tr>
+</tbody>
+</table></div></div>
+<pre><code>Propositional Logic:                Predicate Logic:
+   A = &quot;Ali is Tall&quot;                    Tall(Ali)
+   Cannot see inside A                  Can see subject (Ali) and property (Tall)
+   Limited                              Much more expressive
+</code></pre>
+<p><strong>Predicates and Variables</strong></p>
+<ul>
+<li>A <strong>predicate</strong> describes a property or relationship — e.g., <code>IsEven(x)</code>, <code>Tall(x)</code>, <code>Teaches(t, s)</code>.</li>
+<li>A <strong>variable</strong> (like x, y) represents an unspecified object from a domain (a set of possible values) — e.g., "For all x, x &gt; 0" uses x as a variable ranging over numbers.</li>
+</ul>
+<p><em>Link:</em> Every time a database query says "find all users WHERE age &gt; 18," it's using a predicate (<code>age(x) &gt; 18</code>) applied across every row (every value of x) in the database — this <em>is</em> predicate logic, running behind the scenes of nearly every app you use.</p>
+<h3 id="the-practical-walkthrough-translating-predicates">The Practical Walkthrough: Translating Predicates</h3>
+<p>Let's translate three real statements into formal predicate logic.</p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>English statement</th>
+<th>Predicate logic translation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"x is greater than 5"</td>
+<td><code>GreaterThan(x, 5)</code></td>
+</tr>
+<tr>
+<td>"Ali borrows a book"</td>
+<td><code>Borrows(Ali, Book)</code></td>
+</tr>
+<tr>
+<td>"The teacher teaches the student"</td>
+<td><code>Teaches(teacher, student)</code></td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>What just happened?</strong> Each English sentence was broken into a predicate name (the relationship or property) and its arguments (the specific objects involved) — this exact translation process is step one of writing any database query or knowledge-base rule.</p>
+<h3 id="interactive-stop-point_7">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> Convert this sentence into predicate logic: "The library has the book available." (Hint: identify the predicate name and its argument(s), similar to the examples above.)</p>
+<h3 id="quick-recap_7">Quick Recap</h3>
+<p>Predicate logic upgrades propositional logic by using predicates and variables, letting us reach inside statements to describe properties and relationships between specific objects, rather than treating whole sentences as fixed, unbreakable blocks.</p>
+<hr>
+<h2 id="29-quantifiers-in-predicate-logic">2.9 Quantifiers in Predicate Logic</h2>
+<h3 id="the-hook-story-mode_8">The Hook (Story Mode)</h3>
+<p>Compare these two sentences: <em>"Every student passed the exam"</em> versus <em>"At least one student got a perfect score."</em> They sound similar in structure, but they make completely different claims — one is about <strong>everyone</strong>, the other about <strong>someone</strong>. In predicate logic, this exact distinction is captured with two small but powerful symbols: <strong>∀</strong> (for all) and <strong>∃</strong> (there exists). Getting this distinction right is often the difference between a database query that works correctly and one that silently returns the wrong result.</p>
+<h3 id="the-explanation_8">The Explanation</h3>
+<p><strong>Quantifiers</strong> describe <em>how many</em> objects in a domain satisfy a given predicate. They turn a predicate like <code>Tall(x)</code> — which alone has no fixed truth value — into a complete, testable statement.</p>
+<p><strong>Universal Quantifier (∀ — "For All")</strong></p>
+<p>The universal quantifier states that a predicate is true for <strong>every</strong> object in the domain. Written <code>∀x, P(x)</code>, meaning "For all x, P(x) is true."</p>
+<pre><code>∀x, x &gt; 0     --&gt;  &quot;For all x, x is greater than 0&quot;
+∀x, Student(x) → HasID(x)   --&gt;  &quot;Every student has an ID&quot;
+</code></pre>
+<p><strong>Existential Quantifier (∃ — "There Exists")</strong></p>
+<p>The existential quantifier states that a predicate is true for <strong>at least one</strong> object in the domain. Written <code>∃x, P(x)</code>, meaning "There exists at least one x such that P(x) is true."</p>
+<pre><code>∃x, x is even        --&gt;  &quot;There exists at least one x that is even&quot;
+∃x, Book(x) ∧ Available(x)   --&gt;  &quot;There exists at least one book that is available&quot;
+</code></pre>
+<p><strong>Using Quantifiers in Logical Statements</strong></p>
+<p>Quantifiers can be combined for more complex statements. Consider:</p>
+<pre><code>∀x ∃y, x &lt; y    --&gt;  &quot;For every x, there exists a y that is greater than x&quot;
+</code></pre>
+<p><em>Reassurance:</em> ∀ and ∃ are just shorthand for two everyday English phrases — "every single one" and "at least one." Once you see them that way, the symbols stop being scary.</p>
+<h3 id="the-practical-walkthrough-quantifier-order-matters">The Practical Walkthrough: Quantifier Order Matters!</h3>
+<p>Here's one of the trickiest — and most important — lessons in predicate logic: <strong>the order of quantifiers changes the meaning entirely.</strong></p>
+<p>Consider the predicate <code>Loves(x, y)</code> meaning "x loves y," over the domain of all people.</p>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Statement</th>
+<th>Symbolic form</th>
+<th>Plain-English meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Statement A</td>
+<td><code>∀x ∃y, Loves(x, y)</code></td>
+<td>"For every person x, there exists <em>some</em> person y that x loves" → <strong>Everyone loves someone</strong> (but not necessarily the same someone)</td>
+</tr>
+<tr>
+<td>Statement B</td>
+<td><code>∃y ∀x, Loves(x, y)</code></td>
+<td>"There exists <em>one</em> person y that <em>every</em> person x loves" → <strong>There is one specific person loved by everyone</strong></td>
+</tr>
+</tbody>
+</table></div></div>
+<p><strong>Step-by-step comparison:</strong></p>
+<ol>
+<li>Statement A fixes x first, then searches for <em>any</em> y that makes it true — the y can be <em>different</em> for each x.</li>
+<li>Statement B fixes y first, and that <em>same</em> y must work for <em>every</em> x — a much stronger, more specific claim.</li>
+<li>Statement B implies Statement A (if everyone loves one specific person, then certainly everyone loves <em>someone</em>) — but Statement A does <strong>not</strong> imply Statement B (everyone loving <em>someone</em> doesn't mean they all love the <em>same</em> someone).</li>
+</ol>
+<p><strong>What just happened?</strong> Two nearly identical-looking symbolic statements — just with ∀ and ∃ swapped in order — turned out to mean two completely different real-world claims. This is exactly why precision matters so much in formal logic.</p>
+<h3 id="interactive-stop-point_8">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> What is the difference between <code>∀x ∃y, Loves(x, y)</code> and <code>∃y ∀x, Loves(x, y)</code>? Does everyone love someone (possibly different people), or is there one specific person loved by everyone? Try inventing your own real-world example (not about love) that shows the same distinction — for instance, about students and teachers, or customers and products.</p>
+<h3 id="quick-recap_8">Quick Recap</h3>
+<p>The universal quantifier (∀) means "true for every object," while the existential quantifier (∃) means "true for at least one object" — and critically, swapping their order in a statement can completely change its meaning.</p>
+<hr>
+<h2 id="210-applying-predicate-logic-to-real-world-problems">2.10 Applying Predicate Logic to Real-World Problems</h2>
+<h3 id="the-hook-story-mode_9">The Hook (Story Mode)</h3>
+<p>Predicate logic isn't just an abstract math exercise — it's the invisible engine behind family-tree apps, social network "people you may know" suggestions, and even the access-control systems that decide who can open which door in a secure building. Anywhere you have objects (people, books, files) and relationships between them, predicate logic is quietly doing the reasoning.</p>
+<h3 id="the-explanation_9">The Explanation</h3>
+<p>Applying predicate logic to real problems means modeling real objects, their properties, and their relationships using predicates and quantifiers — then using that model to reason and draw conclusions.</p>
+<p><strong>Representing Relationships Using Predicates</strong></p>
+<p>Real-world relationships translate naturally into predicates with multiple arguments:</p>
+<pre><code>Borrows(x, y)     --&gt;  &quot;student x borrows book y&quot;
+Teaches(t, s)     --&gt;  &quot;teacher t teaches student s&quot;
+</code></pre>
+<p>These predicates let us model an entire system — like a school library — in a structured, queryable way.</p>
+<p><strong>Writing Logical Statements With Quantifiers</strong></p>
+<p>Combining predicates with quantifiers lets us write general rules about a whole system:</p>
+<pre><code>∀x, Student(x) → Borrows(x, Book)
+--&gt;  &quot;Every student borrows a book&quot;
+
+∃y, Book(y) ∧ Available(y)
+--&gt;  &quot;There exists at least one book that is available&quot;
+</code></pre>
+<p><strong>Reasoning and Drawing Conclusions</strong></p>
+<p>Once we have facts and general rules, predicate logic lets us reason toward specific conclusions. For example, given:</p>
+<ul>
+<li><strong>Rule:</strong> <code>∀x, Student(x) → HasLibraryCard(x)</code> ("Every student has a library card")</li>
+<li><strong>Fact:</strong> <code>Student(Ali)</code> ("Ali is a student")</li>
+</ul>
+<p>We can logically conclude: <code>HasLibraryCard(Ali)</code> ("Ali has a library card").</p>
+<p><em>Link:</em> This exact reasoning pattern — a general rule plus a specific fact producing a specific conclusion — is how automated systems check eligibility: "every Premium user gets free shipping" + "Ali is a Premium user" → "Ali gets free shipping," verified instantly and consistently, without a human needing to check manually.</p>
+<h3 id="the-practical-walkthrough-modeling-a-library-system">The Practical Walkthrough: Modeling a Library System</h3>
+<p><strong>Step 1 — Define the predicates:</strong><br>
+* <code>Student(x)</code> — x is a student<br>
+* <code>Book(y)</code> — y is a book<br>
+* <code>Borrows(x, y)</code> — x borrows y<br>
+* <code>Available(y)</code> — y is available</p>
+<p><strong>Step 2 — Write the general rules:</strong></p>
+<pre><code>Rule 1: ∀x, Student(x) → HasLibraryCard(x)
+Rule 2: ∃y, Book(y) ∧ Available(y)
+</code></pre>
+<p><strong>Step 3 — Add specific facts:</strong></p>
+<pre><code>Fact 1: Student(Ali)
+</code></pre>
+<p><strong>Step 4 — Apply reasoning:</strong></p>
+<p>Using Rule 1 and Fact 1 together: since Ali is a student, and <em>every</em> student has a library card, we conclude <code>HasLibraryCard(Ali)</code>.</p>
+<p><strong>What just happened?</strong> You just built — by hand — the exact type of small "knowledge base" that powers real library management software, automatically checking permissions and rules without a human re-checking each case individually.</p>
+<h3 id="interactive-stop-point_9">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> Using the predicates above, write a rule (in predicate logic) for the statement: "All students must attend class." Then write a specific fact about one student, and state what conclusion could be logically drawn by combining the rule and the fact.</p>
+<h3 id="quick-recap_9">Quick Recap</h3>
+<p>Predicate logic models real-world systems by defining predicates for objects and relationships, writing general rules with quantifiers, and then combining those rules with specific facts to reach reliable, automatic conclusions.</p>
+<hr>
+<h2 id="211-logic-based-reasoning-and-inference">2.11 Logic-Based Reasoning and Inference</h2>
+<h3 id="the-hook-story-mode_10">The Hook (Story Mode)</h3>
+<p>Picture a smart home security system at 2 AM: <em>"IF motion is detected at night, THEN sound the alarm. Motion was detected at night. THEREFORE, sound the alarm."</em> This tiny three-line reasoning chain is a real, formal logical proof — and it's running, in some form, inside every smart alarm, fraud-detection system, and automated decision engine in the world today.</p>
+<h3 id="the-explanation_10">The Explanation</h3>
+<p><strong>Logic-based reasoning and inference</strong> is the process of deriving new, guaranteed-true facts from known information, using strict logical rules.</p>
+<p><strong>Logical Inference</strong></p>
+<p>Inference means reaching a new conclusion from existing facts, using valid logical steps. If the starting facts (called <strong>premises</strong>) are true, and the reasoning steps are valid, the conclusion is <strong>guaranteed</strong> to be true — not just probably true.</p>
+<p>Classic example:</p>
+<pre><code>Premise 1: All humans are mortal.
+Premise 2: Socrates is a human.
+Conclusion: Socrates is mortal.
+</code></pre>
+<p><strong>Deduction Using Logical Rules</strong></p>
+<p><strong>Deduction</strong> reasons from general rules down to a specific conclusion. Several formal deduction patterns are especially important in computer science:</p>
+<p><strong>Modus Ponens</strong> ("the way that affirms"):</p>
+<pre><code>Premise 1: P → Q   (&quot;If P then Q&quot;)
+Premise 2: P        (&quot;P is true&quot;)
+Conclusion: Q        (&quot;Therefore, Q is true&quot;)
+</code></pre>
+<p><strong>Modus Tollens</strong> ("the way that denies"):</p>
+<pre><code>Premise 1: P → Q    (&quot;If P then Q&quot;)
+Premise 2: ¬Q        (&quot;Q is false&quot;)
+Conclusion: ¬P        (&quot;Therefore, P is false&quot;)
+</code></pre>
+<p><strong>Syllogism</strong> (chaining two conditional rules together):</p>
+<pre><code>Premise 1: P → Q
+Premise 2: Q → R
+Conclusion: P → R
+</code></pre>
+<p><em>Link:</em> Modus Ponens is the direct engine behind rule-based expert systems and smart-home automation ("if motion detected, then alarm"). Modus Tollens is the logic behind troubleshooting by elimination ("if the bulb worked, the room would be lit; the room isn't lit; therefore, the bulb didn't work").</p>
+<h3 id="the-practical-walkthrough-a-security-lockout-decision-using-deduction">The Practical Walkthrough: A Security Lockout Decision Using Deduction</h3>
+<p>Let's trace a real system decision step by step, using Modus Tollens.</p>
+<p><strong>Scenario:</strong> A company's login system has this rule: "If a user enters the correct password (P), then they are granted access (Q)." A specific user was <strong>not</strong> granted access.</p>
+<p><strong>Step 1 — Write the general rule:</strong></p>
+<pre><code>P → Q   (&quot;If correct password entered, then access granted&quot;)
+</code></pre>
+<p><strong>Step 2 — State the observed fact:</strong></p>
+<pre><code>¬Q   (&quot;Access was NOT granted&quot;)
+</code></pre>
+<p><strong>Step 3 — Apply Modus Tollens:</strong></p>
+<pre><code>P → Q
+¬Q
+─────────
+∴ ¬P   (&quot;Therefore, the correct password was NOT entered&quot;)
+</code></pre>
+<p><strong>Step 4 — Interpret the conclusion:</strong><br>
+The system can now confidently and automatically log: "Incorrect password attempt" — and, if this repeats several times, trigger an automated security lockout.</p>
+<p><strong>What just happened?</strong> Without any human needing to manually inspect the situation, a purely logical deduction — Modus Tollens — allowed the system to correctly and reliably identify <em>why</em> access was denied, directly from one rule and one observation.</p>
+<h3 id="interactive-stop-point_10">Interactive Stop-Point</h3>
+<p><strong>Grab a Partner:</strong> Partner A writes a real or invented "if-then" rule about school or home life (e.g., "If the fire alarm rings, then everyone must exit the building"). Partner B is given either the "if" fact or the negation of the "then" fact, and must correctly apply Modus Ponens or Modus Tollens to reach the valid conclusion. Swap and repeat with a new rule.</p>
+<h3 id="quick-recap_10">Quick Recap</h3>
+<p>Logical inference lets us derive new, guaranteed conclusions from known facts using rules like Modus Ponens and Modus Tollens — the exact reasoning engine behind automated systems, from smart-home alarms to security lockouts.</p>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<div class="table-wrap"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Computational Thinking</strong></td>
+<td>A problem-solving approach in which a problem is understood, broken into smaller parts, and solved step by step using logical thinking.</td>
+</tr>
+<tr>
+<td><strong>Decomposition</strong></td>
+<td>The process of breaking a large or complex problem into smaller and manageable parts.</td>
+</tr>
+<tr>
+<td><strong>Algorithm</strong></td>
+<td>A step-by-step set of instructions used to solve a problem or perform a task.</td>
+</tr>
+<tr>
+<td><strong>Logic</strong></td>
+<td>A formal method of representing facts, statements, and rules so that correct reasoning and decision-making can be performed.</td>
+</tr>
+<tr>
+<td><strong>Proposition</strong></td>
+<td>A statement that is either true or false, but not both at the same time.</td>
+</tr>
+<tr>
+<td><strong>Compound Proposition</strong></td>
+<td>A proposition formed by combining two or more simple propositions using logical operators such as AND, OR, and NOT.</td>
+</tr>
+<tr>
+<td><strong>Truth Table</strong></td>
+<td>A table used to show the truth values of a logical expression for all possible combinations of its inputs.</td>
+</tr>
+<tr>
+<td><strong>Propositional Equivalence</strong></td>
+<td>Two logical expressions have the same truth values in all possible cases.</td>
+</tr>
+<tr>
+<td><strong>Propositional Satisfiability</strong></td>
+<td>A proposition is satisfiable if there is at least one condition under which it becomes true.</td>
+</tr>
+<tr>
+<td><strong>Predicate Logic</strong></td>
+<td>A type of logic that represents statements using subjects, properties, variables, and relationships.</td>
+</tr>
+<tr>
+<td><strong>Predicate</strong></td>
+<td>A logical expression that describes a property or relationship of a subject, such as <code>Tall(Ali)</code>.</td>
+</tr>
+<tr>
+<td><strong>Quantifier</strong></td>
+<td>Used in predicate logic to show how many objects a statement applies to, such as "for all" (∀) or "there exists" (∃).</td>
+</tr>
+<tr>
+<td><strong>Logical Inference</strong></td>
+<td>The process of drawing a correct conclusion from given facts or statements.</td>
+</tr>
+<tr>
+<td><strong>Deduction</strong></td>
+<td>A reasoning method in which a specific conclusion is derived from general rules or known facts.</td>
+</tr>
+</tbody>
+</table></div></div>
+<hr>
+<h2 id="end-of-chapter-exercise">End-of-Chapter Exercise</h2>
+<h3 id="multiple-choice-questions">Multiple Choice Questions</h3>
+<ol>
+<li>
+<p>Computational thinking is mainly used for:<br>
+   (a) Playing computer games (b) Solving problems in a logical way (c) Writing essays (d) Drawing pictures</p>
+</li>
+<li>
+<p>The first step in problem solving is:<br>
+   (a) Writing code (b) Evaluating the solution (c) Identifying the problem (d) Breaking the problem</p>
+</li>
+<li>
+<p>Breaking a large problem into smaller parts is called:<br>
+   (a) Abstraction (b) Decomposition (c) Evaluation (d) Automation</p>
+</li>
+<li>
+<p>A step-by-step solution to a problem is known as an:<br>
+   (a) Program (b) Flowchart (c) Algorithm (d) Function</p>
+</li>
+<li>
+<p>The logic that uses only true or false values is:<br>
+   (a) Predicate logic (b) Fuzzy logic (c) Propositional logic (d) Natural logic</p>
+</li>
+<li>
+<p>A compound proposition is formed using:<br>
+   (a) A single statement (b) Only numbers (c) (P ∧ Q) (d) Only variables</p>
+</li>
+<li>
+<p>The purpose of a truth table is to:<br>
+   (a) Write programs (b) Store data (c) Evaluate logical expressions (d) Design networks</p>
+</li>
+<li>
+<p>A proposition that is true for at least one case is called:<br>
+   (a) Unsatisfiable (b) Invalid (c) Satisfiable (d) Equivalent</p>
+</li>
+<li>
+<p>The symbol for the universal quantifier is:<br>
+   (a) ∃ (b) ∧ (c) ∀ (d) ¬</p>
+</li>
+<li>
+<p>Predicate logic is mainly used to:<br>
+    (a) Draw diagrams (b) Represent relationships using variables (c) Store numbers (d) Design networks</p>
+</li>
+</ol>
+<p><strong>Answer Key:</strong> 1-b, 2-c, 3-b, 4-c, 5-c, 6-c, 7-c, 8-c, 9-c, 10-b</p>
+<h3 id="short-questions">Short Questions</h3>
+<ol>
+<li>What is meant by computational thinking?</li>
+<li>Why is computational thinking important in problem solving?</li>
+<li>What is decomposition in problem solving?</li>
+<li>What is an algorithm?</li>
+<li>What is logic in computer science?</li>
+<li>What is a proposition?</li>
+<li>What are truth values?</li>
+<li>What is a truth table?</li>
+<li>What is propositional satisfiability?</li>
+<li>What is a predicate in predicate logic?</li>
+<li>What is the difference between the universal and existential quantifiers?</li>
+<li>What is logical inference?</li>
+</ol>
+<h3 id="long-questions">Long Questions</h3>
+<ol>
+<li>Explain computational thinking and discuss its importance in solving problems, with suitable examples.</li>
+<li>Describe the steps involved in problem solving using computational thinking. Explain decomposition with an example.</li>
+<li>What is logic as a knowledge representation framework? Explain its role in reasoning and decision making.</li>
+<li>Explain propositional logic. Discuss simple and compound propositions with examples.</li>
+<li>What are truth tables? Explain how truth tables are created and used to evaluate logical expressions.</li>
+<li>Explain propositional equivalence. Describe how equivalent logical expressions are identified, and explain De Morgan's Laws with a truth table proof.</li>
+<li>What is propositional satisfiability? Explain satisfiable and unsatisfiable propositions with examples.</li>
+<li>Explain predicate logic and quantifiers. Discuss how predicate logic is applied to real-world problems.</li>
+<li>Explain logical inference and deduction. Describe Modus Ponens and Modus Tollens with examples.</li>
+</ol>
+<hr>
+<p><em>End of Chapter 2: Computational Thinking &amp; Algorithms.</em></p>
+
+</body>
+</html>
+
+</body>
+</html>

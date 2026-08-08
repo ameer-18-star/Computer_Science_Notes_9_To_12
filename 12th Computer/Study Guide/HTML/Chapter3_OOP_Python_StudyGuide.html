@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 3: Object-Oriented Programming (OOP) Using Python</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Chapter 3: Object-Oriented Programming (OOP) Using Python</div>
+</div>
+
+<h1 id="chapter-3-object-oriented-programming-oop-using-python">Chapter 3: Object-Oriented Programming (OOP) Using Python</h1>
+<hr>
+<h2 id="introduction-the-core-shift-from-linear-scripts-to-modular-real-world-objects">Introduction: The Core Shift — From Linear Scripts to Modular Real-World Objects</h2>
+<p>Alright, future software architects — let's talk about a moment that changes how you think about code forever.</p>
+<p>Up until now, your Python programs have probably looked like a recipe. Step one, do this. Step two, do that. Variables float around loosely. Functions get called on data that lives somewhere else, far away, in another part of the script. This is called <strong>procedural programming</strong> — programming as a straight line of instructions.</p>
+<p>But here's the problem. Real life isn't a straight line. Real life is made of <em>things</em> — cars, students, bank accounts, video game characters, Instagram profiles. Each of these "things" carries its own data (a car has a color, a speed, a fuel level) and its own behavior (a car can accelerate, brake, honk). When you write procedural code to model these "things," your data and your logic drift apart. Programs get tangled. Bugs multiply. Teams of programmers start stepping on each other's toes.</p>
+<p><strong>Object-Oriented Programming (OOP)</strong> fixes this by letting you bundle data and behavior together into one unit, modeled after real-world things. Instead of writing loose functions that operate on loose variables, you build <strong>blueprints</strong> (classes) for real-world entities, and then you create <strong>actual instances</strong> (objects) from those blueprints.</p>
+<p>This is the single biggest mental shift in your programming journey so far. It is completely normal if it feels strange at first — almost every programmer on Earth had this exact same "wait, what is <code>self</code>?" moment. By the end of this chapter, you won't just understand OOP. You'll think in objects.</p>
+<p>Let's build.</p>
+<hr>
+<h2 id="31-object-oriented-programming-oop-using-python">3.1 Object-Oriented Programming (OOP) Using Python</h2>
+<h3 id="the-hook-story-mode">The Hook (Story Mode)</h3>
+<p>Rewind to 1967, Norway. Two computer scientists, Ole-Johan Dahl and Kristen Nygaard, were trying to simulate something very physical: ships colliding at sea. Procedural code made this a nightmare — every ship's speed, position, and cargo had to be tracked separately, with functions reaching across the whole program to grab the right numbers for the right ship.</p>
+<p>So Dahl and Nygaard invented something new: a language called <strong>Simula 67</strong>. Instead of tracking "ship 1 speed" and "ship 2 speed" as separate loose variables, they created a <strong>"ship" blueprint</strong> — a bundle of data and behavior that could be copied to make as many ships as they wanted, each keeping track of its own information.</p>
+<p>They had just invented the <strong>class</strong> and the <strong>object</strong>. A decade later, Alan Kay took this idea and used it to build <strong>Smalltalk</strong>, one of the first languages with a graphical, window-based interface — the direct ancestor of the desktop and phone screens you use today. That accidental-looking idea, born from simulating colliding ships, is the same idea you're about to learn.</p>
+<h3 id="the-explanation">The Explanation</h3>
+<p><strong>Procedural Programming vs. Object-Oriented Programming</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Procedural Programming</th>
+<th>Object-Oriented Programming</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code is a sequence of steps</td>
+<td>Code is a collection of interacting objects</td>
+</tr>
+<tr>
+<td>Data and functions are separate</td>
+<td>Data and functions are bundled together (in a class)</td>
+</tr>
+<tr>
+<td>Hard to reuse for a new "thing"</td>
+<td>Easy to reuse — just create a new object</td>
+</tr>
+<tr>
+<td>Small bugs can spread everywhere</td>
+<td>Bugs stay contained inside one class</td>
+</tr>
+<tr>
+<td>Good for short scripts</td>
+<td>Good for large, evolving, real-world software</td>
+</tr>
+</tbody>
+</table></div>
+<p>Think of procedural code like a single long shopping list taped to your fridge. Object-oriented code is like having a labeled drawer for every ingredient — flour in the flour drawer, sugar in the sugar drawer — each with instructions for how to use it.</p>
+<p><strong>Benefits of OOP: Modularity, Reusability, and Easier Maintenance</strong></p>
+<ul>
+<li><strong>Modularity</strong> — Your program is broken into self-contained pieces (classes). Each piece can be built, tested, and fixed independently, like Lego bricks.</li>
+<li><strong>Reusability</strong> — Once you build a <code>Student</code> class, you can create a hundred different student objects from it, or reuse that class in a completely different program.</li>
+<li><strong>Easier Maintenance</strong> — If there's a bug in how a bank account calculates interest, you fix it in <em>one place</em> — the <code>BankAccount</code> class — and every object made from it is instantly fixed.</li>
+</ul>
+<p><strong>One-sentence summary:</strong> OOP organizes your program the way the real world is organized — into self-contained "things" that carry their own data and know how to act on it.</p>
+<h3 id="the-practical-walkthrough">The Practical Walkthrough</h3>
+<p>Imagine you're building a simple game with 100 players. In procedural code, you might need 100 separate variables for health, and a giant function full of <code>if</code> statements to figure out whose health to update. In OOP:</p>
+<pre><code class="language-python">class Player:
+    def __init__(self, name, health):
+        self.name = name
+        self.health = health
+
+    def take_damage(self, amount):
+        self.health -= amount
+        print(f&quot;{self.name} now has {self.health} HP.&quot;)
+
+# Create 3 independent players from the SAME blueprint
+p1 = Player(&quot;Zara&quot;, 100)
+p2 = Player(&quot;Malik&quot;, 100)
+p3 = Player(&quot;Aisha&quot;, 100)
+
+p1.take_damage(20)   # Only Zara's health changes
+</code></pre>
+<p><strong>What just happened conceptually?</strong> One blueprint (<code>Player</code>), three completely independent objects, each managing its <em>own</em> health. No giant tangled <code>if</code> chain required.</p>
+<h3 id="interactive-stop-point">Interactive Stop-Point</h3>
+<p><strong>Pause &amp; Think:</strong> You're building a library system. In procedural style, you'd have separate lists like <code>book_titles = []</code>, <code>book_authors = []</code>, <code>book_available = []</code>, all lined up by index number. What could go wrong if someone accidentally sorts <code>book_titles</code> but forgets to sort <code>book_authors</code> the same way? How would bundling this data into a <code>Book</code> class prevent that entire category of bug?</p>
+<h3 id="quick-recap">Quick Recap</h3>
+<p>Procedural code separates data and logic into a long line of instructions; OOP bundles data and logic together into reusable, self-contained blueprints called classes — making large programs modular, reusable, and far easier to maintain.</p>
+<hr>
+<h2 id="32-core-concepts-of-oop">3.2 Core Concepts of OOP</h2>
+<p>OOP rests on four pillars: <strong>Classes &amp; Objects</strong>, <strong>Encapsulation</strong>, <strong>Inheritance</strong>, and <strong>Polymorphism</strong>. Let's build each one from the ground up.</p>
+<hr>
+<h3 id="321-classes-and-objects-representing-real-world-entities-in-code">3.2.1 Classes and Objects — Representing Real-World Entities in Code</h3>
+<h4 id="the-hook-story-mode_1">The Hook (Story Mode)</h4>
+<p>Think about your smartphone. Somewhere in a factory in Shenzhen, an engineer designed a <strong>blueprint</strong>: screen size, chip type, camera specs, battery capacity. That blueprint itself is not a phone you can hold — it's just a design. But when the factory manufactures an actual unit, gives it a serial number, and charges its battery to 87%, <em>that</em> is a real, physical, individual phone in your hand.</p>
+<p>The blueprint is the <strong>class</strong>. Your actual phone, with its own unique IMEI number and its own current battery percentage, is the <strong>object</strong>.</p>
+<h4 id="the-explanation_1">The Explanation</h4>
+<ul>
+<li><strong>Class</strong> — a blueprint that defines what attributes (data) and methods (behavior) every object of this type will have. Defined with the <code>class</code> keyword.</li>
+<li><strong>Object</strong> — a specific instance created from a class, with its own actual values.</li>
+<li><strong>Attribute</strong> — a variable that belongs to an object (e.g., <code>name</code>, <code>battery_level</code>).</li>
+<li><strong>Method</strong> — a function that belongs to a class and defines what objects of that class can <em>do</em>.</li>
+<li><strong>Instantiation</strong> — the act of creating an object from a class.</li>
+<li><strong>Constructor (<code>__init__</code>)</strong> — a special method that runs automatically the moment an object is created. It sets up the object's starting attributes.</li>
+<li><strong><code>self</code></strong> — a reference to "this specific object." It's how a method knows <em>which</em> object's data to work with.</li>
+</ul>
+<p><strong>ASCII UML Class Diagram:</strong></p>
+<pre><code>+-------------------------+
+|         Student         |
++-------------------------+
+| + name                  |
+| + age                   |
+| + grade                 |
++-------------------------+
+| + __init__(name, age)   |
+| + display()             |
++-------------------------+
+</code></pre>
+<p><strong>Defining a Class in Python:</strong></p>
+<pre><code class="language-python">class Student:
+    def __init__(self, name, age):
+        self.name = name      # attribute
+        self.age = age        # attribute
+
+    def display(self):
+        print(f&quot;Student: {self.name}, Age: {self.age}&quot;)
+</code></pre>
+<p><strong>About <code>self</code> — don't be scared of it.</strong> Think of <code>self</code> as a name tag every object wears. When you write <code>self.name = name</code> inside a method, you are saying: "Whichever object called this method, put this value on <em>its own</em> name tag, not on anyone else's." Python passes <code>self</code> automatically — you never type it in when you call the method, only when you define it.</p>
+<p><strong>Instantiating Objects and Accessing Attributes/Methods:</strong></p>
+<pre><code class="language-python">student1 = Student(&quot;Amina&quot;, 17)
+student2 = Student(&quot;Bilal&quot;, 18)
+
+student1.display()   # Student: Amina, Age: 17
+student2.display()   # Student: Bilal, Age: 18
+
+print(student1.name) # Directly access an attribute: Amina
+</code></pre>
+<h4 id="memory-blueprint-how-objects-live-in-ram">Memory Blueprint: How Objects Live in RAM</h4>
+<p>When Python runs <code>student1 = Student("Amina", 17)</code>, here is what happens, step by step:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Code Executed</th>
+<th>What Happens in RAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>Student("Amina", 17)</code> is called</td>
+<td>Python allocates a brand-new empty object in memory, at some address — let's imagine <code>0x001A</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>__init__(self, name, age)</code> runs</td>
+<td><code>self</code> is automatically bound to the new object at <code>0x001A</code>; <code>name="Amina"</code>, <code>age=17</code> are passed in</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>self.name = name</code> executes</td>
+<td>The object at <code>0x001A</code> now stores an attribute <code>name</code> with value <code>"Amina"</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>self.age = age</code> executes</td>
+<td>The object at <code>0x001A</code> now stores an attribute <code>age</code> with value <code>17</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>student1 = ...</code></td>
+<td>The variable <code>student1</code> in your script becomes a <em>label</em> pointing at address <code>0x001A</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>RAM Memory Box Map:</strong></p>
+<pre><code>student1  ----&gt;  [ 0x001A: Student object ]
+                    name: &quot;Amina&quot;
+                    age:  17
+
+student2  ----&gt;  [ 0x00FB: Student object ]
+                    name: &quot;Bilal&quot;
+                    age:  18
+</code></pre>
+<p>Notice: <code>student1</code> and <code>student2</code> point to <strong>two completely separate boxes in memory</strong>. Changing <code>student1.age</code> will never touch <code>student2.age</code>. This is the whole point of objects — isolated, independent data.</p>
+<h4 id="interactive-stop-point_1">Interactive Stop-Point</h4>
+<p><strong>Pause &amp; Think — 3.2.1:</strong> If you create two objects <code>student1 = Student("Amina", 17)</code> and <code>student2 = Student("Amina", 17)</code> — same name, same age — does <code>student1 == student2</code> evaluate to <code>True</code> or <code>False</code> in Python?</p>
+<p><em>Think before scrolling...</em> The answer is <strong><code>False</code></strong>. By default, Python compares objects by their <strong>memory address</strong>, not their attribute values. <code>student1</code> and <code>student2</code> live at two different addresses in RAM, so Python sees them as two different objects — even though the data inside looks identical. (You <em>can</em> change this default behavior by defining a special <code>__eq__</code> method, which we'll touch on in the Polymorphism section.)</p>
+<h4 id="quick-recap_1">Quick Recap</h4>
+<p>A class is the architectural blueprint; an object is the actual house built from that blueprint in memory — each object gets its own private storage box for its attributes, and <code>self</code> is simply how a method knows which box it's currently working inside.</p>
+<hr>
+<h3 id="322-encapsulation">3.2.2 Encapsulation</h3>
+<h4 id="the-hook-story-mode_2">The Hook (Story Mode)</h4>
+<p>September 1999. NASA loses the <strong>Mars Climate Orbiter</strong> — a $125 million spacecraft — as it burns up in the Martian atmosphere. The cause? One team's software calculated thruster force in <strong>pound-force</strong> (imperial units). Another team's software expected the number in <strong>newtons</strong> (metric units). The two components exchanged this raw number directly, with no validation, no unit-checking layer, no protective interface in between.</p>
+<p>This is exactly the kind of disaster <strong>encapsulation</strong> is designed to prevent. If that value had been hidden behind a protected interface — a method that validated and converted units before accepting a new value — the mismatch would have been caught instantly. Instead, a spacecraft was lost because two pieces of code touched raw, unguarded data directly.</p>
+<h4 id="the-explanation_2">The Explanation</h4>
+<p><strong>Encapsulation</strong> means bundling data and the methods that operate on it into a single class, and <strong>restricting direct outside access</strong> to that data. Outsiders must go through controlled "doors" (methods) instead of reaching directly into the object's internals.</p>
+<p><strong>Everyday Analogy:</strong> Think of an ATM. You interact with a public interface — insert your card, press buttons, get cash. You never get to open the steel vault and directly rewrite the balance number stored inside the bank's server. The public buttons are your only <em>legal</em> doorway to that protected data.</p>
+<p><strong>Access Modifiers in Python (naming conventions, not hard rules):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Access Level</th>
+<th>Syntax</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Public</td>
+<td><code>self.name</code></td>
+<td>Accessible from anywhere</td>
+</tr>
+<tr>
+<td>Protected</td>
+<td><code>self._name</code></td>
+<td>Convention: "internal use only," but not enforced</td>
+</tr>
+<tr>
+<td>Private</td>
+<td><code>self.__name</code></td>
+<td>Python performs <em>name mangling</em> to make accidental outside access hard</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code>+--------------------------+
+|       BankAccount        |
++--------------------------+
+| - __balance               |   &lt;- private (data hiding)
++--------------------------+
+| + deposit(amount)         |   &lt;- public interface
+| + withdraw(amount)        |   &lt;- public interface
+| + get_balance()           |   &lt;- public getter
++--------------------------+
+</code></pre>
+<p><strong>Getter and Setter Methods:</strong></p>
+<p>A <strong>getter</strong> lets outside code safely <em>read</em> a private value. A <strong>setter</strong> lets outside code safely <em>change</em> a private value — while running validation checks first.</p>
+<pre><code class="language-python">class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance     # private attribute
+
+    def deposit(self, amount):
+        if amount &gt; 0:
+            self.__balance += amount
+        else:
+            print(&quot;Deposit must be positive.&quot;)
+
+    def withdraw(self, amount):
+        if amount &gt; self.__balance:
+            print(&quot;Insufficient balance&quot;)
+        else:
+            self.__balance -= amount
+
+    def get_balance(self):           # getter
+        return self.__balance
+
+    def set_balance(self, new_balance):  # setter, with validation
+        if new_balance &gt;= 0:
+            self.__balance = new_balance
+        else:
+            print(&quot;Balance cannot be negative.&quot;)
+</code></pre>
+<pre><code class="language-python">account = BankAccount(1000)
+account.deposit(500)
+account.withdraw(300)
+print(account.get_balance())   # 1200
+
+# Direct access is blocked by name mangling:
+# print(account.__balance)     # AttributeError!
+</code></pre>
+<p><strong>Why this matters:</strong> without the <code>deposit()</code>/<code>withdraw()</code> gatekeepers, someone could write <code>account.__balance = -99999</code> directly and break the entire system. Encapsulation forces every change to pass through validated logic first.</p>
+<h4 id="the-practical-walkthrough_1">The Practical Walkthrough</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Code</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>account = BankAccount(1000)</code></td>
+<td>Private <code>__balance</code> set to 1000, hidden inside the object</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>account.deposit(500)</code></td>
+<td>Passes through validation (<code>amount &gt; 0</code>), <code>__balance</code> becomes 1500</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>account.withdraw(300)</code></td>
+<td>Passes through validation (<code>300 &lt;= 1500</code>), <code>__balance</code> becomes 1200</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>account.__balance = -500</code></td>
+<td><strong>Fails / does not touch the real data</strong> — name mangling has renamed the real attribute internally to <code>_BankAccount__balance</code>, so this creates an unrelated new attribute instead</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>account.get_balance()</code></td>
+<td>Returns the <em>real</em>, protected value: <code>1200</code></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="interactive-stop-point_2">Interactive Stop-Point</h4>
+<p><strong>Grab a Partner — 3.2.2:</strong> Partner A writes a <code>BankAccount</code> class with a fully <strong>public</strong> <code>balance</code> attribute (no underscores). Partner B plays the "hacker" and writes one line of code that sets <code>balance</code> to a negative number, instantly creating money from nothing. Now, redesign the class together using a private <code>__balance</code> attribute plus a <code>withdraw()</code> method that rejects any request larger than the current balance. Test that the exploit no longer works.</p>
+<h4 id="quick-recap_2">Quick Recap</h4>
+<p>Encapsulation hides an object's raw data behind protected, validated methods — like an ATM's buttons guarding the vault — so outside code can never corrupt an object's internal state directly.</p>
+<hr>
+<h3 id="323-inheritance-reusing-and-extending-functionality">3.2.3 Inheritance — Reusing and Extending Functionality</h3>
+<h4 id="the-hook-story-mode_3">The Hook (Story Mode)</h4>
+<p>Every car ever built shares a common ancestor concept: wheels, an engine, the ability to move forward. Car manufacturers don't reinvent "what is a vehicle" from scratch every time. Instead, they start from a shared <strong>base design</strong> and <em>extend</em> it — adding a turbocharger for a sports car, or extra seating and a bigger battery for an electric bus.</p>
+<p>This is precisely how <strong>inheritance</strong> works in code: build one solid base class, then extend it into more specific variations, without duplicating any of the shared logic.</p>
+<h4 id="the-explanation_3">The Explanation</h4>
+<p><strong>Inheritance</strong> lets a new class (the <strong>child</strong> or <strong>derived class</strong>) automatically receive all the attributes and methods of an existing class (the <strong>parent</strong> or <strong>base class</strong>) — and then add or override its own extra features.</p>
+<pre><code>+----------------+
+|    Vehicle     |   &lt;-- Parent (Base) Class
++----------------+
+| + speed        |
+| + fuel         |
++----------------+
+| + move()       |
++----------------+
+        ^
+        |  inherits from
++----------------+
+|   SportsCar    |   &lt;-- Child (Derived) Class
++----------------+
+| + turbo_boost  |
++----------------+
+| + boost()      |
++----------------+
+</code></pre>
+<p><strong>Single Inheritance</strong> — one child class inherits from exactly one parent class.</p>
+<pre><code class="language-python">class Vehicle:
+    def __init__(self, brand):
+        self.brand = brand
+
+    def move(self):
+        print(f&quot;{self.brand} is moving.&quot;)
+
+class SportsCar(Vehicle):          # SportsCar inherits from Vehicle
+    def boost(self):
+        print(f&quot;{self.brand} activates turbo boost!&quot;)
+
+car = SportsCar(&quot;Ferrari&quot;)
+car.move()    # Inherited from Vehicle: &quot;Ferrari is moving.&quot;
+car.boost()   # Defined in SportsCar: &quot;Ferrari activates turbo boost!&quot;
+</code></pre>
+<p><strong>Using <code>super()</code> to Extend, Not Replace, the Parent:</strong></p>
+<p><code>super()</code> lets a child class call the parent's version of a method — usually inside its own <code>__init__</code> — so you don't have to retype the parent's setup logic.</p>
+<pre><code class="language-python">class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+class Student(Person):
+    def __init__(self, name, age, student_id):
+        super().__init__(name, age)   # runs Person's __init__ first
+        self.student_id = student_id  # then adds Student's own attribute
+
+s = Student(&quot;Hassan&quot;, 17, &quot;S1023&quot;)
+print(s.name, s.age, s.student_id)   # Hassan 17 S1023
+</code></pre>
+<p><strong>Multiple Inheritance</strong> — a child class inherits from <em>more than one</em> parent class at the same time.</p>
+<pre><code>+-----------+      +-----------+
+|  Camera   |      | Computer  |
++-----------+      +-----------+
+        \              /
+         \            /
+        +----------------+
+        |  Smartphone     |
+        +----------------+
+</code></pre>
+<pre><code class="language-python">class Camera:
+    def take_photo(self):
+        print(&quot;Photo captured.&quot;)
+
+class Computer:
+    def run_app(self):
+        print(&quot;App running.&quot;)
+
+class Smartphone(Camera, Computer):
+    def call(self):
+        print(&quot;Calling...&quot;)
+
+phone = Smartphone()
+phone.take_photo()   # from Camera
+phone.run_app()      # from Computer
+phone.call()         # from Smartphone itself
+</code></pre>
+<h4 id="the-practical-walkthrough_2">The Practical Walkthrough</h4>
+<p><strong>Tracing <code>super().__init__()</code> step by step for <code>Student("Hassan", 17, "S1023")</code>:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What Executes</th>
+<th>RAM State of the new object</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>Student.__init__</code> starts running with <code>self</code> bound to new object</td>
+<td>Object exists, but empty</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>super().__init__(name, age)</code> is called</td>
+<td>Control jumps <em>up</em> to <code>Person.__init__</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Inside <code>Person.__init__</code>: <code>self.name = "Hassan"</code></td>
+<td><code>name: "Hassan"</code> added to the object</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Inside <code>Person.__init__</code>: <code>self.age = 17</code></td>
+<td><code>age: 17</code> added to the object</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Control returns to <code>Student.__init__</code></td>
+<td>Continues from where it left off</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>self.student_id = "S1023"</code></td>
+<td><code>student_id: "S1023"</code> added to the object</td>
+</tr>
+<tr>
+<td><strong>Final Object</strong></td>
+<td></td>
+<td><code>{ name: "Hassan", age: 17, student_id: "S1023" }</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Multilevel Inheritance</strong> (a chain, like a family tree — Grandparent → Parent → Child):</p>
+<pre><code>Vehicle  ---&gt;  Car  ---&gt;  ElectricCar
+</code></pre>
+<pre><code class="language-python">class Vehicle:
+    def start_engine(self):
+        print(&quot;Engine started.&quot;)
+
+class Car(Vehicle):
+    def drive(self):
+        print(&quot;Car is driving.&quot;)
+
+class ElectricCar(Car):
+    def charge(self):
+        print(&quot;Battery is charging.&quot;)
+
+tesla = ElectricCar()
+tesla.start_engine()   # inherited from Vehicle (grandparent)
+tesla.drive()           # inherited from Car (parent)
+tesla.charge()          # defined in ElectricCar itself
+</code></pre>
+<h4 id="interactive-stop-point_3">Interactive Stop-Point</h4>
+<p><strong>Grab a Partner — 3.2.3:</strong> Build a <code>Vehicle</code> base class with <code>speed</code> and a <code>move()</code> method. Partner A extends it into a <code>Car</code> subclass with a unique <code>honk()</code> method. Partner B extends it into a <code>Bike</code> subclass with a unique <code>ring_bell()</code> method. Now both of you instantiate one object of each and call every method — inherited and new — to prove both subclasses share the base functionality but each keeps its own unique behavior.</p>
+<h4 id="quick-recap_3">Quick Recap</h4>
+<p>Inheritance lets a child class automatically absorb all the attributes and methods of a parent class — through single, multiple, or multilevel chains — so you extend functionality instead of rewriting it from scratch, with <code>super()</code> as your bridge back to the parent's setup logic.</p>
+<hr>
+<h3 id="324-polymorphism">3.2.4 Polymorphism</h3>
+<h4 id="the-hook-story-mode_4">The Hook (Story Mode)</h4>
+<p>Look at any modern remote control, or the play button on your phone. One single button — <code>▶</code> — plays a song in Spotify, plays a video on YouTube, or resumes an animation inside a game. The button's <em>label and position never change</em>, but what actually happens when you press it depends entirely on which app is currently running.</p>
+<p>That is polymorphism: one shared interface, many different real behaviors underneath, depending on context.</p>
+<h4 id="the-explanation_4">The Explanation</h4>
+<p><strong>Polymorphism</strong> ("many forms") means the <em>same</em> method name can behave <em>differently</em> depending on which object it's called on.</p>
+<p><strong>Method Overriding — Runtime Polymorphism:</strong></p>
+<p>A child class provides its own version of a method that already exists in its parent class. Python decides <em>which</em> version to run while the program is actually executing (at runtime) — based on the real class of the object.</p>
+<pre><code class="language-python">class Shape:
+    def draw(self):
+        return &quot;Drawing a generic shape&quot;
+
+class Circle(Shape):
+    def draw(self):
+        return &quot;Drawing a circle ○&quot;
+
+class Square(Shape):
+    def draw(self):
+        return &quot;Drawing a square ▢&quot;
+
+class Triangle(Shape):
+    def draw(self):
+        return &quot;Drawing a triangle △&quot;
+
+shapes = [Circle(), Square(), Triangle(), Shape()]
+
+for shape in shapes:
+    print(shape.draw())
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre><code>Drawing a circle ○
+Drawing a square ▢
+Drawing a triangle △
+Drawing a generic shape
+</code></pre>
+<p>The loop calls <code>.draw()</code> on every item using <em>identical</em> code — but each object answers with its own overridden behavior. This is exactly why polymorphism scales so well: adding a <code>Pentagon</code> class tomorrow requires <strong>zero changes</strong> to the loop above. Just define <code>Pentagon(Shape)</code> with its own <code>draw()</code>, and it slots right in.</p>
+<p><strong>Duck Typing — "If it walks like a duck and quacks like a duck..."</strong></p>
+<p>Python doesn't require objects to formally share a parent class to be treated the same way — it only cares whether the object <em>has</em> the method you're trying to call. This flexible style is called <strong>duck typing</strong>.</p>
+<pre><code class="language-python">class Duck:
+    def sound(self):
+        return &quot;Quack!&quot;
+
+class Dog:
+    def sound(self):
+        return &quot;Bark!&quot;
+
+def make_it_speak(animal):
+    print(animal.sound())   # Python doesn't care about the class,
+                             # only that .sound() exists
+
+make_it_speak(Duck())   # Quack!
+make_it_speak(Dog())    # Bark!
+</code></pre>
+<p><strong>Compile-time Polymorphism (Method "Overloading") in Python:</strong></p>
+<p>Languages like Java or C++ let you define multiple versions of a method with different parameter counts, chosen at compile time. Python is dynamically typed and doesn't need this — instead, you mimic the same flexibility using default arguments or <code>*args</code>:</p>
+<pre><code class="language-python">class Calculator:
+    def multiply(self, a=1, b=1, *args):
+        result = a * b
+        for num in args:
+            result *= num
+        return result
+
+calc = Calculator()
+print(calc.multiply(4))         # 4
+print(calc.multiply(2, 3, 4))   # 24
+</code></pre>
+<p><strong>Special / Magic Methods — Making Your Own Objects Behave Like Built-in Types:</strong></p>
+<p>Python's built-in operators (<code>+</code>, <code>len()</code>, <code>print()</code>) are themselves powered by polymorphism — through special methods surrounded by double underscores ("dunder" methods).</p>
+<pre><code class="language-python">class Book:
+    def __init__(self, title, pages):
+        self.title = title
+        self.pages = pages
+
+    def __str__(self):
+        return f&quot;'{self.title}' ({self.pages} pages)&quot;
+
+    def __len__(self):
+        return self.pages
+
+    def __add__(self, other):
+        return self.pages + other.pages
+
+b1 = Book(&quot;Python Basics&quot;, 220)
+b2 = Book(&quot;Advanced OOP&quot;, 340)
+
+print(b1)          # calls __str__  -&gt; 'Python Basics' (220 pages)
+print(len(b1))     # calls __len__  -&gt; 220
+print(b1 + b2)     # calls __add__  -&gt; 560
+</code></pre>
+<p>This is also how <code>student1 == student2</code> from section 3.2.1 could be made to compare <em>attribute values</em> instead of memory addresses — by defining a custom <code>__eq__</code> method.</p>
+<h4 id="the-practical-walkthrough_3">The Practical Walkthrough</h4>
+<p><strong>Tracing the <code>shapes</code> loop, line by line:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Iteration</th>
+<th><code>shape</code> object</th>
+<th><code>shape.draw()</code> looks first at...</th>
+<th>Method actually run</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>Circle()</code></td>
+<td><code>Circle</code> class — found <code>draw()</code> there</td>
+<td><code>Circle.draw</code></td>
+<td>"Drawing a circle ○"</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>Square()</code></td>
+<td><code>Square</code> class — found <code>draw()</code> there</td>
+<td><code>Square.draw</code></td>
+<td>"Drawing a square ▢"</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>Triangle()</code></td>
+<td><code>Triangle</code> class — found <code>draw()</code> there</td>
+<td><code>Triangle.draw</code></td>
+<td>"Drawing a triangle △"</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>Shape()</code></td>
+<td><code>Shape</code> class itself (no override to look for)</td>
+<td><code>Shape.draw</code></td>
+<td>"Drawing a generic shape"</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>What just happened conceptually?</strong> Python always checks the <em>actual</em> class of the object first for an overridden method, and only falls back to the parent's version if the child never redefined it. This lookup happens fresh, every single time, at runtime.</p>
+<h4 id="interactive-stop-point_4">Interactive Stop-Point</h4>
+<p><strong>Pause &amp; Think — 3.2.4:</strong> Why is method overriding (one <code>draw()</code> method per shape class) better design than writing three separate standalone functions — <code>draw_circle()</code>, <code>draw_square()</code>, <code>draw_triangle()</code> — and calling the right one with a big <code>if/elif</code> chain? Specifically: what happens to your <code>if/elif</code> chain when a 4th shape, <code>Pentagon</code>, is added? What happens to the polymorphic loop above?</p>
+<p><em>Hint:</em> With overriding, adding <code>Pentagon(Shape)</code> requires touching <strong>zero</strong> existing code outside the new class itself. With the <code>if/elif</code> approach, you must find and edit that chain every single time a new shape is added — a common source of forgotten bugs in large systems.</p>
+<h4 id="quick-recap_4">Quick Recap</h4>
+<p>Polymorphism lets the <em>same</em> method call — like <code>.draw()</code> or <code>.sound()</code> — automatically trigger different, object-specific behavior at runtime, making your code flexible enough to support brand-new object types without rewriting existing logic.</p>
+<hr>
+<h2 id="chapter-glossary-quick-reference">Chapter Glossary (Quick Reference)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain-English Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Class</strong></td>
+<td>A blueprint that defines attributes and methods for a type of object</td>
+</tr>
+<tr>
+<td><strong>Object</strong></td>
+<td>A specific instance created from a class, with its own real data</td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td>A variable that belongs to an object</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>A function that belongs to a class</td>
+</tr>
+<tr>
+<td><strong>Instantiation</strong></td>
+<td>The act of creating an object from a class</td>
+</tr>
+<tr>
+<td><strong>Constructor (<code>__init__</code>)</strong></td>
+<td>The special method that runs automatically when an object is created</td>
+</tr>
+<tr>
+<td><strong><code>self</code></strong></td>
+<td>A reference to "this specific object" inside a method</td>
+</tr>
+<tr>
+<td><strong>Encapsulation</strong></td>
+<td>Bundling data and methods together, and hiding/protecting data from direct outside access</td>
+</tr>
+<tr>
+<td><strong>Getter / Setter</strong></td>
+<td>Methods used to safely read or safely change a private attribute</td>
+</tr>
+<tr>
+<td><strong>Inheritance</strong></td>
+<td>A mechanism where a child class reuses and extends a parent class's attributes/methods</td>
+</tr>
+<tr>
+<td><strong><code>super()</code></strong></td>
+<td>A function used to call a parent class's method (often <code>__init__</code>) from inside a child class</td>
+</tr>
+<tr>
+<td><strong>Polymorphism</strong></td>
+<td>The ability of the same method name to behave differently depending on the object calling it</td>
+</tr>
+<tr>
+<td><strong>Method Overriding</strong></td>
+<td>A child class providing its own version of a method already defined in the parent</td>
+</tr>
+<tr>
+<td><strong>Duck Typing</strong></td>
+<td>Python's style of caring only whether an object <em>has</em> a needed method, not its exact class</td>
+</tr>
+<tr>
+<td><strong>Magic / Special Methods</strong></td>
+<td>Double-underscore methods (<code>__str__</code>, <code>__len__</code>, <code>__add__</code>) that let custom objects work with built-in operators and functions</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>Object-Oriented Programming reorganizes code around real-world "things" instead of a straight line of instructions. <strong>Classes</strong> are blueprints; <strong>objects</strong> are the real, independent instances built from them, each with its own private memory. <strong>Encapsulation</strong> protects an object's internal data behind validated public methods, preventing the kind of raw, unguarded data exchange that once destroyed a Mars spacecraft. <strong>Inheritance</strong> lets you build a solid base class once and extend it — through single, multiple, or multilevel chains — into more specialized subclasses without duplicating code. <strong>Polymorphism</strong> lets one shared method name, like <code>.draw()</code> or the <code>▶</code> button, trigger different real behavior depending on the object underneath, keeping your code flexible and effortlessly extendable.</p>
+<p>Together, these four pillars — classes/objects, encapsulation, inheritance, and polymorphism — are the same toolkit used to build everything from Fortnite's character system to Instagram's user accounts to the payment app on your phone. You now speak that language.</p>
+
+</body>
+</html>

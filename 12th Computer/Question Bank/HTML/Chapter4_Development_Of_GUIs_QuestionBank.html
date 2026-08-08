@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Unit 4 — Development of Graphical User Interface (GUI)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Unit 4 — Development of Graphical User Interface (GUI)</div>
+</div>
+
+<h1 id="comprehensive-question-bank-unit-4-development-of-graphical-user-interface-gui">Comprehensive Question Bank: Unit 4 — Development of Graphical User Interface (GUI)</h1>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-411-what-is-a-gui-why-is-it-important">Topic 4.1.1: What is a GUI? Why is it Important?</h3>
+<ol>
+<li>
+<p>GUI stands for:<br>
+   A) General User Interaction<br>
+<strong>B) Graphical User Interface</strong><br>
+   C) Guided User Instruction<br>
+   D) General Utility Interface</p>
+</li>
+<li>
+<p>Which of the following best defines a Graphical User Interface?<br>
+   A) A programming language used to write scripts<br>
+<strong>B) A visual way for users to interact with software using elements like buttons, menus, and forms</strong><br>
+   C) A type of database used to store images<br>
+   D) A command typed into a terminal window</p>
+</li>
+<li>
+<p>A Command-Line Interface (CLI) differs from a GUI mainly because a CLI:<br>
+   A) Uses buttons and icons for interaction<br>
+<strong>B) Requires the user to type exact commands</strong><br>
+   C) Is only used on smartphones<br>
+   D) Cannot be used to run Python programs</p>
+</li>
+<li>
+<p>Which of the following is NOT a typical benefit of using a GUI over a CLI?<br>
+   A) Easier for non-technical users<br>
+   B) Provides visual feedback<br>
+<strong>C) Requires memorizing exact command syntax</strong><br>
+   D) Reduces the need to remember complex commands</p>
+</li>
+<li>
+<p>GUI applications are commonly used in:<br>
+   A) Only desktop software<br>
+   B) Only mobile apps<br>
+   C) Only web applications<br>
+<strong>D) Desktop software, web applications, and mobile apps</strong></p>
+</li>
+<li>
+<p>In the 1970s, the research lab credited with pioneering the GUI concept (windows, icons, menus, pointer) was:<br>
+   A) IBM Research<br>
+<strong>B) Xerox PARC</strong><br>
+   C) Bell Labs<br>
+   D) MIT Media Lab</p>
+</li>
+<li>
+<p>The acronym WIMP, associated with early graphical interfaces, stands for:<br>
+   A) Windows, Input, Mouse, Pixels<br>
+<strong>B) Windows, Icons, Menus, Pointer</strong><br>
+   C) Widgets, Icons, Mainloop, Program<br>
+   D) Windows, Interface, Menu, Program</p>
+</li>
+<li>
+<p>Which entrepreneur famously visited Xerox PARC in 1979 and later brought GUI concepts to the Macintosh?<br>
+   A) Bill Gates<br>
+<strong>B) Steve Jobs</strong><br>
+   C) Alan Turing<br>
+   D) Edgar Codd</p>
+</li>
+<li>
+<p>Compared to a CLI, a GUI generally improves usability by:<br>
+   A) Forcing the user to memorize more commands<br>
+<strong>B) Providing visual feedback and reducing the need for memorized commands</strong><br>
+   C) Removing the need for any user input<br>
+   D) Making the software run faster</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-412-overview-of-tkinter-as-pythons-built-in-gui-toolkit">Topic 4.1.2: Overview of Tkinter as Python's Built-in GUI Toolkit</h3>
+<ol>
+<li>
+<p>Tkinter is best described as:<br>
+   A) A third-party library that must be downloaded separately<br>
+<strong>B) Python's standard, built-in library for creating GUI applications</strong><br>
+   C) A database management system<br>
+   D) A web development framework</p>
+</li>
+<li>
+<p>Which of the following is an advantage of Tkinter?<br>
+   A) It requires a paid license<br>
+   B) It only works on Windows<br>
+<strong>C) It comes pre-installed with Python</strong><br>
+   D) It cannot create buttons or labels</p>
+</li>
+<li>
+<p>Tkinter is most suitable for building:<br>
+   A) Massive enterprise-scale distributed systems<br>
+<strong>B) Small-to-medium sized GUI applications</strong><br>
+   C) Only mobile applications<br>
+   D) Operating system kernels</p>
+</li>
+<li>
+<p>Which function call is used to create the main application window in Tkinter?<br>
+   A) <code>tk.Window()</code><br>
+<strong>B) <code>tk.Tk()</code></strong><br>
+   C) <code>tk.MainWindow()</code><br>
+   D) <code>tk.Frame()</code></p>
+</li>
+<li>
+<p>Which method must be called to keep a Tkinter window open and responsive to user actions?<br>
+   A) <code>window.run()</code><br>
+   B) <code>window.start()</code><br>
+<strong>C) <code>window.mainloop()</code></strong><br>
+   D) <code>window.show()</code></p>
+</li>
+<li>
+<p>What is the correct order of steps to build a basic Tkinter GUI application?<br>
+   A) Start mainloop → Create window → Add widgets<br>
+<strong>B) Create window → Define functions/widgets → Place widgets → Start mainloop</strong><br>
+   C) Add widgets → Start mainloop → Create window<br>
+   D) Define functions → Start mainloop → Create window</p>
+</li>
+<li>
+<p>If a Tkinter script does not call <code>mainloop()</code>, what will typically happen when the script runs?<br>
+   A) The window will stay open forever<br>
+   B) The window will open but all buttons will be disabled<br>
+<strong>C) The script will run and exit almost immediately without displaying an interactive window</strong><br>
+   D) Python will raise a syntax error</p>
+</li>
+<li>
+<p><code>window.title("Simple GUI Example")</code> is used to:<br>
+   A) Create a new button labeled "Simple GUI Example"<br>
+<strong>B) Set the text shown in the window's title bar</strong><br>
+   C) Save the window as a file named "Simple GUI Example"<br>
+   D) Change the color of the window</p>
+</li>
+<li>
+<p><code>window.geometry("300x200")</code> sets:<br>
+   A) The database size<br>
+<strong>B) The width and height of the window in pixels</strong><br>
+   C) The number of widgets allowed<br>
+   D) The font size of all text</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-413-tkinter-components-and-widgets">Topic 4.1.3: Tkinter Components and Widgets</h3>
+<ol>
+<li>
+<p>In Tkinter, a "widget" refers to:<br>
+   A) A type of database table<br>
+<strong>B) A visual GUI element such as a label, button, entry field, menu, or listbox</strong><br>
+   C) A Python data type<br>
+   D) A layout manager only</p>
+</li>
+<li>
+<p>The root window created by <code>tk.Tk()</code> is best described as:<br>
+   A) A widget used only for buttons<br>
+<strong>B) The main container that holds all other GUI elements</strong><br>
+   C) A database connection object<br>
+   D) An event handler function</p>
+</li>
+<li>
+<p>A Frame in Tkinter is primarily used to:<br>
+   A) Display images only<br>
+<strong>B) Group and organize related widgets inside a window</strong><br>
+   C) Connect Python to a database<br>
+   D) Start the event loop</p>
+</li>
+<li>
+<p>Which widget is used to display text or an image that the user cannot edit?<br>
+   A) Entry<br>
+<strong>B) Label</strong><br>
+   C) Listbox<br>
+   D) Menu</p>
+</li>
+<li>
+<p>Which widget allows the user to type in a single line of text, such as a username?<br>
+   A) Label<br>
+   B) Listbox<br>
+<strong>C) Entry</strong><br>
+   D) Frame</p>
+</li>
+<li>
+<p>Which widget is best suited for showing a scrollable list of selectable items, such as a list of songs?<br>
+   A) Entry<br>
+   B) Label<br>
+<strong>C) Listbox</strong><br>
+   D) Button</p>
+</li>
+<li>
+<p>Which widget provides a dropdown list of options, such as File &gt; Open, at the top of a window?<br>
+   A) Frame<br>
+   B) Listbox<br>
+<strong>C) Menu</strong><br>
+   D) Entry</p>
+</li>
+<li>
+<p>Which widget is used to trigger an action, such as submitting a form, when clicked?<br>
+   A) Label<br>
+<strong>B) Button</strong><br>
+   C) Entry<br>
+   D) Frame</p>
+</li>
+<li>
+<p>In the example code <code>entry.pack(pady=10)</code>, what does <code>pady</code> control?<br>
+   A) The width of the entry box<br>
+<strong>B) The vertical padding (space) around the widget</strong><br>
+   C) The password masking character<br>
+   D) The number of characters allowed</p>
+</li>
+<li>
+<p>Two Frames, <code>top_frame</code> and <code>bottom_frame</code>, are created inside the same window mainly to:<br>
+    A) Create two separate databases<br>
+<strong>B) Divide the window into organized sections for grouping widgets</strong><br>
+    C) Run two event loops simultaneously<br>
+    D) Automatically resize the window</p>
+</li>
+<li>
+<p>Which statement about widgets and frames is TRUE?<br>
+    A) A Frame can only contain one widget<br>
+<strong>B) Widgets can be placed inside a Frame, and Frames are placed inside the main window</strong><br>
+    C) A Label can hold other widgets like a Frame does<br>
+    D) A Listbox cannot display more than one item</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-414-layout-management-pack-grid-place">Topic 4.1.4: Layout Management (<code>pack()</code>, <code>grid()</code>, <code>place()</code>)</h3>
+<ol>
+<li>
+<p>The purpose of a layout manager in Tkinter is to:<br>
+   A) Connect the GUI to a database<br>
+<strong>B) Decide the position and size of each widget on the screen</strong><br>
+   C) Handle button click events<br>
+   D) Create new windows automatically</p>
+</li>
+<li>
+<p>The <code>pack()</code> layout manager arranges widgets by:<br>
+   A) Using row and column coordinates<br>
+<strong>B) Stacking them vertically or horizontally in the order they are packed</strong><br>
+   C) Using exact x and y pixel coordinates<br>
+   D) Randomly placing them on the screen</p>
+</li>
+<li>
+<p>The <code>grid()</code> layout manager arranges widgets:<br>
+   A) In a single vertical stack<br>
+<strong>B) In rows and columns, like a table</strong><br>
+   C) At exact pixel coordinates only<br>
+   D) In a circular pattern</p>
+</li>
+<li>
+<p>The <code>place()</code> layout manager arranges widgets by:<br>
+   A) Automatically centering them<br>
+<strong>B) Positioning them at exact (x, y) pixel coordinates</strong><br>
+   C) Stacking them in a list<br>
+   D) Aligning them into rows and columns only</p>
+</li>
+<li>
+<p>Which layout manager would be most appropriate for building a structured registration form with labeled fields in neat rows?<br>
+   A) <code>pack()</code><br>
+<strong>B) <code>grid()</code></strong><br>
+   C) <code>place()</code><br>
+   D) <code>Frame()</code></p>
+</li>
+<li>
+<p>In <code>button2.grid(row=0, column=1, padx=10, pady=20)</code>, the parameters <code>padx</code> and <code>pady</code> control:<br>
+   A) The row and column position<br>
+<strong>B) The horizontal and vertical spacing around the widget</strong><br>
+   C) The widget's width and height<br>
+   D) The widget's background color</p>
+</li>
+<li>
+<p>What does <code>columnspan=2</code> do when used with <code>grid()</code>?<br>
+   A) Splits a widget into two rows<br>
+<strong>B) Makes a widget span across two columns</strong><br>
+   C) Doubles the widget's height<br>
+   D) Creates two identical widgets</p>
+</li>
+<li>
+<p>Which of the following is a known risk of using <code>place()</code> for layout?<br>
+   A) It cannot be used with buttons<br>
+<strong>B) It uses exact coordinates and can break easily when the window is resized</strong><br>
+   C) It automatically creates a database<br>
+   D) It cannot be combined with <code>pady</code></p>
+</li>
+<li>
+<p>What happens if you try to use <code>pack()</code> and <code>grid()</code> on different widgets within the SAME parent container?<br>
+   A) Tkinter automatically converts one to match the other<br>
+<strong>B) Tkinter raises an error or produces unpredictable layout behavior</strong><br>
+   C) Both layout managers work together seamlessly<br>
+   D) Only the widget added last will be displayed</p>
+</li>
+<li>
+<p><code>window.grid_columnconfigure(0, weight=1)</code> is primarily used to:<br>
+    A) Delete column 0 from the grid<br>
+<strong>B) Allow column 0 to stretch and resize responsively when the window is resized</strong><br>
+    C) Set the background color of column 0<br>
+    D) Assign a primary key to column 0</p>
+</li>
+<li>
+<p>A "responsive" interface is one that:<br>
+    A) Responds only to keyboard input<br>
+<strong>B) Adjusts its layout appropriately when the window is resized</strong><br>
+    C) Cannot be resized at all<br>
+    D) Uses only the <code>place()</code> layout manager</p>
+</li>
+<li>
+<p>Designing a "clean" interface primarily involves:<br>
+    A) Using as many colors as possible<br>
+<strong>B) Providing enough spacing, clear text, and proper alignment between widgets</strong><br>
+    C) Avoiding the use of Labels<br>
+    D) Placing all widgets at coordinate (0,0)</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-415-event-handling-and-interactivity">Topic 4.1.5: Event Handling and Interactivity</h3>
+<ol>
+<li>
+<p>In event-driven programming, the program primarily:<br>
+   A) Executes all code from top to bottom without stopping<br>
+<strong>B) Waits idly until a specific event occurs, then responds</strong><br>
+   C) Only runs once and then closes immediately<br>
+   D) Cannot respond to user actions</p>
+</li>
+<li>
+<p>An "event" in the context of Tkinter refers to:<br>
+   A) A type of widget<br>
+<strong>B) An action performed by the user, such as a click or key press</strong><br>
+   C) A method used to connect to a database<br>
+   D) A layout manager</p>
+</li>
+<li>
+<p>The <code>mainloop()</code> function is responsible for:<br>
+   A) Connecting Python to a database<br>
+<strong>B) Continuously checking for events while the window remains open</strong><br>
+   C) Formatting SQL queries<br>
+   D) Creating new widgets automatically</p>
+</li>
+<li>
+<p>In Tkinter, the <code>command=</code> parameter is most commonly used with which widget?<br>
+   A) Label<br>
+<strong>B) Button</strong><br>
+   C) Frame<br>
+   D) Listbox</p>
+</li>
+<li>
+<p>What is the correct way to link a function named <code>on_click</code> to a button using <code>command=</code>?<br>
+   A) <code>command=on_click()</code><br>
+<strong>B) <code>command=on_click</code></strong><br>
+   C) <code>command="on_click"</code><br>
+   D) <code>command=call(on_click)</code></p>
+</li>
+<li>
+<p>Why is it incorrect to write <code>command=my_function()</code> instead of <code>command=my_function</code>?<br>
+   A) Tkinter does not allow function names longer than 10 characters<br>
+<strong>B) Using parentheses calls the function immediately instead of when the button is clicked</strong><br>
+   C) <code>command=</code> only accepts strings<br>
+   D) It will cause the window to not open at all</p>
+</li>
+<li>
+<p>The <code>.bind()</code> method in Tkinter is generally used to:<br>
+   A) Connect Python to a database<br>
+<strong>B) Attach a function to a broader range of events, such as key presses or mouse movement, on any widget</strong><br>
+   C) Bind two windows together into one<br>
+   D) Set the width of a widget</p>
+</li>
+<li>
+<p>What does <code>entry.get()</code> do in a Tkinter program?<br>
+   A) Deletes the text inside the entry field<br>
+<strong>B) Retrieves the current text typed into the entry field</strong><br>
+   C) Creates a new entry field<br>
+   D) Connects the entry field to a database</p>
+</li>
+<li>
+<p>If a heavy 30-second loop is placed directly inside a button's callback function, what is the most likely result?<br>
+   A) The loop will run in a separate thread automatically<br>
+<strong>B) The GUI window will freeze and appear as "Not Responding" until the loop finishes</strong><br>
+   C) The button will disable itself automatically<br>
+   D) Tkinter will skip the loop entirely</p>
+</li>
+<li>
+<p>In the login form example, <code>messagebox.showerror("Error", "Invalid Username or Password")</code> is used to:<br>
+    A) Automatically close the entire program<br>
+<strong>B) Display a popup dialog indicating an error occurred</strong><br>
+    C) Delete the incorrect entry from the database<br>
+    D) Restart the event loop</p>
+</li>
+<li>
+<p>Using <code>show="*"</code> as a parameter of an <code>Entry</code> widget is used to:<br>
+    A) Make the entry field larger<br>
+<strong>B) Hide typed characters, such as for password fields</strong><br>
+    C) Automatically validate the input<br>
+    D) Connect the entry to a database</p>
+</li>
+<li>
+<p>Which of these best summarizes event-driven programming, as illustrated by the "waiter and bell" analogy?<br>
+    A) The waiter cooks food continuously regardless of customer actions<br>
+<strong>B) The waiter waits idly and only acts when a specific event (the bell) occurs</strong><br>
+    C) The waiter takes orders from every table at once, regardless of events<br>
+    D) The waiter has no connection to customer actions</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-421-introduction-to-databases">Topic 4.2.1: Introduction to Databases</h3>
+<ol>
+<li>
+<p>A database is best defined as:<br>
+   A) A single unformatted text file<br>
+<strong>B) An organized collection of data stored in a structured format</strong><br>
+   C) A type of GUI widget<br>
+   D) A programming language</p>
+</li>
+<li>
+<p>Which of the following is a key benefit of using a database over a plain flat file?<br>
+   A) Flat files are always faster to search<br>
+<strong>B) Databases reduce data duplication and improve reliability</strong><br>
+   C) Databases cannot store text data<br>
+   D) Flat files enforce stricter data structure</p>
+</li>
+<li>
+<p>In database terminology, an "entity" refers to:<br>
+   A) A column in a table<br>
+<strong>B) A real-world object, person, place, event, or concept about which data is stored</strong><br>
+   C) A type of SQL command<br>
+   D) A GUI widget</p>
+</li>
+<li>
+<p>In database terminology, an "attribute" refers to:<br>
+   A) A relationship between two tables<br>
+<strong>B) A property or characteristic of an entity</strong><br>
+   C) A unique record identifier only<br>
+   D) The name of the database file</p>
+</li>
+<li>
+<p>For the entity "Student," which of the following is an example of an attribute?<br>
+   A) Enrolls in<br>
+<strong>B) Roll Number</strong><br>
+   C) Course<br>
+   D) Teacher</p>
+</li>
+<li>
+<p>A "relationship" in database terminology describes:<br>
+   A) A single column's data type<br>
+<strong>B) How two or more entities are connected with each other</strong><br>
+   C) The physical location of the database file<br>
+   D) The GUI layout manager used</p>
+</li>
+<li>
+<p>An "identifier" in a database is best described as:<br>
+   A) Any column containing text<br>
+<strong>B) An attribute that uniquely identifies each record of an entity</strong><br>
+   C) A widget used to display records<br>
+   D) A type of layout manager</p>
+</li>
+<li>
+<p>Which of the following would most likely serve as an identifier for the entity "Student"?<br>
+   A) Class<br>
+<strong>B) Roll Number</strong><br>
+   C) Age<br>
+   D) Student Name</p>
+</li>
+<li>
+<p>IBM mathematician Edgar F. Codd is historically credited with:<br>
+   A) Inventing the GUI<br>
+<strong>B) Inventing the relational database model in 1970</strong><br>
+   C) Discovering SQL injection<br>
+   D) Creating the Tkinter library</p>
+</li>
+<li>
+<p>Before the relational database model, data was often stored on:<br>
+    A) SQLite files<br>
+<strong>B) Physical magnetic tapes in inconsistent formats</strong><br>
+    C) Cloud servers<br>
+    D) Tkinter widgets</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-422-overview-of-relational-databases-and-sql-structure">Topic 4.2.2: Overview of Relational Databases and SQL Structure</h3>
+<ol>
+<li>
+<p>A relational database organizes data primarily using:<br>
+   A) A single unstructured document<br>
+<strong>B) Tables made of rows and columns</strong><br>
+   C) Only GUI widgets<br>
+   D) Randomly ordered lists</p>
+</li>
+<li>
+<p>SQL stands for:<br>
+   A) Structured Question Language<br>
+<strong>B) Structured Query Language</strong><br>
+   C) Sequential Query Logic<br>
+   D) System Query List</p>
+</li>
+<li>
+<p>In a database table, a "row" is also referred to as a:<br>
+   A) Field<br>
+<strong>B) Record</strong><br>
+   C) Column<br>
+   D) Attribute</p>
+</li>
+<li>
+<p>In a database table, a "column" is also referred to as a:<br>
+   A) Record<br>
+<strong>B) Field</strong><br>
+   C) Tuple<br>
+   D) Primary Key</p>
+</li>
+<li>
+<p>A Primary Key in a database table is used to:<br>
+   A) Link two tables together only<br>
+<strong>B) Uniquely identify each record in a table</strong><br>
+   C) Store only text-based data<br>
+   D) Format the GUI layout</p>
+</li>
+<li>
+<p>A Foreign Key is best described as:<br>
+   A) A key used only for encryption<br>
+<strong>B) A field that links one table to another by referring to the primary key of another table</strong><br>
+   C) A column that must always contain duplicate values<br>
+   D) A widget used to display Foreign records</p>
+</li>
+<li>
+<p>Given a <code>Student</code> table with a <code>DeptID</code> column that refers to the <code>DeptID</code> column of a separate <code>Department</code> table, <code>DeptID</code> in the <code>Student</code> table is functioning as a:<br>
+   A) Primary Key<br>
+<strong>B) Foreign Key</strong><br>
+   C) Identifier only<br>
+   D) Attribute with no relationship</p>
+</li>
+<li>
+<p>Which SQL command category is used to interact with and manage data in a relational database?<br>
+   A) HTML<br>
+<strong>B) SQL</strong><br>
+   C) CSS<br>
+   D) Tkinter</p>
+</li>
+<li>
+<p>Why can a column like <code>DeptID</code> (appearing multiple times for different students) NOT serve as the Primary Key of the <code>Student</code> table?<br>
+   A) Because Primary Keys must always be text<br>
+<strong>B) Because a Primary Key must be unique for every row, and <code>DeptID</code> repeats across multiple students</strong><br>
+   C) Because Foreign Keys are always numeric<br>
+   D) Because Primary Keys cannot be integers</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-423-connecting-python-to-a-database">Topic 4.2.3: Connecting Python to a Database</h3>
+<ol>
+<li>
+<p>Which Python library is built-in and commonly used to work with small, file-based databases?<br>
+   A) <code>tkinter</code><br>
+<strong>B) <code>sqlite3</code></strong><br>
+   C) <code>pandas</code><br>
+   D) <code>matplotlib</code></p>
+</li>
+<li>
+<p>Compared to <code>sqlite3</code>, MySQL is typically used for:<br>
+   A) Smaller and simpler applications only<br>
+<strong>B) Larger and more complex database systems</strong><br>
+   C) Creating GUI widgets<br>
+   D) Formatting text files</p>
+</li>
+<li>
+<p>In the "bank vault" analogy, opening the database connection with <code>connect()</code> is compared to:<br>
+   A) The robot arm reading a shelf<br>
+<strong>B) Opening the vault door</strong><br>
+   C) Locking the vault permanently<br>
+   D) Deleting all items from the vault</p>
+</li>
+<li>
+<p>In the "bank vault" analogy, the <code>cursor()</code> object is compared to:<br>
+   A) The vault door itself<br>
+<strong>B) A robot arm that reads and writes items on the shelves</strong><br>
+   C) The permanent lock on the vault<br>
+   D) A GUI Button widget</p>
+</li>
+<li>
+<p>What does the following line of code do?<br>
+<code>connection = sqlite3.connect("school.db")</code><br>
+   A) Deletes the "school.db" file<br>
+<strong>B) Opens a connection to "school.db", creating the file if it does not already exist</strong><br>
+   C) Creates a new GUI window<br>
+   D) Runs a SELECT query on "school.db"</p>
+</li>
+<li>
+<p>Which method is used to execute a SQL command using a cursor object?<br>
+   A) <code>cursor.run()</code><br>
+<strong>B) <code>cursor.execute()</code></strong><br>
+   C) <code>cursor.query()</code><br>
+   D) <code>cursor.command()</code></p>
+</li>
+<li>
+<p>What is the purpose of <code>CREATE TABLE IF NOT EXISTS</code> in SQL?<br>
+   A) It always deletes and recreates the table<br>
+<strong>B) It creates a new table only if a table with that name doesn't already exist</strong><br>
+   C) It permanently deletes the database<br>
+   D) It is used only for reading data</p>
+</li>
+<li>
+<p>After executing <code>INSERT INTO</code> statements, which method must be called to permanently save the changes to disk?<br>
+   A) <code>cursor.save()</code><br>
+<strong>B) <code>connection.commit()</code></strong><br>
+   C) <code>connection.close()</code><br>
+   D) <code>cursor.insert()</code></p>
+</li>
+<li>
+<p>What happens to <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code> changes if <code>connection.commit()</code> is never called?<br>
+   A) They are saved immediately regardless<br>
+<strong>B) They are NOT permanently saved to the database</strong><br>
+   C) Python raises a fatal error immediately<br>
+   D) They are automatically converted into a GUI widget</p>
+</li>
+<li>
+<p>Which method retrieves all rows returned by a <code>SELECT</code> query as a list?<br>
+    A) <code>cursor.getall()</code><br>
+<strong>B) <code>cursor.fetchall()</code></strong><br>
+    C) <code>cursor.readall()</code><br>
+    D) <code>connection.selectall()</code></p>
+</li>
+<li>
+<p>Which line of code correctly closes a database connection?<br>
+    A) <code>cursor.close()</code><br>
+<strong>B) <code>connection.close()</code></strong><br>
+    C) <code>connection.end()</code><br>
+    D) <code>sqlite3.close()</code></p>
+</li>
+<li>
+<p>What is the correct order of operations to safely insert and permanently save data using <code>sqlite3</code>?<br>
+    A) <code>commit()</code> → <code>connect()</code> → <code>execute()</code> → <code>close()</code><br>
+<strong>B) <code>connect()</code> → <code>cursor()</code> → <code>execute()</code> → <code>commit()</code> → <code>close()</code></strong><br>
+    C) <code>close()</code> → <code>connect()</code> → <code>execute()</code> → <code>commit()</code><br>
+    D) <code>execute()</code> → <code>connect()</code> → <code>commit()</code> → <code>cursor()</code></p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-424-crud-operations-in-python-gui-applications">Topic 4.2.4: CRUD Operations in Python GUI Applications</h3>
+<ol>
+<li>
+<p>CRUD stands for:<br>
+   A) Create, Run, Upload, Delete<br>
+<strong>B) Create, Read, Update, Delete</strong><br>
+   C) Copy, Retrieve, Upload, Download<br>
+   D) Create, Remove, Update, Manage</p>
+</li>
+<li>
+<p>Which SQL command corresponds to the "Create" operation in CRUD?<br>
+   A) <code>SELECT</code><br>
+<strong>B) <code>INSERT INTO</code></strong><br>
+   C) <code>UPDATE</code><br>
+   D) <code>DELETE FROM</code></p>
+</li>
+<li>
+<p>Which SQL command corresponds to the "Read" operation in CRUD?<br>
+   A) <code>INSERT INTO</code><br>
+<strong>B) <code>SELECT</code></strong><br>
+   C) <code>UPDATE</code><br>
+   D) <code>DELETE FROM</code></p>
+</li>
+<li>
+<p>Which SQL command corresponds to the "Update" operation in CRUD?<br>
+   A) <code>SELECT</code><br>
+   B) <code>INSERT INTO</code><br>
+<strong>C) <code>UPDATE</code></strong><br>
+   D) <code>DELETE FROM</code></p>
+</li>
+<li>
+<p>Which SQL command corresponds to the "Delete" operation in CRUD?<br>
+   A) <code>SELECT</code><br>
+   B) <code>INSERT INTO</code><br>
+   C) <code>UPDATE</code><br>
+<strong>D) <code>DELETE FROM</code></strong></p>
+</li>
+<li>
+<p>The "Read" operation in CRUD is unique among the four operations because it:<br>
+   A) Always deletes old data first<br>
+<strong>B) Does not change the stored data — it only retrieves it</strong><br>
+   C) Requires a GUI Button widget<br>
+   D) Cannot be performed using SQL</p>
+</li>
+<li>
+<p>A "parameterized query," such as <code>cursor.execute("INSERT INTO students (name) VALUES (?)", (name,))</code>, is primarily used to:<br>
+   A) Make queries run faster in all cases<br>
+<strong>B) Safely insert user input into SQL, preventing SQL injection</strong><br>
+   C) Automatically create GUI widgets<br>
+   D) Permanently delete a table</p>
+</li>
+<li>
+<p>In 1998, the researcher known as "Rain Forest Puppy" is historically credited with:<br>
+   A) Inventing the relational database model<br>
+<strong>B) Discovering the SQL injection vulnerability</strong><br>
+   C) Creating the Tkinter library<br>
+   D) Inventing the GUI</p>
+</li>
+<li>
+<p>Which of the following raw SQL statements is VULNERABLE to SQL injection?<br>
+   A) <code>cursor.execute("DELETE FROM students WHERE name = ?", (name,))</code><br>
+<strong>B) <code>cursor.execute("DELETE FROM students WHERE name = '" + name + "'")</code></strong><br>
+   C) <code>cursor.execute("SELECT * FROM students")</code><br>
+   D) <code>cursor.execute("CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY)")</code></p>
+</li>
+<li>
+<p>If a user enters <code>X' OR '1'='1</code> into a vulnerable, unparameterized delete query, the likely result is:<br>
+    A) The query safely fails with an error<br>
+<strong>B) Every row in the table gets deleted, not just one matching record</strong><br>
+    C) Only the row named "X" gets deleted<br>
+    D) Nothing happens because SQL ignores quotation marks</p>
+</li>
+<li>
+<p>Before performing a Delete operation in a GUI application, best practice recommends:<br>
+    A) Deleting immediately without any warning<br>
+<strong>B) Showing a confirmation dialog to the user before deleting data</strong><br>
+    C) Disabling the database connection permanently<br>
+    D) Automatically deleting all related tables as well</p>
+</li>
+<li>
+<p><code>messagebox.askyesno("Confirm Delete", "Delete this record?")</code> is used to:<br>
+    A) Automatically delete the record without asking<br>
+<strong>B) Prompt the user with a Yes/No confirmation dialog before proceeding</strong><br>
+    C) Insert a new record into the database<br>
+    D) Display all records in a Listbox</p>
+</li>
+<li>
+<p>In a GUI application, after successfully inserting a new record into the database, which function is typically called to update the Listbox with the latest data?<br>
+    A) <code>connection.commit()</code> only<br>
+<strong>B) A "load" or "refresh" function that re-runs a <code>SELECT</code> query and repopulates the widget</strong><br>
+    C) <code>window.mainloop()</code><br>
+    D) <code>cursor.close()</code></p>
+</li>
+<li>
+<p><code>listbox.delete(0, tk.END)</code> inside a <code>load_students()</code> function is used to:<br>
+    A) Permanently delete all students from the database<br>
+<strong>B) Clear the Listbox widget's current contents before repopulating it</strong><br>
+    C) Delete the database connection<br>
+    D) Remove the first item from the database table only</p>
+</li>
+<li>
+<p>Why does a well-designed GUI application typically call its "load/refresh" function immediately after every Create, Update, or Delete operation?<br>
+    A) To permanently close the database connection<br>
+<strong>B) To ensure the GUI display stays in sync with the actual current state of the database</strong><br>
+    C) To automatically generate a new Primary Key<br>
+    D) To prevent the event loop from starting</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-411-what-is-a-gui-why-is-it-important_1">Topic 4.1.1: What is a GUI? Why is it Important?</h3>
+<ol>
+<li>Define the term "Graphical User Interface" in your own words.</li>
+<li>Differentiate between a Command-Line Interface (CLI) and a Graphical User Interface (GUI).</li>
+<li>Explain briefly why GUIs are considered more accessible to non-technical users than CLIs.</li>
+<li>State two real-world categories of software that commonly use GUIs.</li>
+<li>Briefly describe the historical contribution of Xerox PARC to the development of the modern GUI.</li>
+<li>Explain the significance of Steve Jobs's 1979 visit to Xerox PARC in the history of computing.</li>
+<li>What does the acronym WIMP represent, and why is it relevant to GUI history?</li>
+</ol>
+<h3 id="topic-412-overview-of-tkinter-as-pythons-built-in-gui-toolkit_1">Topic 4.1.2: Overview of Tkinter as Python's Built-in GUI Toolkit</h3>
+<ol>
+<li>Define Tkinter and explain its relationship to the Python programming language.</li>
+<li>List two advantages of using Tkinter for building small-to-medium GUI applications.</li>
+<li>Explain briefly what the <code>mainloop()</code> function does within a Tkinter program.</li>
+<li>Identify the function used to create the main application window in Tkinter.</li>
+<li>Predict what would happen if <code>window.mainloop()</code> were removed from a working Tkinter program.</li>
+<li>Differentiate between <code>window.title()</code> and <code>window.geometry()</code> in terms of what each one controls.</li>
+</ol>
+<h3 id="topic-413-tkinter-components-and-widgets_1">Topic 4.1.3: Tkinter Components and Widgets</h3>
+<ol>
+<li>Define the term "widget" as it applies to Tkinter.</li>
+<li>Differentiate between a Frame and a Widget in Tkinter.</li>
+<li>Explain briefly the purpose of dividing a window into multiple Frames.</li>
+<li>List the five common Tkinter widgets discussed in this chapter.</li>
+<li>Differentiate between a Label and an Entry widget in terms of user interaction.</li>
+<li>Explain briefly when you would choose a Listbox over a Menu widget.</li>
+<li>State the purpose of the <code>pack()</code> call used after creating a widget such as <code>label.pack(pady=10)</code>.</li>
+<li>Identify which widget would be most appropriate for allowing a user to select one item from a scrollable list of options.</li>
+</ol>
+<h3 id="topic-414-layout-management">Topic 4.1.4: Layout Management</h3>
+<ol>
+<li>Define the term "layout manager" in the context of Tkinter.</li>
+<li>Differentiate between <code>pack()</code> and <code>grid()</code> as layout management methods.</li>
+<li>Differentiate between <code>grid()</code> and <code>place()</code> in terms of how precisely widgets are positioned.</li>
+<li>Explain briefly why mixing <code>pack()</code> and <code>grid()</code> within the same parent container causes problems.</li>
+<li>State two design qualities that make an interface "clean and responsive."</li>
+<li>Explain briefly what <code>columnspan=2</code> accomplishes when used with the <code>grid()</code> method.</li>
+<li>Predict what might go wrong with a layout built using <code>place()</code> if the user resizes the window.</li>
+<li>Explain briefly the role of <code>grid_columnconfigure(..., weight=1)</code> in building a responsive layout.</li>
+</ol>
+<h3 id="topic-415-event-handling-and-interactivity_1">Topic 4.1.5: Event Handling and Interactivity</h3>
+<ol>
+<li>Define "event-driven programming" in your own words.</li>
+<li>Differentiate between an "event" and a "callback function."</li>
+<li>Explain briefly, using the waiter-and-bell analogy or a similar example, how the Tkinter event loop works.</li>
+<li>Differentiate between using <code>command=</code> and using <code>.bind()</code> to connect a widget to a function.</li>
+<li>Identify the mistake in the following code and explain why it is incorrect: <code>button = tk.Button(window, text="Submit", command=my_function())</code>.</li>
+<li>Explain briefly why a Tkinter window freezes and becomes "Not Responding" when a long-running loop is placed inside a button's callback function.</li>
+<li>State the purpose of the <code>entry.get()</code> method in a Tkinter form.</li>
+<li>Explain briefly the purpose of using <code>show="*"</code> when creating a password Entry widget.</li>
+<li>Map out, in a short step-by-step list, what happens from the moment a user clicks a "Login" button to the moment a success or error message appears.</li>
+</ol>
+<h3 id="topic-421-introduction-to-databases_1">Topic 4.2.1: Introduction to Databases</h3>
+<ol>
+<li>Define the term "database" in your own words.</li>
+<li>Differentiate between a flat file (such as a <code>.txt</code> file) and a relational database.</li>
+<li>Define the term "entity" and provide one original example not used in the chapter.</li>
+<li>Define the term "attribute" and provide one original example not used in the chapter.</li>
+<li>Differentiate between a "relationship" and an "identifier" in database terminology.</li>
+<li>Explain briefly the historical contribution of Edgar F. Codd to modern computing.</li>
+<li>State one reason why using a database is generally more reliable than storing data in a plain text file.</li>
+</ol>
+<h3 id="topic-422-overview-of-relational-databases-and-sql-structure_1">Topic 4.2.2: Overview of Relational Databases and SQL Structure</h3>
+<ol>
+<li>Define "SQL" and state its full form.</li>
+<li>Differentiate between a "row" (record) and a "column" (field) in a database table.</li>
+<li>Differentiate between a Primary Key and a Foreign Key.</li>
+<li>Explain briefly why every table should have a Primary Key.</li>
+<li>Identify, using a short example of your own, a scenario where a Foreign Key would be needed to connect two tables.</li>
+<li>Explain briefly why a column with repeating values cannot be used as a Primary Key.</li>
+</ol>
+<h3 id="topic-423-connecting-python-to-a-database_1">Topic 4.2.3: Connecting Python to a Database</h3>
+<ol>
+<li>Define the term "cursor" as it applies to Python's <code>sqlite3</code> library.</li>
+<li>Differentiate between <code>sqlite3</code> and MySQL in terms of typical use cases.</li>
+<li>Explain briefly, using the bank vault analogy or your own analogy, the purpose of the <code>connect()</code> function.</li>
+<li>State the SQL command syntax used to create a table only if it does not already exist.</li>
+<li>Explain briefly the purpose of the <code>commit()</code> method, and what happens if it is omitted.</li>
+<li>Identify the method used to retrieve all rows from a query result as a Python list.</li>
+<li>Map out the correct order of steps needed to connect to a database, insert a record, and permanently save it.</li>
+</ol>
+<h3 id="topic-424-crud-operations-in-python-gui-applications_1">Topic 4.2.4: CRUD Operations in Python GUI Applications</h3>
+<ol>
+<li>Define the acronym CRUD and state the SQL command associated with each letter.</li>
+<li>Differentiate between the "Read" operation and the other three CRUD operations in terms of how each affects stored data.</li>
+<li>Explain briefly what a "parameterized query" is and why it is considered safer than string concatenation.</li>
+<li>Explain briefly what SQL injection is, using the <code>' OR '1'='1</code> example.</li>
+<li>Identify why using <code>messagebox.askyesno()</code> before a Delete operation is considered good practice.</li>
+<li>Predict what would happen to a <code>students</code> table if the query <code>"DELETE FROM students WHERE name = '" + name + "'"</code> were executed with <code>name</code> set to <code>X' OR '1'='1</code>.</li>
+<li>Explain briefly why a GUI application should call a "load" or "refresh" function immediately after every Create, Update, or Delete operation.</li>
+<li>Map out, in a short step-by-step list, how clicking an "Add Student" button leads to a new row appearing in both the database and the Listbox.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-41-graphical-user-interface-gui-development-with-tkinter">Topic 4.1: Graphical User Interface (GUI) Development with Tkinter</h3>
+<ol>
+<li>
+<p>Discuss in detail the concept of a Graphical User Interface and its overall importance in modern application development.<br>
+   a) Define GUI and explain how it differs fundamentally from a Command-Line Interface.<br>
+   b) Discuss the historical development of the GUI, referencing Xerox PARC, Alan Kay, and Steve Jobs's role in popularizing it.<br>
+   c) Evaluate the advantages and potential limitations of GUI-based applications compared to CLI-based applications for different types of users.</p>
+</li>
+<li>
+<p>Elaborate on Tkinter as Python's built-in GUI toolkit and construct a complete explanation of how a basic Tkinter application is built from start to finish.<br>
+   a) Explain the role of <code>tk.Tk()</code>, widget creation, layout placement, and <code>mainloop()</code> in the lifecycle of a Tkinter application.<br>
+   b) Construct a fully working example (in pseudocode or Python) of a window containing a Label, an Entry field, and a Button.<br>
+   c) Analyze what would go wrong, step by step, if <code>mainloop()</code> were omitted from your example.</p>
+</li>
+<li>
+<p>Analyze the key components and widgets available in Tkinter, and discuss how Frames contribute to organizing a complex interface.<br>
+   a) Discuss the role of each of the following widgets: Label, Button, Entry, Menu, and Listbox, giving a real-world software example for each.<br>
+   b) Explain, with a constructed example, how a window can be divided into a top Frame and a bottom Frame, each containing different widgets.<br>
+   c) Evaluate why grouping widgets into Frames improves the maintainability of a large-scale GUI application.</p>
+</li>
+<li>
+<p>Discuss in detail the three layout management methods available in Tkinter — <code>pack()</code>, <code>grid()</code>, and <code>place()</code>.<br>
+   a) Explain, with examples, how each layout manager positions widgets differently.<br>
+   b) Construct a comparison table evaluating <code>pack()</code>, <code>grid()</code>, and <code>place()</code> across the criteria of: ease of use, precision of control, and responsiveness to window resizing.<br>
+   c) Design a registration form layout (on paper, using an ASCII wireframe or description) using <code>grid()</code>, explaining your row and column choices.<br>
+   d) Justify why mixing <code>pack()</code> and <code>grid()</code> in the same parent container is considered poor practice, and propose how a developer could still use both layout managers within one window correctly.</p>
+</li>
+<li>
+<p>Analyze the concept of event-driven programming as implemented in Tkinter, and discuss its overall significance for interactive applications.<br>
+   a) Explain the event loop cycle in detail, from <code>mainloop()</code> starting to a callback function executing and the loop returning to an idle state.<br>
+   b) Differentiate between <code>command=</code> and <code>.bind()</code>, providing an example scenario where each would be the appropriate choice.<br>
+   c) Trace, step by step, what happens internally and on-screen when a user types a username and password and clicks "Login" in a simple login form, including both the success and failure paths.<br>
+   d) Evaluate the consequences of placing long-running code directly inside an event callback function, and propose a strategy a developer might use to avoid freezing the GUI.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-42-working-with-databases-in-python">Topic 4.2: Working with Databases in Python</h3>
+<ol>
+<li>
+<p>Discuss in detail the transition from flat-file data storage to relational databases, and analyze why relational databases became the industry standard.<br>
+   a) Explain the limitations of flat files (such as <code>.txt</code> or <code>.csv</code> files) for storing structured, related data.<br>
+   b) Discuss Edgar F. Codd's contribution to the relational database model and explain why his approach solved the problems of earlier data storage methods.<br>
+   c) Define and differentiate between the concepts of Entity, Attribute, Relationship, and Identifier, using an original example of your own (not Student/Department).</p>
+</li>
+<li>
+<p>Analyze the structure of relational databases and SQL, and construct a complete schema design exercise.<br>
+   a) Explain the roles of Tables, Rows (Records), Columns (Fields), Primary Keys, and Foreign Keys in a relational database.<br>
+   b) Design two related tables (other than Student/Department) — specify the columns, data types, Primary Key, and Foreign Key for each — and justify your design choices.<br>
+   c) Discuss what would go wrong if the Foreign Key in your second table did not correctly correspond to a Primary Key value in your first table.</p>
+</li>
+<li>
+<p>Discuss in detail the process of connecting a Python program to an SQLite database and executing SQL commands from within Python.<br>
+   a) Explain, step by step, the purpose of <code>connect()</code>, <code>cursor()</code>, <code>execute()</code>, <code>commit()</code>, and <code>close()</code>.<br>
+   b) Construct a complete trace table showing the database's internal state after each line of a program that connects to a database, creates a table, inserts two records, and reads them back.<br>
+   c) Evaluate the consequences of forgetting to call <code>commit()</code> after performing an <code>INSERT</code> operation, and explain why this is a common mistake for beginners.</p>
+</li>
+<li>
+<p>Analyze and evaluate the four CRUD operations (Create, Read, Update, Delete) as they apply to a Python GUI application connected to a database.<br>
+   a) Explain the SQL command and typical GUI trigger (e.g., button click) associated with each CRUD operation.<br>
+   b) Construct a complete GUI-to-database trace table for a "Student Manager" application, showing how clicking "Add Student" leads to a database change and a Listbox update.<br>
+   c) Discuss why the "Read" operation is considered fundamentally different from the other three CRUD operations in terms of its effect on stored data.</p>
+</li>
+<li>
+<p>Discuss in detail the security risks of unsafe SQL query construction, using the historical case of SQL injection as a foundation for your analysis.<br>
+   a) Explain the discovery of SQL injection in 1998 by the researcher known as Rain Forest Puppy, and describe the underlying vulnerability that made it possible.<br>
+   b) Construct an example of a vulnerable Python function that deletes a record using string concatenation, and trace exactly what happens when a malicious input such as <code>X' OR '1'='1</code> is submitted.<br>
+   c) Justify, with a corrected code example, why parameterized queries (using <code>?</code> placeholders) prevent this class of attack.<br>
+   d) Evaluate the broader real-world impact of SQL injection vulnerabilities on organizations that manage sensitive user data (e.g., login credentials, financial records), and discuss what ethical responsibilities a software developer has when handling user input.</p>
+</li>
+<li>
+<p>Design and construct a complete end-to-end GUI application that integrates Tkinter with an SQLite database to perform all four CRUD operations.<br>
+   a) Design the GUI layout (widgets and layout manager) needed to Create, Read, Update, and Delete student records.<br>
+   b) Construct the corresponding Python functions for each CRUD operation, ensuring all database-modifying operations use parameterized queries.<br>
+   c) Trace, step by step, what happens across the GUI and the database when a user adds a new student, updates that student's grade, and then deletes the record — include the state of the Listbox widget at each stage.<br>
+   d) Evaluate one potential real-world consequence of omitting a confirmation dialog before the Delete operation in your design.</p>
+</li>
+</ol>
+
+</body>
+</html>

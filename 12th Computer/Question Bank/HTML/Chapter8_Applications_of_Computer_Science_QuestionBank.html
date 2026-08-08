@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Chapter 8 — Applications of Computer Science</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Chapter 8 — Applications of Computer Science</div>
+</div>
+
+<h1 id="comprehensive-question-bank-chapter-8-applications-of-computer-science">Comprehensive Question Bank: Chapter 8 — Applications of Computer Science</h1>
+<hr>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-81a-artificial-intelligence-ai">Topic 8.1a: Artificial Intelligence (AI)</h3>
+<ol>
+<li>
+<p>Artificial Intelligence (AI) is best described as a branch of computer science that:<br>
+   A) Connects physical devices to the internet<br>
+<strong>B) Enables machines to perform tasks that typically require human intelligence</strong><br>
+   C) Stores data on remote servers<br>
+   D) Keeps a decentralized, tamper-proof ledger</p>
+</li>
+<li>
+<p>The process by which AI systems learn from experience by being trained on large sets of data is called:<br>
+   A) Virtualization<br>
+<strong>B) Machine Learning</strong><br>
+   C) Actuation<br>
+   D) Hashing</p>
+</li>
+<li>
+<p>Which technology is loosely inspired by how neurons in the human brain process information?<br>
+   A) Blockchain<br>
+   B) Internet of Things<br>
+<strong>C) Neural Networks</strong><br>
+   D) Cloud Virtualization</p>
+</li>
+<li>
+<p>NLP, a technology AI uses to simulate how the human brain processes information, stands for:<br>
+   A) Network Language Programming<br>
+<strong>B) Natural Language Processing</strong><br>
+   C) National Language Protocol<br>
+   D) Neural Logic Processor</p>
+</li>
+<li>
+<p>Which of the following is NOT mentioned as a common everyday application of AI?<br>
+   A) Voice assistants like Siri and Alexa<br>
+   B) Chatbots answering customer questions<br>
+   C) Image recognition identifying faces or medical conditions<br>
+<strong>D) Cryptographic hashing of supply chain records</strong></p>
+</li>
+<li>
+<p>DeepMind's AI, as mentioned in the chapter, is used to help predict which disease from 3D eye scans?<br>
+   A) Diabetes<br>
+<strong>B) Glaucoma</strong><br>
+   C) Cancer<br>
+   D) Asthma</p>
+</li>
+<li>
+<p>What does "the more data the system processes" generally result in, according to how AI systems learn?<br>
+   A) Slower processing speed only<br>
+<strong>B) More accurate results over time</strong><br>
+   C) Reduced need for algorithms<br>
+   D) Complete elimination of bias</p>
+</li>
+<li>
+<p>Which of the following is a challenge of AI mentioned in the chapter, rather than a benefit?<br>
+   A) Personalized learning in education<br>
+   B) Faster performance of repetitive tasks<br>
+<strong>C) Bias in algorithms leading to unfair outcomes</strong><br>
+   D) Assisting doctors in diagnosis</p>
+</li>
+<li>
+<p>AI supporting education through systems that adapt to each learner's needs is an example of:<br>
+   A) Blockchain-based learning<br>
+<strong>B) Adaptive tutoring / personalized learning</strong><br>
+   C) IoT-based classroom monitoring<br>
+   D) Cloud virtualization</p>
+</li>
+<li>
+<p>In a scenario where an AI hiring tool was trained mostly on resumes of previously hired men, the most likely resulting problem is:<br>
+    A) The system will run slower than expected<br>
+<strong>B) The system may unfairly favor male candidates due to biased training data</strong><br>
+    C) The system will require more cloud storage<br>
+    D) The system will become immutable</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-81b-internet-of-things-iot">Topic 8.1b: Internet of Things (IoT)</h3>
+<ol start="11">
+<li>
+<p>The Internet of Things (IoT) refers to a network of physical devices that can mainly:<br>
+    A) Mine cryptocurrency automatically<br>
+<strong>B) Collect, share, and act on data through internet connectivity</strong><br>
+    C) Provide unlimited free cloud storage<br>
+    D) Encrypt financial transactions only</p>
+</li>
+<li>
+<p>Which historical event is credited in this chapter as an early ancestor of the Internet of Things?<br>
+    A) The launch of Amazon Web Services in 2006<br>
+<strong>B) The Carnegie Mellon internet-connected Coke machine in 1982</strong><br>
+    C) The invention of Bitcoin in 2008<br>
+    D) The release of the first neural network model</p>
+</li>
+<li>
+<p>In a typical IoT system, which component is responsible for physically measuring a real-world condition such as temperature or soil moisture?<br>
+    A) Actuator<br>
+<strong>B) Sensor</strong><br>
+    C) Cloud server<br>
+    D) Blockchain node</p>
+</li>
+<li>
+<p>Which component of an IoT system is responsible for physically carrying out an action, such as opening a valve or switching on a light?<br>
+    A) Sensor<br>
+<strong>B) Actuator</strong><br>
+    C) Hash function<br>
+    D) Virtual machine</p>
+</li>
+<li>
+<p>A microcontroller in an IoT system primarily functions to:<br>
+    A) Provide unlimited internet bandwidth<br>
+<strong>B) Read sensor data and decide what action to take</strong><br>
+    C) Mine new blocks for a blockchain<br>
+    D) Store the company's entire cloud database</p>
+</li>
+<li>
+<p>Which wireless technologies are commonly used to connect IoT devices, according to the chapter?<br>
+    A) Only fiber-optic cables<br>
+<strong>B) Wi-Fi, Bluetooth, or cellular networks</strong><br>
+    C) Only satellite uplinks<br>
+    D) Only Ethernet cables</p>
+</li>
+<li>
+<p>In a smart home example from the chapter, smart curtains are set to close automatically when room temperature rises above:<br>
+    A) 25°C<br>
+    B) 30°C<br>
+<strong>C) 35°C</strong><br>
+    D) 40°C</p>
+</li>
+<li>
+<p>Which of the following best summarizes the three main functions of IoT systems as described in the chapter?<br>
+    A) Encryption, mining, and validation<br>
+<strong>B) Data collection, communication, and automation</strong><br>
+    C) Rendering, streaming, and compression<br>
+    D) Hosting, scaling, and billing</p>
+</li>
+<li>
+<p>In healthcare, IoT sensors are described as being useful for:<br>
+    A) Replacing doctors entirely<br>
+<strong>B) Monitoring patient conditions such as heart rate or glucose levels in real time</strong><br>
+    C) Mining cryptocurrency for hospitals<br>
+    D) Encrypting hospital land records</p>
+</li>
+<li>
+<p>A rural smart-irrigation system that uses a GSM module instead of Wi-Fi to transmit sensor data is primarily addressing which real-world constraint?<br>
+    A) Excess electricity supply<br>
+<strong>B) Limited or unreliable internet/Wi-Fi connectivity in rural areas</strong><br>
+    C) Too much available bandwidth<br>
+    D) A surplus of computing power</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-81c-cloud-computing">Topic 8.1c: Cloud Computing</h3>
+<ol start="21">
+<li>
+<p>Cloud computing is best defined as a technology that allows users to:<br>
+    A) Physically connect devices to sensors<br>
+<strong>B) Store, manage, and process data on remote servers instead of local computers</strong><br>
+    C) Create decentralized, tamper-proof ledgers<br>
+    D) Train neural networks without any data</p>
+</li>
+<li>
+<p>Saving a document on Google Drive or iCloud is an everyday example of using:<br>
+    A) Blockchain<br>
+    B) IoT<br>
+<strong>C) Cloud Computing</strong><br>
+    D) Edge AI</p>
+</li>
+<li>
+<p>The cloud computing feature that allows users to easily increase or decrease their storage and computing power based on need is called:<br>
+    A) Immutability<br>
+<strong>B) Scalability</strong><br>
+    C) Hashing<br>
+    D) Actuation</p>
+</li>
+<li>
+<p>Which pricing model is described in the chapter as helping cloud users lower operational costs?<br>
+    A) Fixed annual licensing only<br>
+<strong>B) Pay-as-you-go</strong><br>
+    C) One-time lifetime purchase<br>
+    D) Barter-based exchange</p>
+</li>
+<li>
+<p>Which of the following are given as examples of major cloud computing platforms?<br>
+    A) Bitcoin and Ethereum<br>
+<strong>B) Amazon Web Services (AWS) and Microsoft Azure</strong><br>
+    C) GDPR and COMPAS<br>
+    D) ESP32 and Arduino</p>
+</li>
+<li>
+<p>The chapter's analogy compares cloud computing to:<br>
+    A) A public spreadsheet that cannot be edited<br>
+<strong>B) Renting a fully furnished house with electricity on demand, instead of building your own generator</strong><br>
+    C) A vending machine connected to the internet<br>
+    D) A courtroom sentencing algorithm</p>
+</li>
+<li>
+<p>Which benefit of cloud computing allows users to work from multiple devices and locations without manually transferring files?<br>
+    A) Immutability<br>
+<strong>B) Accessibility</strong><br>
+    C) Decentralization<br>
+    D) Consensus</p>
+</li>
+<li>
+<p>In which year did Amazon launch AWS, turning its internal infrastructure into a publicly rentable service?<br>
+    A) 2001<br>
+<strong>B) 2006</strong><br>
+    C) 2010<br>
+    D) 2016</p>
+</li>
+<li>
+<p>Virtualization in cloud computing refers to:<br>
+    A) Encrypting all customer data permanently<br>
+<strong>B) Splitting one physical server into many separate virtual computers rented to different customers</strong><br>
+    C) Connecting sensors to microcontrollers<br>
+    D) Creating an unchangeable chain of records</p>
+</li>
+<li>
+<p>Which of the following is NOT typically supported by cloud computing, according to the chapter?<br>
+    A) Streaming platforms<br>
+    B) Online learning systems<br>
+    C) Collaborative workspaces<br>
+<strong>D) Physical soil-moisture measurement</strong></p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-81d-blockchain-technology">Topic 8.1d: Blockchain Technology</h3>
+<ol start="31">
+<li>
+<p>Blockchain technology is best described as a system that:<br>
+    A) Stores information on a single central server for speed<br>
+<strong>B) Securely stores and shares information across many computers, with each block linked to the previous one</strong><br>
+    C) Only functions without any internet connection<br>
+    D) Replaces the need for sensors in IoT systems</p>
+</li>
+<li>
+<p>The individual in the chapter's story who is credited with solving the "double-spending problem" and inventing Bitcoin's blockchain in 2008 is known by the pseudonym:<br>
+    A) Alan Turing<br>
+<strong>B) Satoshi Nakamoto</strong><br>
+    C) Tim Berners-Lee<br>
+    D) Ada Lovelace</p>
+</li>
+<li>
+<p>A cryptographic hash, as used in blockchain, is best described as:<br>
+    A) A password shared between all users<br>
+<strong>B) A unique digital "fingerprint" for data that changes completely if the data changes</strong><br>
+    C) A type of cloud storage plan<br>
+    D) A wireless communication protocol</p>
+</li>
+<li>
+<p>The term "immutable," as applied to blockchain records, means:<br>
+    A) The data can be edited freely by the original creator<br>
+<strong>B) The data cannot be changed once verified and added to the chain</strong><br>
+    C) The data is stored only temporarily<br>
+    D) The data is visible to no one</p>
+</li>
+<li>
+<p>Blockchain increases transparency and trust primarily by:<br>
+    A) Storing all data on one government server<br>
+<strong>B) Removing intermediaries and allowing every computer in the network to hold a verified copy of the records</strong><br>
+    C) Deleting old records automatically<br>
+    D) Requiring a single administrator password</p>
+</li>
+<li>
+<p>In finance, blockchain technology powers which well-known application?<br>
+    A) Cloud storage subscriptions<br>
+<strong>B) Cryptocurrencies such as Bitcoin</strong><br>
+    C) Voice assistants<br>
+    D) Facial recognition attendance systems</p>
+</li>
+<li>
+<p>The chapter's analogy describes blockchain as being like:<br>
+    A) A private diary only one person can read<br>
+<strong>B) A public Google Sheet that thousands of people copy, where no one can ever delete or overwrite old rows</strong><br>
+    C) A vending machine connected to a network<br>
+    D) A single locked filing cabinet</p>
+</li>
+<li>
+<p>In supply chain management, blockchain is primarily used to:<br>
+    A) Predict future weather patterns<br>
+<strong>B) Track goods from origin to customer and ensure authenticity</strong><br>
+    C) Replace all cloud servers<br>
+    D) Train machine learning models</p>
+</li>
+<li>
+<p>Why would altering a single confirmed block on a blockchain be extremely difficult in practice?<br>
+    A) Because only one computer stores the data<br>
+<strong>B) Because it would require changing that block and every block after it on the majority of network computers simultaneously</strong><br>
+    C) Because blockchains automatically reject all new blocks<br>
+    D) Because blockchain has no internet connection</p>
+</li>
+<li>
+<p>Which sector is NOT mentioned in the chapter as a use case for blockchain?<br>
+    A) Financial transactions<br>
+    B) Supply chain tracking<br>
+    C) Land records and academic credentials<br>
+<strong>D) Real-time voice-to-text translation</strong></p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-82-cultural-and-ethical-implications-of-ai-systems">Topic 8.2: Cultural and Ethical Implications of AI Systems</h3>
+<ol start="41">
+<li>
+<p>Which group in an AI system's stakeholders is primarily responsible for designing and programming the AI models?<br>
+    A) Users<br>
+<strong>B) Developers</strong><br>
+    C) Governments<br>
+    D) Communities</p>
+</li>
+<li>
+<p>Which stakeholder group is primarily focused on preserving social values and cultural norms in relation to AI?<br>
+    A) Developers<br>
+    B) Users<br>
+<strong>C) Communities</strong><br>
+    D) Investors</p>
+</li>
+<li>
+<p>The real-world case discussed in the chapter, where an AI tool used in judicial bail/sentencing decisions was found to discriminate based on demographic bias, is known as:<br>
+    A) GDPR<br>
+<strong>B) COMPAS</strong><br>
+    C) AWS<br>
+    D) NLP</p>
+</li>
+<li>
+<p>Why was the bias in the COMPAS case particularly concerning, according to the chapter's discussion?<br>
+    A) It made the system run more slowly<br>
+<strong>B) It reflected and amplified unequal patterns already present in historical data, harming a specific demographic group</strong><br>
+    C) It increased the cost of cloud storage<br>
+    D) It had no real-world consequences</p>
+</li>
+<li>
+<p>The ethical principle that requires an AI system's decisions to be explainable to the people affected by them is called:<br>
+    A) Scalability<br>
+<strong>B) Transparency</strong><br>
+    C) Virtualization<br>
+    D) Immutability</p>
+</li>
+<li>
+<p>The ethical principle that ensures there is a clear answer to "who is responsible if an AI system causes harm?" is:<br>
+    A) Fairness<br>
+<strong>B) Accountability</strong><br>
+    C) Automation<br>
+    D) Consensus</p>
+</li>
+<li>
+<p>Bias in AI most commonly originates from:<br>
+    A) The color scheme of the user interface<br>
+<strong>B) Hidden imbalances or patterns within the training data</strong><br>
+    C) The speed of the internet connection<br>
+    D) The brand of the cloud provider</p>
+</li>
+<li>
+<p>Designing AI language models to support diverse languages and dialects, rather than only dominant ones, is primarily an effort to ensure:<br>
+    A) Faster processing speed<br>
+<strong>B) Cultural inclusivity and fairness</strong><br>
+    C) Lower cloud storage costs<br>
+    D) Stronger encryption</p>
+</li>
+<li>
+<p>The General Data Protection Regulation (GDPR) is a policy framework from which region, focused on data privacy?<br>
+    A) United States<br>
+<strong>B) European Union</strong><br>
+    C) Pakistan<br>
+    D) United Nations Security Council</p>
+</li>
+<li>
+<p>A conflict of interest between businesses and users, as described in the chapter, most commonly arises over:<br>
+    A) Choice of programming language<br>
+<strong>B) Data collection practices, where businesses want more data and users want privacy</strong><br>
+    C) The color of a mobile app's interface<br>
+    D) The physical location of cloud servers</p>
+</li>
+<li>
+<p>If a face-recognition system is trained mainly on images of one age group and skin tone, it is likely to:<br>
+    A) Work perfectly for all users regardless of background<br>
+<strong>B) Perform poorly for people from other groups not well represented in training data</strong><br>
+    C) Automatically correct its own bias<br>
+    D) Stop functioning altogether</p>
+</li>
+<li>
+<p>Inclusivity in AI design means ensuring that technology:<br>
+    A) Is available only to the wealthiest users<br>
+<strong>B) Serves all people fairly, regardless of gender, ethnicity, or background</strong><br>
+    C) Is written only in one global language<br>
+    D) Focuses exclusively on urban populations</p>
+</li>
+<li>
+<p>In the scenario of an AI system used for student admissions, ethical design requires that the university be able to:<br>
+    A) Hide its selection criteria from all applicants<br>
+<strong>B) Explain why a student was selected or rejected, and identify who is responsible for the decision</strong><br>
+    C) Allow the AI to make the final decision with no human oversight<br>
+    D) Ignore applicant privacy concerns entirely</p>
+</li>
+<li>
+<p>Which of the following best represents "safety" as an ethical principle in AI systems, using the chapter's healthcare example?<br>
+    A) Making diagnoses as quickly as possible regardless of accuracy<br>
+<strong>B) Testing AI systems carefully so they do not give harmful or misleading medical results</strong><br>
+    C) Reducing the amount of data doctors can access<br>
+    D) Removing all human doctors from the process</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-83-designing-applications-for-pakistan-using-emerging-technologies">Topic 8.3: Designing Applications for Pakistan Using Emerging Technologies</h3>
+<ol start="55">
+<li>
+<p>Which of the following is identified in the chapter as a national challenge in Pakistan's agriculture sector?<br>
+    A) Excess water supply<br>
+<strong>B) Inefficiency and low productivity</strong><br>
+    C) Overqualified labor force<br>
+    D) Too much government transparency</p>
+</li>
+<li>
+<p>According to the chapter, which technology can be used to store and distribute educational content efficiently to address barriers in Pakistan's education sector?<br>
+    A) Blockchain<br>
+<strong>B) Cloud Computing</strong><br>
+    C) Actuators<br>
+    D) GSM modules only</p>
+</li>
+<li>
+<p>In the case study on Smart Agriculture in Pakistan, IoT sensors are primarily used to:<br>
+    A) Predict long-term national economic trends<br>
+<strong>B) Collect real-time data on soil moisture, temperature, and nutrients</strong><br>
+    C) Replace all farm labor<br>
+    D) Encrypt land ownership documents</p>
+</li>
+<li>
+<p>In the Smart Agriculture case study, AI is primarily used for:<br>
+    A) Watering crops manually<br>
+<strong>B) Predictive weather analysis to help farmers plan and protect crops</strong><br>
+    C) Mining cryptocurrency<br>
+    D) Physically harvesting crops</p>
+</li>
+<li>
+<p>In the Smart Agriculture case study, blockchain's specific role is to:<br>
+    A) Predict rainfall patterns<br>
+<strong>B) Add transparency to the supply chain by recording each stage of crop production and distribution</strong><br>
+    C) Store soil moisture readings directly from sensors<br>
+    D) Provide electricity to rural sensors</p>
+</li>
+<li>
+<p>A student designing a technology solution for a national challenge in Pakistan should, according to the chapter, begin by:<br>
+    A) Choosing as many advanced technologies as possible<br>
+<strong>B) Identifying a specific, real-world problem before selecting the technology</strong><br>
+    C) Copying an existing international system exactly<br>
+    D) Avoiding any research into the people affected</p>
+</li>
+<li>
+<p>Which of the following best reflects the ethical and cultural considerations emphasized for designing applications in Pakistan?<br>
+    A) Applications should use only English and ignore regional languages<br>
+<strong>B) Applications must be inclusive, accessible, and respectful of local customs and traditions</strong><br>
+    C) Applications should avoid all forms of user data protection<br>
+    D) Applications should prioritize cost over cultural relevance</p>
+</li>
+<li>
+<p>A smart irrigation system that combines IoT sensors, AI prediction, and Cloud storage is an example of:<br>
+    A) Blockchain-only design<br>
+<strong>B) Technology integration</strong><br>
+    C) A single-technology solution<br>
+    D) Manual farming practice</p>
+</li>
+<li>
+<p>Which of the following is a realistic constraint that should shape smart agriculture system design in rural Pakistan, as highlighted in class discussion?<br>
+    A) Unlimited high-speed internet everywhere<br>
+<strong>B) Intermittent electricity and limited high-speed connectivity</strong><br>
+    C) Excess computing budgets for every farmer<br>
+    D) A complete absence of mobile phones</p>
+</li>
+<li>
+<p>Sending irrigation alerts via SMS instead of a smartphone app in a rural technology deployment primarily addresses which concern?<br>
+    A) Data encryption strength<br>
+<strong>B) Accessibility for farmers without smartphones or reliable data plans</strong><br>
+    C) Blockchain consensus speed<br>
+    D) Cloud server scalability</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-84-policies-regulations-and-responsible-innovation">Topic 8.4: Policies, Regulations, and Responsible Innovation</h3>
+<ol start="65">
+<li>
+<p>AI governance refers to:<br>
+    A) The hardware components of an AI system<br>
+<strong>B) The rules, policies, and guidelines used to ensure AI systems are developed and used responsibly</strong><br>
+    C) A type of neural network architecture<br>
+    D) A cloud pricing model</p>
+</li>
+<li>
+<p>Responsible innovation, as defined in the chapter, means creating technology that:<br>
+    A) Focuses only on maximizing short-term profit<br>
+<strong>B) Solves real problems while considering ethics, safety, culture, fairness, and long-term social impact</strong><br>
+    C) Avoids all forms of regulation<br>
+    D) Ignores community input entirely</p>
+</li>
+<li>
+<p>"Privacy-by-Design" refers to the practice of:<br>
+    A) Adding privacy protections only after a data breach occurs<br>
+<strong>B) Building data protection into a system's architecture from the very start</strong><br>
+    C) Removing all data protection to improve system speed<br>
+    D) Allowing unrestricted data collection by default</p>
+</li>
+<li>
+<p>Which professionals, according to the chapter, help ensure AI-based technology projects comply with laws and regulations?<br>
+    A) Sociologists<br>
+<strong>B) Legal experts</strong><br>
+    C) Sensor manufacturers<br>
+    D) Cloud hardware technicians</p>
+</li>
+<li>
+<p>Which professionals study the social impact of technology within interdisciplinary teams building responsible technology?<br>
+    A) Legal experts<br>
+<strong>B) Sociologists</strong><br>
+    C) Microcontroller engineers<br>
+    D) Cloud administrators</p>
+</li>
+<li>
+<p>Why does the chapter emphasize that "no single engineer knows everything about AI, Cloud, IoT, and Blockchain simultaneously"?<br>
+    A) To discourage students from studying computer science<br>
+<strong>B) To highlight that responsible technology development requires interdisciplinary collaboration</strong><br>
+    C) To argue that regulation is unnecessary<br>
+    D) To suggest that only governments should build technology</p>
+</li>
+<li>
+<p>The chapter's AWS launch story (2006) is used to illustrate which point about policy and responsibility?<br>
+    A) That cloud computing has no risks at all<br>
+<strong>B) That easy access to powerful computing infrastructure creates both opportunity and the need for responsible governance</strong><br>
+    C) That AWS was the first blockchain platform<br>
+    D) That cloud computing eliminates the need for data privacy laws</p>
+</li>
+<li>
+<p>Adopting global AI governance standards, such as GDPR-inspired frameworks, can benefit Pakistan by:<br>
+    A) Eliminating the need for any local innovation<br>
+<strong>B) Aligning technological growth with ethical standards while building public trust and global partnerships</strong><br>
+    C) Preventing any use of AI within the country<br>
+    D) Removing the need for interdisciplinary collaboration</p>
+</li>
+<li>
+<p>"Safety-by-Design" primarily involves:<br>
+    A) Fixing safety issues only after a system has failed publicly<br>
+<strong>B) Anticipating how a system could fail or be misused and building safeguards before deployment</strong><br>
+    C) Avoiding any testing before launch<br>
+    D) Excluding domain experts from the design process</p>
+</li>
+<li>
+<p>According to the chapter, technological solutions should represent the diversity of the populations they serve mainly to ensure:<br>
+    A) Faster algorithm performance only<br>
+<strong>B) That systems work fairly for everyone, not just a selected group</strong><br>
+    C) Lower development costs only<br>
+    D) Reduced need for legal compliance</p>
+</li>
+<li>
+<p>A responsible national rollout of a new technology system, as described in the chapter, should include which step before scaling nationally?<br>
+    A) Skipping testing to save time<br>
+<strong>B) Pilot testing in a small number of locations to gather feedback and fix problems</strong><br>
+    C) Immediate nationwide deployment with no monitoring<br>
+    D) Avoiding all interdisciplinary review</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-81a-artificial-intelligence-ai_1">Topic 8.1a: Artificial Intelligence (AI)</h3>
+<ol>
+<li>Define Artificial Intelligence (AI) in your own words.</li>
+<li>What is Machine Learning, and how does it relate to AI?</li>
+<li>Differentiate between Neural Networks (NN) and Natural Language Processing (NLP).</li>
+<li>List three common everyday applications of AI mentioned in the chapter.</li>
+<li>Explain briefly how DeepMind's AI is used in eye disease prediction.</li>
+<li>State two benefits and two challenges of AI in society.</li>
+<li>Explain briefly why bias can appear in an AI hiring system trained on historical data.</li>
+<li>Predict what might happen to an AI model's accuracy if it is trained on very little data.</li>
+</ol>
+<h3 id="topic-81b-internet-of-things-iot_1">Topic 8.1b: Internet of Things (IoT)</h3>
+<ol start="9">
+<li>Define the Internet of Things (IoT).</li>
+<li>Differentiate between a sensor and an actuator in an IoT system.</li>
+<li>Briefly explain the role of a microcontroller within an IoT system.</li>
+<li>Map out, in simple steps, how data moves from a soil sensor to a farmer's mobile alert.</li>
+<li>State the three main functions of IoT systems described in the chapter.</li>
+<li>Identify two wireless technologies commonly used to connect IoT devices.</li>
+<li>Explain briefly how IoT is used in healthcare, according to the chapter.</li>
+<li>Explain briefly why the Carnegie Mellon Coke machine is considered an early example of IoT.</li>
+</ol>
+<h3 id="topic-81c-cloud-computing_1">Topic 8.1c: Cloud Computing</h3>
+<ol start="17">
+<li>Define Cloud Computing.</li>
+<li>Differentiate between local computer storage and cloud-based storage.</li>
+<li>Explain briefly what "scalability" means in the context of cloud computing.</li>
+<li>State two advantages of cloud computing mentioned in the chapter.</li>
+<li>Identify two real-world examples of cloud computing platforms.</li>
+<li>Explain briefly the "pay-as-you-go" pricing model.</li>
+<li>Explain briefly what virtualization means and why it matters for cloud computing.</li>
+</ol>
+<h3 id="topic-81d-blockchain-technology_1">Topic 8.1d: Blockchain Technology</h3>
+<ol start="24">
+<li>Define Blockchain technology.</li>
+<li>Differentiate between a centralized database and a blockchain ledger.</li>
+<li>Explain briefly what a cryptographic hash is and why it matters in blockchain.</li>
+<li>State two real-world applications of blockchain mentioned in the chapter.</li>
+<li>Explain briefly why blockchain records are described as "immutable."</li>
+<li>Identify the historical problem that blockchain (via Bitcoin) was originally designed to solve.</li>
+</ol>
+<h3 id="topic-82-cultural-and-ethical-implications-of-ai-systems_1">Topic 8.2: Cultural and Ethical Implications of AI Systems</h3>
+<ol start="30">
+<li>Define the term "stakeholder" in the context of AI systems.</li>
+<li>Differentiate between the roles of developers and users as AI stakeholders.</li>
+<li>List the four core ethical principles in AI design mentioned in the chapter.</li>
+<li>Explain briefly why cultural awareness matters when designing AI systems.</li>
+<li>Explain briefly how bias entered the COMPAS algorithm.</li>
+<li>State one example of a conflict of interest between a business and its users regarding AI.</li>
+<li>Explain briefly the purpose of the GDPR framework.</li>
+<li>Identify two questions you would ask when auditing an AI system for fairness.</li>
+</ol>
+<h3 id="topic-83-designing-applications-for-pakistan-using-emerging-technologies_1">Topic 8.3: Designing Applications for Pakistan Using Emerging Technologies</h3>
+<ol start="38">
+<li>List three national challenges in Pakistan that could be addressed using emerging technologies.</li>
+<li>Explain briefly the role of IoT sensors in the Smart Agriculture case study.</li>
+<li>Explain briefly the role of AI in the Smart Agriculture case study.</li>
+<li>Explain briefly the role of Blockchain in the Smart Agriculture case study.</li>
+<li>Differentiate between designing a technology solution "problem-first" versus "technology-first."</li>
+<li>Identify two real-world constraints (e.g., connectivity, electricity) that should shape technology design in rural Pakistan.</li>
+<li>State why cultural and ethical considerations are important when designing applications for local communities.</li>
+</ol>
+<h3 id="topic-84-policies-regulations-and-responsible-innovation_1">Topic 8.4: Policies, Regulations, and Responsible Innovation</h3>
+<ol start="45">
+<li>Define AI Governance.</li>
+<li>Differentiate between Privacy-by-Design and Safety-by-Design.</li>
+<li>List three types of professionals who might collaborate on a responsible technology team, besides computer scientists.</li>
+<li>Explain briefly why interdisciplinary collaboration is important in technology development.</li>
+<li>State two steps involved in a responsible national technology rollout.</li>
+<li>Explain briefly how the story of AWS's 2006 launch relates to the need for technology governance.</li>
+<li>Identify one benefit Pakistan could gain from adopting global AI governance standards.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-81-understanding-emerging-technologies">Topic 8.1: Understanding Emerging Technologies</h3>
+<ol>
+<li>
+<p>Explain how Artificial Intelligence (AI), the Internet of Things (IoT), Cloud Computing, and Blockchain are transforming modern industries.<br>
+   a) Define each of the four technologies in your own words.<br>
+   b) Give one real-world example of each technology in use.<br>
+   c) Explain how these four technologies could work together within a single integrated system.</p>
+</li>
+<li>
+<p>Discuss the benefits and challenges of Artificial Intelligence (AI) in society.<br>
+   a) Describe at least three benefits of AI, with examples from the chapter.<br>
+   b) Describe at least three challenges or risks associated with AI.<br>
+   c) Explain how ethical principles can help ensure AI is used fairly and responsibly.</p>
+</li>
+<li>
+<p>Describe how IoT devices collect and communicate data for automation.<br>
+   a) Explain the roles of sensors, microcontrollers, and actuators within an IoT system.<br>
+   b) Trace, step-by-step, how data flows from a sensor to a final automated action.<br>
+   c) Discuss how IoT is improving at least two of the following sectors: healthcare, agriculture, smart homes.</p>
+</li>
+<li>
+<p>Explain how Cloud Computing supports scalability, accessibility, and collaboration.<br>
+   a) Define scalability, accessibility, and cost-effectiveness in the context of cloud computing.<br>
+   b) Compare cloud platforms such as Google Drive, AWS, and Microsoft Azure in terms of their typical use cases.<br>
+   c) Discuss one risk or limitation that organizations should consider when relying on cloud computing.</p>
+</li>
+<li>
+<p>What is Blockchain technology? Discuss how its decentralized nature improves transparency and security.<br>
+   a) Explain, step by step, how a new transaction becomes a permanently recorded "block."<br>
+   b) Discuss how blockchain improves transparency and security in a financial application (e.g., cryptocurrency).<br>
+   c) Discuss how blockchain improves transparency and security in a non-financial application (e.g., supply chain tracking or land records).</p>
+</li>
+<li>
+<p>Construct a full system architecture diagram and written explanation for an integrated smart-city application that uses all four emerging technologies (AI, IoT, Cloud, Blockchain) together.<br>
+   a) Identify the specific real-world problem your smart-city application solves.<br>
+   b) Diagram and explain the flow of data from data collection through to final action.<br>
+   c) Justify why each of the four technologies was necessary, and what would be lost if one were removed.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-82-cultural-and-ethical-implications-of-ai-systems_2">Topic 8.2: Cultural and Ethical Implications of AI Systems</h3>
+<ol>
+<li>
+<p>Analyze the role of different stakeholders in the design, deployment, and regulation of AI systems.<br>
+   a) Identify and describe the four stakeholder groups discussed in the chapter.<br>
+   b) Explain how the interests of these stakeholder groups can come into conflict, using a specific example.<br>
+   c) Propose one strategy for balancing these competing interests fairly.</p>
+</li>
+<li>
+<p>Discuss the ethical and cultural considerations involved in designing AI systems.<br>
+   a) Explain the four core ethical principles of AI (fairness, accountability, transparency, safety) with an example of each.<br>
+   b) Discuss how cultural diversity can affect the design and reception of an AI system in different regions.<br>
+   c) Evaluate how developers can ensure inclusivity and respect for local values when designing AI for a diverse population like Pakistan's.</p>
+</li>
+<li>
+<p>Evaluate the real-world case of algorithmic bias described in the chapter (the COMPAS system).<br>
+   a) Explain what the COMPAS algorithm was designed to do, and what bias was discovered in its outcomes.<br>
+   b) Analyze how such bias could have entered the system despite no one explicitly programming discrimination.<br>
+   c) Propose at least two concrete steps developers could take to detect and reduce similar bias in a new AI system.</p>
+</li>
+<li>
+<p>Design an ethical evaluation process for a new AI system, using a school-based facial recognition attendance system as your example.<br>
+   a) Identify at least three potential ethical, privacy, or cultural risks of this system.<br>
+   b) Propose specific design changes or safeguards to address each risk you identified.<br>
+   c) Discuss who should be held accountable if the system produces an unfair or harmful outcome, and why.</p>
+</li>
+<li>
+<p>Discuss the role of policy and legal frameworks in governing the ethical use of AI.<br>
+   a) Explain the purpose and key protections offered by the GDPR.<br>
+   b) Discuss why a country like Pakistan might choose to develop its own national AI and data-protection policies rather than simply adopting another country's framework unchanged.<br>
+   c) Evaluate the potential consequences, for both citizens and businesses, of having no AI governance policy at all.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-83-designing-applications-for-pakistan-using-emerging-technologies_2">Topic 8.3: Designing Applications for Pakistan Using Emerging Technologies</h3>
+<ol>
+<li>
+<p>Identify key national challenges in Pakistan and describe how emerging technologies can provide effective and innovative solutions.<br>
+   a) Identify at least four national challenges across different sectors (e.g., agriculture, healthcare, education, governance).<br>
+   b) For each challenge identified, explain which emerging technology (or combination) could realistically address it, and how.<br>
+   c) Discuss one risk or limitation that could prevent successful deployment of your proposed solutions in Pakistan.</p>
+</li>
+<li>
+<p>Construct a complete end-to-end system design for the Smart Agriculture case study described in the chapter.<br>
+   a) Diagram the full data flow, from IoT soil sensors through Cloud storage, AI prediction, and (optionally) Blockchain record-keeping, to a final farmer-facing action.<br>
+   b) Explain the specific role each technology plays at each stage of the system.<br>
+   c) Discuss how this system could be redesigned to function reliably in an area with intermittent electricity and limited internet connectivity.</p>
+</li>
+<li>
+<p>Design an original technology-based application (different from the Smart Agriculture case study) that addresses a specific national challenge in Pakistan.<br>
+   a) Clearly define the specific problem your application solves and who it serves.<br>
+   b) Explain which emerging technologies your application uses, and justify why each one is necessary.<br>
+   c) Discuss the ethical and cultural considerations you would need to address before deploying your application nationally.</p>
+</li>
+<li>
+<p>Evaluate the importance of technology integration when designing solutions for national-scale problems.<br>
+   a) Explain, with examples, what "technology integration" means in the context of this chapter.<br>
+   b) Compare a single-technology solution to a multi-technology integrated solution for the same problem, and discuss the advantages of integration.<br>
+   c) Discuss the added complexity or risks that come with integrating multiple technologies into a single system.</p>
+</li>
+<li>
+<p>Discuss the importance of ethical and cultural considerations when designing technology solutions for diverse communities within Pakistan.<br>
+   a) Explain why a technology solution that works well in one country or region might fail in another.<br>
+   b) Discuss at least three specific cultural or accessibility factors that should shape the design of a Pakistan-focused application.<br>
+   c) Propose a process a student design team could follow to ensure their application remains inclusive and locally appropriate.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-84-policies-regulations-and-responsible-innovation_2">Topic 8.4: Policies, Regulations, and Responsible Innovation</h3>
+<ol>
+<li>
+<p>Describe the importance of policies, regulations, and interdisciplinary collaboration in promoting responsible innovation.<br>
+   a) Explain what is meant by "AI governance" and why it is necessary.<br>
+   b) Describe the roles of at least three different types of professionals (e.g., legal experts, sociologists, ethicists, domain experts) in building responsible technology.<br>
+   c) Discuss how Pakistan can benefit from adopting global AI governance standards while still addressing its own local needs.</p>
+</li>
+<li>
+<p>Analyze the concepts of Privacy-by-Design and Safety-by-Design as approaches to responsible technology development.<br>
+   a) Define both concepts and explain the key difference between them.<br>
+   b) Using the Smart Agriculture system (or another system from this chapter) as an example, explain how Privacy-by-Design and Safety-by-Design principles could be applied.<br>
+   c) Evaluate what could go wrong if a technology system is deployed without applying either of these principles.</p>
+</li>
+<li>
+<p>Design a responsible national rollout plan for a new AI-powered healthcare-triage application.<br>
+   a) Outline the key steps your rollout plan would include, from initial impact assessment to nationwide deployment.<br>
+   b) Identify at least two potential risks (privacy, safety, fairness, or accessibility) and explain how your plan addresses each.<br>
+   c) Justify why pilot testing in a small number of locations should occur before a full national launch.</p>
+</li>
+<li>
+<p>Evaluate the relationship between rapid technological innovation and the need for regulation, using the story of Amazon Web Services (AWS) as a starting point.<br>
+   a) Summarize how AWS's 2006 launch changed access to computing power for individuals and small businesses.<br>
+   b) Discuss both the opportunities and the risks created by this kind of easy, large-scale access to powerful computing infrastructure.<br>
+   c) Propose at least two policy safeguards that could help ensure such infrastructure is used responsibly.</p>
+</li>
+<li>
+<p>Discuss how interdisciplinary collaboration can improve the fairness and inclusivity of a national-scale technology system.<br>
+   a) Explain why computer scientists alone are typically insufficient to evaluate the full impact of a large technology deployment.<br>
+   b) Describe, with examples, how each of the following could contribute to a responsible technology project: legal experts, sociologists, ethicists, and domain experts (e.g., doctors, agronomists).<br>
+   c) Evaluate how the absence of interdisciplinary collaboration could lead to a technology system that is technically excellent but socially harmful.</p>
+</li>
+</ol>
+<hr>
+<p><em>End of Comprehensive Question Bank — Chapter 8: Applications of Computer Science.</em></p>
+
+</body>
+</html>

@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Chapter 7 — Hypothesis Testing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Chapter 7 — Hypothesis Testing</div>
+</div>
+
+<h1 id="comprehensive-question-bank-chapter-7-hypothesis-testing">Comprehensive Question Bank: Chapter 7 — Hypothesis Testing</h1>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-71-introduction-to-hypothesis-testing">Topic 7.1: Introduction to Hypothesis Testing</h3>
+<ol>
+<li>
+<p>What is a hypothesis?<br>
+   A) A final, unquestionable result<br>
+<strong>B) A testable, measurable assumption or statement</strong><br>
+   C) A type of dataset<br>
+   D) A programming function</p>
+</li>
+<li>
+<p>Hypothesis testing is best described as:<br>
+   A) A method to store large datasets<br>
+<strong>B) A statistical method used to make decisions using data</strong><br>
+   C) A way to visualize data only<br>
+   D) A programming language feature</p>
+</li>
+<li>
+<p>Why is hypothesis testing important in data analysis?<br>
+   A) It eliminates the need for data collection<br>
+   B) It guarantees 100% accurate conclusions<br>
+<strong>C) It supports evidence-based decisions and reduces guesswork</strong><br>
+   D) It replaces the need for a research question</p>
+</li>
+<li>
+<p>A research question is best described as:<br>
+   A) A final answer to a study<br>
+<strong>B) The main question that defines what is being studied</strong><br>
+   C) A type of test statistic<br>
+   D) A dataset used for testing</p>
+</li>
+<li>
+<p>Which of the following is a property of a well-formed hypothesis?<br>
+   A) It is vague and open to interpretation<br>
+<strong>B) It is clear, measurable, and testable</strong><br>
+   C) It cannot be tested with data<br>
+   D) It only applies to non-technical topics</p>
+</li>
+<li>
+<p>In computer science, which of the following is an example of a valid hypothesis?<br>
+   A) "Our app looks nice"<br>
+<strong>B) "The new caching algorithm reduces average response time"</strong><br>
+   C) "Developers like coding"<br>
+   D) "The database is important"</p>
+</li>
+<li>
+<p>What happens when a research question is converted into a hypothesis?<br>
+   A) The question becomes untestable<br>
+<strong>B) It becomes a specific, measurable statement that can be checked with data</strong><br>
+   C) It becomes purely a personal opinion<br>
+   D) It removes the need for any data collection</p>
+</li>
+<li>
+<p>Which of the following best explains the role of hypothesis testing in software engineering?<br>
+   A) It replaces the need for software testing<br>
+<strong>B) It helps determine whether a change (e.g., a new algorithm) has a real effect, not just random variation</strong><br>
+   C) It is only used for hardware design<br>
+   D) It has no real application in engineering</p>
+</li>
+<li>
+<p>A hypothesis predicts:<br>
+   A) Nothing measurable<br>
+<strong>B) An outcome that can be checked using data</strong><br>
+   C) Only qualitative opinions<br>
+   D) The final grade of a student</p>
+</li>
+<li>
+<p>Which statement about hypothesis testing is TRUE?<br>
+    A) It guarantees the hypothesis is true<br>
+<strong>B) It uses collected data to accept or reject an assumption</strong><br>
+    C) It is unrelated to research questions<br>
+    D) It cannot be applied to A/B testing</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-72-types-of-hypotheses">Topic 7.2: Types of Hypotheses</h3>
+<ol>
+<li>
+<p>What does the null hypothesis (H₀) represent?<br>
+   A) A claim of significant change<br>
+<strong>B) The default assumption of no effect or no difference</strong><br>
+   C) The final conclusion of a study<br>
+   D) A type of test statistic</p>
+</li>
+<li>
+<p>What does the alternative hypothesis (H₁ or Hₐ) represent?<br>
+   A) No effect or no difference<br>
+<strong>B) A claim that there is an effect or difference</strong><br>
+   C) A dataset used for testing<br>
+   D) The significance level</p>
+</li>
+<li>
+<p>In the courtroom analogy, the null hypothesis (H₀) is comparable to:<br>
+   A) The verdict of "guilty"<br>
+<strong>B) The defendant being presumed innocent</strong><br>
+   C) The judge's final decision<br>
+   D) The jury's opinion</p>
+</li>
+<li>
+<p>Which symbol is commonly used to represent the null hypothesis?<br>
+   A) H₁<br>
+   B) Hₐ<br>
+<strong>C) H₀</strong><br>
+   D) H₂</p>
+</li>
+<li>
+<p>A one-tailed hypothesis test is used when:<br>
+   A) You expect no difference at all<br>
+<strong>B) You expect a difference in one specific direction (e.g., greater than or less than)</strong><br>
+   C) You are testing categorical data only<br>
+   D) You are only visualizing data</p>
+</li>
+<li>
+<p>A two-tailed hypothesis test is used when:<br>
+   A) You expect the result only to increase<br>
+   B) You expect the result only to decrease<br>
+<strong>C) You are checking for a difference in either direction, without specifying which</strong><br>
+   D) You do not need a null hypothesis</p>
+</li>
+<li>
+<p>Which of the following is a correctly formulated null hypothesis for testing if a new AI code assistant reduces coding time?<br>
+   A) H₀: The AI assistant makes coding faster<br>
+<strong>B) H₀: The AI assistant does not reduce coding time</strong><br>
+   C) H₀: The AI assistant is popular among developers<br>
+   D) H₀: The AI assistant improves code quality</p>
+</li>
+<li>
+<p>Which rule is essential when formulating H₀ and H₁?<br>
+   A) They should overlap to cover uncertain cases<br>
+<strong>B) They must cover all possibilities and never overlap</strong><br>
+   C) They should both claim an effect exists<br>
+   D) They do not need to be measurable</p>
+</li>
+<li>
+<p>In statistics, we generally aim to:<br>
+   A) Prove H₁ is true with 100% certainty<br>
+<strong>B) Gather enough evidence to reject H₀</strong><br>
+   C) Ignore H₀ completely<br>
+   D) Avoid stating H₁ at all</p>
+</li>
+<li>
+<p>Which of the following is an example of an alternative hypothesis?<br>
+    A) H₀: μ_A = μ_B<br>
+<strong>B) H₁: μ_A ≠ μ_B</strong><br>
+    C) α = 0.05<br>
+    D) p-value = 0.03</p>
+</li>
+<li>
+<p>A hypothesis must be "falsifiable." This means:<br>
+    A) It must always be proven true<br>
+<strong>B) It must be possible for data to prove it wrong</strong><br>
+    C) It cannot be tested with data<br>
+    D) It applies only to qualitative research</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-73-concepts-in-hypothesis-testing">Topic 7.3: Concepts in Hypothesis Testing</h3>
+<ol>
+<li>
+<p>What is a test statistic?<br>
+   A) A fixed constant used in every test<br>
+<strong>B) A numerical value calculated from sample data used to make a decision</strong><br>
+   C) The final conclusion of a hypothesis test<br>
+   D) A type of graph</p>
+</li>
+<li>
+<p>Which test statistic is commonly used for small sample sizes when the population standard deviation is unknown?<br>
+   A) z-test<br>
+<strong>B) t-test</strong><br>
+   C) F-test<br>
+   D) Chi-Square test</p>
+</li>
+<li>
+<p>Who developed the t-distribution, and under what pseudonym was it published?<br>
+   A) Ronald Fisher, under "Researcher"<br>
+<strong>B) William Sealy Gosset, under "Student"</strong><br>
+   C) Karl Pearson, under "Analyst"<br>
+   D) Jerzy Neyman, under "Scientist"</p>
+</li>
+<li>
+<p>The critical region in hypothesis testing is:<br>
+   A) The area where we accept H₀ without question<br>
+<strong>B) The range of values where, if the test statistic falls there, H₀ is rejected</strong><br>
+   C) A fixed numerical constant<br>
+   D) A chart used only for visualization</p>
+</li>
+<li>
+<p>The significance level (α) represents:<br>
+   A) The probability that H₀ is true<br>
+<strong>B) The maximum acceptable risk of wrongly rejecting a true H₀</strong><br>
+   C) The sample size used in a test<br>
+   D) The test statistic value</p>
+</li>
+<li>
+<p>A commonly used significance level in hypothesis testing is:<br>
+   A) 0.5<br>
+<strong>B) 0.05</strong><br>
+   C) 5.0<br>
+   D) 50</p>
+</li>
+<li>
+<p>The p-value measures:<br>
+   A) The size of the sample<br>
+<strong>B) The probability of obtaining the observed result (or more extreme) if H₀ is true</strong><br>
+   C) The exact value of the population mean<br>
+   D) The number of variables in a study</p>
+</li>
+<li>
+<p>If the p-value is smaller than the significance level (α), the correct decision is to:<br>
+   A) Accept H₀<br>
+<strong>B) Reject H₀</strong><br>
+   C) Ignore the result<br>
+   D) Increase the sample size only</p>
+</li>
+<li>
+<p>A Type I Error occurs when:<br>
+   A) We fail to reject a false H₀<br>
+<strong>B) We reject a true H₀ (a false alarm)</strong><br>
+   C) We correctly reject H₀<br>
+   D) We calculate the wrong sample size</p>
+</li>
+<li>
+<p>A Type II Error occurs when:<br>
+    A) We correctly reject H₀<br>
+<strong>B) We fail to reject a false H₀ (a missed effect)</strong><br>
+    C) We reject a true H₀<br>
+    D) We calculate an incorrect p-value</p>
+</li>
+<li>
+<p>In the analogy comparing errors to a courtroom trial, a Type I Error is similar to:<br>
+    A) Letting a guilty person go free<br>
+<strong>B) Sending an innocent person to prison</strong><br>
+    C) A fair and correct verdict<br>
+    D) Ignoring the evidence completely</p>
+</li>
+<li>
+<p>Degrees of freedom (df) for a simple one-sample t-test is calculated as:<br>
+    A) n<br>
+<strong>B) n − 1</strong><br>
+    C) n + 1<br>
+    D) 2n</p>
+</li>
+<li>
+<p>A 95% confidence interval means:<br>
+    A) There is a 95% chance H₀ is true<br>
+<strong>B) If the experiment were repeated many times, 95% of the calculated intervals would contain the true value</strong><br>
+    C) The p-value is always 0.95<br>
+    D) The sample size must be exactly 95</p>
+</li>
+<li>
+<p>What formula correctly represents the t-value?<br>
+    A) t = (μ − x̄) × s<br>
+<strong>B) t = (x̄ − μ) / (s / √n)</strong><br>
+    C) t = n / s<br>
+    D) t = (x̄ + μ) × n</p>
+</li>
+<li>
+<p>Choosing the significance level (α) should be done:<br>
+    A) After analyzing the results, to fit the data<br>
+<strong>B) Before collecting or analyzing the data</strong><br>
+    C) Only after calculating the p-value<br>
+    D) Only for Chi-Square tests</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-74-performing-hypothesis-tests">Topic 7.4: Performing Hypothesis Tests</h3>
+<ol>
+<li>
+<p>What is the first step in performing a hypothesis test?<br>
+   A) Calculate the test statistic<br>
+<strong>B) State the null and alternative hypotheses</strong><br>
+   C) Set the significance level<br>
+   D) Visualize the data</p>
+</li>
+<li>
+<p>What is the correct order of the standard hypothesis testing process?<br>
+   A) Collect data → Set significance level → State hypotheses → Calculate statistic<br>
+<strong>B) State hypotheses → Set significance level → Collect data → Calculate statistic → Make a decision</strong><br>
+   C) Make a decision → Collect data → State hypotheses<br>
+   D) Calculate statistic → Collect data → State hypotheses</p>
+</li>
+<li>
+<p>The F-test is primarily used to:<br>
+   A) Compare means between two groups<br>
+<strong>B) Compare variances between two or more groups</strong><br>
+   C) Test categorical/frequency data<br>
+   D) Visualize confidence intervals</p>
+</li>
+<li>
+<p>The Chi-Square (χ²) test is best suited for:<br>
+   A) Comparing variances of continuous data<br>
+<strong>B) Testing categorical/frequency data for independence or goodness-of-fit</strong><br>
+   C) Comparing two population means only<br>
+   D) Testing significance levels only</p>
+</li>
+<li>
+<p>In a Chi-Square test, "O" and "E" represent:<br>
+   A) Optimal and Estimated values<br>
+<strong>B) Observed and Expected frequencies</strong><br>
+   C) Outlier and Error values<br>
+   D) Ordinal and Exponential values</p>
+</li>
+<li>
+<p>The correct formula for the Chi-Square test statistic is:<br>
+   A) χ² = Σ(O + E)² / E<br>
+<strong>B) χ² = Σ(O − E)² / E</strong><br>
+   C) χ² = Σ(O × E)²<br>
+   D) χ² = Σ(E − O) / O</p>
+</li>
+<li>
+<p>The correct formula for the F-test statistic is:<br>
+   A) F = S1 + S2<br>
+<strong>B) F = S1² / S2²</strong><br>
+   C) F = S1² × S2²<br>
+   D) F = S1 − S2</p>
+</li>
+<li>
+<p>In an A/B test comparing server speeds, which is the most appropriate null hypothesis?<br>
+   A) H₀: μ_A &gt; μ_B<br>
+<strong>B) H₀: μ_A = μ_B</strong><br>
+   C) H₁: μ_A = μ_B<br>
+   D) H₀: μ_A ≠ μ_B</p>
+</li>
+<li>
+<p>Given a calculated t = 2.5 and a p-value of 0.02 with α = 0.05, the correct decision is:<br>
+   A) Fail to reject H₀<br>
+<strong>B) Reject H₀</strong><br>
+   C) Recalculate the sample size<br>
+   D) Ignore the test statistic</p>
+</li>
+<li>
+<p>When calculating expected frequencies in a Chi-Square goodness-of-fit test with equal expected proportions across 5 categories and a total of 100 observations, the expected frequency per category is:<br>
+    A) 100<br>
+<strong>B) 20</strong><br>
+    C) 5<br>
+    D) 50</p>
+</li>
+<li>
+<p>If a calculated F-value is smaller than the critical F-value from the F-table, the correct decision is:<br>
+    A) Reject H₀; variances are significantly different<br>
+<strong>B) Fail to reject H₀; no significant difference in variances</strong><br>
+    C) Automatically reject H₁<br>
+    D) Recollect the data</p>
+</li>
+<li>
+<p>Which Python library function is commonly used to perform a one-sample t-test?<br>
+    A) <code>numpy.mean()</code><br>
+<strong>B) <code>scipy.stats.ttest_1samp()</code></strong><br>
+    C) <code>pandas.describe()</code><br>
+    D) <code>matplotlib.pyplot()</code></p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-75-data-visualization-for-hypothesis-testing">Topic 7.5: Data Visualization For Hypothesis Testing</h3>
+<ol>
+<li>
+<p>Why is data visualization important in hypothesis testing?<br>
+   A) It replaces the need for statistical tests<br>
+<strong>B) It helps present data clearly and identify patterns before applying tests</strong><br>
+   C) It only matters for non-technical audiences<br>
+   D) It eliminates the need for a hypothesis</p>
+</li>
+<li>
+<p>Which chart type is best for comparing categories or groups?<br>
+   A) Line graph<br>
+<strong>B) Bar chart</strong><br>
+   C) Scatter plot<br>
+   D) Histogram (for a single distribution)</p>
+</li>
+<li>
+<p>Which chart type is best suited for showing trends and changes over time?<br>
+   A) Pie chart<br>
+<strong>B) Line graph</strong><br>
+   C) Bar chart<br>
+   D) Box plot</p>
+</li>
+<li>
+<p>Which chart type is most useful for displaying relationships between two continuous variables?<br>
+   A) Bar chart<br>
+   B) Pie chart<br>
+<strong>C) Scatter plot</strong><br>
+   D) Table</p>
+</li>
+<li>
+<p>A box plot is especially useful for showing:<br>
+   A) Only the mean of a dataset<br>
+<strong>B) The median, spread, and outliers of a dataset</strong><br>
+   C) Only categorical frequencies<br>
+   D) The p-value directly</p>
+</li>
+<li>
+<p>What can data visualization help identify in a dataset?<br>
+   A) Only the final p-value<br>
+<strong>B) Outliers and anomalies</strong><br>
+   C) The exact significance level<br>
+   D) The degrees of freedom only</p>
+</li>
+<li>
+<p>If two groups' confidence intervals on a chart barely overlap, this visually suggests:<br>
+   A) There is definitely no difference<br>
+<strong>B) There may be a meaningful difference between the groups</strong><br>
+   C) The test must be invalid<br>
+   D) The sample size was too small to matter</p>
+</li>
+<li>
+<p>Which of the following is a valid reason to be cautious when interpreting a bar chart alone?<br>
+   A) Bar charts are never useful<br>
+<strong>B) A chart alone does not confirm statistical significance without the underlying test</strong><br>
+   C) Bar charts always guarantee correct conclusions<br>
+   D) Charts cannot display averages</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-76-ethical-issues-in-data-science-and-analysis">Topic 7.6: Ethical Issues in Data Science and Analysis</h3>
+<ol>
+<li>
+<p>What is bias in data collection?<br>
+   A) Perfectly balanced and representative data<br>
+<strong>B) An unfair or unrepresentative sample that skews results</strong><br>
+   C) A type of test statistic<br>
+   D) A visualization technique</p>
+</li>
+<li>
+<p>A survey about student performance conducted only in top-performing schools is an example of:<br>
+   A) Confirmation bias<br>
+<strong>B) Survey bias</strong><br>
+   C) Gender bias<br>
+   D) Geographical bias</p>
+</li>
+<li>
+<p>A health study that includes only young adults, ignoring older individuals, is an example of:<br>
+   A) Survey bias<br>
+<strong>B) Sampling bias</strong><br>
+   C) Confirmation bias<br>
+   D) Ethical data use</p>
+</li>
+<li>
+<p>A hiring dataset containing mostly male candidates, which causes a model to favor male applicants, is an example of:<br>
+   A) Geographical bias<br>
+<strong>B) Gender bias</strong><br>
+   C) Sampling bias<br>
+   D) Survey bias</p>
+</li>
+<li>
+<p>Using data only from urban areas to make decisions for rural populations is an example of:<br>
+   A) Gender bias<br>
+<strong>B) Geographical bias</strong><br>
+   C) Confirmation bias<br>
+   D) Survey bias</p>
+</li>
+<li>
+<p>A researcher who only focuses on data supporting their existing belief while ignoring contradictory data is exhibiting:<br>
+   A) Survey bias<br>
+<strong>B) Confirmation bias</strong><br>
+   C) Sampling bias<br>
+   D) Ethical data use</p>
+</li>
+<li>
+<p>What is "p-hacking"?<br>
+   A) A legitimate method of improving test accuracy<br>
+<strong>B) Manipulating data or running many tests until a "significant" result appears by chance</strong><br>
+   C) A method for visualizing p-values<br>
+   D) A way to increase sample size ethically</p>
+</li>
+<li>
+<p>If 100 hypothesis tests are run on completely random, meaningless data at α = 0.05, approximately how many tests are expected to show "significant" results purely by chance?<br>
+   A) 0<br>
+<strong>B) 5</strong><br>
+   C) 50<br>
+   D) 100</p>
+</li>
+<li>
+<p>Which of the following is an ethical practice in data science?<br>
+   A) Reporting only the significant results out of many tests performed<br>
+<strong>B) Reporting all tests conducted, including non-significant ones</strong><br>
+   C) Choosing α after seeing the results<br>
+   D) Using biased samples for convenience</p>
+</li>
+<li>
+<p>Ethical use of data requires:<br>
+    A) Ignoring user privacy for better results<br>
+<strong>B) Respecting privacy, obtaining proper consent, and avoiding discrimination</strong><br>
+    C) Using data for any purpose regardless of consent<br>
+    D) Hiding all limitations of a study</p>
+</li>
+<li>
+<p>Which historical event is used to illustrate the danger of ignoring rigorous statistical analysis and communication?<br>
+    A) The invention of the t-test<br>
+<strong>B) The Challenger Space Shuttle disaster</strong><br>
+    C) Google's 41 shades of blue test<br>
+    D) The Lady Tasting Tea experiment</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-77-communicating-results-and-conclusions">Topic 7.7: Communicating Results and Conclusions</h3>
+<ol>
+<li>
+<p>If a hypothesis test results in "fail to reject H₀," the correct interpretation is:<br>
+   A) H₀ has been proven true with 100% certainty<br>
+<strong>B) There is not enough evidence to reject H₀</strong><br>
+   C) H₁ has been proven true<br>
+   D) The test was invalid</p>
+</li>
+<li>
+<p>Which of the following is the correct way to phrase a hypothesis testing conclusion?<br>
+   A) "We proved H₁ is true."<br>
+<strong>B) "We reject H₀ at the 0.05 significance level."</strong><br>
+   C) "H₀ is 100% confirmed."<br>
+   D) "The test guarantees no error."</p>
+</li>
+<li>
+<p>When presenting technical findings to a non-technical audience, it is best to:<br>
+   A) Use as much statistical jargon as possible<br>
+<strong>B) Lead with a plain-English conclusion supported by clear visuals</strong><br>
+   C) Avoid mentioning any limitations of the study<br>
+   D) Skip the original research question entirely</p>
+</li>
+<li>
+<p>Why should a final conclusion always be connected back to the original research question?<br>
+   A) It is not necessary to do so<br>
+<strong>B) It ensures the conclusion directly answers what was originally being investigated</strong><br>
+   C) It replaces the need for a hypothesis<br>
+   D) It eliminates the need for data visualization</p>
+</li>
+<li>
+<p>Which of the following best describes "responsible communication of findings"?<br>
+   A) Exaggerating small effects as major breakthroughs<br>
+<strong>B) Presenting results honestly, including limitations, without exaggeration</strong><br>
+   C) Hiding the sample size used<br>
+   D) Avoiding mention of the significance level</p>
+</li>
+<li>
+<p>Misinterpreting test results can lead to:<br>
+   A) Always more accurate conclusions<br>
+<strong>B) Incorrect conclusions and poor decision-making</strong><br>
+   C) No consequences at all<br>
+   D) Better sample sizes automatically</p>
+</li>
+<li>
+<p>Which statement correctly reflects statistical humility in interpreting results?<br>
+   A) A hypothesis test provides absolute proof<br>
+<strong>B) A hypothesis test only provides evidence at a certain confidence level, not absolute proof</strong><br>
+   C) A p-value guarantees the hypothesis is correct<br>
+   D) Statistical tests never have any risk of error</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-71-introduction-to-hypothesis-testing_1">Topic 7.1: Introduction to Hypothesis Testing</h3>
+<ol>
+<li>Define a hypothesis in your own words.</li>
+<li>What is a research question, and how does it differ from a hypothesis?</li>
+<li>Explain briefly why hypothesis testing reduces guesswork in decision-making.</li>
+<li>State three properties of a well-formulated hypothesis.</li>
+<li>Explain briefly the role of hypothesis testing in modern software engineering.</li>
+<li>Identify whether the following statement is a valid hypothesis: "Our app is good." Justify your answer.</li>
+<li>Briefly explain how a vague research question can be transformed into a testable hypothesis, using an example.</li>
+</ol>
+<h3 id="topic-72-types-of-hypotheses_1">Topic 7.2: Types of Hypotheses</h3>
+<ol>
+<li>Define the null hypothesis (H₀).</li>
+<li>Define the alternative hypothesis (H₁ or Hₐ).</li>
+<li>Differentiate between a one-tailed test and a two-tailed test.</li>
+<li>Explain briefly why H₀ and H₁ must never overlap.</li>
+<li>Using the courtroom analogy, explain the relationship between H₀, H₁, and the concept of "reasonable doubt."</li>
+<li>Write a null hypothesis and an alternative hypothesis for testing whether a new database index reduces query time.</li>
+<li>Explain briefly why a hypothesis must be "falsifiable."</li>
+</ol>
+<h3 id="topic-73-concepts-in-hypothesis-testing_1">Topic 7.3: Concepts in Hypothesis Testing</h3>
+<ol>
+<li>Define a test statistic.</li>
+<li>Differentiate between a z-test and a t-test.</li>
+<li>Explain briefly what the critical region represents in hypothesis testing.</li>
+<li>Define the significance level (α) and state a commonly used value.</li>
+<li>Explain what a p-value tells us, in plain words.</li>
+<li>Differentiate between a Type I Error and a Type II Error.</li>
+<li>State the decision rule used to compare the p-value with the significance level.</li>
+<li>Define "degrees of freedom" and state the formula for a one-sample t-test.</li>
+<li>Explain briefly what a 95% confidence interval means.</li>
+<li>Identify the historical figure who developed the t-distribution and explain why he published under a pseudonym.</li>
+</ol>
+<h3 id="topic-74-performing-hypothesis-tests_1">Topic 7.4: Performing Hypothesis Tests</h3>
+<ol>
+<li>List the five standard steps involved in performing a hypothesis test.</li>
+<li>Differentiate between the F-test and the Chi-Square test in terms of their purpose.</li>
+<li>Explain briefly what "Observed frequency" and "Expected frequency" mean in a Chi-Square test.</li>
+<li>State the formula for the F-test statistic and explain each symbol.</li>
+<li>Predict the decision (reject or fail to reject H₀) if a calculated p-value is 0.01 and α = 0.05.</li>
+<li>Briefly describe how an A/B test could be used to evaluate a new server-caching system.</li>
+<li>Explain briefly why the F-test is useful for comparing algorithm execution times, not just their averages.</li>
+</ol>
+<h3 id="topic-75-data-visualization-for-hypothesis-testing_1">Topic 7.5: Data Visualization For Hypothesis Testing</h3>
+<ol>
+<li>Explain briefly why data visualization is important in hypothesis testing.</li>
+<li>Differentiate between a bar chart and a scatter plot in terms of their best use cases.</li>
+<li>Explain briefly what a box plot shows about a dataset.</li>
+<li>Identify which chart type would be most appropriate for showing changes in website traffic over a month.</li>
+<li>Explain briefly how visual overlap (or lack of overlap) between two groups' confidence intervals can hint at a hypothesis test's outcome.</li>
+<li>State one limitation of relying only on a chart to make a "reject H₀" decision.</li>
+</ol>
+<h3 id="topic-76-ethical-issues-in-data-science-and-analysis_1">Topic 7.6: Ethical Issues in Data Science and Analysis</h3>
+<ol>
+<li>Define bias in the context of data collection.</li>
+<li>Differentiate between sampling bias and confirmation bias, with an example of each.</li>
+<li>Define "p-hacking" and explain briefly why it is considered unethical.</li>
+<li>Explain briefly how running many statistical tests without correction can lead to misleading "significant" results.</li>
+<li>State two practices that help prevent p-hacking.</li>
+<li>Explain briefly why the Challenger Space Shuttle disaster is relevant to discussions of data ethics.</li>
+<li>Explain briefly what "ethical use of data and models" involves.</li>
+</ol>
+<h3 id="topic-77-communicating-results-and-conclusions_1">Topic 7.7: Communicating Results and Conclusions</h3>
+<ol>
+<li>Explain briefly why "failing to reject H₀" is different from "proving H₀ is true."</li>
+<li>State two guidelines for presenting technical statistical findings to a non-technical audience.</li>
+<li>Explain briefly why a conclusion should always connect back to the original research question.</li>
+<li>Identify one example of an incorrect phrase used to describe a hypothesis test result, and explain why it is incorrect.</li>
+<li>Explain briefly why responsible communication of findings matters for building trust in data-driven decisions.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-71-introduction-to-hypothesis-testing_2">Topic 7.1: Introduction to Hypothesis Testing</h3>
+<ol>
+<li>
+<p>Discuss in detail the concept of hypothesis testing and explain its overall role in data analysis and software engineering.<br>
+   a) Define what a hypothesis is and describe its key properties.<br>
+   b) Explain how research questions are transformed into testable hypotheses, using at least two original examples from computer science.<br>
+   c) Evaluate why hypothesis testing is considered essential for evidence-based decision-making in modern technology companies.</p>
+</li>
+<li>
+<p>Analyze the importance of hypothesis testing as a decision-making tool in modern data-driven organizations.<br>
+   a) Discuss what could go wrong if a company made decisions purely based on intuition rather than hypothesis testing.<br>
+   b) Construct one original research question related to any area of computer science, and elaborate on how it would be transformed into a formal null and alternative hypothesis.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-72-types-of-hypotheses_2">Topic 7.2: Types of Hypotheses</h3>
+<ol>
+<li>
+<p>Elaborate in detail on the null hypothesis and alternative hypothesis, including their purposes, differences, and rules for correct formulation.<br>
+   a) Define H₀ and H₁ and explain their relationship using the courtroom analogy.<br>
+   b) Discuss the rules that must be followed when formulating mathematically sound hypotheses.<br>
+   c) Construct a complete pair of H₀ and H₁ statements for a scenario of your choice involving a mobile app feature, and justify whether it should be a one-tailed or two-tailed test.</p>
+</li>
+<li>
+<p>Evaluate the importance of correctly formulating hypotheses before conducting any statistical test, and discuss the consequences of poorly formulated hypotheses.<br>
+   a) Discuss what can go wrong if H₀ and H₁ overlap or are not measurable.<br>
+   b) Analyze a real or hypothetical scenario where a poorly written hypothesis led to a flawed or misleading study conclusion.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-73-concepts-in-hypothesis-testing_2">Topic 7.3: Concepts in Hypothesis Testing</h3>
+<ol>
+<li>
+<p>Discuss in detail the key concepts involved in hypothesis testing, including test statistics, critical regions, significance levels, and p-values.<br>
+   a) Define and explain the purpose of test statistics (z, t, F, χ²), including when each is appropriate to use.<br>
+   b) Explain the relationship between the critical region, the significance level (α), and the decision to reject or fail to reject H₀.<br>
+   c) Construct a full worked example that calculates a t-value from a given sample mean, population mean, standard deviation, and sample size, and interpret the result.</p>
+</li>
+<li>
+<p>Analyze and evaluate the concepts of Type I and Type II errors in hypothesis testing.<br>
+   a) Define both types of errors and explain the trade-off between them.<br>
+   b) Discuss a real-world computer science scenario (e.g., cybersecurity anomaly detection or software bug detection) where a Type I error would be costly, and another where a Type II error would be costly.<br>
+   c) Evaluate how the choice of significance level (α) affects the likelihood of each type of error.</p>
+</li>
+<li>
+<p>Construct a comprehensive explanation of the p-value, including a full step-by-step calculation and interpretation example.<br>
+   a) Define what a p-value is and explain, using the coin-flip analogy, why a small p-value provides evidence against H₀.<br>
+   b) Discuss why the significance level must be chosen before, not after, analyzing data.<br>
+   c) Elaborate on the relationship between degrees of freedom, sample size, and the reliability of a hypothesis test's conclusion.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-74-performing-hypothesis-tests_2">Topic 7.4: Performing Hypothesis Tests</h3>
+<ol>
+<li>
+<p>Design and trace a complete, step-by-step hypothesis test for a real-world computer science scenario of your choice (e.g., comparing load times of two web servers).<br>
+   a) State the null and alternative hypotheses.<br>
+   b) Choose an appropriate significance level and justify your choice.<br>
+   c) Construct a hypothetical dataset, calculate the relevant test statistic, and determine the p-value.<br>
+   d) State your final decision and explain what it means for the system being tested.</p>
+</li>
+<li>
+<p>Analyze and compare the F-test and the Chi-Square test in terms of their purposes, formulas, and appropriate use cases.<br>
+   a) Explain the mathematical formula for each test and define every variable involved.<br>
+   b) Construct a full worked example of an F-test comparing the variances of two algorithm execution times, including the final decision.<br>
+   c) Construct a full worked example of a Chi-Square goodness-of-fit test using an observed vs. expected frequency table for a scenario involving categorical data (e.g., user preferences across 4 options).</p>
+</li>
+<li>
+<p>Evaluate the complete 5-step hypothesis testing process and discuss why each step is essential to reaching a valid conclusion.<br>
+   a) Discuss what could go wrong if any one of the five steps were skipped or performed incorrectly.<br>
+   b) Justify why data must be collected only after the hypotheses and significance level have been defined.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-75-data-visualization-for-hypothesis-testing_2">Topic 7.5: Data Visualization For Hypothesis Testing</h3>
+<ol>
+<li>
+<p>Discuss in detail the role of data visualization in supporting and communicating hypothesis testing results.<br>
+   a) Explain the purpose and best use case of at least four different chart types (bar chart, line graph, scatter plot, box plot).<br>
+   b) Construct an example scenario where a chart could visually suggest a certain conclusion, and discuss why the actual statistical test result must still be used to confirm that conclusion.<br>
+   c) Evaluate the risks of relying solely on visualizations without performing the underlying statistical test.</p>
+</li>
+<li>
+<p>Analyze how data visualization can both help and mislead an audience when presenting hypothesis testing results.<br>
+   a) Discuss techniques that can make visualizations clearer and more honest.<br>
+   b) Discuss techniques that could be used (unethically) to make a chart misleading, and explain how a responsible data scientist should avoid them.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-76-ethical-issues-in-data-science-and-analysis_2">Topic 7.6: Ethical Issues in Data Science and Analysis</h3>
+<ol>
+<li>
+<p>Discuss in detail the major ethical issues in data science, including bias, ethical use of data, and responsible communication of findings.<br>
+   a) Define and provide an original example for each of the five types of bias discussed in this chapter (survey, sampling, gender, geographical, confirmation).<br>
+   b) Explain what p-hacking is, why it is unethical, and describe at least two practices that help prevent it.<br>
+   c) Evaluate the relationship between the Challenger Space Shuttle disaster and the broader importance of ethical, rigorous data communication in engineering.</p>
+</li>
+<li>
+<p>Evaluate a real-world or hypothetical case study involving biased data or unethical statistical practices, and propose solutions.<br>
+   a) Construct a hypothetical scenario in which a company's dataset is biased in a way that could lead to unfair or harmful outcomes.<br>
+   b) Analyze the consequences of this bias on the affected group(s) and on the company itself.<br>
+   c) Propose a set of concrete steps the company could take to identify and correct this bias, and to communicate its findings responsibly going forward.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-77-communicating-results-and-conclusions_2">Topic 7.7: Communicating Results and Conclusions</h3>
+<ol>
+<li>
+<p>Discuss in detail the principles of correctly interpreting and communicating hypothesis testing results.<br>
+   a) Explain the difference between "failing to reject H₀" and "proving H₀ is true," and discuss why this distinction matters.<br>
+   b) Discuss strategies for presenting technical statistical findings clearly to a non-technical audience (e.g., company stakeholders).<br>
+   c) Justify why every conclusion must be explicitly connected back to the original research question and hypotheses.</p>
+</li>
+<li>
+<p>Design a complete, end-to-end case study that walks through a research question, hypothesis formulation, testing process, and final communicated conclusion for a computer science scenario of your choice.<br>
+   a) State the original research question and business context.<br>
+   b) Construct the null and alternative hypotheses, and describe the data collection and testing process.<br>
+   c) Present a plain-English final conclusion suitable for a non-technical audience, including a discussion of any limitations of the study.</p>
+</li>
+</ol>
+<hr>
+<p><em>End of Question Bank — Chapter 7: Hypothesis Testing</em></p>
+
+</body>
+</html>

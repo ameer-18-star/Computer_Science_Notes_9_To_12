@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Chapter 3 — Object-Oriented Programming (OOP) Using Python</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Chapter 3 — Object-Oriented Programming (OOP) Using Python</div>
+</div>
+
+<h1 id="comprehensive-question-bank-chapter-3-object-oriented-programming-oop-using-python">Comprehensive Question Bank: Chapter 3 — Object-Oriented Programming (OOP) Using Python</h1>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-30-introduction-procedural-vs-oop-shift">Topic 3.0: Introduction — Procedural vs. OOP Shift</h3>
+<ol>
+<li>
+<p>What is the main limitation of procedural programming that Object-Oriented Programming solves?<br>
+   A) It cannot use loops<br>
+   B) It cannot print output<br>
+<strong>C) It becomes unmanageable and disorganized as programs grow large</strong><br>
+   D) It cannot use variables</p>
+</li>
+<li>
+<p>In which year and language did the concepts of "class" and "object" first appear?<br>
+   A) 1990, Java<br>
+<strong>B) 1967, Simula 67</strong><br>
+   C) 1985, C++<br>
+   D) 2000, Python</p>
+</li>
+<li>
+<p>Who invented the foundational concepts of OOP (classes and objects) while simulating ships colliding in a harbor?<br>
+   A) Alan Kay and Guido van Rossum<br>
+<strong>B) Ole-Johan Dahl and Kristen Nygaard</strong><br>
+   C) James Gosling and Bjarne Stroustrup<br>
+   D) Dennis Ritchie and Ken Thompson</p>
+</li>
+<li>
+<p>Alan Kay used the ideas from Simula to build which language, which gave the world the first graphical user interface?<br>
+   A) Python<br>
+   B) Java<br>
+<strong>C) Smalltalk</strong><br>
+   D) BASIC</p>
+</li>
+<li>
+<p>In OOP, a program is best described as:<br>
+   A) A single long sequence of instructions<br>
+<strong>B) A collection of objects that represent real-world entities</strong><br>
+   C) A list of only functions with no data<br>
+   D) A set of global variables</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-31-oop-using-python-procedural-vs-oop-benefits">Topic 3.1: OOP Using Python (Procedural vs. OOP, Benefits)</h3>
+<ol>
+<li>
+<p>Which of the following is NOT a benefit of Object-Oriented Programming mentioned in the chapter?<br>
+   A) Modularity<br>
+   B) Reusability<br>
+<strong>C) Faster internet speed</strong><br>
+   D) Easier Maintenance</p>
+</li>
+<li>
+<p>"Modularity" in OOP refers to:<br>
+   A) Combining all code into a single function<br>
+<strong>B) Dividing a program into smaller, manageable, independent parts</strong><br>
+   C) Removing comments from code<br>
+   D) Using only global variables</p>
+</li>
+<li>
+<p>"Reusability" in OOP means:<br>
+   A) Deleting old code before writing new code<br>
+<strong>B) Using already written code again in different parts of a program or in other programs</strong><br>
+   C) Writing a new class for every single object<br>
+   D) Avoiding the use of functions</p>
+</li>
+<li>
+<p>Why is OOP code generally easier to maintain than procedural code?<br>
+   A) Because OOP code has no bugs<br>
+<strong>B) Because changes made inside a class do not affect the rest of the unrelated system</strong><br>
+   C) Because OOP code is always shorter<br>
+   D) Because OOP does not use variables</p>
+</li>
+<li>
+<p>In procedural programming, tracking data for 500 students without OOP would most likely result in:<br>
+   A) Automatically generated classes<br>
+<strong>B) Hundreds of separate, unmanageable variables</strong><br>
+   C) Faster program execution<br>
+   D) Fewer lines of code than OOP</p>
+</li>
+<li>
+<p>Which statement best differentiates procedural programming from OOP?<br>
+<strong>A) Procedural programming organizes code as functions and variables; OOP organizes code as objects bundling data and behavior</strong><br>
+   B) Procedural programming uses classes; OOP does not<br>
+   C) OOP cannot use functions<br>
+   D) Procedural programming is newer than OOP</p>
+</li>
+<li>
+<p>A key advantage of OOP for collaborative software teams is:<br>
+   A) It requires only one programmer<br>
+<strong>B) It makes code more understandable and organized, improving collaboration</strong><br>
+   C) It eliminates the need for testing<br>
+   D) It removes the need for comments</p>
+</li>
+<li>
+<p>If a bug is found in how a <code>Student</code> class displays data, how many places must be fixed in a well-designed OOP program?<br>
+   A) Every place the class was ever used<br>
+<strong>B) Just one place — inside the class itself</strong><br>
+   C) It cannot be fixed<br>
+   D) The entire program must be rewritten</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-321-classes-and-objects">Topic 3.2.1: Classes and Objects</h3>
+<ol>
+<li>
+<p>What is a class in Python best described as?<br>
+   A) A real-world entity with actual data<br>
+<strong>B) A blueprint or template that defines attributes and methods</strong><br>
+   C) A function that returns a value<br>
+   D) A private variable</p>
+</li>
+<li>
+<p>What is an object in OOP?<br>
+   A) The same thing as a class<br>
+<strong>B) An instance of a class holding actual values for its attributes</strong><br>
+   C) A method used to hide data<br>
+   D) A syntax error</p>
+</li>
+<li>
+<p>Which keyword is used to define a class in Python?<br>
+   A) <code>def</code><br>
+<strong>B) <code>class</code></strong><br>
+   C) <code>object</code><br>
+   D) <code>function</code></p>
+</li>
+<li>
+<p>What is the purpose of the <code>__init__</code> method in a Python class?<br>
+   A) To delete an object<br>
+<strong>B) To automatically initialize an object's attributes when it is created</strong><br>
+   C) To print the object's data<br>
+   D) To define a private variable only</p>
+</li>
+<li>
+<p>What does the <code>self</code> parameter refer to inside a class method?<br>
+   A) The class definition itself<br>
+<strong>B) The specific object instance currently being operated on</strong><br>
+   C) A global variable<br>
+   D) The parent class</p>
+</li>
+<li>
+<p>Why did Guido van Rossum design <code>self</code> to be explicit in Python, unlike Java or C++?<br>
+   A) To make Python code run faster<br>
+<strong>B) To make it crystal clear which object's data a method is reading or modifying</strong><br>
+   C) To reduce the number of lines of code<br>
+   D) To eliminate the need for classes</p>
+</li>
+<li>
+<p>The process of creating an object from a class is called:<br>
+   A) Encapsulation<br>
+   B) Inheritance<br>
+<strong>C) Instantiation</strong><br>
+   D) Polymorphism</p>
+</li>
+<li>
+<p>Given <code>student1 = Student("Ali", 85)</code> and <code>student2 = Student("Ahmed", 91)</code>, what is true about their memory storage?<br>
+   A) They share the same memory address<br>
+<strong>B) They are stored in two completely separate memory locations</strong><br>
+   C) <code>student2</code> overwrites <code>student1</code><br>
+   D) Neither object is stored in memory</p>
+</li>
+<li>
+<p>If <code>student1 = Student("Amina", 88)</code> and <code>student2 = Student("Amina", 88)</code> hold identical data, what does <code>student1 == student2</code> evaluate to by default in Python?<br>
+   A) True, because the data matches<br>
+<strong>B) False, because they occupy different memory addresses</strong><br>
+   C) It causes an error<br>
+   D) True, only if <code>__init__</code> is empty</p>
+</li>
+<li>
+<p>An attribute in a class is best defined as:<br>
+    A) A function that performs an action<br>
+<strong>B) A piece of data stored inside an object</strong><br>
+    C) A private method<br>
+    D) A class name</p>
+</li>
+<li>
+<p>A method in a class is best defined as:<br>
+    A) A stored data value<br>
+<strong>B) A function defined inside a class that describes an action the object can perform</strong><br>
+    C) A type of private attribute<br>
+    D) A blueprint</p>
+</li>
+<li>
+<p>In the diagram "Class: Person" with attributes <code>name</code>, <code>age</code>, <code>gender</code> and methods <code>eat()</code>, <code>sleep()</code>, <code>work()</code>, what do <code>Object P1</code> and <code>Object P2</code> represent?<br>
+    A) Two separate classes<br>
+<strong>B) Two individual instances created from the Person class, each with unique attribute values</strong><br>
+    C) Two methods of the Person class<br>
+    D) Errors in the class design</p>
+</li>
+<li>
+<p>What happens in RAM the moment <code>student1 = Student("Ali", 85)</code> is executed?<br>
+    A) Nothing happens until <code>.display()</code> is called<br>
+<strong>B) A new memory location is allocated and <code>self</code> inside <code>__init__</code> points to it, storing "Ali" and 85</strong><br>
+    C) The class definition is deleted<br>
+    D) Python creates a copy of the entire program</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-322-encapsulation">Topic 3.2.2: Encapsulation</h3>
+<ol>
+<li>
+<p>Encapsulation in OOP is best defined as:<br>
+   A) Reusing methods from another class<br>
+<strong>B) Bundling data and methods into a single unit and restricting direct access to the data</strong><br>
+   C) Creating multiple objects from one class<br>
+   D) Overriding a parent class method</p>
+</li>
+<li>
+<p>What caused the Mars Climate Orbiter to crash in 1999?<br>
+   A) A power failure in the spacecraft<br>
+<strong>B) Software components exchanged unvalidated data (metric vs. imperial units) without proper data-hiding checks</strong><br>
+   C) A collision with an asteroid<br>
+   D) A missing <code>__init__</code> method</p>
+</li>
+<li>
+<p>In the ATM analogy for encapsulation, what represents the "private data"?<br>
+   A) The card slot and buttons<br>
+<strong>B) The cash balance stored inside the vault</strong><br>
+   C) The receipt printer<br>
+   D) The PIN pad</p>
+</li>
+<li>
+<p>In Python, a "public" class member is accessed using which syntax?<br>
+   A) <code>self.__name</code><br>
+   B) <code>self._name</code><br>
+<strong>C) <code>self.name</code></strong><br>
+   D) <code>self.-name</code></p>
+</li>
+<li>
+<p>A "protected" class member in Python is indicated by:<br>
+   A) No underscore<br>
+<strong>B) A single underscore prefix, e.g. <code>self._name</code></strong><br>
+   C) A double underscore prefix<br>
+   D) A trailing underscore</p>
+</li>
+<li>
+<p>A "private" class member in Python is indicated by:<br>
+   A) A single underscore prefix<br>
+<strong>B) A double underscore prefix, e.g. <code>self.__name</code></strong><br>
+   C) No prefix at all<br>
+   D) A capital letter</p>
+</li>
+<li>
+<p>What mechanism does Python use to make private attributes hard to access from outside a class?<br>
+   A) Encryption<br>
+<strong>B) Name Mangling</strong><br>
+   C) Deletion<br>
+   D) Compilation errors</p>
+</li>
+<li>
+<p>What is the primary purpose of a "getter" method?<br>
+   A) To delete a private attribute<br>
+<strong>B) To provide controlled, read-only access to a private attribute</strong><br>
+   C) To make an attribute public permanently<br>
+   D) To create a new object</p>
+</li>
+<li>
+<p>What is the primary purpose of a "setter" method?<br>
+   A) To read data without any checks<br>
+<strong>B) To provide a controlled way to modify a private attribute, often with validation</strong><br>
+   C) To delete the class<br>
+   D) To rename the class</p>
+</li>
+<li>
+<p>In the <code>BankAccount</code> example, why does <code>withdraw()</code> check <code>if amount &gt; self.__balance</code>?<br>
+    A) To make the code run faster<br>
+<strong>B) To prevent withdrawing more money than is available, protecting the account's state</strong><br>
+    C) To delete the account<br>
+    D) To make the balance public</p>
+</li>
+<li>
+<p>Given <code>self.__balance</code> inside class <code>BankAccount</code>, attempting <code>print(account.__balance)</code> from outside the class will:<br>
+    A) Print the balance correctly<br>
+<strong>B) Raise an AttributeError due to name mangling</strong><br>
+    C) Automatically fix itself<br>
+    D) Convert the balance to a string</p>
+</li>
+<li>
+<p>Why does Python not have "strict" private keywords like Java or C++?<br>
+    A) Python does not support OOP<br>
+<strong>B) Python relies on naming conventions instead of enforced access restrictions</strong><br>
+    C) Python automatically encrypts all variables<br>
+    D) Python does not allow classes</p>
+</li>
+<li>
+<p>What is the key real-world lesson encapsulation teaches about system design?<br>
+    A) All data should always be public for speed<br>
+<strong>B) Raw internal data should never be directly exposed; it should be accessed only through validated interfaces</strong><br>
+    C) Classes should never have methods<br>
+    D) Objects should never store data</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-323-inheritance">Topic 3.2.3: Inheritance</h3>
+<ol>
+<li>
+<p>Inheritance in OOP allows:<br>
+   A) A class to delete another class<br>
+<strong>B) A class (child) to reuse and extend properties and methods from another class (parent)</strong><br>
+   C) Two unrelated classes to merge into a function<br>
+   D) A method to run without an object</p>
+</li>
+<li>
+<p>In inheritance terminology, the class being inherited FROM is called the:<br>
+   A) Child class<br>
+<strong>B) Parent class (or base/superclass)</strong><br>
+   C) Derived class<br>
+   D) Instance class</p>
+</li>
+<li>
+<p>In inheritance terminology, the class that inherits properties is called the:<br>
+   A) Base class<br>
+<strong>B) Child class (or derived class/subclass)</strong><br>
+   C) Superclass<br>
+   D) Static class</p>
+</li>
+<li>
+<p>What is the correct Python syntax to make <code>Dog</code> inherit from <code>Animal</code>?<br>
+   A) <code>class Dog inherits Animal:</code><br>
+<strong>B) <code>class Dog(Animal):</code></strong><br>
+   C) <code>class Animal(Dog):</code><br>
+   D) <code>class Dog -&gt; Animal:</code></p>
+</li>
+<li>
+<p>What does the <code>super()</code> function do in a child class?<br>
+   A) Deletes the parent class<br>
+<strong>B) Calls the parent class's version of a method, such as <code>__init__</code></strong><br>
+   C) Creates a new unrelated class<br>
+   D) Converts the child into a private class</p>
+</li>
+<li>
+<p>Single inheritance refers to:<br>
+   A) A class inheriting from more than one parent<br>
+<strong>B) A child class inheriting from exactly one parent class</strong><br>
+   C) A class with only one method<br>
+   D) A class that cannot be instantiated</p>
+</li>
+<li>
+<p>Multiple inheritance refers to:<br>
+   A) A class inheriting from only one parent<br>
+<strong>B) A single class inheriting features from more than one parent class</strong><br>
+   C) Creating multiple objects from one class<br>
+   D) A class with multiple <code>__init__</code> methods</p>
+</li>
+<li>
+<p>In the example <code>class Child(Father, Mother):</code>, what can the <code>Child</code> object access?<br>
+   A) Only its own methods<br>
+<strong>B) Methods from both <code>Father</code> and <code>Mother</code>, plus its own methods</strong><br>
+   C) Only <code>Father</code>'s methods<br>
+   D) Nothing, because this is invalid syntax</p>
+</li>
+<li>
+<p>Multilevel inheritance describes a structure where:<br>
+   A) A class inherits from two unrelated classes at the same level<br>
+<strong>B) A class inherits from another class, which itself inherits from a third class (a chain)</strong><br>
+   C) All classes are independent<br>
+   D) A class inherits from itself</p>
+</li>
+<li>
+<p>In the example <code>Vehicle → Car → ElectricCar</code>, which methods can an <code>ElectricCar</code> object access?<br>
+    A) Only methods defined directly in <code>ElectricCar</code><br>
+    B) Only methods from <code>Car</code><br>
+<strong>C) Methods from <code>Vehicle</code>, <code>Car</code>, and <code>ElectricCar</code> itself</strong><br>
+    D) Only methods from <code>Vehicle</code></p>
+</li>
+<li>
+<p>What is "method overriding"?<br>
+    A) Deleting a parent class method entirely<br>
+<strong>B) A child class providing its own specific implementation of a method already defined in its parent</strong><br>
+    C) Creating a method with no name<br>
+    D) Calling a method twice</p>
+</li>
+<li>
+<p>If a new method is added directly to a <code>Vehicle</code> (grandparent) class, what happens to <code>ElectricCar</code> (grandchild) objects, without any changes to <code>Car</code> or <code>ElectricCar</code>?<br>
+    A) Nothing changes; the new method is inaccessible<br>
+<strong>B) The new method automatically becomes available to <code>ElectricCar</code> objects through the inheritance chain</strong><br>
+    C) The program crashes<br>
+    D) <code>ElectricCar</code> must be manually rewritten</p>
+</li>
+<li>
+<p>Which of the following is a real-world analogy for multiple inheritance given in the chapter?<br>
+    A) A Vehicle extended into a SportsCar<br>
+<strong>B) A Smartphone class inheriting from both a Camera class and a Computer class</strong><br>
+    C) An Animal class extended into a Dog class<br>
+    D) A Person class with a name attribute</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-324-polymorphism">Topic 3.2.4: Polymorphism</h3>
+<ol>
+<li>
+<p>The term "Polymorphism" literally means:<br>
+   A) "One form"<br>
+<strong>B) "Many forms"</strong><br>
+   C) "No form"<br>
+   D) "Hidden form"</p>
+</li>
+<li>
+<p>Polymorphism allows:<br>
+   A) A class to have no methods<br>
+<strong>B) The same method, function, or operator to behave differently depending on the object it works with</strong><br>
+   C) Two classes to have the exact same name<br>
+   D) A private variable to become public</p>
+</li>
+<li>
+<p>In the remote control analogy, what does the "Play" button represent?<br>
+   A) A private attribute<br>
+<strong>B) A single method (<code>play()</code>) that behaves differently depending on the app/object calling it</strong><br>
+   C) A constructor<br>
+   D) A getter method</p>
+</li>
+<li>
+<p>Compile-time polymorphism is typically achieved in Java or C++ through:<br>
+   A) Inheritance chains only<br>
+<strong>B) Method or operator overloading based on differing function signatures</strong><br>
+   C) Private attributes<br>
+   D) The <code>super()</code> function</p>
+</li>
+<li>
+<p>Why does Python NOT support true method overloading based on function signatures like Java or C++?<br>
+   A) Python does not support functions<br>
+<strong>B) Python is dynamically typed, so a single function can already accept arguments of different types</strong><br>
+   C) Python does not allow classes<br>
+   D) Python has no concept of methods</p>
+</li>
+<li>
+<p>In Python, similar behavior to method overloading can be mimicked using:<br>
+   A) Only private variables<br>
+<strong>B) Default arguments and variable-length arguments (<code>*args</code>)</strong><br>
+   C) The <code>class</code> keyword alone<br>
+   D) Deleting the function entirely</p>
+</li>
+<li>
+<p>Runtime polymorphism in Python is achieved primarily through:<br>
+   A) Multiple inheritance only<br>
+<strong>B) Method Overriding</strong><br>
+   C) Private attributes<br>
+   D) The <code>__init__</code> constructor</p>
+</li>
+<li>
+<p>Given <code>animals = [Dog(), Cat(), Animal()]</code> and a loop calling <code>animal.sound()</code>, when is the decision made about which <code>sound()</code> method actually runs?<br>
+   A) Before the program runs (compile-time)<br>
+<strong>B) While the program is running (runtime), based on the object's actual class</strong><br>
+   C) It is decided randomly<br>
+   D) It never changes regardless of the object</p>
+</li>
+<li>
+<p>What is "Duck Typing" in Python?<br>
+   A) A method used only for animal-themed classes<br>
+<strong>B) The philosophy that if an object has the required method, Python treats it as usable, regardless of its class</strong><br>
+   C) A rule that forbids inheritance<br>
+   D) A type of private attribute</p>
+</li>
+<li>
+<p>What are Python's special "dunder" (double underscore) methods used for?<br>
+    A) Making variables private only<br>
+<strong>B) Letting custom classes work naturally with Python's built-in functions and operators, e.g. <code>print()</code>, <code>len()</code>, <code>+</code></strong><br>
+    C) Deleting objects automatically<br>
+    D) Preventing inheritance</p>
+</li>
+<li>
+<p>Which magic method controls what is displayed when you <code>print()</code> an object?<br>
+    A) <code>__len__</code><br>
+<strong>B) <code>__str__</code></strong><br>
+    C) <code>__add__</code><br>
+    D) <code>__init__</code></p>
+</li>
+<li>
+<p>Which magic method controls the behavior of the <code>+</code> operator between two custom objects?<br>
+    A) <code>__str__</code><br>
+    B) <code>__len__</code><br>
+<strong>C) <code>__add__</code></strong><br>
+    D) <code>__eq__</code></p>
+</li>
+<li>
+<p>Without defining <code>__str__</code> in a class, what happens when you <code>print()</code> an object of that class?<br>
+    A) It prints all the attribute names automatically<br>
+<strong>B) It prints an unreadable default representation like <code>&lt;__main__.Book object at 0x...&gt;</code></strong><br>
+    C) It raises a syntax error<br>
+    D) It prints "None"</p>
+</li>
+<li>
+<p>Why is method overriding considered better long-term than writing separate functions like <code>dog_sound()</code>, <code>cat_sound()</code>, <code>bird_sound()</code>?<br>
+    A) It uses less memory<br>
+<strong>B) It allows new object types to be added with minimal new code, keeping the interface consistent</strong><br>
+    C) It removes the need for classes<br>
+    D) It prevents the use of loops</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-30-introduction-procedural-vs-oop-shift_1">Topic 3.0: Introduction — Procedural vs. OOP Shift</h3>
+<ol>
+<li>What historical problem led Ole-Johan Dahl and Kristen Nygaard to invent classes and objects?</li>
+<li>Define Object-Oriented Programming in your own words.</li>
+<li>Explain how Simula 67 influenced the later development of graphical user interfaces.</li>
+<li>Why does procedural code become difficult to manage as a program grows larger?</li>
+</ol>
+<h3 id="topic-31-oop-using-python-procedural-vs-oop-benefits_1">Topic 3.1: OOP Using Python (Procedural vs. OOP, Benefits)</h3>
+<ol>
+<li>Differentiate between procedural programming and object-oriented programming.</li>
+<li>Define modularity as it applies to OOP.</li>
+<li>Define reusability as it applies to OOP.</li>
+<li>Explain briefly why OOP programs are easier to maintain than procedural programs.</li>
+<li>State two benefits of Object-Oriented Programming.</li>
+<li>Using the LEGO vs. stone-statue analogy, explain why OOP supports easier maintenance.</li>
+<li>Identify why tracking 500 students procedurally would be problematic.</li>
+</ol>
+<h3 id="topic-321-classes-and-objects_1">Topic 3.2.1: Classes and Objects</h3>
+<ol>
+<li>Define the term "class" in Python.</li>
+<li>Define the term "object" in Python.</li>
+<li>Differentiate between a class and an object.</li>
+<li>Explain the purpose of the <code>__init__</code> method.</li>
+<li>Explain what <code>self</code> refers to inside a class method.</li>
+<li>State the term used to describe the process of creating an object from a class.</li>
+<li>Predict the output: if <code>student1</code> and <code>student2</code> are created with identical data using the same class, does <code>student1 == student2</code> return <code>True</code> or <code>False</code>? Explain briefly.</li>
+<li>Map out, in words, what happens in memory when an object is instantiated.</li>
+<li>Differentiate between an attribute and a method.</li>
+<li>Explain why Guido van Rossum made <code>self</code> explicit in Python's syntax.</li>
+</ol>
+<h3 id="topic-322-encapsulation_1">Topic 3.2.2: Encapsulation</h3>
+<ol>
+<li>Define encapsulation in OOP.</li>
+<li>Differentiate between public, protected, and private access levels in Python.</li>
+<li>Explain what Name Mangling does to a private attribute.</li>
+<li>State the purpose of a getter method.</li>
+<li>State the purpose of a setter method.</li>
+<li>Explain briefly how the Mars Climate Orbiter case relates to encapsulation failure.</li>
+<li>Using the ATM analogy, identify what represents the "public interface" and what represents the "private data."</li>
+<li>Explain why Python relies on naming conventions rather than strict access keywords.</li>
+<li>Predict the output/result of directly accessing a double-underscore attribute from outside its class.</li>
+</ol>
+<h3 id="topic-323-inheritance_1">Topic 3.2.3: Inheritance</h3>
+<ol>
+<li>Define inheritance in OOP.</li>
+<li>Differentiate between a parent class and a child class.</li>
+<li>Explain the purpose of the <code>super()</code> function.</li>
+<li>Differentiate between single inheritance and multiple inheritance.</li>
+<li>Explain what multilevel inheritance means, using an example structure.</li>
+<li>Define method overriding.</li>
+<li>State the correct Python syntax for a class <code>Bike</code> inheriting from a class <code>Vehicle</code>.</li>
+<li>Explain briefly how a Smartphone class could use multiple inheritance.</li>
+<li>Identify what happens to child classes when a new method is added to a grandparent class in a multilevel inheritance chain.</li>
+</ol>
+<h3 id="topic-324-polymorphism_1">Topic 3.2.4: Polymorphism</h3>
+<ol>
+<li>Define polymorphism in OOP.</li>
+<li>Differentiate between compile-time polymorphism and runtime polymorphism.</li>
+<li>Explain why Python does not support true method overloading based on function signatures.</li>
+<li>State two ways Python mimics method overloading behavior.</li>
+<li>Define duck typing in your own words.</li>
+<li>Explain the purpose of the <code>__str__</code> magic method.</li>
+<li>Explain the purpose of the <code>__len__</code> magic method.</li>
+<li>Explain the purpose of the <code>__add__</code> magic method.</li>
+<li>Predict the output of calling <code>.sound()</code> in a loop over a list of <code>Dog</code>, <code>Cat</code>, and <code>Animal</code> objects, where each class overrides <code>sound()</code>.</li>
+<li>Using the remote control analogy, explain how the same <code>play()</code> method can behave differently.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-30-31-foundations-of-oop">Topic 3.0 &amp; 3.1: Foundations of OOP</h3>
+<ol>
+<li>
+<p>Discuss in detail the historical origins of Object-Oriented Programming, including the invention of Simula 67, and evaluate its lasting impact on modern software and graphical user interfaces.<br>
+   a) Describe the specific real-world simulation problem that led to the invention of classes and objects.<br>
+   b) Explain how Alan Kay extended these ideas into Smalltalk.<br>
+   c) Evaluate why this historical shift was necessary for building large-scale modern software.</p>
+</li>
+<li>
+<p>Analyze and construct a detailed comparison between Procedural Programming and Object-Oriented Programming.<br>
+   a) Construct a comparison table covering organizing unit, data access, scalability, real-world mapping, and reuse.<br>
+   b) Using a school records system as a case study, design a short example illustrating how the same problem would be solved procedurally versus using OOP.<br>
+   c) Justify, with reasoning, why large-scale professional software (such as banking systems or games) is almost always built using OOP rather than purely procedural code.</p>
+</li>
+<li>
+<p>Elaborate on the three core benefits of OOP — Modularity, Reusability, and Easier Maintenance — and evaluate how each benefit directly addresses a specific weakness of procedural programming.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-321-classes-and-objects_2">Topic 3.2.1: Classes and Objects</h3>
+<ol>
+<li>
+<p>Explain in detail the concept of classes and objects in Object-Oriented Programming, including a full architecture breakdown of how objects are represented in memory.<br>
+   a) Define class, object, attribute, method, and instantiation with examples.<br>
+   b) Construct a complete Python <code>Student</code> class with an <code>__init__</code> constructor and a <code>display()</code> method, and trace step-by-step what happens in RAM when two separate <code>Student</code> objects are created.<br>
+   c) Analyze why <code>self</code> is essential for Python to distinguish between multiple objects created from the same class.</p>
+</li>
+<li>
+<p>Design a full Python class named <code>Book</code> with at least three attributes and two methods, then construct a memory diagram showing how two different <code>Book</code> objects would be stored independently in RAM after instantiation. Justify why changing one object's attribute does not affect the other object.</p>
+</li>
+<li>
+<p>Evaluate the statement: "Two objects created from the same class with identical attribute values are always equal in Python." Construct a code example to prove or disprove this statement, and explain the underlying memory-based reasoning.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-322-encapsulation_2">Topic 3.2.2: Encapsulation</h3>
+<ol>
+<li>
+<p>Discuss in detail the concept of encapsulation in Object-Oriented Programming and analyze its real-world importance using the Mars Climate Orbiter case study.<br>
+   a) Define encapsulation and explain the difference between public, protected, and private access levels in Python.<br>
+   b) Describe, in detail, the sequence of events that led to the 1999 Mars Climate Orbiter failure, and analyze how proper encapsulation (validated getters/setters) could have prevented it.<br>
+   c) Evaluate the broader lesson this case teaches about designing safe, reliable software systems.</p>
+</li>
+<li>
+<p>Design a complete <code>BankAccount</code> class in Python that uses a private balance attribute, and construct a full trace table showing the account's balance after a sequence of deposit and withdrawal operations, including at least one invalid operation that should be rejected.</p>
+</li>
+<li>
+<p>Analyze how encapsulation contributes to data security. Discuss, with examples, how a poorly designed class with fully public attributes could be exploited, and justify how redesigning the class with private attributes and validated setter methods eliminates this vulnerability.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-323-inheritance_2">Topic 3.2.3: Inheritance</h3>
+<ol>
+<li>
+<p>Discuss in detail how inheritance works in Python, covering single, multiple, and multilevel inheritance.<br>
+   a) Define parent class and child class, and explain the role of the <code>super()</code> function.<br>
+   b) Construct complete Python code examples demonstrating single inheritance, multiple inheritance, and multilevel inheritance, each with at least two classes.<br>
+   c) Analyze, using a trace table, what happens in memory when <code>super().__init__()</code> is called inside a child class's constructor.</p>
+</li>
+<li>
+<p>Design a <code>Vehicle</code> base class and extend it into <code>Car</code> and <code>ElectricBus</code> subclasses, each with at least one unique method. Evaluate how this design demonstrates the benefits of modularity and reusability discussed earlier in the chapter.</p>
+</li>
+<li>
+<p>Evaluate the advantages of using inheritance in Python software design. Discuss how inheritance reduces code duplication, and construct an example showing how adding a new feature to a parent class automatically benefits all its child and grandchild classes in a multilevel inheritance chain.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-324-polymorphism_2">Topic 3.2.4: Polymorphism</h3>
+<ol>
+<li>
+<p>Discuss in detail the concept of polymorphism in Object-Oriented Programming and how it enhances flexibility in code.<br>
+   a) Differentiate between compile-time and runtime polymorphism, and explain why Python primarily supports the latter.<br>
+   b) Construct a complete Python program demonstrating method overriding using an <code>Animal</code> base class and at least three subclasses, and trace the output of iterating through a list of mixed objects.<br>
+   c) Analyze how duck typing extends the concept of polymorphism beyond formal inheritance relationships, using an original code example.</p>
+</li>
+<li>
+<p>Design a <code>Shape</code> class hierarchy (e.g., <code>Circle</code>, <code>Square</code>, <code>Triangle</code>) where each subclass overrides a <code>draw()</code> method. Evaluate why this polymorphic design makes it easier to add a fourth shape class in the future compared to writing separate, unrelated functions for each shape.</p>
+</li>
+<li>
+<p>Analyze the role of Python's special "magic methods" (<code>__str__</code>, <code>__len__</code>, <code>__add__</code>) in enabling polymorphic behavior with built-in functions and operators. Construct a custom class that overrides all three, and justify how this improves code readability and usability compared to a class without them.</p>
+</li>
+</ol>
+<hr>
+<h3 id="cross-topic-synthesis-questions">Cross-Topic Synthesis Questions</h3>
+<ol>
+<li>
+<p>Discuss in detail how the combination of encapsulation, inheritance, and polymorphism contributes to better overall software design. Use a single unified example (such as a school management system with <code>Person</code>, <code>Student</code>, and <code>Teacher</code> classes) to demonstrate all three concepts working together.<br>
+   a) Design the class hierarchy, including at least one private attribute, one inherited method, and one overridden method.<br>
+   b) Analyze how each of the three pillars individually improves the reliability, security, and flexibility of this system.<br>
+   c) Evaluate what would go wrong in this system's design if any one of the three pillars were removed.</p>
+</li>
+<li>
+<p>Compare and contrast a class and an object in Object-Oriented Programming, analyzing their relationship through the lens of both encapsulation (data hiding) and instantiation (memory allocation). Construct a real-world software example (outside of the textbook's examples) that clearly separates the class-level blueprint from object-level data.</p>
+</li>
+</ol>
+
+</body>
+</html>

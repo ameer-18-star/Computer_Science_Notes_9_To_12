@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 5: Code Testing and Debugging</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Chapter 5: Code Testing and Debugging</div>
+</div>
+
+<h1 id="chapter-5-code-testing-and-debugging">Chapter 5: Code Testing and Debugging</h1>
+<h3 id="a-complete-study-guide-for-grade-12-computer-science">A Complete Study Guide for Grade 12 Computer Science</h3>
+<hr>
+<blockquote><p><em>"The computer was doing what I told it to do. I just hadn't told it what I meant."</em><br>
+— Every programmer, at least once a week.</p></blockquote>
+<hr>
+<h2 id="before-you-begin-a-note-to-you-the-student">Before You Begin: A Note to You, the Student</h2>
+<p>Bugs are not a sign that you are a bad programmer. They are a sign that you are a programmer. Every software developer — from a first-year student to a 30-year veteran at Google — spends a significant part of every working day chasing errors, reading red text, and asking "why is this not working?"</p>
+<p>This chapter is your guide to turning that frustration into a superpower. By the end of it, you will not just fix bugs by accident. You will hunt them systematically, prove your code works with automated tests, and measure exactly how fast your program runs — down to the millisecond.</p>
+<p>Let's begin.</p>
+<hr>
+<h2 id="51-introduction">5.1 Introduction</h2>
+<h3 id="511-the-software-life-cycle-moving-from-writing-code-to-verifying-code">5.1.1 The Software Life Cycle: Moving from Writing Code to Verifying Code</h3>
+<hr>
+<p><strong>The Hook — The Day a Moth Crashed a Computer</strong></p>
+<p>On the 9th of September, 1947, a team of engineers at Harvard University were running tests on a large computing machine called the <strong>Harvard Mark II</strong>. The machine kept producing incorrect results. After hours of investigation, they opened the hardware panels and found the cause: a real, physical moth had flown inside the machine and gotten trapped between the contacts of Relay Number 70, causing it to malfunction.</p>
+<p>The lead engineer, <strong>Rear Admiral Grace Hopper</strong>, taped the dead moth into the team's logbook with the note: <em>"First actual case of bug being found."</em></p>
+<p>That moth is now preserved at the Smithsonian National Museum of American History. And from that day forward, the word <strong>"bug"</strong> became the universal term for any error inside a program, and <strong>"debugging"</strong> became the process of finding and removing it.</p>
+<hr>
+<p><strong>The Explanation</strong></p>
+<p>When you write a program, you are moving through what engineers call the <strong>software development life cycle</strong>. Think of it as the stages every piece of software passes through before it reaches real users.</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│             THE SOFTWARE DEVELOPMENT LIFE CYCLE              │
+├──────────────┬──────────────┬──────────────┬────────────────┤
+│  1. DESIGN   │  2. WRITE    │  3. TEST     │  4. DEPLOY     │
+│              │              │              │                │
+│  Plan what   │  Write the   │  Check that  │  Release to    │
+│  the program │  actual      │  it works    │  real users    │
+│  should do   │  Python code │  correctly   │                │
+└──────────────┴──────────────┴──────────────┴────────────────┘
+</code></pre>
+<p>Most beginners focus almost entirely on stage 2 — writing the code. But professional developers know that stages 3 and 4 together often take <em>more time</em> than writing the code itself.</p>
+<p>Why? Because writing code that <em>runs</em> is easy. Writing code that <em>works correctly, every time, for every possible input, without crashing</em> is very hard.</p>
+<p><strong>Testing</strong> is the process of checking that your program produces the correct output for a given input. It is how you prove — not just hope — that your code works.</p>
+<p><strong>Debugging</strong> is the process of finding and fixing the mistakes when your program does not work correctly.</p>
+<p>These two skills together are what separate an amateur programmer from a professional engineer.</p>
+<hr>
+<p><strong>Quick Recap:</strong> Writing code is only half the job. Testing proves it works. Debugging fixes it when it doesn't. Every professional programmer practices both, every single day.</p>
+<hr>
+<h3 id="512-the-mindset-of-a-detective-why-code-rarely-works-on-the-first-try">5.1.2 The Mindset of a Detective: Why Code Rarely Works on the First Try</h3>
+<hr>
+<p><strong>The Hook — The $370 Million Rocket That Destroyed Itself</strong></p>
+<p>On the 4th of June, 1996, the <strong>Ariane 5 rocket</strong> launched from French Guiana carrying four scientific satellites. Thirty-seven seconds after liftoff, the rocket violently veered off course, broke apart, and exploded. Total cost: approximately <strong>$370 million USD</strong>, destroyed in 37 seconds.</p>
+<p>The cause? A single software bug.</p>
+<p>The flight control computer tried to convert a 64-bit floating-point number (a very large decimal number) into a 16-bit integer (a much smaller storage type). The number was too large to fit. The conversion failed, and instead of handling this error gracefully, the program crashed completely. The backup computer ran the same software — and crashed too. With no guidance system, the rocket self-destructed.</p>
+<p>The entire disaster could have been prevented by one technique you will learn in this chapter: <strong>exception handling</strong> — writing code that plans for failure and responds gracefully instead of crashing.</p>
+<hr>
+<p><strong>The Explanation</strong></p>
+<p>Here is a mindset shift that will change how you feel about programming:</p>
+<blockquote><p>A bug in your code is not a personal failure. It is a clue waiting to be found.</p></blockquote>
+<p>Think of yourself as a <strong>detective</strong>. A detective does not get frustrated when a crime is hard to solve. They follow a systematic process: gather evidence, form a hypothesis, test it, and either confirm or rule it out.</p>
+<p>Debugging works the same way:</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│               THE DETECTIVE DEBUGGING PROCESS                    │
+├────────┬───────────────────────────────────────────────────────-┤
+│ Step 1 │ OBSERVE — What is the wrong output or error message?    │
+│ Step 2 │ HYPOTHESIZE — Where in the code could this go wrong?    │
+│ Step 3 │ TEST — Set a breakpoint or add a test. Run the code.    │
+│ Step 4 │ ANALYZE — Does your hypothesis match what you see?      │
+│ Step 5 │ FIX — Change the code and test again.                   │
+│ Step 6 │ VERIFY — Run the full test suite. Is everything green?  │
+└────────┴────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Senior software engineers at companies like Amazon or Microsoft follow this exact process. The only difference between them and a beginner is that they have better tools — and that is exactly what this chapter will give you.</p>
+<hr>
+<p><strong>Pause &amp; Think</strong></p>
+<p>A student writes a function that is supposed to calculate a student's grade. They run it and see the output <code>87</code> instead of the expected <code>92</code>. The program did not crash. There was no red error message.</p>
+<p><em>Question:</em> What type of error is this likely to be? Why is this type of error sometimes harder to find than an error that crashes the program?</p>
+<p><em>(Think about this before reading Section 5.2. The answer will become clear.)</em></p>
+<hr>
+<p><strong>Quick Recap:</strong> Approach bugs like a detective — systematically, with tools, not with panic. Good programmers are not people who write bug-free code on the first try. They are people who know how to find and fix bugs efficiently.</p>
+<hr>
+<h2 id="52-testing-and-debugging-techniques">5.2 Testing and Debugging Techniques</h2>
+<h3 id="521-importance-of-testing-and-debugging">5.2.1 Importance of Testing and Debugging</h3>
+<hr>
+<p><strong>The Hook — When No Testing Kills People</strong></p>
+<p>Between 1985 and 1987, a radiation therapy machine called the <strong>Therac-25</strong> was used in hospitals across the United States and Canada. It was supposed to deliver precise, controlled doses of radiation to treat cancer patients.</p>
+<p>Due to a <strong>race condition bug</strong> (a timing error where two parts of the program ran at the wrong moment) and the removal of hardware safety locks that previous versions had relied on, the machine sometimes delivered radiation doses <strong>100 times higher than intended</strong>.</p>
+<p>At least six patients received lethal or near-lethal radiation overdoses. Three of them died directly as a result.</p>
+<p>The software had never been properly tested under specific rapid-input conditions. The engineers assumed the hardware would catch errors that the software missed — but the hardware safety locks had been removed.</p>
+<p>This is the most sobering example in all of computer science history of why <strong>testing is not optional</strong>. In safety-critical systems, the absence of testing is the absence of conscience.</p>
+<hr>
+<h4 id="why-testing-is-essential-for-reliable-applications">Why Testing Is Essential for Reliable Applications</h4>
+<p><strong>The Explanation</strong></p>
+<p>Imagine you are building a bridge. You do not build the bridge and then wait for a bus full of passengers to drive across it to find out if it holds. You test every beam, every bolt, every weld — first in isolation, then together.</p>
+<p>Software is the same. You test each function individually first. Then you test how the functions work together. Then you test the whole system.</p>
+<p>Here is what testing accomplishes:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Testing Goal</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Verification</strong></td>
+<td>Confirms the function produces the correct output</td>
+</tr>
+<tr>
+<td><strong>Edge Case Coverage</strong></td>
+<td>Tests unusual or extreme inputs (0, negative, very large)</td>
+</tr>
+<tr>
+<td><strong>Regression Prevention</strong></td>
+<td>Ensures new code does not break old, working features</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>Test cases serve as living examples of how a function should behave</td>
+</tr>
+<tr>
+<td><strong>Confidence</strong></td>
+<td>Allows you to change code boldly, knowing tests will catch mistakes</td>
+</tr>
+</tbody>
+</table></div>
+<p>Without testing, every change you make to a large program is a gamble. With testing, every change you make is an experiment with immediate feedback.</p>
+<hr>
+<h4 id="common-types-of-programming-errors-and-bugs">Common Types of Programming Errors and Bugs</h4>
+<p><strong>The Explanation — The Three Villains of Programming</strong></p>
+<p>Every bug you will ever encounter in Python falls into one of three categories. Understanding the category immediately tells you <em>where to look</em> and <em>which tool to use</em>.</p>
+<hr>
+<p><strong>Everyday Analogy — The Restaurant Menu</strong></p>
+<p>Imagine writing a restaurant menu:</p>
+<ul>
+<li><strong>Syntax Error:</strong> You write <em>"Grilled Chiken"</em> instead of <em>"Grilled Chicken."</em> The printer refuses to print it because the word is misspelled and the system cannot recognize it.</li>
+<li><strong>Runtime Error:</strong> The menu looks fine. A customer orders Grilled Chicken. But when the chef goes to make it, they discover there is no chicken in the kitchen. The process crashes mid-execution.</li>
+<li><strong>Logic Error:</strong> The chef cooks the chicken perfectly. But someone accidentally swapped the salt and sugar containers in the morning. The dish is served — it just tastes terrible. No alarm went off. The output just wasn't what anyone expected.</li>
+</ul>
+<hr>
+<p><strong>Villain #1: Syntax Errors</strong></p>
+<p>A <strong>syntax error</strong> occurs when your code breaks the grammar rules of Python. Python cannot even begin to run the program. It stops immediately and shows you an error.</p>
+<blockquote><p><strong>Definition:</strong> A <em>syntax error</em> is a mistake in the structure or spelling of your code that Python cannot parse (read and understand).</p></blockquote>
+<pre><code class="language-python"># BUGGY CODE — Syntax Error Example
+if x &gt; 5
+    print(&quot;x is greater&quot;)   # Missing colon after the if condition
+</code></pre>
+<pre><code>  File &quot;program.py&quot;, line 1
+    if x &gt; 5
+            ^
+SyntaxError: expected ':'
+</code></pre>
+<p>The caret symbol (<code>^</code>) in Python's error message is your friend. It points directly to the problem.</p>
+<p><strong>How to fix it:</strong> Read the error message. Look at the line number. Check your colons, brackets, parentheses, and quotation marks.</p>
+<hr>
+<p><strong>Villain #2: Runtime Errors (Exceptions)</strong></p>
+<p>A <strong>runtime error</strong> occurs while the program is <em>running</em>. The syntax was correct — Python started the program — but something went wrong during execution.</p>
+<blockquote><p><strong>Definition:</strong> A <em>runtime error</em> (also called an <em>exception</em>) is an error that occurs during program execution, causing it to stop unexpectedly.</p></blockquote>
+<pre><code class="language-python"># BUGGY CODE — Runtime Error Example
+def divide(a, b):
+    return a / b
+
+result = divide(10, 0)   # You cannot divide by zero!
+print(result)
+</code></pre>
+<pre><code>Traceback (most recent call last):
+  File &quot;program.py&quot;, line 4, in &lt;module&gt;
+    result = divide(10, 0)
+  File &quot;program.py&quot;, line 2, in divide
+    return a / b
+ZeroDivisionError: division by zero
+</code></pre>
+<p>This output is called a <strong>stack trace</strong>. It is not scary — it is a map of exactly where your program was when it crashed.</p>
+<blockquote><p><strong>Definition:</strong> A <em>stack trace</em> is a report that shows the sequence of function calls that led to the error, listed from most recent (bottom) to earliest (top).</p></blockquote>
+<p><strong>How to read a stack trace:</strong><br>
+1. Always read from the <strong>bottom up</strong>.<br>
+2. The bottom line tells you the <em>type</em> of error (<code>ZeroDivisionError</code>) and a plain description.<br>
+3. The lines above show the <em>chain of function calls</em> that led there.<br>
+4. Find <em>your</em> file name (not Python's built-in files) and look at that line first.</p>
+<p><strong>Common Python Runtime Errors:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Exception Name</th>
+<th>When It Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ZeroDivisionError</code></td>
+<td>Dividing any number by zero</td>
+</tr>
+<tr>
+<td><code>ValueError</code></td>
+<td>Passing the wrong type of value (e.g., <code>int("hello")</code>)</td>
+</tr>
+<tr>
+<td><code>TypeError</code></td>
+<td>Performing an operation on incompatible types</td>
+</tr>
+<tr>
+<td><code>IndexError</code></td>
+<td>Accessing a list position that does not exist</td>
+</tr>
+<tr>
+<td><code>KeyError</code></td>
+<td>Accessing a dictionary key that does not exist</td>
+</tr>
+<tr>
+<td><code>FileNotFoundError</code></td>
+<td>Opening a file that does not exist</td>
+</tr>
+<tr>
+<td><code>NameError</code></td>
+<td>Using a variable name that was never defined</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<p><strong>Villain #3: Logic Errors</strong></p>
+<p>A <strong>logic error</strong> is the sneakiest villain. The program runs perfectly. No red error messages appear. But the output is wrong.</p>
+<blockquote><p><strong>Definition:</strong> A <em>logic error</em> is a mistake in the reasoning or algorithm of the code. The program runs without crashing but produces incorrect results.</p></blockquote>
+<pre><code class="language-python"># BUGGY CODE — Logic Error Example
+# Supposed to check if a student PASSED (score &gt;= 50)
+def check_result(score):
+    if score &gt; 50:       # BUG: Should be &gt;= 50, not &gt; 50
+        return &quot;Pass&quot;
+    else:
+        return &quot;Fail&quot;
+
+print(check_result(50))  # Outputs: &quot;Fail&quot; — WRONG! 50 should be a Pass!
+</code></pre>
+<p>No error message. No crash. Just a wrong answer.</p>
+<p><strong>How to find logic errors:</strong> This is exactly what <strong>unit testing</strong> and <strong>breakpoint debugging</strong> are designed to catch. You will learn both in this chapter.</p>
+<hr>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                     ERROR TYPE COMPARISON TABLE                          │
+├─────────────────┬─────────────────────┬────────────────────────────────┤
+│ Error Type      │ When Detected?      │ Best Tool to Find It           │
+├─────────────────┼─────────────────────┼────────────────────────────────┤
+│ Syntax Error    │ Before running      │ Read the error message &amp; line  │
+│ Runtime Error   │ While running       │ Stack trace + Exception Handler│
+│ Logic Error     │ After running       │ Unit Tests + Breakpoints       │
+│                 │ (output is wrong)   │                                │
+└─────────────────┴─────────────────────┴────────────────────────────────┘
+</code></pre>
+<hr>
+<p><strong>Pause &amp; Think</strong></p>
+<p>Look at this code:</p>
+<pre><code class="language-python">def calculate_average(numbers):
+    total = 0
+    for num in numbers:
+        total = total + num
+    return total / len(numbers)
+
+scores = [85, 90, 78, 92, 88]
+print(calculate_average(scores))      # Works fine
+print(calculate_average([]))          # What happens here? Why?
+</code></pre>
+<p><em>Question 1:</em> What type of error will the second call produce? Write down the exact exception name you expect before running it.</p>
+<p><em>Question 2:</em> What change to the function would prevent this error from crashing the program?</p>
+<hr>
+<p><strong>Quick Recap:</strong> Every programming error is one of three types — syntax (grammar broken), runtime (crash during execution), or logic (wrong output, no crash). Knowing the type tells you exactly which tool and approach to use.</p>
+<hr>
+<h2 id="unit-testing">Unit Testing</h2>
+<h3 id="introduction-to-automated-testing-concepts-assertions">Introduction to Automated Testing Concepts (Assertions)</h3>
+<hr>
+<p><strong>The Hook — The Car Factory</strong></p>
+<p>Imagine a car factory assembling hundreds of cars per day. Before any car is assembled, every single part is tested on its own:</p>
+<ul>
+<li>The brakes are tested alone on a special workbench.</li>
+<li>The headlights are tested alone in a dark room.</li>
+<li>The engine's spark plugs are tested alone with a voltage tester.</li>
+</ul>
+<p>If a brake pad is defective, it is caught <em>before</em> it goes into a car. The cost of replacing one brake pad is tiny. The cost of recalling ten thousand cars because all of them have defective brakes is catastrophic.</p>
+<p><strong>Unit testing</strong> applies this exact principle to software. You test each function — each individual "part" — in isolation, before connecting them into a full program.</p>
+<hr>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> <em>Unit testing</em> is the practice of writing small, automated test programs that check whether individual functions or "units" of your code produce the correct output for specific inputs.</p></blockquote>
+<p>The core tool of unit testing is the <strong>assertion</strong>.</p>
+<blockquote><p><strong>Definition:</strong> An <em>assertion</em> is a statement that checks whether a condition is true. If it is true, the test passes silently. If it is false, the test immediately fails and shows an error.</p></blockquote>
+<pre><code class="language-python"># Manual assertion example (simplest form)
+result = 2 + 3
+assert result == 5, &quot;Expected 5 but got something else&quot;
+# If result were 6, Python would raise an AssertionError here
+</code></pre>
+<p>The word <code>assert</code> in Python means: <em>"I am asserting — declaring as true — that this condition holds. If it does not, something is wrong."</em></p>
+<hr>
+<h3 id="introduction-to-pythons-unittest-module">Introduction to Python's <code>unittest</code> Module</h3>
+<p><strong>The Explanation</strong></p>
+<p>Python includes a built-in testing module called <code>unittest</code>. It gives you a structured, organized way to group your tests into <strong>test cases</strong> and <strong>test suites</strong>.</p>
+<blockquote><p><strong>Definition:</strong> A <em>test case</em> is a class that contains one or more test methods, each checking a specific behavior of your code.</p></blockquote>
+<p>Let's build a complete example. Suppose you have written this function:</p>
+<pre><code class="language-python"># calculator.py  ← Save this file separately
+
+def add(a, b):
+    &quot;&quot;&quot;Returns the sum of two numbers.&quot;&quot;&quot;
+    return a + b
+
+def subtract(a, b):
+    &quot;&quot;&quot;Returns the difference of two numbers.&quot;&quot;&quot;
+    return a - b
+
+def multiply(a, b):
+    &quot;&quot;&quot;Returns the product of two numbers.&quot;&quot;&quot;
+    return a * b
+
+def divide(a, b):
+    &quot;&quot;&quot;Returns the result of dividing a by b.
+    Raises ZeroDivisionError if b is zero.&quot;&quot;&quot;
+    if b == 0:
+        raise ZeroDivisionError(&quot;Cannot divide by zero&quot;)
+    return a / b
+</code></pre>
+<p>Now here is the complete <code>unittest</code> test suite for this calculator:</p>
+<pre><code class="language-python"># test_calculator_unittest.py  ← Save this as a separate file
+
+import unittest
+from calculator import add, subtract, multiply, divide
+
+class TestCalculator(unittest.TestCase):
+
+    # ── TESTS FOR add() ──────────────────────────────────────────────
+    def test_add_positive_numbers(self):
+        &quot;&quot;&quot;add(2, 3) should return 5&quot;&quot;&quot;
+        result = add(2, 3)
+        self.assertEqual(result, 5)
+
+    def test_add_negative_numbers(self):
+        &quot;&quot;&quot;add(-4, -6) should return -10&quot;&quot;&quot;
+        self.assertEqual(add(-4, -6), -10)
+
+    def test_add_zero(self):
+        &quot;&quot;&quot;Adding zero should return the other number unchanged&quot;&quot;&quot;
+        self.assertEqual(add(7, 0), 7)
+
+    # ── TESTS FOR subtract() ─────────────────────────────────────────
+    def test_subtract_positive_numbers(self):
+        self.assertEqual(subtract(10, 4), 6)
+
+    def test_subtract_produces_negative(self):
+        &quot;&quot;&quot;Subtracting larger from smaller should give a negative result&quot;&quot;&quot;
+        self.assertEqual(subtract(3, 10), -7)
+
+    # ── TESTS FOR multiply() ─────────────────────────────────────────
+    def test_multiply_basic(self):
+        self.assertEqual(multiply(3, 4), 12)
+
+    def test_multiply_by_zero(self):
+        &quot;&quot;&quot;Multiplying anything by zero should return 0&quot;&quot;&quot;
+        self.assertEqual(multiply(99, 0), 0)
+
+    def test_multiply_negatives(self):
+        &quot;&quot;&quot;Negative × Negative = Positive&quot;&quot;&quot;
+        self.assertEqual(multiply(-3, -4), 12)
+
+    # ── TESTS FOR divide() ───────────────────────────────────────────
+    def test_divide_basic(self):
+        self.assertEqual(divide(10, 2), 5.0)
+
+    def test_divide_by_zero_raises_error(self):
+        &quot;&quot;&quot;divide(x, 0) must raise ZeroDivisionError, not return None&quot;&quot;&quot;
+        with self.assertRaises(ZeroDivisionError):
+            divide(10, 0)
+
+    def test_divide_produces_decimal(self):
+        self.assertAlmostEqual(divide(1, 3), 0.333, places=3)
+
+# This block runs the test suite when you execute this file directly
+if __name__ == &quot;__main__&quot;:
+    unittest.main()
+</code></pre>
+<p><strong>How to run it:</strong></p>
+<pre><code>python test_calculator_unittest.py
+</code></pre>
+<p><strong>Sample Output when ALL tests pass:</strong></p>
+<pre><code>..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.003s
+
+OK
+</code></pre>
+<p>Each <code>.</code> (dot) represents one passing test. Ten dots = ten tests passed.</p>
+<p><strong>Sample Output when ONE test FAILS:</strong></p>
+<pre><code>.....F....
+======================================================================
+FAIL: test_add_positive_numbers (__main__.TestCalculator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File &quot;test_calculator_unittest.py&quot;, line 12, in test_add_positive_numbers
+    self.assertEqual(result, 5)
+AssertionError: 6 != 5
+----------------------------------------------------------------------
+Ran 10 tests in 0.004s
+
+FAILED (failures=1)
+</code></pre>
+<blockquote><p><strong>Important Mindset:</strong> See that <code>FAIL</code> in red? That is not a punishment. That is a <strong>gift</strong>. It means your test caught a bug before a real user did. A failing test is a successful alarm system.</p></blockquote>
+<p><strong>Key <code>unittest</code> assertion methods:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>What it checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assertEqual(a, b)</code></td>
+<td><code>a == b</code></td>
+</tr>
+<tr>
+<td><code>assertNotEqual(a, b)</code></td>
+<td><code>a != b</code></td>
+</tr>
+<tr>
+<td><code>assertTrue(x)</code></td>
+<td><code>x</code> is <code>True</code></td>
+</tr>
+<tr>
+<td><code>assertFalse(x)</code></td>
+<td><code>x</code> is <code>False</code></td>
+</tr>
+<tr>
+<td><code>assertRaises(Error, func, args)</code></td>
+<td><code>func(args)</code> raises the specified Error</td>
+</tr>
+<tr>
+<td><code>assertAlmostEqual(a, b, places=n)</code></td>
+<td><code>a ≈ b</code> up to <code>n</code> decimal places</td>
+</tr>
+<tr>
+<td><code>assertIsNone(x)</code></td>
+<td><code>x is None</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="introduction-to-pytest-framework">Introduction to <code>pytest</code> Framework</h3>
+<p><strong>The Explanation</strong></p>
+<p><code>pytest</code> is an external testing library that makes writing tests even simpler. It does not require you to create a class. Your test functions stand on their own. <code>pytest</code> also gives you clearer, more colorful output.</p>
+<blockquote><p><strong>Definition:</strong> <code>pytest</code> is a Python testing framework that automatically discovers and runs any function whose name starts with <code>test_</code>.</p></blockquote>
+<p>Install it once:</p>
+<pre><code>pip install pytest
+</code></pre>
+<p>Here is the same calculator test suite rewritten in <code>pytest</code> style:</p>
+<pre><code class="language-python"># test_calculator_pytest.py
+
+import pytest
+from calculator import add, subtract, multiply, divide
+
+# ── TESTS FOR add() ───────────────────────────────────────────────────
+def test_add_positive_numbers():
+    assert add(2, 3) == 5
+
+def test_add_negative_numbers():
+    assert add(-4, -6) == -10
+
+def test_add_zero():
+    assert add(7, 0) == 7
+
+# ── TESTS FOR subtract() ──────────────────────────────────────────────
+def test_subtract_basic():
+    assert subtract(10, 4) == 6
+
+def test_subtract_produces_negative():
+    assert subtract(3, 10) == -7
+
+# ── TESTS FOR multiply() ──────────────────────────────────────────────
+def test_multiply_basic():
+    assert multiply(3, 4) == 12
+
+def test_multiply_by_zero():
+    assert multiply(99, 0) == 0
+
+# ── TESTS FOR divide() ────────────────────────────────────────────────
+def test_divide_basic():
+    assert divide(10, 2) == 5.0
+
+def test_divide_by_zero_raises_error():
+    with pytest.raises(ZeroDivisionError):
+        divide(10, 0)
+
+def test_divide_decimal_result():
+    assert abs(divide(1, 3) - 0.333) &lt; 0.001
+</code></pre>
+<p><strong>How to run it:</strong></p>
+<pre><code>pytest test_calculator_pytest.py -v
+</code></pre>
+<p><strong>Sample Output:</strong></p>
+<pre><code>========================= test session starts ==========================
+collected 9 items
+
+test_calculator_pytest.py::test_add_positive_numbers      PASSED  [ 11%]
+test_calculator_pytest.py::test_add_negative_numbers      PASSED  [ 22%]
+test_calculator_pytest.py::test_add_zero                  PASSED  [ 33%]
+test_calculator_pytest.py::test_subtract_basic            PASSED  [ 44%]
+test_calculator_pytest.py::test_subtract_produces_negative PASSED [ 55%]
+test_calculator_pytest.py::test_multiply_basic            PASSED  [ 66%]
+test_calculator_pytest.py::test_multiply_by_zero          PASSED  [ 77%]
+test_calculator_pytest.py::test_divide_basic              PASSED  [ 88%]
+test_calculator_pytest.py::test_divide_by_zero_raises_error PASSED [100%]
+
+========================== 9 passed in 0.12s ===========================
+</code></pre>
+<hr>
+<h3 id="writing-test-cases-and-edge-case-analysis">Writing Test Cases and Edge Case Analysis</h3>
+<p><strong>The Explanation</strong></p>
+<p>Writing a test for the normal case (2 + 3 = 5) is the easy part. The real skill is identifying <strong>edge cases</strong> — the unusual, extreme, or unexpected inputs that most developers forget to test.</p>
+<blockquote><p><strong>Definition:</strong> An <em>edge case</em> is an input value at the extreme boundary of what is valid — like zero, negative numbers, empty strings, or the maximum possible value.</p></blockquote>
+<p><strong>A Systematic Approach to Edge Case Analysis:</strong></p>
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│              EDGE CASE CHECKLIST FOR ANY FUNCTION                 │
+├────┬─────────────────────────────────────────────────────────────┤
+│ 1  │ What is the SMALLEST valid input? (e.g., 0, empty list)     │
+│ 2  │ What is the LARGEST valid input? (e.g., 1,000,000)          │
+│ 3  │ What happens with NEGATIVE values?                          │
+│ 4  │ What happens with WRONG TYPES? (e.g., string instead of int)│
+│ 5  │ What is the BOUNDARY condition? (e.g., exactly 50 in &gt;=50)  │
+└────┴─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Full Example — Testing a Discount Calculator:</strong></p>
+<pre><code class="language-python"># discount.py
+
+def calculate_discount(price, discount_percent):
+    &quot;&quot;&quot;
+    Returns the final price after applying a discount.
+    Raises ValueError if price is negative or discount is not between 0 and 100.
+    &quot;&quot;&quot;
+    if price &lt; 0:
+        raise ValueError(&quot;Price cannot be negative&quot;)
+    if discount_percent &lt; 0 or discount_percent &gt; 100:
+        raise ValueError(&quot;Discount must be between 0 and 100&quot;)
+
+    discount_amount = price * (discount_percent / 100)
+    final_price = price - discount_amount
+    return round(final_price, 2)
+</code></pre>
+<pre><code class="language-python"># test_discount.py
+
+import pytest
+from discount import calculate_discount
+
+# ── NORMAL CASES ──────────────────────────────────────────────────────
+def test_standard_discount():
+    assert calculate_discount(100, 20) == 80.0
+
+def test_large_discount():
+    assert calculate_discount(200, 75) == 50.0
+
+# ── EDGE CASES — BOUNDARY CONDITIONS ──────────────────────────────────
+def test_zero_discount():
+    assert calculate_discount(100, 0) == 100.0
+
+def test_full_discount():
+    assert calculate_discount(100, 100) == 0.0
+
+def test_zero_price():
+    assert calculate_discount(0, 50) == 0.0
+
+# ── EDGE CASES — INVALID INPUTS ───────────────────────────────────────
+def test_negative_price_raises_error():
+    with pytest.raises(ValueError):
+        calculate_discount(-50, 10)
+
+def test_discount_above_100_raises_error():
+    with pytest.raises(ValueError):
+        calculate_discount(100, 110)
+
+def test_negative_discount_raises_error():
+    with pytest.raises(ValueError):
+        calculate_discount(100, -5)
+
+# ── EDGE CASES — DECIMAL RESULTS ──────────────────────────────────────
+def test_decimal_result_rounded_correctly():
+    assert calculate_discount(99.99, 33) == 66.99
+</code></pre>
+<hr>
+<p><strong>Grab a Partner — Test Writing Challenge</strong></p>
+<p>Partner A: Write a <code>is_leap_year(year)</code> function.<br>
+<em>(A year is a leap year if: divisible by 4, BUT NOT by 100, UNLESS also divisible by 400.)</em></p>
+<p>Partner B: Write at least 6 test cases for <code>is_leap_year()</code> before seeing Partner A's implementation. Include:<br>
+- A normal leap year (e.g., 2024)<br>
+- A normal non-leap year (e.g., 2023)<br>
+- A year divisible by 100 but NOT 400 (e.g., 1900 — should be False)<br>
+- A year divisible by 400 (e.g., 2000 — should be True)<br>
+- Year 0 and a negative year</p>
+<p><em>Then compare: Do Partner A's results match Partner B's expected outputs?</em></p>
+<hr>
+<p><strong>Quick Recap:</strong> Unit tests are automated checks that prove each function works correctly. Write tests for normal cases, edge cases, boundary conditions, and invalid inputs. A failing test is not a problem — it is a discovery.</p>
+<hr>
+<h2 id="using-breakpoints-and-watches">Using Breakpoints and Watches</h2>
+<h3 id="setting-breakpoints-in-ides-like-pycharm-or-vs-code">Setting Breakpoints in IDEs like PyCharm or VS Code</h3>
+<hr>
+<p><strong>The Hook — The Pause Button</strong></p>
+<p>Imagine watching a thriller movie and you suddenly want to check whether the key in the character's pocket matches the lock on the door they're approaching. You hit <strong>Pause</strong>. You walk up to the screen. You look closely at the key's shape. You check the lock's shape. Then you press <strong>Play</strong> again.</p>
+<p>A <strong>breakpoint</strong> is the exact equivalent of hitting Pause on your running program. The program freezes at the exact line you choose. You can then look at every variable's value, inspect every data structure, and understand the program's exact state at that moment.</p>
+<p>This is infinitely more powerful than <code>print()</code> statements, because:</p>
+<ul>
+<li>You do not have to write and then delete dozens of <code>print()</code> calls.</li>
+<li>You can see <strong>all</strong> variables at once, not just the ones you remembered to print.</li>
+<li>You can jump forward and backward through the code's execution.</li>
+<li>You can change variable values live to test hypotheses.</li>
+</ul>
+<hr>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> A <em>breakpoint</em> is a marker that you place on a specific line of code in your IDE. When the program reaches that line during execution, it pauses immediately — before executing that line — and hands control to you.</p></blockquote>
+<p><strong>Setting a Breakpoint in VS Code:</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│  VS CODE EDITOR — calculator.py                                          │
+│─────────────────────────────────────────────────────────────────────────│
+│  Line  │  Code                                                           │
+│──────  │──────────────────────────────────────────────────────────────  │
+│   1    │  def calculate_total(items):                                    │
+│   2    │      total = 0                                                  │
+│●  3    │      for item in items:        ← BREAKPOINT SET HERE            │
+│   4    │          total += item[&quot;price&quot;]                                 │
+│   5    │      return total                                               │
+└─────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>How to set a breakpoint in VS Code:</strong><br>
+1. Open your Python file.<br>
+2. Click in the <strong>left margin</strong> (the empty space next to the line number). A red dot appears.<br>
+3. Press <code>F5</code> (or go to Run → Start Debugging).<br>
+4. The program runs until it hits your breakpoint — then it pauses.</p>
+<p><strong>How to set a breakpoint in PyCharm:</strong><br>
+1. Open your Python file.<br>
+2. Click the <strong>grey area</strong> to the right of the line number. A red circle appears.<br>
+3. Right-click the green "Run" button and choose "Debug," OR press <code>Shift + F9</code>.<br>
+4. The program runs until it hits your breakpoint — then it pauses.</p>
+<hr>
+<h3 id="monitoring-variable-values-with-watch-expressions">Monitoring Variable Values with Watch Expressions</h3>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> A <em>watch expression</em> is a formula or variable name that you add to the debugger's Watch panel. The debugger continuously updates its value as you step through the code.</p></blockquote>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│  DEBUG PANELS — PAUSED AT LINE 4                                         │
+├──────────────────────────┬──────────────────────────────────────────────┤
+│  VARIABLES               │  WATCH EXPRESSIONS                           │
+│──────────────────────────│──────────────────────────────────────────────│
+│  total = 0               │  Expression      │  Value                    │
+│  item = {&quot;name&quot;:&quot;Pen&quot;,   │  total           │  0                        │
+│          &quot;price&quot;: 25}    │  item[&quot;price&quot;]   │  25                       │
+│                          │  len(items)      │  3                        │
+└──────────────────────────┴──────────────────────────────────────────────┘
+</code></pre>
+<p><strong>How to add a Watch Expression in VS Code:</strong><br>
+1. While paused at a breakpoint, go to the <strong>WATCH</strong> panel in the debug view.<br>
+2. Click the <strong><code>+</code></strong> icon.<br>
+3. Type any variable name or Python expression.<br>
+4. The watch panel updates its value every time you step to the next line.</p>
+<hr>
+<h3 id="the-step-by-step-debugging-process">The Step-by-Step Debugging Process</h3>
+<p><strong>The Explanation</strong></p>
+<pre><code>┌───────────────────────────────────────────────────────────────────────────┐
+│                    DEBUGGER NAVIGATION BUTTONS                             │
+├──────────────────┬────────────────────────────────────────────────────────┤
+│ F10 (Step Over)  │ Execute current line, pause at NEXT line.              │
+│                  │ Does NOT go inside called functions.                    │
+├──────────────────┼────────────────────────────────────────────────────────┤
+│ F11 (Step Into)  │ If current line calls a function, ENTER that function. │
+├──────────────────┼────────────────────────────────────────────────────────┤
+│ Shift+F11        │ Finish current function, return to the calling line.   │
+│  (Step Out)      │                                                        │
+├──────────────────┼────────────────────────────────────────────────────────┤
+│ F5 (Resume)      │ Continue until next breakpoint or program ends.        │
+└──────────────────┴────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<p><strong>The Practical Walkthrough — Finding an Off-by-One Bug</strong></p>
+<pre><code class="language-python"># buggy_search.py
+
+def find_first_negative(numbers):
+    &quot;&quot;&quot;Returns the INDEX of the first negative number. Returns -1 if none found.&quot;&quot;&quot;
+    for i in range(1, len(numbers)):   # BUG: should be range(0, ...)
+        if numbers[i] &lt; 0:
+            return i
+    return -1
+
+data2 = [-5, 10, 20]
+result2 = find_first_negative(data2)
+print(&quot;First negative at index:&quot;, result2)
+# Expected: 0   Actual: -1   (WRONG! Bug skips index 0)
+</code></pre>
+<p><strong>Step-by-Step Debugger Trace for <code>data2 = [-5, 10, 20]</code>:</strong></p>
+<pre><code>┌──────┬───────────────────────────────────┬────────────────────────────────────┐
+│ Step │ Line Executing                    │ Variable State &amp; Notes             │
+├──────┼───────────────────────────────────┼────────────────────────────────────┤
+│  1   │ find_first_negative([-5, 10, 20]) │ numbers = [-5, 10, 20]             │
+├──────┼───────────────────────────────────┼────────────────────────────────────┤
+│  2   │ for i in range(1, len(numbers)):  │ range(1, 3) = [1, 2]               │
+│      │                                   │ i starts at 1, NOT 0 ← PROBLEM!   │
+├──────┼───────────────────────────────────┼────────────────────────────────────┤
+│  3   │ if numbers[i] &lt; 0:                │ i=1, numbers[1]=10, 10&lt;0 → FALSE   │
+├──────┼───────────────────────────────────┼────────────────────────────────────┤
+│  4   │ (next iteration)                  │ i=2, numbers[2]=20, 20&lt;0 → FALSE   │
+├──────┼───────────────────────────────────┼────────────────────────────────────┤
+│  5   │ return -1                         │ Never checked index 0! WRONG!      │
+└──────┴───────────────────────────────────┴────────────────────────────────────┘
+
+ROOT CAUSE: range(1, len(numbers)) skips index 0.
+FIX: Change to range(len(numbers))
+</code></pre>
+<p><strong>The Fixed Code:</strong></p>
+<pre><code class="language-python">def find_first_negative(numbers):
+    for i in range(len(numbers)):    # Now starts at index 0
+        if numbers[i] &lt; 0:
+            return i
+    return -1
+</code></pre>
+<hr>
+<p><strong>Pause &amp; Think — The <code>print()</code> vs. Debugger Question</strong></p>
+<p>A student says: <em>"I just put <code>print(i)</code> everywhere. I don't need a debugger."</em></p>
+<p><em>Question:</em> List two specific situations where using a debugger with breakpoints and watch expressions is significantly more efficient than using <code>print()</code> statements.</p>
+<hr>
+<p><strong>Quick Recap:</strong> Breakpoints pause your program mid-execution. Watch expressions show you variable values in real time. Step Over, Step Into, Step Out, and Resume let you navigate through the code with surgical precision.</p>
+<hr>
+<h2 id="exception-handling">Exception Handling</h2>
+<h3 id="understanding-pythons-try-except-else-and-finally-blocks">Understanding Python's <code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code> Blocks</h3>
+<hr>
+<p><strong>The Hook — The Ariane 5 Rocket, Revisited</strong></p>
+<p>We opened this chapter with the Ariane 5 disaster. Now you understand enough to prevent it. The fatal error was an unhandled integer overflow exception. The fix would have been a <code>try-except</code> block — just a few lines of code saying: <em>"If this conversion fails, here is what to do instead of crashing."</em> A $370 million rocket, destroyed because those few lines were not written.</p>
+<hr>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> <em>Exception handling</em> is the process of writing code that anticipates potential runtime errors and responds to them gracefully — instead of letting the program crash.</p></blockquote>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    EXCEPTION HANDLING FLOW DIAGRAM                       │
+│                                                                          │
+│  ┌──────────────┐                                                        │
+│  │  try block   │ ← Code that might fail goes here                      │
+│  └──────┬───────┘                                                        │
+│         │                                                                │
+│    Did an exception occur?                                               │
+│         │                                                                │
+│    ┌────┴────┐                                                           │
+│   YES       NO                                                           │
+│    │         │                                                           │
+│    ▼         ▼                                                           │
+│  ┌──────┐  ┌──────┐                                                     │
+│  │except│  │ else │ ← Runs ONLY if NO exception occurred                │
+│  │block │  │block │                                                      │
+│  └──────┘  └──────┘                                                     │
+│    │         │                                                           │
+│    └────┬────┘                                                           │
+│         ▼                                                                │
+│  ┌──────────────┐                                                        │
+│  │finally block │ ← ALWAYS runs, exception or not                       │
+│  └──────────────┘                                                        │
+└─────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Complete Example — User Input Handler:</strong></p>
+<pre><code class="language-python">def get_student_score():
+    &quot;&quot;&quot;Asks for a score between 0 and 100. Handles invalid input gracefully.&quot;&quot;&quot;
+    print(&quot;Enter student score (0-100):&quot;)
+
+    try:
+        raw_input = input(&quot;Score: &quot;)
+        score = int(raw_input)       # Could raise ValueError
+
+        if score &lt; 0 or score &gt; 100:
+            raise ValueError(f&quot;Score {score} is out of valid range 0-100&quot;)
+
+    except ValueError as error:
+        print(f&quot;Invalid input: {error}&quot;)
+        print(&quot;Please enter a whole number between 0 and 100.&quot;)
+        return None
+
+    else:
+        # Runs ONLY if no exception occurred
+        print(f&quot;Score {score} accepted successfully.&quot;)
+        return score
+
+    finally:
+        # ALWAYS runs
+        print(&quot;Input attempt completed.&quot;)
+
+result = get_student_score()
+if result is not None:
+    print(f&quot;Final score: {result}&quot;)
+</code></pre>
+<p><strong>Execution Trace — User types <code>"hello"</code>:</strong></p>
+<pre><code>Output:
+  Enter student score (0-100):
+  Score: hello
+  Invalid input: invalid literal for int() with base 10: 'hello'
+  Please enter a whole number between 0 and 100.
+  Input attempt completed.
+</code></pre>
+<p><strong>Execution Trace — User types <code>75</code>:</strong></p>
+<pre><code>Output:
+  Enter student score (0-100):
+  Score: 75
+  Score 75 accepted successfully.
+  Input attempt completed.
+</code></pre>
+<hr>
+<h3 id="handling-multiple-exception-types-effectively">Handling Multiple Exception Types Effectively</h3>
+<p><strong>The Explanation</strong></p>
+<p>A single program may encounter different types of exceptions. Python allows catching multiple exception types, each with a specific response.</p>
+<pre><code class="language-python"># multiple_exceptions.py
+
+def process_student_record(student_data, index):
+    &quot;&quot;&quot;Retrieves and processes a student's grade. Handles multiple exception types.&quot;&quot;&quot;
+    try:
+        student = student_data[index]          # Could raise IndexError
+        grade = student[&quot;grade&quot;]               # Could raise KeyError
+        grade_number = float(grade)            # Could raise ValueError
+        max_grade = student[&quot;max_grade&quot;]
+        percentage = (grade_number / max_grade) * 100   # Could raise ZeroDivisionError
+        return round(percentage, 2)
+
+    except IndexError:
+        print(f&quot;Error: No student found at position {index}.&quot;)
+        return None
+
+    except KeyError as missing_key:
+        print(f&quot;Error: Missing field: {missing_key}&quot;)
+        return None
+
+    except ValueError as e:
+        print(f&quot;Error: Invalid grade value. Details: {e}&quot;)
+        return None
+
+    except ZeroDivisionError:
+        print(&quot;Error: max_grade cannot be zero.&quot;)
+        return None
+
+    finally:
+        print(f&quot;Finished processing attempt for index {index}.\n&quot;)
+</code></pre>
+<hr>
+<h3 id="raising-custom-exceptions-and-maintaining-graceful-failure">Raising Custom Exceptions and Maintaining Graceful Failure</h3>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> A <em>custom exception</em> is a new exception class that you define yourself, inheriting from Python's built-in <code>Exception</code> class. Custom exceptions make your error messages precise and domain-specific.</p></blockquote>
+<pre><code class="language-python"># custom_exceptions.py
+
+class InvalidAgeError(Exception):
+    &quot;&quot;&quot;Raised when a student's age is outside the valid range.&quot;&quot;&quot;
+    pass
+
+class DuplicateStudentError(Exception):
+    &quot;&quot;&quot;Raised when trying to add a student who already exists.&quot;&quot;&quot;
+    pass
+
+class GradeOutOfRangeError(Exception):
+    &quot;&quot;&quot;Raised when a grade value falls outside 0-100.&quot;&quot;&quot;
+    pass
+
+
+class StudentRegistry:
+
+    def __init__(self):
+        self.students = {}
+
+    def add_student(self, name, age):
+        if age &lt; 15 or age &gt; 25:
+            raise InvalidAgeError(f&quot;Age {age} is invalid. Expected: 15-25.&quot;)
+        if name in self.students:
+            raise DuplicateStudentError(f&quot;Student '{name}' already exists.&quot;)
+        self.students[name] = {&quot;age&quot;: age, &quot;grades&quot;: []}
+        print(f&quot;Student '{name}' added successfully.&quot;)
+
+    def add_grade(self, name, grade):
+        if grade &lt; 0 or grade &gt; 100:
+            raise GradeOutOfRangeError(f&quot;Grade {grade} is invalid. Must be 0-100.&quot;)
+        self.students[name][&quot;grades&quot;].append(grade)
+        print(f&quot;Grade {grade} added for '{name}'.&quot;)
+</code></pre>
+<hr>
+<p><strong>Pause &amp; Think — The Ariane 5 Prevention</strong></p>
+<p>The Ariane 5 bug crashed when converting a large float to a 16-bit integer (max value: 32,767).</p>
+<p>Write a <code>try-except</code> block in Python that safely attempts this conversion and prints a meaningful error message if the value exceeds 32,767 — instead of crashing.</p>
+<hr>
+<p><strong>Quick Recap:</strong> Exception handling separates code that might fail (<code>try</code>) from responses to failure (<code>except</code>), success actions (<code>else</code>), and guaranteed cleanup (<code>finally</code>). Custom exceptions make your error messages precise and informative.</p>
+<hr>
+<h2 id="53-profiling-and-optimization">5.3 Profiling and Optimization</h2>
+<h3 id="identifying-and-fixing-performance-bottlenecks">Identifying and Fixing Performance Bottlenecks</h3>
+<hr>
+<p><strong>The Hook — The Race Car Pit Stop</strong></p>
+<p>Imagine you are the performance engineer for a Formula 1 race team. Your driver is finishing each lap 8 seconds slower than the competition. You use timing data to measure every part of the race: acceleration out of corners (2.1 seconds lost), top speed on straights (0.1 seconds lost), tire change in the pit stop (5.8 seconds lost).</p>
+<p>The data is clear: <strong>fix the pit stop first</strong>. That is where almost all your lost time is hiding. Optimizing the acceleration — which loses only 2.1 seconds — before fixing the 5.8-second pit stop would be irrational.</p>
+<p><strong>Profiling</strong> in programming is exactly this: measuring where your program spends its time, so you know which part to optimize first.</p>
+<hr>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> <em>Profiling</em> is the process of measuring a program's execution time and resource usage — broken down by function — to find which parts are slow or memory-heavy.</p><p><strong>Definition:</strong> A <em>performance bottleneck</em> is any part of your code that takes disproportionately longer than other parts, slowing down the entire program.</p></blockquote>
+<p>The key insight is: <strong>never optimize until you have measured</strong>. Programmers frequently waste hours optimizing a function that runs in 0.001 seconds, while ignoring a loop that runs in 9 seconds.</p>
+<hr>
+<h3 id="time-profiling-measuring-execution-speed">Time Profiling: Measuring Execution Speed</h3>
+<p><strong>The <code>time</code> Module — Simple Timing</strong></p>
+<pre><code class="language-python">import time
+
+def slow_search(data, target):
+    &quot;&quot;&quot;Linear search — checks every element one by one.&quot;&quot;&quot;
+    for i, item in enumerate(data):
+        if item == target:
+            return i
+    return -1
+
+def fast_search(data, target):
+    &quot;&quot;&quot;Binary search — halves the search space each step.&quot;&quot;&quot;
+    left, right = 0, len(data) - 1
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if data[mid] == target:
+            return mid
+        elif data[mid] &lt; target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+data = list(range(0, 1_000_000))
+target = 876_543
+
+start = time.time()
+for _ in range(100):
+    result = slow_search(data, target)
+end = time.time()
+slow_time = end - start
+print(f&quot;Linear Search  — 100 runs: {slow_time:.4f} seconds&quot;)
+
+start = time.time()
+for _ in range(100):
+    result = fast_search(data, target)
+end = time.time()
+fast_time = end - start
+print(f&quot;Binary Search  — 100 runs: {fast_time:.4f} seconds&quot;)
+print(f&quot;Binary search is approximately {slow_time / fast_time:.1f}x faster!&quot;)
+</code></pre>
+<p><strong>Sample Output:</strong></p>
+<pre><code>Linear Search  — 100 runs: 8.4231 seconds
+Binary Search  — 100 runs: 0.0003 seconds
+Binary search is approximately 28077x faster!
+</code></pre>
+<hr>
+<p><strong>The <code>cProfile</code> Module — Detailed Function-Level Profiling</strong></p>
+<pre><code class="language-python">import cProfile
+import timeit
+
+def slow_sum(numbers):
+    &quot;&quot;&quot;Manually adds numbers using a loop.&quot;&quot;&quot;
+    total = 0
+    for num in numbers:
+        total = total + num
+    return total
+
+def fast_sum(numbers):
+    &quot;&quot;&quot;Uses Python's built-in sum() implemented in optimized C code.&quot;&quot;&quot;
+    return sum(numbers)
+
+def process_data(numbers):
+    slow_result = slow_sum(numbers)
+    fast_result = fast_sum(numbers)
+    return slow_result, fast_result
+
+def main():
+    numbers = list(range(1, 1_000_001))
+    slow_result, fast_result = process_data(numbers)
+    print(f&quot;Slow sum result: {slow_result}&quot;)
+    print(f&quot;Fast sum result: {fast_result}&quot;)
+
+    slow_time = timeit.timeit(lambda: slow_sum(numbers), number=10)
+    fast_time = timeit.timeit(lambda: fast_sum(numbers), number=10)
+
+    print(f&quot;\nTime Comparison (10 runs each):&quot;)
+    print(f&quot;  slow_sum() : {slow_time:.4f} seconds&quot;)
+    print(f&quot;  fast_sum() : {fast_time:.4f} seconds&quot;)
+    print(f&quot;  Speed difference: {slow_time / fast_time:.1f}x&quot;)
+
+print(&quot;=== cProfile Report ===&quot;)
+cProfile.run(&quot;main()&quot;, sort=&quot;tottime&quot;)
+</code></pre>
+<p><strong>Sample cProfile Output:</strong></p>
+<pre><code>         8 function calls in 0.520 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.420    0.420    0.420    0.420 program.py:5(slow_sum)
+        1    0.080    0.080    0.520    0.520 program.py:20(main)
+        1    0.020    0.020    0.020    0.020 {built-in method builtins.sum}
+</code></pre>
+<p><strong>How to read the cProfile output:</strong></p>
+<pre><code>┌──────────────────────────────────────────────────────────────────────────────┐
+│                       cPROFILE OUTPUT — COLUMN GUIDE                          │
+├────────────┬─────────────────────────────────────────────────────────────────┤
+│  ncalls    │ How many times this function was called                          │
+│  tottime   │ Total time spent INSIDE this function (not counting sub-calls)  │
+│  percall   │ tottime ÷ ncalls (average time per call)                         │
+│  cumtime   │ Total time INCLUDING all functions this function called          │
+│  filename  │ Which file and line number this function is defined at           │
+└────────────┴─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><code>slow_sum</code> took <code>0.420</code> seconds — 80% of the total runtime. This is your bottleneck.</p>
+<hr>
+<h3 id="space-memory-profiling-concepts">Space / Memory Profiling Concepts</h3>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> <em>Memory profiling</em> is the process of measuring how much RAM your program uses — broken down by object and data structure — to identify parts that allocate more memory than necessary.</p></blockquote>
+<p><strong>Comparing Memory Usage — List vs. Generator:</strong></p>
+<pre><code class="language-python"># Option A: List — creates ALL 1 million numbers in RAM at once
+def sum_with_list():
+    numbers = list(range(1_000_000))   # ~8MB of RAM
+    return sum(numbers)
+
+# Option B: Generator — creates numbers ONE AT A TIME
+def sum_with_generator():
+    numbers = range(1_000_000)         # ~48 BYTES of RAM
+    return sum(numbers)
+
+# Both produce the same answer: 499999500000
+# But the generator uses ~166,000x less memory!
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Memory Leak</strong></td>
+<td>Memory allocated but never freed — RAM usage grows endlessly</td>
+</tr>
+<tr>
+<td><strong>Peak Memory</strong></td>
+<td>Maximum RAM used at any single moment</td>
+</tr>
+<tr>
+<td><strong>Memory per Line</strong></td>
+<td>How much RAM each line of code allocates</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="refactoring-strategies">Refactoring Strategies</h3>
+<p><strong>The Explanation</strong></p>
+<blockquote><p><strong>Definition:</strong> <em>Refactoring</em> is rewriting code to be faster, more readable, or more memory-efficient — without changing what the code does (the output stays the same).</p></blockquote>
+<p><strong>Strategy 1: Avoid Nested Loops When Possible</strong></p>
+<pre><code class="language-python"># BAD — O(n²) — 10,000 items = 100,000,000 operations
+def find_duplicates_slow(data):
+    duplicates = []
+    for i in range(len(data)):
+        for j in range(i + 1, len(data)):
+            if data[i] == data[j]:
+                duplicates.append(data[i])
+    return duplicates
+
+# GOOD — O(n) — 10,000 items = ~10,000 operations
+def find_duplicates_fast(data):
+    seen = set()
+    duplicates = set()
+    for item in data:
+        if item in seen:
+            duplicates.add(item)
+        else:
+            seen.add(item)
+    return list(duplicates)
+</code></pre>
+<p><strong>Strategy 2: Choose the Right Data Structure</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│           DATA STRUCTURE PERFORMANCE COMPARISON                          │
+├──────────────────┬──────────────────┬───────────────────────────────────┤
+│ Operation        │ List             │ Set / Dictionary                  │
+├──────────────────┼──────────────────┼───────────────────────────────────┤
+│ Check membership │ O(n) — SLOW      │ O(1) — FAST (instant lookup)      │
+│ Add an item      │ O(1) at end      │ O(1) average                      │
+│ Access by index  │ O(1) — FAST      │ Not available (unordered)         │
+└──────────────────┴──────────────────┴───────────────────────────────────┘
+</code></pre>
+<p><strong>Strategy 3: Use Built-in Python Functions</strong></p>
+<p>Python's built-in functions (<code>sum()</code>, <code>max()</code>, <code>min()</code>, <code>sorted()</code>) are implemented in C — a compiled, low-level language — and are significantly faster than equivalent Python loops.</p>
+<hr>
+<p><strong>The Professional Optimization Cycle:</strong></p>
+<pre><code>┌────────────────────────────────────────────────────────────────────────┐
+│                   THE PROFESSIONAL OPTIMIZATION CYCLE                   │
+├────┬───────────────────────────────────────────────────────────────────┤
+│ 1  │ MEASURE FIRST: Run cProfile. Find the slowest function.           │
+│ 2  │ IDENTIFY BOTTLENECK: Which function has the most tottime?         │
+│ 3  │ UNDERSTAND THE CAUSE: Nested loop? Wrong data structure?          │
+│ 4  │ REFACTOR: Apply the appropriate optimization strategy.             │
+│ 5  │ MEASURE AGAIN: Run cProfile on the new version.                   │
+│ 6  │ RUN TESTS: Confirm the output is still correct.                   │
+│ 7  │ REPEAT: Find the next bottleneck and repeat.                      │
+└────┴───────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<p><strong>Pause &amp; Think — The Optimization Trap</strong></p>
+<p>A program takes 10 seconds. cProfile shows:</p>
+<pre><code>ncalls  tottime  function
+     1    9.500  download_file()
+     1    0.480  sort_data()
+     1    0.015  calculate_stats()
+     1    0.005  format_output()
+</code></pre>
+<p><em>Question 1:</em> If you optimize <code>sort_data()</code> from 0.480 to 0.020 seconds, what is the new total runtime?</p>
+<p><em>Question 2:</em> Is this the right optimization to do first? Why or why not?</p>
+<p><em>Question 3:</em> What is the technical name for the function responsible for most of the total runtime?</p>
+<hr>
+<p><strong>Quick Recap:</strong> Always profile before optimizing. cProfile shows where time is spent. Fix the biggest bottleneck first. After refactoring, run your unit tests to confirm correctness — speed and correctness must both be true.</p>
+<hr>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<h3 id="glossary-of-key-terms">Glossary of Key Terms</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bug</strong></td>
+<td>Any error that causes a program to behave incorrectly</td>
+</tr>
+<tr>
+<td><strong>Debugging</strong></td>
+<td>The systematic process of finding and fixing bugs</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>The process of verifying that code produces correct output</td>
+</tr>
+<tr>
+<td><strong>Syntax Error</strong></td>
+<td>A grammar violation that prevents Python from parsing the code</td>
+</tr>
+<tr>
+<td><strong>Runtime Error / Exception</strong></td>
+<td>An error that occurs during execution, causing a crash</td>
+</tr>
+<tr>
+<td><strong>Logic Error</strong></td>
+<td>An error where the program runs but produces incorrect output</td>
+</tr>
+<tr>
+<td><strong>Stack Trace</strong></td>
+<td>A report showing the sequence of function calls leading to an error</td>
+</tr>
+<tr>
+<td><strong>Unit Testing</strong></td>
+<td>Testing individual functions in isolation using automated test cases</td>
+</tr>
+<tr>
+<td><strong>Test Case</strong></td>
+<td>A set of inputs and expected outputs used to verify a function</td>
+</tr>
+<tr>
+<td><strong>Assertion</strong></td>
+<td>A statement that checks a condition; raises an error if false</td>
+</tr>
+<tr>
+<td><strong><code>unittest</code></strong></td>
+<td>Python's built-in module for structured, class-based test cases</td>
+</tr>
+<tr>
+<td><strong><code>pytest</code></strong></td>
+<td>An external framework for simple function-based test cases</td>
+</tr>
+<tr>
+<td><strong>Edge Case</strong></td>
+<td>An input at the extreme boundary of valid values</td>
+</tr>
+<tr>
+<td><strong>Breakpoint</strong></td>
+<td>A marker that pauses program execution at a specific line</td>
+</tr>
+<tr>
+<td><strong>Watch Expression</strong></td>
+<td>A variable or expression tracked in real time during debugging</td>
+</tr>
+<tr>
+<td><strong>Step Over</strong></td>
+<td>Execute current line; do not enter called functions</td>
+</tr>
+<tr>
+<td><strong>Step Into</strong></td>
+<td>Enter the function being called on the current line</td>
+</tr>
+<tr>
+<td><strong>Step Out</strong></td>
+<td>Finish the current function; return to the caller</td>
+</tr>
+<tr>
+<td><strong>Exception Handling</strong></td>
+<td>Code that catches runtime errors and responds gracefully</td>
+</tr>
+<tr>
+<td><strong><code>try</code></strong></td>
+<td>Block containing code that might raise an exception</td>
+</tr>
+<tr>
+<td><strong><code>except</code></strong></td>
+<td>Block that runs when a specific exception type is caught</td>
+</tr>
+<tr>
+<td><strong><code>else</code></strong></td>
+<td>Block that runs only when NO exception was raised in <code>try</code></td>
+</tr>
+<tr>
+<td><strong><code>finally</code></strong></td>
+<td>Block that ALWAYS runs, whether or not an exception occurred</td>
+</tr>
+<tr>
+<td><strong>Custom Exception</strong></td>
+<td>A user-defined exception class for domain-specific error types</td>
+</tr>
+<tr>
+<td><strong>Profiling</strong></td>
+<td>Measuring execution time and resource usage per function</td>
+</tr>
+<tr>
+<td><strong>Bottleneck</strong></td>
+<td>The slowest function responsible for most of the total runtime</td>
+</tr>
+<tr>
+<td><strong>Optimization</strong></td>
+<td>Rewriting code to be faster or use fewer resources</td>
+</tr>
+<tr>
+<td><strong>Refactoring</strong></td>
+<td>Improving code structure/performance without changing output</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<h3 id="quick-reference-choosing-the-right-tool">Quick Reference: Choosing the Right Tool</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                       WHICH TOOL DO I USE?                               │
+├───────────────────────────────┬─────────────────────────────────────────┤
+│ I need to...                  │ Use...                                  │
+├───────────────────────────────┼─────────────────────────────────────────┤
+│ Prove a function works        │ unittest or pytest                      │
+│ Test unusual edge cases       │ pytest with multiple test functions      │
+│ Find where a crash happened   │ Read the Stack Trace (bottom up)        │
+│ Pause execution and inspect   │ Breakpoint in VS Code / PyCharm         │
+│ Track a variable's value      │ Watch Expression in the debug panel     │
+│ Walk through code line by line│ Step Over / Step Into / Step Out        │
+│ Handle a potential crash      │ try / except / else / finally           │
+│ Make error messages specific  │ Custom Exception classes                │
+│ Find which function is slow   │ cProfile                                │
+│ Compare two function speeds   │ timeit                                  │
+│ Reduce memory usage           │ Generator expressions, sets             │
+└───────────────────────────────┴─────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="key-principles-to-remember">Key Principles to Remember</h3>
+<ol>
+<li>
+<p><strong>Test early, test often.</strong> A bug found during testing costs minutes to fix. A bug found by a real user can cost millions.</p>
+</li>
+<li>
+<p><strong>Red test failures are green lights.</strong> When a test fails, that is the test doing its job perfectly — catching a bug before real users do.</p>
+</li>
+<li>
+<p><strong>Every bug has a root cause.</strong> Think like a detective. Observe → Hypothesize → Test → Analyze → Fix → Verify.</p>
+</li>
+<li>
+<p><strong><code>finally</code> always runs.</strong> Use it for cleanup code (closing files, closing database connections) that must happen no matter what.</p>
+</li>
+<li>
+<p><strong>Measure before optimizing.</strong> Never guess which part is slow. Run <code>cProfile</code> first. Then fix the actual bottleneck.</p>
+</li>
+<li>
+<p><strong>After refactoring, run all tests.</strong> Making code faster means nothing if it now produces wrong answers.</p>
+</li>
+</ol>
+<hr>
+<h2 id="exercise-section">Exercise Section</h2>
+<h3 id="multiple-choice-questions">Multiple Choice Questions</h3>
+<p><strong>1.</strong> Testing is essential for reliable applications because it:</p>
+<p>(a) Optimises code performance automatically<br>
+(b) Identifies and fixes bugs before users encounter them<br>
+(c) Reduces the size of the program file<br>
+(d) Makes the code compile faster</p>
+<hr>
+<p><strong>2.</strong> A student writes <code>result = divide(10, 5)</code> but accidentally calls <code>divide(10, 0)</code>. The program crashes. What kind of error is this?</p>
+<p>(a) Syntax error<br>
+(b) Logic error<br>
+(c) Runtime error<br>
+(d) Compilation error</p>
+<hr>
+<p><strong>3.</strong> A function returns <code>87</code> instead of the correct <code>92</code>. No crash occurred. What type of error is this?</p>
+<p>(a) Syntax error<br>
+(b) Runtime error<br>
+(c) Logic error<br>
+(d) Import error</p>
+<hr>
+<p><strong>4.</strong> Which is the correct way to check that a function raises a <code>ValueError</code> using <code>pytest</code>?</p>
+<p>(a) <code>assert ValueError == divide(10, 0)</code><br>
+(b) <code>with pytest.raises(ValueError): divide(10, 0)</code><br>
+(c) <code>try: divide(10, 0) except: pass</code><br>
+(d) <code>assertEqual(divide(10, 0), ValueError)</code></p>
+<hr>
+<p><strong>5.</strong> What does the <code>finally</code> block in a <code>try-except-finally</code> structure do?</p>
+<p>(a) Runs only if an exception was raised<br>
+(b) Runs only if no exception was raised<br>
+(c) Always runs, regardless of whether an exception occurred<br>
+(d) Stops the program after handling the exception</p>
+<hr>
+<p><strong>6.</strong> Which debugger action executes a line WITHOUT entering any function called on that line?</p>
+<p>(a) Step Into<br>
+(b) Step Out<br>
+(c) Step Over<br>
+(d) Resume</p>
+<hr>
+<p><strong>7.</strong> cProfile shows <code>process_image()</code> has <code>tottime = 4.850</code> and all other functions total <code>0.150</code>. What should you optimize first?</p>
+<p>(a) The functions in the 0.150 group<br>
+(b) Add more print statements to <code>process_image()</code><br>
+(c) Optimize <code>process_image()</code> — it is the bottleneck<br>
+(d) Rewrite the entire program</p>
+<hr>
+<p><strong>8.</strong> What is an edge case?</p>
+<p>(a) An error that only occurs at the beginning of execution<br>
+(b) An input value at the extreme boundary of valid values<br>
+(c) A syntax error found at the end of a file<br>
+(d) A type of breakpoint placed at the edge of a function</p>
+<hr>
+<p><strong>9.</strong> Why is <code>if item in my_set</code> faster than <code>if item in my_list</code> for large collections?</p>
+<p>(a) Sets are stored on a faster hard drive<br>
+(b) Sets use a hash table allowing O(1) constant-time lookup<br>
+(c) Python prioritizes set operations over list operations<br>
+(d) Lists require sorting before checking membership</p>
+<hr>
+<p><strong>10.</strong> Which Python module measures and reports exactly how many seconds each function takes to execute?</p>
+<p>(a) <code>timeit</code><br>
+(b) <code>memory_profiler</code><br>
+(c) <code>cProfile</code><br>
+(d) <code>unittest</code></p>
+<hr>
+<h3 id="short-questions">Short Questions</h3>
+<ol>
+<li>Why is testing essential for ensuring reliable applications?</li>
+<li>What are the three common types of programming errors and bugs?</li>
+<li>What is unit testing, and why is it important in programming?</li>
+<li>How do Python's <code>unittest</code> and <code>pytest</code> modules help in unit testing?</li>
+<li>What is the purpose of writing and executing test cases?</li>
+<li>How do you set breakpoints in IDEs like PyCharm or VS Code?</li>
+<li>What is the role of monitoring variable values with watch expressions during debugging?</li>
+<li>What is the step-by-step debugging process in IDEs?</li>
+<li>How does exception handling help in managing multiple exception types effectively?</li>
+<li>What tools can be used for profiling and measuring performance in Python?</li>
+</ol>
+<hr>
+<h3 id="long-questions">Long Questions</h3>
+<ol>
+<li>
+<p>Why is testing essential for reliable applications, and what role does it play in ensuring program stability? Discuss the Therac-25 tragedy as a real-world example.</p>
+</li>
+<li>
+<p>Discuss the three common types of programming errors. For each type, explain when it occurs, how Python signals it, and which debugging tool is most effective for finding it.</p>
+</li>
+<li>
+<p>What is unit testing, and how do Python's <code>unittest</code> and <code>pytest</code> modules support effective testing? Include a comparison of both frameworks.</p>
+</li>
+<li>
+<p>Explain the process of writing and executing test cases using <code>pytest</code>. Include examples of normal cases, boundary conditions, and invalid input tests for a function of your choice.</p>
+</li>
+<li>
+<p>How do breakpoints and watch expressions help in debugging? Describe the complete step-by-step debugging process for finding an off-by-one error.</p>
+</li>
+<li>
+<p>Describe how to set breakpoints in IDEs like PyCharm or VS Code, and explain the four debugger navigation actions: Step Over, Step Into, Step Out, and Resume.</p>
+</li>
+<li>
+<p>How does exception handling work in Python? Explain <code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code> with a complete code example and an execution trace for both an exception occurring and not occurring.</p>
+</li>
+<li>
+<p>How do you handle multiple exception types effectively in Python? Write a complete program that handles at least four different exception types for a student record processing function.</p>
+</li>
+</ol>
+<hr>
+<blockquote><p><em>"The next time your code has a bug — and it will — you will not panic. You will think: 'Good. A clue. Let's find it.' That is what engineers do."</em></p></blockquote>
+
+</body>
+</html>

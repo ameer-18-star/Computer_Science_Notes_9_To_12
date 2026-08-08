@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Chapter 5 — Code Testing and Debugging</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Chapter 5 — Code Testing and Debugging</div>
+</div>
+
+<h1 id="comprehensive-question-bank-chapter-5-code-testing-and-debugging">Comprehensive Question Bank: Chapter 5 — Code Testing and Debugging</h1>
+<blockquote><p><strong>Grade 12 Computer Science | Complete Assessment Bank</strong><br>
+Covers: Software Life Cycle · Error Types · Unit Testing · Breakpoints &amp; Watches · Exception Handling · Profiling &amp; Optimization<br>
+Taxonomy: Knowledge · Comprehension · Application · Analysis · Synthesis · Evaluation</p></blockquote>
+<hr>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<hr>
+<h3 id="topic-51-introduction-software-life-cycle-and-debugging-mindset">Topic 5.1: Introduction — Software Life Cycle and Debugging Mindset</h3>
+<ol>
+<li>What is the correct order of stages in the Software Development Life Cycle?</li>
+</ol>
+<p>A) Write → Test → Design → Deploy<br>
+<strong>B) Design → Write → Test → Deploy</strong><br>
+   C) Test → Design → Write → Deploy<br>
+   D) Write → Deploy → Test → Design</p>
+<ol start="2">
+<li>Which famous event gave the word "bug" its meaning in computing?</li>
+</ol>
+<p>A) The Ariane 5 rocket explosion in 1996<br>
+<strong>B) A physical moth trapped in the Harvard Mark II computer in 1947</strong><br>
+   C) The Therac-25 radiation machine failure in 1985<br>
+   D) The Knight Capital trading disaster in 2012</p>
+<ol start="3">
+<li>Who is credited with finding and logging the "first actual case of bug being found"?</li>
+</ol>
+<p><strong>A) Rear Admiral Grace Hopper</strong><br>
+   B) Alan Turing<br>
+   C) Bill Gates<br>
+   D) Donald Knuth</p>
+<ol start="4">
+<li>The Ariane 5 rocket explosion in 1996 was caused by:</li>
+</ol>
+<p>A) A missing semicolon in a C program<br>
+<strong>B) An unhandled exception during conversion of a 64-bit float to a 16-bit integer</strong><br>
+   C) A logic error in the fuel calculation module<br>
+   D) A syntax error detected only after launch</p>
+<ol start="5">
+<li>The Ariane 5 disaster cost approximately how much money?</li>
+</ol>
+<p>A) $37 million<br>
+   B) $3.7 billion<br>
+<strong>C) $370 million</strong><br>
+   D) $37 billion</p>
+<ol start="6">
+<li>How many seconds after liftoff did the Ariane 5 rocket self-destruct?</li>
+</ol>
+<p><strong>A) 37 seconds</strong><br>
+   B) 3.7 seconds<br>
+   C) 370 seconds<br>
+   D) 73 seconds</p>
+<ol start="7">
+<li>The Therac-25 machine delivered radiation doses how many times higher than intended due to its software bug?</li>
+</ol>
+<p>A) 10 times higher<br>
+<strong>B) 100 times higher</strong><br>
+   C) 1000 times higher<br>
+   D) 50 times higher</p>
+<ol start="8">
+<li>The Knight Capital trading disaster (2012) resulted in losses of approximately:</li>
+</ol>
+<p>A) $44 million in 45 hours<br>
+<strong>B) $440 million in 45 minutes</strong><br>
+   C) $4.4 billion in 4 hours<br>
+   D) $44 billion in 45 seconds</p>
+<ol start="9">
+<li>Which of the following best describes the role of <strong>testing</strong> in software development?</li>
+</ol>
+<p>A) Finding the fastest algorithm for a program<br>
+   B) Writing the initial version of the code<br>
+<strong>C) Verifying that the program produces correct output for given inputs</strong><br>
+   D) Deploying the program to real users</p>
+<ol start="10">
+<li>
+<p>Which of the following best describes the role of <strong>debugging</strong>?</p>
+<p>A) Writing automated test cases<br>
+B) Measuring program execution speed<br>
+<strong>C) Finding and fixing mistakes when a program does not work correctly</strong><br>
+D) Deploying software to production servers</p>
+</li>
+<li>
+<p>The detective debugging process begins with which step?</p>
+<p><strong>A) OBSERVE — identify the wrong output or error message</strong><br>
+B) FIX — change the code immediately<br>
+C) HYPOTHESIZE — guess the solution first<br>
+D) DEPLOY — release the code to users</p>
+</li>
+<li>
+<p>In the Software Development Life Cycle, which stages often take MORE time than writing the code itself?</p>
+<p>A) Design and Writing<br>
+<strong>B) Testing and Deployment</strong><br>
+C) Design and Testing<br>
+D) Writing and Deployment</p>
+</li>
+<li>
+<p>According to the detective debugging process, what should you do AFTER forming a hypothesis?</p>
+<p>A) Fix the code immediately<br>
+B) Restart the entire program<br>
+<strong>C) Test — set a breakpoint or add a test and run the code</strong><br>
+D) Redeploy the software</p>
+</li>
+<li>
+<p>Which of the following is the LAST step in the detective debugging process?</p>
+<p>A) Fix — change the code<br>
+B) Analyze — check if hypothesis matches<br>
+<strong>C) Verify — run the full test suite</strong><br>
+D) Observe — identify the error</p>
+</li>
+<li>
+<p>A software engineer spends more of their daily time doing which of the following?</p>
+<p>A) Writing original code from scratch<br>
+B) Designing database schemas<br>
+<strong>C) Debugging and reading error stack traces</strong><br>
+D) Deploying applications to servers</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-521-importance-of-testing-error-types">Topic 5.2.1: Importance of Testing — Error Types</h3>
+<ol start="16">
+<li>
+<p>Which type of programming error occurs when code breaks the grammar rules of Python?</p>
+<p><strong>A) Syntax error</strong><br>
+B) Logic error<br>
+C) Runtime error<br>
+D) Semantic error</p>
+</li>
+<li>
+<p>A syntax error is detected:</p>
+<p>A) While the program is running<br>
+B) After the program produces wrong output<br>
+<strong>C) Before the program runs, during parsing</strong><br>
+D) Only during deployment</p>
+</li>
+<li>
+<p>Which symbol does Python use in error messages to point directly to the location of a syntax error?</p>
+<p>A) <code>*</code> (asterisk)<br>
+B) <code>!</code> (exclamation mark)<br>
+<strong>C) <code>^</code> (caret)</strong><br>
+D) <code>#</code> (hash)</p>
+</li>
+<li>
+<p>A runtime error is also known as:</p>
+<p>A) A logic error<br>
+B) A syntax error<br>
+<strong>C) An exception</strong><br>
+D) A compile-time error</p>
+</li>
+<li>
+<p>Which type of error occurs during program execution and causes the program to stop unexpectedly?</p>
+<p>A) Syntax error<br>
+B) Logic error<br>
+<strong>C) Runtime error</strong><br>
+D) Import error</p>
+</li>
+<li>
+<p>A student writes <code>score &gt; 50</code> instead of <code>score &gt;= 50</code> in a grading function. The program runs without crashing but gives wrong results for a score of exactly 50. This is:</p>
+<p>A) A syntax error<br>
+B) A runtime error<br>
+<strong>C) A logic error</strong><br>
+D) A ZeroDivisionError</p>
+</li>
+<li>
+<p>Which type of error is generally the most difficult to detect because Python gives no error message?</p>
+<p>A) Syntax error<br>
+B) Runtime error<br>
+<strong>C) Logic error</strong><br>
+D) ImportError</p>
+</li>
+<li>
+<p>What is a <strong>stack trace</strong>?</p>
+<p>A) A visual diagram of the program's flowchart<br>
+B) A list of all variables in the program<br>
+<strong>C) A report showing the sequence of function calls that led to an error</strong><br>
+D) A tool that measures execution speed</p>
+</li>
+<li>
+<p>When reading a Python stack trace, you should read it:</p>
+<p><strong>A) From bottom to top — the bottom line shows the actual error type</strong><br>
+B) From top to bottom — the top line shows the actual error type<br>
+C) Only the middle section is relevant<br>
+D) Stack traces cannot be read in any particular order</p>
+</li>
+<li>
+<p>Which exception is raised when you try to divide a number by zero in Python?</p>
+<p><strong>A) ZeroDivisionError</strong><br>
+B) ValueError<br>
+C) ArithmeticError<br>
+D) MathError</p>
+</li>
+<li>
+<p>Which exception is raised when you try to convert <code>"hello"</code> to an integer using <code>int("hello")</code>?</p>
+<p>A) TypeError<br>
+<strong>B) ValueError</strong><br>
+C) NameError<br>
+D) AttributeError</p>
+</li>
+<li>
+<p>Which exception is raised when you try to access a list index that does not exist?</p>
+<p>A) KeyError<br>
+B) ValueError<br>
+<strong>C) IndexError</strong><br>
+D) RangeError</p>
+</li>
+<li>
+<p>Which exception is raised when you access a dictionary key that does not exist?</p>
+<p>A) IndexError<br>
+B) ValueError<br>
+<strong>C) KeyError</strong><br>
+D) AttributeError</p>
+</li>
+<li>
+<p>Which exception is raised when a variable is used before it is defined?</p>
+<p>A) TypeError<br>
+B) ValueError<br>
+<strong>C) NameError</strong><br>
+D) AttributeError</p>
+</li>
+<li>
+<p>Which exception is raised when you try to open a file that does not exist?</p>
+<p><strong>A) FileNotFoundError</strong><br>
+B) IOError<br>
+C) PathError<br>
+D) MissingFileError</p>
+</li>
+<li>
+<p>Which exception is raised when you try to perform an operation on incompatible types (e.g., adding a string to an integer)?</p>
+<p>A) ValueError<br>
+<strong>B) TypeError</strong><br>
+C) AttributeError<br>
+D) OperationError</p>
+</li>
+<li>
+<p>In the restaurant analogy for error types, a "Logic Error" is compared to:</p>
+<p>A) A misspelling on the menu that the printer rejects<br>
+B) Running out of ingredients mid-cooking<br>
+<strong>C) Swapping salt and sugar — the dish is cooked but tastes wrong</strong><br>
+D) Forgetting to turn on the oven</p>
+</li>
+<li>
+<p>In the restaurant analogy, a "Syntax Error" is compared to:</p>
+<p><strong>A) A misspelling on the menu that the printer system rejects</strong><br>
+B) Running out of ingredients mid-cooking<br>
+C) Swapping salt and sugar in the dish<br>
+D) Serving the wrong table</p>
+</li>
+<li>
+<p>In the restaurant analogy, a "Runtime Error" is compared to:</p>
+<p>A) A misspelling on the menu<br>
+B) Swapping salt and sugar<br>
+<strong>C) Running out of flour halfway through baking a cake</strong><br>
+D) Forgetting to write the menu</p>
+</li>
+<li>
+<p>Which tool is BEST suited for finding logic errors in Python?</p>
+<p>A) Reading the error message carefully<br>
+B) Checking syntax highlighting in the IDE<br>
+<strong>C) Unit tests and breakpoint debugging</strong><br>
+D) Running <code>cProfile</code></p>
+</li>
+<li>
+<p>The best tool for finding runtime errors is:</p>
+<p>A) Unit testing only<br>
+B) Profiling with cProfile<br>
+<strong>C) Reading the stack trace and using exception handling</strong><br>
+D) Running the program faster</p>
+</li>
+<li>
+<p>Testing that prevents new code from breaking previously working features is called:</p>
+<p>A) Unit testing<br>
+<strong>B) Regression testing</strong><br>
+C) Edge case testing<br>
+D) Integration testing</p>
+</li>
+<li>
+<p>An off-by-one error is most commonly classified as which type of error?</p>
+<p>A) Syntax error<br>
+B) Runtime error<br>
+<strong>C) Logic error</strong><br>
+D) Import error</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-522-unit-testing-assertions-unittest-pytest">Topic 5.2.2: Unit Testing — Assertions, unittest, pytest</h3>
+<ol start="39">
+<li>
+<p>What is the primary purpose of <strong>unit testing</strong>?</p>
+<p>A) To test the entire application as one system<br>
+B) To measure execution speed of functions<br>
+<strong>C) To test individual functions in isolation and verify their outputs</strong><br>
+D) To deploy software to production</p>
+</li>
+<li>
+<p>What is an <strong>assertion</strong> in the context of testing?</p>
+<p>A) A function that measures execution time<br>
+B) A class that groups related tests<br>
+<strong>C) A statement that checks whether a condition is true and raises an error if not</strong><br>
+D) A comment explaining what a function should do</p>
+</li>
+<li>
+<p>What does the <code>assert</code> keyword do when the condition is FALSE?</p>
+<p>A) Prints a warning message and continues<br>
+B) Returns <code>None</code><br>
+<strong>C) Raises an AssertionError and stops execution</strong><br>
+D) Skips to the next line silently</p>
+</li>
+<li>
+<p>What does the <code>assert</code> keyword do when the condition is TRUE?</p>
+<p>A) Raises an AssertionError<br>
+B) Prints "Test Passed"<br>
+<strong>C) Passes silently — nothing happens</strong><br>
+D) Returns True to the caller</p>
+</li>
+<li>
+<p>The <code>unittest</code> module in Python is:</p>
+<p>A) An external library that must be installed with pip<br>
+<strong>B) A built-in Python module that provides a framework for test cases</strong><br>
+C) A paid debugging tool for professional developers<br>
+D) A module specifically for testing database connections</p>
+</li>
+<li>
+<p>In <code>unittest</code>, test methods must begin with which prefix for automatic discovery?</p>
+<p>A) <code>check_</code><br>
+B) <code>run_</code><br>
+<strong>C) <code>test_</code></strong><br>
+D) <code>assert_</code></p>
+</li>
+<li>
+<p>In <code>unittest</code>, what class must your test class inherit from?</p>
+<p>A) <code>unittest.Test</code><br>
+B) <code>unittest.Runner</code><br>
+<strong>C) <code>unittest.TestCase</code></strong><br>
+D) <code>unittest.Module</code></p>
+</li>
+<li>
+<p>In <code>unittest</code>, which method checks that two values are equal?</p>
+<p><strong>A) <code>assertEqual(a, b)</code></strong><br>
+B) <code>assertSame(a, b)</code><br>
+C) <code>assertMatch(a, b)</code><br>
+D) <code>assertCompare(a, b)</code></p>
+</li>
+<li>
+<p>In <code>unittest</code>, which method checks that a specific exception is raised?</p>
+<p>A) <code>assertException(Error)</code><br>
+B) <code>assertFails(Error)</code><br>
+<strong>C) <code>assertRaises(Error)</code></strong><br>
+D) <code>assertError(Error)</code></p>
+</li>
+<li>
+<p>In <code>unittest</code>, which method checks that two floating-point values are approximately equal?</p>
+<p>A) <code>assertEqual(a, b, decimals=3)</code><br>
+B) <code>assertFloat(a, b)</code><br>
+<strong>C) <code>assertAlmostEqual(a, b, places=3)</code></strong><br>
+D) <code>assertClose(a, b)</code></p>
+</li>
+<li>
+<p>In <code>unittest</code>, what does a single <code>.</code> (dot) in the output represent?</p>
+<p>A) An error in the test<br>
+B) A skipped test<br>
+<strong>C) One test that passed</strong><br>
+D) One test file loaded</p>
+</li>
+<li>
+<p>When <code>unittest</code> output shows <code>FAILED (failures=1)</code>, this means:</p>
+<p>A) The entire program has a syntax error<br>
+<strong>B) One test method's assertion did not hold — a bug was caught</strong><br>
+C) The test file could not be found<br>
+D) Python could not import the module being tested</p>
+</li>
+<li>
+<p><code>pytest</code> is different from <code>unittest</code> in that:</p>
+<p>A) pytest requires test classes; unittest does not<br>
+B) pytest cannot test for raised exceptions<br>
+<strong>C) pytest uses standalone functions starting with <code>test_</code>; no class required</strong><br>
+D) pytest only works with Python 3.10 and above</p>
+</li>
+<li>
+<p>How is <code>pytest</code> installed?</p>
+<p>A) It is built into Python — no installation needed<br>
+B) It comes pre-installed with VS Code<br>
+<strong>C) Using the command <code>pip install pytest</code></strong><br>
+D) It is downloaded from the Python official website manually</p>
+</li>
+<li>
+<p>Which command runs pytest in verbose mode, showing each test name individually?</p>
+<p>A) <code>pytest --verbose</code><br>
+B) <code>pytest -detail</code><br>
+<strong>C) <code>pytest test_file.py -v</code></strong><br>
+D) <code>pytest -show</code></p>
+</li>
+<li>
+<p>In <code>pytest</code>, how do you check that a function raises a specific exception?</p>
+<p>A) <code>assert raises(ZeroDivisionError)</code><br>
+B) <code>expect(ZeroDivisionError): function()</code><br>
+<strong>C) <code>with pytest.raises(ZeroDivisionError): function()</code></strong><br>
+D) <code>assertRaises(ZeroDivisionError, function)</code></p>
+</li>
+<li>
+<p>What is an <strong>edge case</strong> in software testing?</p>
+<p>A) An error that occurs at the edge of the screen in GUI programs<br>
+<strong>B) An input value at the extreme boundary of what is valid</strong><br>
+C) A test that runs only on the first and last line of a function<br>
+D) A special type of runtime error</p>
+</li>
+<li>
+<p>Which of the following is NOT a typical edge case to test for a function accepting numbers?</p>
+<p>A) Zero as input<br>
+B) Negative values<br>
+C) Very large values<br>
+<strong>D) The variable name used in the function</strong></p>
+</li>
+<li>
+<p>Which of the following best describes <strong>regression testing</strong>?</p>
+<p>A) Testing only the newest features added to a program<br>
+<strong>B) Re-running all tests after a change to ensure existing features still work</strong><br>
+C) Testing that a program runs faster than before<br>
+D) Testing only the parts of code that contain loops</p>
+</li>
+<li>
+<p>A test case that verifies <code>calculate_discount(100, 100) == 0.0</code> is testing:</p>
+<p>A) A normal case<br>
+<strong>B) A boundary/edge case (100% discount)</strong><br>
+C) An invalid input case<br>
+D) A regression case</p>
+</li>
+<li>
+<p>A test case that verifies <code>calculate_discount(-50, 10)</code> raises a <code>ValueError</code> is testing:</p>
+<p>A) A normal case<br>
+B) A boundary case<br>
+<strong>C) An invalid input case</strong><br>
+D) A performance case</p>
+</li>
+<li>
+<p>What is a <strong>test suite</strong>?</p>
+<p>A) A single test function in pytest<br>
+<strong>B) A collection of multiple test cases grouped together</strong><br>
+C) The output report generated after running tests<br>
+D) The IDE panel that displays test results</p>
+</li>
+<li>
+<p>Which <code>unittest</code> method verifies that a value IS <code>None</code>?</p>
+<p>A) <code>assertEmpty(x)</code><br>
+B) <code>assertZero(x)</code><br>
+<strong>C) <code>assertIsNone(x)</code></strong><br>
+D) <code>assertBlank(x)</code></p>
+</li>
+<li>
+<p>Which <code>unittest</code> method verifies that a condition is <code>False</code>?</p>
+<p>A) <code>assertNot(x)</code><br>
+B) <code>assertFail(x)</code><br>
+<strong>C) <code>assertFalse(x)</code></strong><br>
+D) <code>assertNegative(x)</code></p>
+</li>
+<li>
+<p>In the car factory analogy for unit testing, individual "parts" being tested represent:</p>
+<p>A) Complete programs<br>
+<strong>B) Individual functions tested in isolation</strong><br>
+C) Entire databases<br>
+D) User interface screens</p>
+</li>
+<li>
+<p>Which of the following is a key advantage of automated unit tests over manual testing?</p>
+<p>A) Automated tests are always faster to write than manual tests<br>
+B) Automated tests do not require any programming knowledge<br>
+<strong>C) Automated tests can be re-run instantly every time the code changes</strong><br>
+D) Automated tests can replace all forms of human review</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-523-breakpoints-and-watch-expressions">Topic 5.2.3: Breakpoints and Watch Expressions</h3>
+<ol start="65">
+<li>
+<p>What is a <strong>breakpoint</strong> in an IDE debugger?</p>
+<p>A) A section of code that always causes a runtime error<br>
+<strong>B) A marker that pauses program execution at a specific line</strong><br>
+C) A variable whose value is being monitored continuously<br>
+D) A function that slows down execution for testing</p>
+</li>
+<li>
+<p>In VS Code, how do you set a breakpoint on a line of code?</p>
+<p>A) Right-click the line and select "Run to here"<br>
+B) Press F10 while the cursor is on the line<br>
+<strong>C) Click in the left margin next to the line number</strong><br>
+D) Type <code>breakpoint()</code> at the end of the line</p>
+</li>
+<li>
+<p>In PyCharm, how do you set a breakpoint?</p>
+<p>A) Press Ctrl+B on the target line<br>
+<strong>B) Click the grey area to the right of the line number</strong><br>
+C) Go to Run → Add Breakpoint from the menu<br>
+D) Drag the line number to the Debug panel</p>
+</li>
+<li>
+<p>In PyCharm, which keyboard shortcut starts the debugger?</p>
+<p>A) F5<br>
+B) Ctrl+D<br>
+<strong>C) Shift+F9</strong><br>
+D) Alt+F10</p>
+</li>
+<li>
+<p>When a program pauses at a breakpoint, execution pauses:</p>
+<p><strong>A) BEFORE executing the line where the breakpoint is placed</strong><br>
+B) AFTER executing the line where the breakpoint is placed<br>
+C) At the next function call after the breakpoint<br>
+D) At the end of the current function</p>
+</li>
+<li>
+<p>What is a <strong>watch expression</strong>?</p>
+<p>A) A timer that measures how long a line of code takes to execute<br>
+<strong>B) A variable name or expression that the debugger tracks and updates continuously</strong><br>
+C) A special type of breakpoint that only triggers on certain conditions<br>
+D) A tool that captures all output printed to the console</p>
+</li>
+<li>
+<p>Watch expressions are updated:</p>
+<p>A) Only when you manually refresh the watch panel<br>
+B) Once per second during execution<br>
+<strong>C) Automatically every time you step to the next line</strong><br>
+D) Only at the end of each function</p>
+</li>
+<li>
+<p>The <strong>Step Over</strong> debugger action (F10) does which of the following?</p>
+<p><strong>A) Executes the current line and pauses at the next line, without entering called functions</strong><br>
+B) Enters any function called on the current line<br>
+C) Finishes the current function and returns to the caller<br>
+D) Continues execution until the next breakpoint</p>
+</li>
+<li>
+<p>The <strong>Step Into</strong> debugger action (F11) does which of the following?</p>
+<p>A) Executes the current line without entering called functions<br>
+<strong>B) Enters the function being called on the current line</strong><br>
+C) Finishes the current function and returns to the caller<br>
+D) Runs all remaining code without pausing</p>
+</li>
+<li>
+<p>The <strong>Step Out</strong> debugger action (Shift+F11) does which of the following?</p>
+<p>A) Executes the current line and pauses at the next line<br>
+B) Enters the function being called on the current line<br>
+<strong>C) Finishes executing the current function and returns to the line that called it</strong><br>
+D) Exits the debugger completely</p>
+</li>
+<li>
+<p>The <strong>Resume/Continue</strong> debugger action (F5) does which of the following?</p>
+<p>A) Exits the program immediately<br>
+B) Restarts the program from the beginning<br>
+<strong>C) Continues running until the next breakpoint is hit or the program ends</strong><br>
+D) Steps over the next 10 lines automatically</p>
+</li>
+<li>
+<p>What is an <strong>off-by-one error</strong>?</p>
+<p>A) A runtime error caused by dividing by one<br>
+<strong>B) A logic error where a loop starts or ends one position off from the correct value</strong><br>
+C) A syntax error caused by missing one quotation mark<br>
+D) An error where a function is called one extra time</p>
+</li>
+<li>
+<p>Which advantage does a debugger with breakpoints have over using <code>print()</code> statements for debugging?</p>
+<p>A) <code>print()</code> statements permanently alter the code and cannot be removed<br>
+B) Debuggers run the program faster than using <code>print()</code> statements<br>
+<strong>C) Debuggers show ALL variable values simultaneously without modifying the code</strong><br>
+D) <code>print()</code> statements cannot show integer values</p>
+</li>
+<li>
+<p>In VS Code, which keyboard shortcut starts the debugger?</p>
+<p><strong>A) F5</strong><br>
+B) F10<br>
+C) F11<br>
+D) Ctrl+D</p>
+</li>
+<li>
+<p>When would you choose <strong>Step Into</strong> over <strong>Step Over</strong>?</p>
+<p>A) When you want to skip an entire loop<br>
+B) When you want to see the program finish faster<br>
+<strong>C) When you want to examine what happens inside a function being called</strong><br>
+D) When you want to stop the debugger immediately</p>
+</li>
+<li>
+<p>The Variables panel in the debugger during a paused session shows:</p>
+<p>A) Only the variable you are currently watching<br>
+B) Only variables in the main function<br>
+<strong>C) All variables currently in scope at the paused line</strong><br>
+D) Only variables that have changed since the last step</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-524-exception-handling">Topic 5.2.4: Exception Handling</h3>
+<ol start="81">
+<li>
+<p>What is the purpose of exception handling in Python?</p>
+<p>A) To make programs run faster by skipping error-prone code<br>
+B) To find and automatically fix bugs in the code<br>
+<strong>C) To anticipate runtime errors and respond to them gracefully instead of crashing</strong><br>
+D) To prevent logic errors from occurring</p>
+</li>
+<li>
+<p>Which Python keyword begins an exception handling block?</p>
+<p><strong>A) <code>try</code></strong><br>
+B) <code>catch</code><br>
+C) <code>handle</code><br>
+D) <code>begin</code></p>
+</li>
+<li>
+<p>Which Python keyword is used to catch a specific exception type?</p>
+<p>A) <code>catch</code><br>
+B) <code>handle</code><br>
+<strong>C) <code>except</code></strong><br>
+D) <code>error</code></p>
+</li>
+<li>
+<p>The <code>else</code> block in a <code>try-except-else-finally</code> structure runs:</p>
+<p>A) Always, regardless of exceptions<br>
+B) Only when an exception is raised<br>
+<strong>C) Only when NO exception is raised in the <code>try</code> block</strong><br>
+D) Only when the <code>finally</code> block has completed</p>
+</li>
+<li>
+<p>The <code>finally</code> block in a <code>try-except-finally</code> structure runs:</p>
+<p>A) Only when an exception is raised<br>
+B) Only when no exception is raised<br>
+<strong>C) Always, regardless of whether an exception occurred</strong><br>
+D) Only when the program is about to exit</p>
+</li>
+<li>
+<p>In which scenario is the <code>finally</code> block most useful?</p>
+<p>A) When you want to repeat the try block if it fails<br>
+B) When you want to catch multiple exception types<br>
+<strong>C) When you need to close a file or database connection no matter what happens</strong><br>
+D) When you want to restart the program after an error</p>
+</li>
+<li>
+<p>Which statement correctly raises a <code>ValueError</code> in Python?</p>
+<p>A) <code>throw ValueError("Invalid")</code><br>
+B) <code>error ValueError("Invalid")</code><br>
+<strong>C) <code>raise ValueError("Invalid")</code></strong><br>
+D) <code>except ValueError("Invalid")</code></p>
+</li>
+<li>
+<p>What is a <strong>custom exception</strong>?</p>
+<p>A) A built-in Python exception with a modified error message<br>
+<strong>B) A user-defined exception class that inherits from Python's <code>Exception</code> class</strong><br>
+C) An exception that only triggers on specific operating systems<br>
+D) An exception raised only by the <code>raise</code> keyword without a class name</p>
+</li>
+<li>
+<p>To define a custom exception called <code>InvalidAgeError</code>, which class must it inherit from?</p>
+<p>A) <code>RuntimeError</code><br>
+B) <code>BaseClass</code><br>
+<strong>C) <code>Exception</code></strong><br>
+D) <code>Error</code></p>
+</li>
+<li>
+<p>When you write <code>except ValueError as e:</code>, the variable <code>e</code> contains:</p>
+<p>A) The line number where the error occurred<br>
+B) The name of the function that raised the error<br>
+<strong>C) The exception object, which includes the error message</strong><br>
+D) The type name as a string</p>
+</li>
+<li>
+<p>Which of the following correctly catches both <code>ValueError</code> and <code>TypeError</code> in one <code>except</code> block?</p>
+<p>A) <code>except ValueError, TypeError:</code><br>
+<strong>B) <code>except (ValueError, TypeError):</code></strong><br>
+C) <code>except ValueError or TypeError:</code><br>
+D) <code>except ValueError | TypeError:</code></p>
+</li>
+<li>
+<p>What happens if a <code>try</code> block raises an exception and there is NO matching <code>except</code> block?</p>
+<p>A) The exception is silently ignored<br>
+B) The program restarts from the beginning<br>
+<strong>C) The exception propagates upward and may crash the program</strong><br>
+D) Python automatically handles it and continues</p>
+</li>
+<li>
+<p>If the Ariane 5 rocket's software had used a <code>try-except</code> block for the integer conversion, the disaster:</p>
+<p>A) Would have still occurred because try-except blocks cannot handle hardware errors<br>
+<strong>B) Could have been prevented by gracefully handling the overflow instead of crashing</strong><br>
+C) Would have been delayed but not prevented<br>
+D) Would have had no effect since the backup system also failed</p>
+</li>
+<li>
+<p>The <code>try</code> block should contain:</p>
+<p><strong>A) Code that might raise an exception</strong><br>
+B) Only the error message to display<br>
+C) The cleanup code that must always run<br>
+D) Code that has already been tested and confirmed to work</p>
+</li>
+<li>
+<p>What is the difference between <code>except Exception</code> and <code>except ValueError</code>?</p>
+<p>A) They are identical — both catch all exceptions<br>
+B) <code>except Exception</code> only catches syntax errors<br>
+<strong>C) <code>except Exception</code> catches almost all exception types; <code>except ValueError</code> catches only ValueError</strong><br>
+D) <code>except ValueError</code> is the preferred way to catch all exceptions</p>
+</li>
+<li>
+<p>Which block of the exception handling structure provides a success confirmation message?</p>
+<p>A) <code>try</code> block<br>
+B) <code>except</code> block<br>
+<strong>C) <code>else</code> block</strong><br>
+D) <code>finally</code> block</p>
+</li>
+<li>
+<p>In a database application, where should the <code>connection.close()</code> call be placed?</p>
+<p>A) In the <code>try</code> block only<br>
+B) In the <code>except</code> block only<br>
+C) In the <code>else</code> block only<br>
+<strong>D) In the <code>finally</code> block, so it always runs</strong></p>
+</li>
+<li>
+<p>What does <code>raise</code> do when used inside an <code>except</code> block with no argument?</p>
+<p>A) Creates a new generic exception<br>
+B) Cancels the current exception<br>
+<strong>C) Re-raises the current exception to be handled by a caller</strong><br>
+D) Converts the exception to a warning</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-53-profiling-and-optimization">Topic 5.3: Profiling and Optimization</h3>
+<ol start="99">
+<li>
+<p>What is <strong>profiling</strong> in the context of Python programming?</p>
+<p>A) Creating a user profile in the application<br>
+B) Writing comments describing each function's purpose<br>
+<strong>C) Measuring a program's execution time and resource usage per function to find bottlenecks</strong><br>
+D) Testing all functions with automated assertions</p>
+</li>
+<li>
+<p>What is a <strong>performance bottleneck</strong>?</p>
+<p><strong>A) A part of the code that is disproportionately slower than the rest, limiting overall speed</strong><br>
+ B) A syntax error that causes the program to run slowly<br>
+ C) A function that uses too many local variables<br>
+ D) Any function that is called more than 100 times</p>
+</li>
+<li>
+<p>Which Python module is used for detailed, function-level profiling?</p>
+<p>A) <code>timeit</code><br>
+ B) <code>profile_tool</code><br>
+<strong>C) <code>cProfile</code></strong><br>
+ D) <code>speedtest</code></p>
+</li>
+<li>
+<p>Which Python module is used to compare the execution time of two specific code snippets?</p>
+<p><strong>A) <code>timeit</code></strong><br>
+ B) <code>cProfile</code><br>
+ C) <code>time_compare</code><br>
+ D) <code>benchmark</code></p>
+</li>
+<li>
+<p>In <code>cProfile</code> output, the column <code>tottime</code> represents:</p>
+<p>A) The total time the program has been running<br>
+<strong>B) The total time spent inside that function, NOT counting time in sub-functions it called</strong><br>
+ C) The cumulative time including all functions called by that function<br>
+ D) The average time per call across all calls</p>
+</li>
+<li>
+<p>In <code>cProfile</code> output, the column <code>cumtime</code> represents:</p>
+<p>A) The total time inside the function only<br>
+ B) The average time per call<br>
+<strong>C) The total time INCLUDING all functions called by this function</strong><br>
+ D) The number of times the function was called</p>
+</li>
+<li>
+<p>In <code>cProfile</code> output, the column <code>ncalls</code> represents:</p>
+<p>A) The total execution time<br>
+ B) The cumulative time<br>
+<strong>C) How many times that function was called</strong><br>
+ D) The number of exceptions raised inside the function</p>
+</li>
+<li>
+<p>Which function was identified as the bottleneck in the <code>slow_sum</code> vs <code>fast_sum</code> example?</p>
+<p><strong>A) <code>slow_sum()</code> — because it uses a manual loop, taking 80% of total time</strong><br>
+ B) <code>fast_sum()</code> — because it uses an external function<br>
+ C) <code>main()</code> — because it calls both functions<br>
+ D) <code>process_data()</code> — because it is called from <code>main()</code></p>
+</li>
+<li>
+<p>Why is <code>fast_sum()</code> using Python's built-in <code>sum()</code> faster than <code>slow_sum()</code> using a loop?</p>
+<p>A) <code>sum()</code> uses parallel processing automatically<br>
+<strong>B) <code>sum()</code> is implemented in C — a compiled, low-level language — making it much faster than Python loops</strong><br>
+ C) <code>sum()</code> skips checking each element<br>
+ D) <code>sum()</code> only works with integer lists, making it specialized</p>
+</li>
+<li>
+<p>What is the correct professional sequence when optimizing a slow program?</p>
+<p>A) Optimize the smallest function first, then work upward<br>
+ B) Optimize all functions simultaneously<br>
+<strong>C) Profile first → identify bottleneck → refactor → profile again → run tests</strong><br>
+ D) Rewrite the program completely before profiling</p>
+</li>
+<li>
+<p>You should NEVER optimize code before:</p>
+<p>A) Writing documentation for the functions<br>
+ B) Adding more comments to the code<br>
+<strong>C) Running a profiler to measure where the time is actually being spent</strong><br>
+ D) Deploying the code to a test server</p>
+</li>
+<li>
+<p>A nested loop with <code>range(10000)</code> for both inner and outer loops performs how many total operations?</p>
+<p>A) 10,000<br>
+ B) 20,000<br>
+<strong>C) 100,000,000 (10,000 × 10,000)</strong><br>
+ D) 1,000,000</p>
+</li>
+<li>
+<p>What is the time complexity of checking <code>if item in my_list</code> for a list of <code>n</code> items?</p>
+<p><strong>A) O(n) — the entire list may need to be scanned</strong><br>
+ B) O(1) — Python lists use hash tables<br>
+ C) O(log n) — lists are always sorted<br>
+ D) O(n²) — requires two passes</p>
+</li>
+<li>
+<p>What is the time complexity of checking <code>if item in my_set</code> for a set of <code>n</code> items?</p>
+<p>A) O(n) — the entire set is scanned<br>
+ B) O(log n) — sets use binary search<br>
+<strong>C) O(1) — sets use hash tables for constant-time lookup</strong><br>
+ D) O(n²) — requires all pairs to be checked</p>
+</li>
+<li>
+<p>What is <strong>refactoring</strong>?</p>
+<p>A) Completely rewriting a program in a different programming language<br>
+ B) Adding more features to a program to make it faster<br>
+<strong>C) Rewriting code to be faster or more efficient without changing what it does</strong><br>
+ D) Removing all comments from a program to reduce file size</p>
+</li>
+<li>
+<p>What is <strong>memory profiling</strong>?</p>
+<p>A) Testing if a program remembers previous user inputs<br>
+<strong>B) Measuring how much RAM a program uses per object or data structure</strong><br>
+ C) Counting how many variables a function uses<br>
+ D) Checking if a program's output matches expected results</p>
+</li>
+<li>
+<p>Which uses significantly less memory: a Python list or a Python generator?</p>
+<p>A) A list — because it is faster to access<br>
+<strong>B) A generator — because it creates values one at a time rather than storing all at once</strong><br>
+ C) They use the same amount of memory<br>
+ D) A list — because Python optimizes list storage</p>
+</li>
+<li>
+<p>In the race car pit stop analogy for profiling, what does measuring each part of the race represent?</p>
+<p>A) Running unit tests on each function<br>
+<strong>B) Profiling each function to see where time is being spent</strong><br>
+ C) Setting breakpoints at each function call<br>
+ D) Writing exception handlers for each stage</p>
+</li>
+<li>
+<p>A binary search on 1,000,000 elements is approximately how many times faster than a linear search?</p>
+<p>A) 10 times faster<br>
+ B) 1,000 times faster<br>
+<strong>C) Approximately 28,000 times faster</strong><br>
+ D) 2 times faster</p>
+</li>
+<li>
+<p>The <code>time</code> module's <code>time.time()</code> function is used to:</p>
+<p><strong>A) Record the current timestamp so the difference before and after code gives elapsed time</strong><br>
+ B) Pause program execution for a specified number of seconds<br>
+ C) Format dates and times for display<br>
+ D) Profile every function in a program automatically</p>
+</li>
+<li>
+<p>After refactoring code to make it faster, you should ALWAYS:</p>
+<p>A) Delete the old version of the function<br>
+ B) Add a comment explaining why the new code is faster<br>
+<strong>C) Run all unit tests to verify the output is still correct</strong><br>
+ D) Run cProfile again before testing correctness</p>
+</li>
+<li>
+<p>The <code>timeit</code> module runs a code snippet multiple times (e.g., <code>number=10</code>) in order to:</p>
+<p>A) Check that the function produces the correct output 10 times<br>
+<strong>B) Reduce measurement noise and get a more accurate average execution time</strong><br>
+ C) Guarantee that no exceptions are raised<br>
+ D) Apply the optimization automatically after 10 runs</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<hr>
+<h3 id="topic-51-introduction-software-life-cycle-and-debugging-mindset_1">Topic 5.1: Introduction — Software Life Cycle and Debugging Mindset</h3>
+<ol>
+<li>
+<p>What are the four stages of the Software Development Life Cycle? Name them in the correct order.</p>
+</li>
+<li>
+<p>Briefly explain why testing and deployment often take more time than writing the code itself.</p>
+</li>
+<li>
+<p>Who was Grace Hopper, and what is her significance to the history of computer debugging?</p>
+</li>
+<li>
+<p>What was the cause of the Ariane 5 rocket explosion in 1996? What programming concept could have prevented it?</p>
+</li>
+<li>
+<p>Briefly describe the Knight Capital trading disaster of 2012. What type of testing failure contributed to it?</p>
+</li>
+<li>
+<p>Define the term <strong>"bug"</strong> in the context of computer programming. Where does the term originally come from?</p>
+</li>
+<li>
+<p>Define <strong>testing</strong> and <strong>debugging</strong> in your own words. How are they different from each other?</p>
+</li>
+<li>
+<p>List the six steps of the detective debugging process in the correct order.</p>
+</li>
+<li>
+<p>Why is approaching a bug "like a detective" a useful mindset for programmers?</p>
+</li>
+<li>
+<p>What was the Therac-25, and why is it considered the most important example of why testing is not optional?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-521-error-types-syntax-runtime-logic">Topic 5.2.1: Error Types — Syntax, Runtime, Logic</h3>
+<ol start="11">
+<li>
+<p>Define a <strong>syntax error</strong> and give one example of Python code that contains a syntax error.</p>
+</li>
+<li>
+<p>Define a <strong>runtime error</strong> and give one example of a situation that causes one.</p>
+</li>
+<li>
+<p>Define a <strong>logic error</strong> and explain why it is harder to detect than a syntax error or runtime error.</p>
+</li>
+<li>
+<p>What is a <strong>stack trace</strong>? Describe how you read one correctly.</p>
+</li>
+<li>
+<p>Why is the caret symbol (<code>^</code>) in a Python error message helpful to a programmer?</p>
+</li>
+<li>
+<p>Name five common Python runtime exceptions and describe when each one is raised.</p>
+</li>
+<li>
+<p>Differentiate between a <code>ValueError</code> and a <code>TypeError</code>. Give a specific example of each.</p>
+</li>
+<li>
+<p>Differentiate between an <code>IndexError</code> and a <code>KeyError</code>. Give a specific example of each.</p>
+</li>
+<li>
+<p>Explain the restaurant analogy for the three types of programming errors (Syntax, Runtime, Logic).</p>
+</li>
+<li>
+<p>What tool is most effective for detecting each of the three error types? Match each error type to its best detection tool.</p>
+</li>
+<li>
+<p>A program that calculates the average of a list of numbers runs without errors when given a list but crashes when given an empty list. What type of error is this? What exception does Python raise?</p>
+</li>
+<li>
+<p>Predict the type of error and the specific exception name for this code: <code>result = "hello" + 5</code>. Explain why.</p>
+</li>
+<li>
+<p>A function uses <code>&gt;</code> instead of <code>&gt;=</code> in a conditional check. What type of error is this? Why does Python not catch it automatically?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-522-unit-testing-assertions-unittest-pytest_1">Topic 5.2.2: Unit Testing — Assertions, unittest, pytest</h3>
+<ol start="24">
+<li>
+<p>Define <strong>unit testing</strong> in two to three sentences. Why is it compared to a car factory testing individual parts?</p>
+</li>
+<li>
+<p>What is an <strong>assertion</strong> in Python? What happens when an assertion is True? What happens when it is False?</p>
+</li>
+<li>
+<p>What is the <code>unittest</code> module? Is it built-in or external? What class must a test class inherit from?</p>
+</li>
+<li>
+<p>List four <code>unittest</code> assertion methods and describe what each one checks.</p>
+</li>
+<li>
+<p>What is <code>pytest</code>? How is it different from <code>unittest</code> in terms of how you write test functions?</p>
+</li>
+<li>
+<p>How do you install <code>pytest</code>? Write the exact command.</p>
+</li>
+<li>
+<p>What does the <code>-v</code> flag do when running <code>pytest</code>?</p>
+</li>
+<li>
+<p>What is a <strong>test case</strong>? What does it contain?</p>
+</li>
+<li>
+<p>Explain what an <strong>edge case</strong> is and why it is important to include edge cases in your test suite.</p>
+</li>
+<li>
+<p>Write a list of five questions you should ask yourself when analyzing edge cases for any function.</p>
+</li>
+<li>
+<p>Differentiate between a <strong>normal case</strong>, an <strong>edge case</strong>, and an <strong>invalid input case</strong> in testing. Give an example of each for a function that calculates a percentage.</p>
+</li>
+<li>
+<p>What does it mean when <code>unittest</code> output shows <code>FAILED (failures=1)</code>? Is this always bad? Explain.</p>
+</li>
+<li>
+<p>In <code>pytest</code>, how do you write a test that verifies a function raises a <code>ZeroDivisionError</code> when dividing by zero?</p>
+</li>
+<li>
+<p>What is <strong>regression testing</strong> and why is it important after making changes to a program?</p>
+</li>
+<li>
+<p>Explain why a failing unit test is described as a "gift" rather than a punishment.</p>
+</li>
+<li>
+<p>What is a <strong>test suite</strong>? How is it different from a single test case?</p>
+</li>
+<li>
+<p>Why should you write test cases BEFORE looking at the implementation of a function (as in the "Grab a Partner" activity)?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-523-breakpoints-and-watch-expressions_1">Topic 5.2.3: Breakpoints and Watch Expressions</h3>
+<ol start="41">
+<li>
+<p>Define a <strong>breakpoint</strong> in your own words. What happens when program execution reaches a breakpoint?</p>
+</li>
+<li>
+<p>How do you set a breakpoint in VS Code? How do you set one in PyCharm?</p>
+</li>
+<li>
+<p>Define a <strong>watch expression</strong>. When are watch expressions updated during a debugging session?</p>
+</li>
+<li>
+<p>Describe the difference between <strong>Step Over</strong> and <strong>Step Into</strong> in a debugger.</p>
+</li>
+<li>
+<p>Describe the difference between <strong>Step Out</strong> and <strong>Resume/Continue</strong> in a debugger.</p>
+</li>
+<li>
+<p>What are two specific situations where using a debugger is more efficient than using <code>print()</code> statements?</p>
+</li>
+<li>
+<p>What is an <strong>off-by-one error</strong>? Give a short example of code that contains one.</p>
+</li>
+<li>
+<p>When paused at a breakpoint, what information can you see in the Variables panel of the debugger?</p>
+</li>
+<li>
+<p>Write the keyboard shortcuts for Step Over, Step Into, Step Out, and Resume in most IDEs.</p>
+</li>
+<li>
+<p>Why is it said that breakpoints give you "total visibility into program execution" compared to <code>print()</code> debugging?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-524-exception-handling_1">Topic 5.2.4: Exception Handling</h3>
+<ol start="51">
+<li>
+<p>Define <strong>exception handling</strong> in two to three sentences.</p>
+</li>
+<li>
+<p>Describe the purpose of each block in a <code>try-except-else-finally</code> structure: <code>try</code>, <code>except</code>, <code>else</code>, <code>finally</code>.</p>
+</li>
+<li>
+<p>When does the <code>else</code> block execute? When does it NOT execute?</p>
+</li>
+<li>
+<p>When does the <code>finally</code> block execute? Give one practical example of what code belongs in a <code>finally</code> block.</p>
+</li>
+<li>
+<p>What is the <code>raise</code> keyword used for in Python? Give a short example.</p>
+</li>
+<li>
+<p>Define a <strong>custom exception</strong>. What class must a custom exception inherit from?</p>
+</li>
+<li>
+<p>Write the Python syntax to define a custom exception called <code>InvalidScoreError</code>.</p>
+</li>
+<li>
+<p>How do you catch multiple different exception types in a single <code>try</code> block? Write the syntax.</p>
+</li>
+<li>
+<p>What is the difference between <code>except Exception</code> and <code>except ValueError</code>?</p>
+</li>
+<li>
+<p>Explain what happens if a <code>try</code> block raises an exception but no matching <code>except</code> block exists.</p>
+</li>
+<li>
+<p>Why is the <code>finally</code> block especially important in database applications?</p>
+</li>
+<li>
+<p>How does exception handling relate to the Ariane 5 disaster? What specific block would have prevented the crash?</p>
+</li>
+<li>
+<p>Differentiate between <strong>raising</strong> an exception and <strong>handling</strong> an exception.</p>
+</li>
+<li>
+<p>In the context of exception handling, what does "graceful failure" mean?</p>
+</li>
+<li>
+<p>Can a <code>try</code> block have multiple <code>except</code> blocks? Explain with a brief example.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-53-profiling-and-optimization_1">Topic 5.3: Profiling and Optimization</h3>
+<ol start="66">
+<li>
+<p>Define <strong>profiling</strong> in the context of Python programming.</p>
+</li>
+<li>
+<p>Define <strong>performance bottleneck</strong>. Why should you always fix the biggest bottleneck first?</p>
+</li>
+<li>
+<p>What is the <code>cProfile</code> module? What kind of information does it report?</p>
+</li>
+<li>
+<p>What is the <code>timeit</code> module? How is it different from <code>cProfile</code>?</p>
+</li>
+<li>
+<p>Explain the meaning of the <code>tottime</code> column in <code>cProfile</code> output.</p>
+</li>
+<li>
+<p>Explain the meaning of the <code>cumtime</code> column in <code>cProfile</code> output.</p>
+</li>
+<li>
+<p>Define <strong>refactoring</strong>. What must remain unchanged after you refactor code?</p>
+</li>
+<li>
+<p>What is a <strong>memory leak</strong>? Why is it dangerous in a long-running program?</p>
+</li>
+<li>
+<p>Explain the difference between a Python <strong>list</strong> and a Python <strong>generator</strong> in terms of memory usage.</p>
+</li>
+<li>
+<p>Why should you NEVER optimize code before profiling it first?</p>
+</li>
+<li>
+<p>Why is <code>if item in my_set</code> faster than <code>if item in my_list</code> for large data collections?</p>
+</li>
+<li>
+<p>What is the time complexity of a nested loop where both inner and outer loops run <code>n</code> times? What does this mean for performance?</p>
+</li>
+<li>
+<p>Explain why Python's built-in functions like <code>sum()</code>, <code>max()</code>, and <code>min()</code> are faster than equivalent Python loops.</p>
+</li>
+<li>
+<p>After refactoring code to make it faster, what MUST you always do before finishing?</p>
+</li>
+<li>
+<p>Describe the F1 pit stop analogy for profiling. What does each part of the analogy represent in programming?</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<hr>
+<h3 id="topic-51-introduction-software-life-cycle-and-debugging-mindset_2">Topic 5.1: Introduction — Software Life Cycle and Debugging Mindset</h3>
+<ol>
+<li>The Ariane 5 rocket explosion in 1996 and the Therac-25 radiation machine failures are two of the most famous software disasters in history.</li>
+</ol>
+<p>a) Describe the technical cause of the Ariane 5 explosion. Which specific programming concept, if applied, could have directly prevented the disaster?</p>
+<p>b) Describe the cause of the Therac-25 failures. What type of testing failure contributed to the tragedy?</p>
+<p>c) Compare the two disasters: what do they have in common in terms of software development failures? What lessons can modern developers learn from each?</p>
+<p>d) Discuss why software testing is an <strong>ethical responsibility</strong> in safety-critical systems such as medical devices, aviation, and self-driving cars — not just a technical best practice.</p>
+<ol start="2">
+<li>The Software Development Life Cycle consists of four stages.</li>
+</ol>
+<p>a) Name and describe each stage in the correct order.</p>
+<p>b) Explain why testing and deployment often take more time than writing the code itself. Support your answer with at least two reasons.</p>
+<p>c) How do testing and debugging relate to each other? Are they the same process? Explain the key difference.</p>
+<p>d) A beginner programmer says: <em>"I'll just write the code and fix bugs as users report them."</em> Evaluate this approach. What are the specific risks and costs of finding bugs in production versus finding them during testing?</p>
+<ol start="3">
+<li>The "detective mindset" is described as the correct approach to debugging.</li>
+</ol>
+<p>a) List and explain each step of the six-step detective debugging process.</p>
+<p>b) For each step, describe a real tool or technique from this chapter that supports that step (e.g., which tool supports the "TEST" step?).</p>
+<p>c) Explain why randomly changing code and hoping it fixes the bug is an inferior approach to the detective process. What specific problems does random guessing create?</p>
+<hr>
+<h3 id="topic-521-error-types-syntax-runtime-logic_1">Topic 5.2.1: Error Types — Syntax, Runtime, Logic</h3>
+<ol start="4">
+<li>Python programs can contain three types of errors: syntax errors, runtime errors, and logic errors.</li>
+</ol>
+<p>a) Define each error type precisely and explain when Python detects it.</p>
+<p>b) For each error type, provide a complete Python code example (at least 5 lines) that demonstrates the error.</p>
+<p>c) Explain which tool is most effective for finding each type of error and why.</p>
+<p>d) A student says: <em>"Logic errors are not as serious as runtime errors because the program doesn't crash."</em> Evaluate this statement. Do you agree or disagree? Justify your answer with reference to real-world consequences.</p>
+<ol start="5">
+<li>Stack traces are essential tools for understanding runtime errors.</li>
+</ol>
+<p>a) Define a stack trace. Why should you always read a stack trace from the <strong>bottom up</strong>?</p>
+<p>b) A student encounters this stack trace:<br>
+<code>Traceback (most recent call last):
+     File "school.py", line 15, in &lt;module&gt;
+       result = process_grades(students)
+     File "school.py", line 8, in process_grades
+       average = total / count
+   ZeroDivisionError: division by zero</code><br>
+   Walk through this stack trace line by line. Identify: (i) which file contains the bug, (ii) which function contains the bug, (iii) which line the error occurs on, and (iv) what the bug is.</p>
+<p>c) Explain how you would fix the bug identified in part (b) using both: (i) a conditional check before the division, and (ii) a <code>try-except</code> block.</p>
+<p>d) Create a table listing at least six common Python exceptions, when each is raised, and one example code snippet for each.</p>
+<ol start="6">
+<li>An off-by-one error is one of the most common logic errors in programming.</li>
+</ol>
+<p>a) Define an off-by-one error precisely. Why is it classified as a logic error rather than a syntax or runtime error?</p>
+<p>b) Write a Python function <code>count_items(data)</code> that is supposed to return the number of items in a list. Write a version with an off-by-one error, and then write the corrected version.</p>
+<p>c) Describe the exact step-by-step debugger process you would use to find the off-by-one error in part (b), including: (i) where you place the breakpoint, (ii) which debugger action you use (Step Over or Step Into), and (iii) what variable values you check in the Watch panel.</p>
+<p>d) Write a <code>pytest</code> test suite with at least five test cases that would catch the off-by-one error in part (b) before you even run the debugger.</p>
+<hr>
+<h3 id="topic-522-unit-testing-assertions-unittest-pytest_2">Topic 5.2.2: Unit Testing — Assertions, unittest, pytest</h3>
+<ol start="7">
+<li>Unit testing is a fundamental practice in professional software development.</li>
+</ol>
+<p>a) Define unit testing. Explain the car factory analogy in detail — what do the "parts," the "workbench," and the "final assembly" represent in software development terms?</p>
+<p>b) Explain the role of the <code>assert</code> keyword. What does it do when the condition is True? When False? Why is it the foundation of automated testing?</p>
+<p>c) Write a complete Python function <code>calculate_bmi(weight_kg, height_m)</code> that returns BMI rounded to 2 decimal places and raises <code>ValueError</code> for non-positive weight or height.</p>
+<p>d) Write a complete <code>unittest</code> test class for <code>calculate_bmi()</code> with at least eight test cases covering: normal values, boundary values (minimum valid input), and invalid inputs. Include the <code>if __name__ == "__main__": unittest.main()</code> block.</p>
+<p>e) Explain what each <code>unittest</code> method you used does (e.g., <code>assertEqual</code>, <code>assertRaises</code>, <code>assertAlmostEqual</code>).</p>
+<ol start="8">
+<li>The <code>pytest</code> framework simplifies writing test cases compared to <code>unittest</code>.</li>
+</ol>
+<p>a) Compare <code>unittest</code> and <code>pytest</code> on the following dimensions: (i) how tests are organized, (ii) how assertions are written, (iii) how exceptions are tested, (iv) how tests are discovered and run.</p>
+<p>b) Write the complete <code>pytest</code> test file for the <code>calculate_discount(price, discount_percent)</code> function from the chapter. Include: two normal cases, two boundary edge cases (0% and 100% discount), two invalid input cases (negative price, discount &gt; 100), and one decimal result test.</p>
+<p>c) Explain what output you would see if the <code>calculate_discount()</code> function had a bug where it returned <code>price</code> unchanged instead of applying the discount. Show the exact failing test output format.</p>
+<p>d) A student says: <em>"I tested my function with input (100, 20) and it returned 80.0, so my function is correct."</em> Is this sufficient testing? Explain what additional test cases are needed and why.</p>
+<ol start="9">
+<li>Edge case analysis is a critical skill in software testing.</li>
+</ol>
+<p>a) Define an <strong>edge case</strong> and explain why normal test cases alone are insufficient for verifying software correctness.</p>
+<p>b) For a function <code>is_valid_password(password)</code> that accepts passwords between 8–20 characters containing at least one digit, describe all edge cases you would test. List at least eight test cases.</p>
+<p>c) Write the complete <code>pytest</code> test file for <code>is_valid_password()</code>, including the function implementation and all test cases from part (b).</p>
+<p>d) Explain the concept of <strong>boundary value analysis</strong> — why do bugs most frequently appear at the exact boundaries of valid input ranges rather than in the middle?</p>
+<p>e) A student implements <code>is_valid_password()</code> but writes <code>len(password) &gt; 8</code> instead of <code>len(password) &gt;= 8</code>. Which specific test case from part (b) would catch this bug? Explain how.</p>
+<hr>
+<h3 id="topic-523-breakpoints-and-watch-expressions_2">Topic 5.2.3: Breakpoints and Watch Expressions</h3>
+<ol start="10">
+<li>
+<p>IDE debuggers with breakpoints and watch expressions are powerful tools for finding bugs.</p>
+<p>a) Define a <strong>breakpoint</strong> and explain precisely what happens when program execution reaches one.</p>
+<p>b) Describe step-by-step how to set a breakpoint and start a debugging session in <strong>both</strong> VS Code and PyCharm.</p>
+<p>c) Explain the purpose and practical use of <strong>watch expressions</strong>. How do you add a watch expression in VS Code? Give a specific example of a useful watch expression for debugging a loop.</p>
+<p>d) Create a complete step-by-step debugger trace table for this buggy function:<br>
+<code>python
+def sum_positive(numbers):
+    total = 0
+    for i in range(1, len(numbers)):   # Bug here
+        if numbers[i] &gt; 0:
+            total += numbers[i]
+    return total</code><br>
+Use input <code>numbers = [-1, 3, -2, 5, 2]</code>. Show: line executing, debugger action, variable state, and notes for each step. Identify the root cause and provide the fix.</p>
+<p>e) Explain why fixing the bug found in part (d) with a <code>pytest</code> test is better than relying on the debugger alone for future protection.</p>
+</li>
+<li>
+<p>The four debugger navigation actions allow precise control over program execution.</p>
+<p>a) Describe each of the four debugger actions — Step Over, Step Into, Step Out, and Resume — with a clear definition, keyboard shortcut, and a specific scenario where you would choose that action.</p>
+<p>b) A student is debugging this code and pauses at line 3 with a breakpoint:<br>
+<code>python
+1: def get_letter_grade(score):
+2:     if score &gt;= 90: return "A"
+3:     if score &gt;= 80: return "B"
+4:     if score &gt;= 70: return "C"
+5:     return "F"
+6:
+7: def process_student(name, score):
+8:     grade = get_letter_grade(score)
+9:     return f"{name}: {grade}"
+10:
+11: result = process_student("Aisha", 85)
+12: print(result)</code><br>
+The student is paused at line 11. Describe what happens for each action: (i) Step Over on line 11, (ii) Step Into on line 11, (iii) Step Into on line 8 after entering <code>process_student</code>.</p>
+<p>c) Explain the difference between debugging using <code>print()</code> statements and using a proper IDE debugger. Describe at least three advantages of the IDE debugger approach.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-524-exception-handling_2">Topic 5.2.4: Exception Handling</h3>
+<ol start="12">
+<li>
+<p>Exception handling allows programs to respond to runtime errors gracefully.</p>
+<p>a) Draw or describe the complete flow diagram of <code>try-except-else-finally</code> execution. Show the path when an exception occurs and the path when no exception occurs.</p>
+<p>b) Write a complete Python program for a <code>StudentFileReader</code> class with a method <code>read_scores(filename)</code> that: reads a file of student scores (one per line), converts each to a float, and raises a meaningful error for each possible failure. Handle <code>FileNotFoundError</code>, <code>ValueError</code> (non-numeric data), and <code>PermissionError</code> each with a specific, helpful message. Use <code>finally</code> to ensure the file is closed.</p>
+<p>c) Write a line-by-line execution trace table for your <code>read_scores()</code> method for the following two scenarios: (i) the file does not exist, and (ii) the file exists and contains valid data.</p>
+<p>d) Explain why using specific exception types (<code>except ValueError</code>) is better practice than catching all exceptions with <code>except Exception</code>.</p>
+</li>
+<li>
+<p>Custom exceptions make error handling more precise and readable.</p>
+<p>a) Explain what a custom exception is, how you define one in Python, and why you would create a custom exception instead of using a built-in one.</p>
+<p>b) Design a <code>BankAccount</code> class with <code>deposit()</code>, <code>withdraw()</code>, and <code>get_balance()</code> methods. Define three custom exceptions: <code>InsufficientFundsError</code>, <code>NegativeAmountError</code>, and <code>AccountFrozenError</code>. Write the complete class implementation with all custom exceptions properly raised.</p>
+<p>c) Write a <code>pytest</code> test suite for <code>BankAccount</code> with at least eight test cases verifying: correct deposits, correct withdrawals, <code>InsufficientFundsError</code> for overdraft, <code>NegativeAmountError</code> for negative amounts, and frozen account behavior.</p>
+<p>d) Explain the concept of <strong>graceful failure</strong> and how your <code>BankAccount</code> implementation demonstrates it. How does graceful failure improve the user experience compared to unhandled crashes?</p>
+</li>
+<li>
+<p>Multiple exception types must be handled effectively in real-world programs.</p>
+<p>a) Explain why a single function may need to handle multiple different exception types. Give a real-world example from a database, web API, or file processing context.</p>
+<p>b) Write a complete function <code>parse_student_csv(filename, row_index)</code> that opens a CSV file, reads a specific row, extracts the student name and score, converts the score to a float, and calculates a letter grade. Handle: <code>FileNotFoundError</code>, <code>IndexError</code>, <code>ValueError</code>, and <code>ZeroDivisionError</code> — each with a specific, helpful message. Use <code>finally</code> to close the file.</p>
+<p>c) Trace through your function for three different failure scenarios: (i) file not found, (ii) row index out of range, (iii) score is the string <code>"N/A"</code>. Show which exception is raised and which <code>except</code> block handles it in each case.</p>
+<p>d) Evaluate the practice of using a single broad <code>except Exception</code> catch-all handler. What are its advantages and disadvantages compared to catching specific exception types?</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-53-profiling-and-optimization_2">Topic 5.3: Profiling and Optimization</h3>
+<ol start="15">
+<li>
+<p>Profiling is the essential first step before any performance optimization.</p>
+<p>a) Define profiling. Explain the F1 race car pit stop analogy in detail — what does each element of the analogy represent in programming terms?</p>
+<p>b) Explain the <code>cProfile</code> module. What does each column in its output report mean: <code>ncalls</code>, <code>tottime</code>, <code>percall</code>, <code>cumtime</code>?</p>
+<p>c) Write a complete Python program that: (i) defines a <code>slow_search(data, target)</code> function using linear search, (ii) defines a <code>fast_search(data, target)</code> function using binary search, (iii) uses <code>timeit</code> to compare both on a list of 1,000,000 elements, and (iv) runs <code>cProfile</code> to generate a full profiling report.</p>
+<p>d) Interpret the profiling output from part (c). Which function is the bottleneck? What is the approximate speed difference? Why is binary search faster — explain the "halving the search space" principle mathematically.</p>
+<p>e) After identifying <code>slow_search</code> as the bottleneck, describe the complete Professional Optimization Cycle you would follow to fix it and verify the fix.</p>
+</li>
+<li>
+<p>Refactoring strategies can dramatically improve program performance without changing program output.</p>
+<p>a) Define <strong>refactoring</strong>. Why must the program output remain identical after refactoring? What is the role of unit tests in verifying this?</p>
+<p>b) Explain why nested loops create performance bottlenecks. If an outer loop runs <code>n</code> times and an inner loop runs <code>n</code> times, how many total operations occur? What time complexity is this called?</p>
+<p>c) Write a complete Python program that: (i) implements <code>find_common_elements_slow(list1, list2)</code> using nested loops, and (ii) implements <code>find_common_elements_fast(list1, list2)</code> using set intersection. Use <code>timeit</code> to compare both on lists of 10,000 elements. Show the complete code and expected output.</p>
+<p>d) Create a comparison table showing the time complexity of the following operations for lists vs. sets: membership check (<code>in</code>), adding an element, accessing by index, finding the minimum value.</p>
+<p>e) A student's program processes 1,000,000 customer records and takes 45 seconds. cProfile shows: <code>load_records()</code>: 42 seconds, <code>validate_records()</code>: 2.5 seconds, <code>format_output()</code>: 0.5 seconds. The student plans to optimize <code>format_output()</code> first because it is the easiest function to improve. Evaluate this decision. What should the student do instead, and why?</p>
+</li>
+<li>
+<p>Memory profiling and generator expressions offer an alternative dimension of optimization.</p>
+<p>a) Define <strong>memory profiling</strong>. What is the <code>memory_profiler</code> library and what does it measure?</p>
+<p>b) Explain the difference between a Python list and a Python generator in terms of memory allocation. Why does <code>list(range(1_000_000))</code> use approximately 8MB of RAM while <code>range(1_000_000)</code> uses only about 48 bytes?</p>
+<p>c) Write a complete Python program that demonstrates the memory difference between processing a large dataset using: (i) a list comprehension, and (ii) a generator expression. Include comments explaining each approach.</p>
+<p>d) Describe three real-world scenarios where choosing a generator over a list would make a significant difference in program performance.</p>
+<p>e) Explain the concept of <strong>peak memory usage</strong> and why it matters for programs running on devices with limited RAM (e.g., mobile phones, embedded systems, IoT devices).</p>
+</li>
+<li>
+<p>Comprehensive optimization case study — designing a high-performance student grade analyzer.</p>
+<p>a) A school has 50,000 student records stored as a list of dictionaries. Each record contains: <code>student_id</code>, <code>name</code>, <code>scores</code> (a list of 10 test scores). You must write a function <code>find_top_students(records, threshold)</code> that returns all students whose average score exceeds the <code>threshold</code>. Write two versions: a slow version using nested loops and list operations, and a fast version using optimized data structures and built-in functions.</p>
+<p>b) Write a complete <code>cProfile</code>-enabled program that runs both versions on 50,000 records and generates a comparative profiling report.</p>
+<p>c) Write a complete <code>pytest</code> test suite for both versions of <code>find_top_students()</code> that verifies: (i) both return identical results, (ii) edge cases (empty list, all students below threshold, all above threshold, threshold = 0, threshold = 100), and (iii) invalid inputs.</p>
+<p>d) After optimizing the function, describe the complete workflow — from profiling to refactoring to testing — that guarantees both correctness and performance. Explain why the testing step must come AFTER the optimization step.</p>
+<p>e) Evaluate the trade-off between <strong>code readability</strong> and <strong>performance</strong> in optimization. Is the fastest code always the best code? When might a slightly slower but more readable solution be preferable in a professional team environment?</p>
+</li>
+</ol>
+<hr>
+<p><em>End of Chapter 5 — Comprehensive Question Bank</em></p>
+<hr>
+<blockquote><p><strong>Assessment Coverage Summary</strong></p><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Section</th>
+<th>MCQs</th>
+<th>Short Questions</th>
+<th>Long Questions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.1 Introduction &amp; Life Cycle</td>
+<td>15</td>
+<td>10</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5.2.1 Error Types</td>
+<td>28</td>
+<td>13</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5.2.2 Unit Testing</td>
+<td>26</td>
+<td>17</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5.2.3 Breakpoints &amp; Watches</td>
+<td>16</td>
+<td>10</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5.2.4 Exception Handling</td>
+<td>18</td>
+<td>15</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5.3 Profiling &amp; Optimization</td>
+<td>22</td>
+<td>15</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>120 MCQs</strong></td>
+<td><strong>80 SQs</strong></td>
+<td><strong>18 LQs</strong></td>
+</tr>
+</tbody>
+</table></div><p><strong>Total Questions: 218</strong><br>
+<strong>Bloom's Taxonomy Coverage:</strong> Knowledge · Comprehension · Application · Analysis · Synthesis · Evaluation</p></blockquote>
+
+</body>
+</html>

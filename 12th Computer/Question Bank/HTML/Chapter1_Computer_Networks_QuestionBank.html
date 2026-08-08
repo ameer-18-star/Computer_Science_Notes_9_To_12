@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprehensive Question Bank: Chapter 1 — Computer Networks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #0a0a0a;
+      --surface:     #161616;
+      --surface2:    #1f1f1f;
+      --border:      #3a3a3a;
+      --accent:      #ffd400;   /* yellow */
+      --accent2:     #ffffff;   /* white  */
+      --accent3:     #ff2e2e;   /* red    */
+      --accent4:     #ff2e2e;
+      --text:        #f5f5f5;
+      --text-muted:  #b3b3b3;
+      --code-bg:     #050505;
+      --story-bg:    #1a1200;
+      --story-border:#ffd400;
+      --pause-bg:    #1a0000;
+      --pause-border:#ff2e2e;
+      --recap-bg:    #111111;
+      --recap-border:#ffd400;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Roboto', sans-serif;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-left: 5px solid var(--accent);
+      padding: 28px 32px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    /* ── HEADINGS ── */
+    h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 50px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 48px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 36px 0 12px;
+    }
+    h4, h5, h6 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent3);
+      margin: 26px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── BODY TEXT ── */
+    p { margin-bottom: 16px; }
+    a { color: var(--accent); text-decoration: underline; }
+    a:hover { color: var(--accent3); }
+    strong { color: var(--accent); }
+    em { color: var(--accent3); font-style: normal; font-weight: 700; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    ul, ol {
+      padding-left: 28px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    li { margin-bottom: 6px; }
+    li strong { color: var(--text); }
+    li > ul, li > ol { margin-top: 6px; margin-bottom: 6px; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: 'Roboto Mono', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.88em;
+      color: var(--accent);
+    }
+
+    /* ── CODE BLOCKS ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: var(--text);
+      white-space: pre;
+    }
+    .codehilite, .highlight { margin: 20px 0; }
+    .codehilite pre, .highlight pre { margin: 0; }
+
+    /* Minimal syntax accents for fenced code (language-agnostic) */
+    pre .c, pre .c1, pre .cm  { color: #777777; }  /* comments */
+    pre .k, pre .kn, pre .kd  { color: #ff2e2e; }  /* keywords */
+    pre .s, pre .s1, pre .s2  { color: #ffffff; }  /* strings */
+    pre .n, pre .nb           { color: var(--text); }
+    pre .m, pre .mi, pre .mf  { color: #ff8a8a; }  /* numbers */
+    pre .o                    { color: var(--accent); } /* operators */
+    pre .nf, pre .fm          { color: #ffd400; }  /* function names */
+
+    /* ── OUTPUT-STYLE BLOCK (```text fences meant as terminal output) ── */
+    .output-block {
+      background: #000000;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      margin: 16px 0 20px;
+      white-space: pre-wrap;
+    }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: var(--surface2);
+      color: var(--accent);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+    tbody td:first-child {
+      color: var(--accent3);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+    }
+    tbody tr:hover td { background: var(--surface); }
+
+    /* ── GENERIC THEMED BLOCKQUOTE ── */
+    blockquote {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      color: var(--text-muted);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    /* ── STORY HOOK (📖 STORY MODE) ── */
+    .story-hook {
+      background: var(--story-bg);
+      border-left: 4px solid var(--story-border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .story-hook .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--story-border);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .story-hook p { color: #f2e6a3; margin-bottom: 12px; }
+    .story-hook p:last-child { margin-bottom: 0; }
+
+    /* ── DID YOU KNOW (💡) ── */
+    .did-you-know {
+      background: #1a1200;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .did-you-know .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .did-you-know p { color: #ffe680; margin-bottom: 0; font-size: 15px; }
+
+    /* ── CAUTION (⚠️) ── */
+    .caution {
+      background: #1a0000;
+      border-left: 4px solid var(--accent3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .caution .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent3);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .caution p { color: #ffb3b3; margin-bottom: 0; font-size: 15px; }
+
+    /* ── PAUSE & THINK / GRAB A PARTNER (⏸) ── */
+    .stop-point {
+      background: var(--pause-bg);
+      border: 1px solid var(--pause-border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .stop-point .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--pause-border);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .stop-point p { color: #ffbdbd; margin-bottom: 10px; }
+    .stop-point p:last-child { margin-bottom: 0; }
+    .stop-point pre { background: #000; }
+
+    /* ── QUICK RECAP ── */
+    .recap {
+      background: var(--recap-bg);
+      border: 1px solid var(--recap-border);
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin: 28px 0 10px;
+    }
+    .recap .callout-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .recap p { color: #fff4bf; margin-bottom: 0; }
+
+    /* ── KEYWORD DEFINITION ── */
+    .keyword-def {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .keyword-def .kd-term {
+      color: var(--accent);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 100px;
+      padding-top: 2px;
+    }
+    .keyword-def .kd-body { color: var(--text-muted); font-size: 15px; flex: 1 1 200px; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #111; max-width: 100%; }
+      pre, code { background: #f5f5f5; color: #333; border-color: #ddd; }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">Comprehensive Question Bank: Chapter 1 — Computer Networks</div>
+</div>
+
+<h1 id="comprehensive-question-bank-chapter-1-computer-networks">Comprehensive Question Bank: Chapter 1 — Computer Networks</h1>
+<h2 id="section-a-multiple-choice-questions-mcqs">Section A: Multiple-Choice Questions (MCQs)</h2>
+<h3 id="topic-11-introduction-to-computer-networks">Topic 1.1: Introduction to Computer Networks</h3>
+<ol>
+<li>
+<p>What is a computer network?<br>
+   A) A single powerful computer<br>
+<strong>B) A group of connected devices that share data and resources</strong><br>
+   C) A type of software application<br>
+   D) A physical storage device</p>
+</li>
+<li>
+<p>Which of the following is NOT typically considered part of a computer network?<br>
+   A) Printers<br>
+   B) Smart TVs<br>
+<strong>C) A calculator with no connectivity</strong><br>
+   D) Mobile phones</p>
+</li>
+<li>
+<p>Which of the following is a direct benefit of computer networks mentioned in the chapter?<br>
+   A) Increases the cost of sharing resources<br>
+<strong>B) Saves time and effort in sharing information</strong><br>
+   C) Makes devices work independently<br>
+   D) Removes the need for the Internet</p>
+</li>
+<li>
+<p>Which of the following is an example of a computer network being used in banking?<br>
+   A) Printing a receipt on paper<br>
+<strong>B) Performing online transactions and using ATMs</strong><br>
+   C) Writing a cheque by hand<br>
+   D) Storing cash in a vault</p>
+</li>
+<li>
+<p>Smart homes rely on computer networks primarily to:<br>
+   A) Increase electricity bills<br>
+<strong>B) Allow devices to be controlled remotely and communicate with each other</strong><br>
+   C) Replace all home appliances<br>
+   D) Eliminate the need for electricity</p>
+</li>
+<li>
+<p>Which of these is NOT listed as a common use of computer networks?<br>
+   A) Online classes<br>
+   B) Social media platforms<br>
+<strong>C) Manual paper filing systems</strong><br>
+   D) Mobile calls and messaging</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-12-network-architecture-and-basic-concepts">Topic 1.2: Network Architecture and Basic Concepts</h3>
+<ol>
+<li>
+<p>Network architecture refers to:<br>
+   A) Only the cables used in a network<br>
+<strong>B) The overall design of how devices, hardware, and software are organized in a network</strong><br>
+   C) A single computer's internal hardware<br>
+   D) The physical shape of a building</p>
+</li>
+<li>
+<p>Which of the following is NOT one of the three main ingredients of network architecture?<br>
+   A) Hardware<br>
+   B) Software<br>
+   C) Communication rules/protocols<br>
+<strong>D) Electricity bills</strong></p>
+</li>
+<li>
+<p>Before being transmitted across a network, data is broken into small units called:<br>
+   A) Bytes<br>
+<strong>B) Packets</strong><br>
+   C) Frames only<br>
+   D) Segments only</p>
+</li>
+<li>
+<p>Which statement best describes why data is broken into small packets before transmission?<br>
+   A) To make the data permanently unreadable<br>
+<strong>B) So that each small piece can be routed independently and reassembled at the destination</strong><br>
+   C) To reduce the number of devices needed<br>
+   D) To avoid using IP addresses</p>
+</li>
+<li>
+<p>Who is primarily responsible for guiding data packets to their correct destination across a network?<br>
+   A) The end-user<br>
+<strong>B) Networking devices such as routers</strong><br>
+   C) The power supply<br>
+   D) The monitor</p>
+</li>
+<li>
+<p>A good network architecture should primarily support:<br>
+   A) Only current traffic with no room for growth<br>
+<strong>B) Efficient operation as well as future expansion</strong><br>
+   C) A fixed number of devices forever<br>
+   D) Only wired connections</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-13-types-of-computer-networks">Topic 1.3: Types of Computer Networks</h3>
+<ol>
+<li>
+<p>A Local Area Network (LAN) is best described as:<br>
+   A) A network that spans multiple countries<br>
+<strong>B) A network that connects devices within a small area such as a home, school, or office</strong><br>
+   C) The global public Internet<br>
+   D) A network with no central management</p>
+</li>
+<li>
+<p>Which of the following is TRUE about a Wide Area Network (WAN)?<br>
+   A) It only covers a single room<br>
+<strong>B) It connects networks across large geographic areas, such as cities or countries</strong><br>
+   C) It is always faster than a LAN<br>
+   D) It is cheaper to install than a LAN</p>
+</li>
+<li>
+<p>Which technology is commonly used within a LAN?<br>
+   A) Satellite links only<br>
+<strong>B) Ethernet and Wi-Fi</strong><br>
+   C) Leased international lines only<br>
+   D) Deep-sea cables only</p>
+</li>
+<li>
+<p>The Internet is best classified as:<br>
+   A) A small private LAN<br>
+<strong>B) The largest public Wide Area Network (WAN)</strong><br>
+   C) A type of network topology<br>
+   D) A single web server</p>
+</li>
+<li>
+<p>Which of the following is generally TRUE when comparing LAN and WAN?<br>
+   A) LAN covers a larger area than WAN<br>
+<strong>B) WAN is typically more expensive to install and manage than LAN</strong><br>
+   C) WAN always has higher speed than LAN<br>
+   D) LAN requires satellites to function</p>
+</li>
+<li>
+<p>An ISP (Internet Service Provider) is best defined as:<br>
+   A) A device that boosts Wi-Fi signal only<br>
+<strong>B) A company that provides Internet access to users</strong><br>
+   C) A type of network topology<br>
+   D) A protocol used for encryption</p>
+</li>
+<li>
+<p>DSL (Digital Subscriber Line) allows:<br>
+   A) Only television signals to be transmitted<br>
+<strong>B) Internet access through telephone lines, while still allowing calls</strong><br>
+   C) Wireless-only Internet access<br>
+   D) Data to travel without any physical medium</p>
+</li>
+<li>
+<p>Which of these networks is typically owned and managed by a single organization?<br>
+   A) The Internet<br>
+   B) A WAN spanning multiple countries<br>
+<strong>C) A LAN inside a school building</strong><br>
+   D) A satellite communication network</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-14-networking-devices">Topic 1.4: Networking Devices</h3>
+<ol>
+<li>
+<p>What is the primary function of a Network Interface Card (NIC)?<br>
+   A) To convert digital signals into sound<br>
+<strong>B) To allow a device to physically connect to a network</strong><br>
+   C) To block unauthorized traffic<br>
+   D) To store backup data</p>
+</li>
+<li>
+<p>Every NIC has a unique identifier known as a:<br>
+   A) IP address only<br>
+<strong>B) MAC address</strong><br>
+   C) Subnet mask<br>
+   D) Default gateway</p>
+</li>
+<li>
+<p>Which device connects multiple devices within the same LAN and forwards data only to the intended recipient device?<br>
+   A) Router<br>
+<strong>B) Switch</strong><br>
+   C) Modem<br>
+   D) Firewall</p>
+</li>
+<li>
+<p>Which device is primarily responsible for connecting different networks together, such as a home network to the Internet?<br>
+   A) Switch<br>
+   B) NIC<br>
+<strong>C) Router</strong><br>
+   D) Wireless Access Point</p>
+</li>
+<li>
+<p>A modem's main function is to:<br>
+   A) Broadcast Wi-Fi signals only<br>
+<strong>B) Convert digital data into signals suitable for transmission over an ISP's line, and vice versa</strong><br>
+   C) Assign MAC addresses to devices<br>
+   D) Control user permissions</p>
+</li>
+<li>
+<p>A Wireless Access Point (WAP) is mainly used to:<br>
+   A) Convert wired signals into digital data<br>
+<strong>B) Provide and extend Wi-Fi connectivity to wireless devices</strong><br>
+   C) Route data between different countries<br>
+   D) Encrypt all outgoing emails</p>
+</li>
+<li>
+<p>Which analogy best matches the function of a switch, as compared to a router?<br>
+   A) A switch is like an international airport; a router is like a local intercom<br>
+<strong>B) A switch is like an office intercom system; a router is like an international airport</strong><br>
+   C) Both perform exactly the same function<br>
+   D) A switch connects entirely separate networks, while a router does not</p>
+</li>
+<li>
+<p>Without a NIC, a device:<br>
+   A) Can still connect wirelessly but not by cable<br>
+<strong>B) Cannot communicate on a network at all</strong><br>
+   C) Can access the Internet directly without a router<br>
+   D) Automatically becomes a server</p>
+</li>
+<li>
+<p>In large buildings or campuses, which device is typically added to extend wireless coverage?<br>
+   A) Modem<br>
+   B) Switch<br>
+<strong>C) Wireless Access Point</strong><br>
+   D) NIC</p>
+</li>
+<li>
+<p>Which of the following correctly matches a device to its layer of operation, based on the addresses it uses?<br>
+    A) Switch uses IP addresses; Router uses MAC addresses<br>
+<strong>B) Switch uses MAC addresses; Router uses IP addresses</strong><br>
+    C) Both use only MAC addresses<br>
+    D) Both use only IP addresses</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-15-network-topologies">Topic 1.5: Network Topologies</h3>
+<ol>
+<li>
+<p>In a bus topology, all devices are connected to:<br>
+   A) A central router<br>
+<strong>B) A single shared main cable</strong><br>
+   C) Each other individually<br>
+   D) A circular loop</p>
+</li>
+<li>
+<p>What is the biggest disadvantage of a bus topology?<br>
+   A) It requires too many cables<br>
+<strong>B) Failure of the main cable can stop the entire network</strong><br>
+   C) It is too expensive<br>
+   D) It cannot be installed in small networks</p>
+</li>
+<li>
+<p>In a star topology, all devices connect to:<br>
+   A) One another directly<br>
+<strong>B) A central hub or switch</strong><br>
+   C) A single shared cable<br>
+   D) A closed loop</p>
+</li>
+<li>
+<p>What happens in a star topology if a single non-central device's cable fails?<br>
+   A) The entire network stops working<br>
+<strong>B) Only that device is affected; others continue working normally</strong><br>
+   C) All devices lose power<br>
+   D) The central hub is destroyed</p>
+</li>
+<li>
+<p>In a ring topology, data travels:<br>
+   A) Randomly between any two devices<br>
+<strong>B) In one direction around a circular path</strong><br>
+   C) Only from the center outward<br>
+   D) Along a single shared cable with no order</p>
+</li>
+<li>
+<p>Which topology allows multiple paths for data transmission, offering the highest reliability?<br>
+   A) Bus topology<br>
+   B) Ring topology<br>
+<strong>C) Mesh topology</strong><br>
+   D) Star topology</p>
+</li>
+<li>
+<p>Which topology combines features of both bus and star topologies, arranged hierarchically?<br>
+   A) Ring topology<br>
+<strong>B) Tree topology</strong><br>
+   C) Mesh topology<br>
+   D) Bus topology</p>
+</li>
+<li>
+<p>Why is mesh topology considered expensive and complex?<br>
+   A) It uses only one shared cable<br>
+<strong>B) It requires many direct connections between devices</strong><br>
+   C) It has no central hub<br>
+   D) It cannot support large networks</p>
+</li>
+<li>
+<p>In a tree topology, what happens if the backbone cable fails?<br>
+   A) Nothing happens; all branches keep working<br>
+<strong>B) The entire network, including all branches, can be affected</strong><br>
+   C) Only the root node loses connectivity<br>
+   D) The topology automatically converts to a star topology</p>
+</li>
+<li>
+<p>Which topology is described as being "rarely used today" in the chapter?<br>
+    A) Star topology<br>
+<strong>B) Ring topology</strong><br>
+    C) Mesh topology<br>
+    D) Tree topology</p>
+</li>
+<li>
+<p>Which topology is most suitable for large organizations needing hierarchical management?<br>
+    A) Bus topology<br>
+    B) Ring topology<br>
+<strong>C) Tree topology</strong><br>
+    D) Mesh topology</p>
+</li>
+<li>
+<p>Which topology requires the LEAST amount of cable?<br>
+    A) Mesh topology<br>
+    B) Star topology<br>
+<strong>C) Bus topology</strong><br>
+    D) Tree topology</p>
+</li>
+<li>
+<p>Which of the following topologies is most widely used in modern homes and offices?<br>
+    A) Bus topology<br>
+    B) Ring topology<br>
+<strong>C) Star topology</strong><br>
+    D) Mesh topology</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-16-network-models-and-layers">Topic 1.6: Network Models and Layers</h3>
+<ol>
+<li>
+<p>What is the primary purpose of dividing network communication into layers?<br>
+   A) To make networks slower<br>
+<strong>B) To make communication easier to understand, design, and troubleshoot</strong><br>
+   C) To eliminate the need for protocols<br>
+   D) To increase hardware costs</p>
+</li>
+<li>
+<p>How many layers does the OSI model contain?<br>
+   A) Five<br>
+   B) Six<br>
+<strong>C) Seven</strong><br>
+   D) Eight</p>
+</li>
+<li>
+<p>What does OSI stand for?<br>
+   A) Online System Interface<br>
+<strong>B) Open Systems Interconnection</strong><br>
+   C) Operational Software Integration<br>
+   D) Organized Server Infrastructure</p>
+</li>
+<li>
+<p>Which OSI layer is responsible for sending raw data as electrical, optical, or radio signals?<br>
+   A) Data Link Layer<br>
+   B) Network Layer<br>
+<strong>C) Physical Layer</strong><br>
+   D) Transport Layer</p>
+</li>
+<li>
+<p>Which OSI layer handles logical addressing (IP addresses) and determines the best path for data delivery?<br>
+   A) Data Link Layer<br>
+<strong>B) Network Layer</strong><br>
+   C) Session Layer<br>
+   D) Presentation Layer</p>
+</li>
+<li>
+<p>Which OSI layer is responsible for reliable, ordered delivery of data, including error recovery and flow control?<br>
+   A) Physical Layer<br>
+   B) Network Layer<br>
+<strong>C) Transport Layer</strong><br>
+   D) Application Layer</p>
+</li>
+<li>
+<p>Which OSI layer establishes, maintains, and terminates communication sessions between applications?<br>
+   A) Presentation Layer<br>
+<strong>B) Session Layer</strong><br>
+   C) Application Layer<br>
+   D) Data Link Layer</p>
+</li>
+<li>
+<p>Which OSI layer handles data encryption, compression, and format translation?<br>
+   A) Application Layer<br>
+<strong>B) Presentation Layer</strong><br>
+   C) Network Layer<br>
+   D) Data Link Layer</p>
+</li>
+<li>
+<p>Which OSI layer provides services directly to end users and supports protocols such as HTTP and FTP?<br>
+   A) Transport Layer<br>
+   B) Presentation Layer<br>
+<strong>C) Application Layer</strong><br>
+   D) Physical Layer</p>
+</li>
+<li>
+<p>Which OSI layer ensures error-free data transfer between directly connected nodes and handles framing?<br>
+    A) Network Layer<br>
+<strong>B) Data Link Layer</strong><br>
+    C) Session Layer<br>
+    D) Transport Layer</p>
+</li>
+<li>
+<p>In the OSI model, which layer would be responsible for detecting and controlling access to a shared transmission medium?<br>
+    A) Physical Layer<br>
+<strong>B) Data Link Layer</strong><br>
+    C) Network Layer<br>
+    D) Transport Layer</p>
+</li>
+<li>
+<p>Which of the following correctly lists the OSI layers from lowest (Layer 1) to highest (Layer 7)?<br>
+    A) Application, Presentation, Session, Transport, Network, Data Link, Physical<br>
+<strong>B) Physical, Data Link, Network, Transport, Session, Presentation, Application</strong><br>
+    C) Physical, Network, Data Link, Session, Transport, Presentation, Application<br>
+    D) Data Link, Physical, Transport, Network, Application, Presentation, Session</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-17-network-protocols-and-services">Topic 1.7: Network Protocols and Services</h3>
+<ol>
+<li>
+<p>What is a network protocol?<br>
+   A) A physical networking device<br>
+<strong>B) A set of rules that governs how data is formatted and transmitted between devices</strong><br>
+   C) A type of network topology<br>
+   D) A brand of router</p>
+</li>
+<li>
+<p>What does TCP/IP stand for?<br>
+   A) Total Control Protocol/Internal Protocol<br>
+<strong>B) Transmission Control Protocol/Internet Protocol</strong><br>
+   C) Transfer Command Protocol/Interface Protocol<br>
+   D) Technical Control Process/Internet Process</p>
+</li>
+<li>
+<p>Within TCP/IP, which part is primarily responsible for ensuring reliable delivery of data?<br>
+   A) IP<br>
+<strong>B) TCP</strong><br>
+   C) HTTP<br>
+   D) DNS</p>
+</li>
+<li>
+<p>Within TCP/IP, which part is primarily responsible for addressing and routing of data?<br>
+   A) TCP<br>
+<strong>B) IP</strong><br>
+   C) FTP<br>
+   D) DNS</p>
+</li>
+<li>
+<p>HTTP is primarily used to:<br>
+   A) Convert domain names into IP addresses<br>
+<strong>B) Transfer and display web pages</strong><br>
+   C) Upload and download files between computers<br>
+   D) Encrypt all network traffic</p>
+</li>
+<li>
+<p>What is the key difference between HTTP and HTTPS?<br>
+   A) HTTP is newer and more secure than HTTPS<br>
+<strong>B) HTTPS uses SSL/TLS encryption to protect data, while HTTP does not</strong><br>
+   C) HTTPS cannot be used for websites<br>
+   D) There is no real difference between them</p>
+</li>
+<li>
+<p>FTP is primarily used for:<br>
+   A) Resolving domain names<br>
+<strong>B) Uploading and downloading files between computers</strong><br>
+   C) Testing network connectivity<br>
+   D) Assigning IP addresses</p>
+</li>
+<li>
+<p>What is the main function of DNS (Domain Name System)?<br>
+   A) To encrypt network traffic<br>
+<strong>B) To convert website domain names into IP addresses</strong><br>
+   C) To connect different networks together<br>
+   D) To distribute network traffic across servers</p>
+</li>
+<li>
+<p>Without DNS, users would need to:<br>
+   A) Use only wireless connections<br>
+<strong>B) Memorize numeric IP addresses to visit websites</strong><br>
+   C) Avoid using the Internet entirely<br>
+   D) Use FTP instead of HTTP</p>
+</li>
+<li>
+<p>Which protocol/service is best compared to a phone's "Contacts app," where you tap a name instead of remembering a number?<br>
+    A) HTTP<br>
+    B) FTP<br>
+<strong>C) DNS</strong><br>
+    D) TCP</p>
+</li>
+<li>
+<p>SSL/TLS encryption, used in HTTPS, primarily protects against:<br>
+    A) Slow Internet speeds<br>
+<strong>B) Interception of sensitive data such as passwords and payment details</strong><br>
+    C) Hardware failure<br>
+    D) Incorrect DNS resolution</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-18-ip-addressing-and-subnetting">Topic 1.8: IP Addressing and Subnetting</h3>
+<ol>
+<li>
+<p>What is the primary purpose of an IP address?<br>
+   A) To physically power a device<br>
+<strong>B) To uniquely identify and locate a device on a network</strong><br>
+   C) To encrypt data during transfer<br>
+   D) To increase network bandwidth</p>
+</li>
+<li>
+<p>How many bits does an IPv4 address contain?<br>
+   A) 16 bits<br>
+<strong>B) 32 bits</strong><br>
+   C) 64 bits<br>
+   D) 128 bits</p>
+</li>
+<li>
+<p>How many bits does an IPv6 address contain?<br>
+   A) 32 bits<br>
+   B) 64 bits<br>
+<strong>C) 128 bits</strong><br>
+   D) 256 bits</p>
+</li>
+<li>
+<p>An IPv4 address such as 192.168.1.10 is made up of:<br>
+   A) 8 groups of hexadecimal digits<br>
+<strong>B) 4 numbers (0–255) separated by dots</strong><br>
+   C) 16 binary digits<br>
+   D) 2 numbers separated by a colon</p>
+</li>
+<li>
+<p>Approximately how many total IPv4 addresses are possible?<br>
+   A) 3.4 x 10^38<br>
+<strong>B) About 4.29 billion</strong><br>
+   C) Exactly 1 million<br>
+   D) Unlimited</p>
+</li>
+<li>
+<p>Why was IPv6 developed?<br>
+   A) To make addresses shorter than IPv4<br>
+<strong>B) To provide a much larger address space than IPv4, which was running out</strong><br>
+   C) To eliminate the need for routers<br>
+   D) To replace MAC addresses</p>
+</li>
+<li>
+<p>An IPv6 address is written as:<br>
+   A) Four decimal numbers separated by dots<br>
+<strong>B) Eight groups of 4 hexadecimal digits separated by colons</strong><br>
+   C) A single 32-bit binary number<br>
+   D) Two groups of 64 hexadecimal digits</p>
+</li>
+<li>
+<p>What is the purpose of subnetting?<br>
+   A) To combine multiple networks into one giant network<br>
+<strong>B) To divide a large network into smaller, more manageable subnets</strong><br>
+   C) To eliminate the need for IP addresses<br>
+   D) To increase the size of a network infinitely</p>
+</li>
+<li>
+<p>Which of the following is a benefit of subnetting?<br>
+   A) Increased network traffic<br>
+<strong>B) Improved performance and increased security</strong><br>
+   C) Elimination of all networking devices<br>
+   D) Removal of the need for routers</p>
+</li>
+<li>
+<p>What does NAT (Network Address Translation) primarily allow?<br>
+    A) A single device to have multiple public IP addresses<br>
+<strong>B) Many devices to share a single public IP address</strong><br>
+    C) IPv4 addresses to be converted into MAC addresses<br>
+    D) Wireless devices to connect without a password</p>
+</li>
+<li>
+<p>NAT is typically performed by which device?<br>
+    A) Modem<br>
+<strong>B) Router</strong><br>
+    C) Switch<br>
+    D) NIC</p>
+</li>
+<li>
+<p>In the IP address <code>192.168.1.0/24</code>, what does "/24" represent?<br>
+    A) 24 total addresses in the network<br>
+<strong>B) 24 bits used for the network portion of the address</strong><br>
+    C) 24 devices connected to the network<br>
+    D) 24 subnets already created</p>
+</li>
+<li>
+<p>In a <code>/24</code> network, how many total addresses are available?<br>
+    A) 128<br>
+    B) 64<br>
+<strong>C) 256</strong><br>
+    D) 512</p>
+</li>
+<li>
+<p>If <code>192.168.1.0/24</code> is split into two equal subnets, what subnet mask (prefix) would each new subnet use?<br>
+    A) /23<br>
+<strong>B) /25</strong><br>
+    C) /26<br>
+    D) /30</p>
+</li>
+<li>
+<p>In a subnet, which address is reserved to identify the subnet itself and is never assigned to a device?<br>
+    A) Broadcast address<br>
+<strong>B) Network address</strong><br>
+    C) Usable host address<br>
+    D) Default gateway address</p>
+</li>
+<li>
+<p>In a subnet, which address is used to send a message to every device on that subnet at once?<br>
+    A) Network address<br>
+<strong>B) Broadcast address</strong><br>
+    C) Host address<br>
+    D) Loopback address</p>
+</li>
+<li>
+<p>Approximately how many total addresses does IPv6 support?<br>
+    A) 4.3 billion<br>
+    B) 4.3 trillion<br>
+<strong>C) Approximately 3.4 x 10^38 (340 undecillion)</strong><br>
+    D) 128 million</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-19-home-network-setup-and-configuration">Topic 1.9: Home Network Setup and Configuration</h3>
+<ol>
+<li>
+<p>Which device acts as the central traffic director for all devices in a home network?<br>
+   A) Modem<br>
+<strong>B) Router</strong><br>
+   C) NIC<br>
+   D) Firewall</p>
+</li>
+<li>
+<p>What is the primary function of a modem in a home network?<br>
+   A) To broadcast Wi-Fi to all rooms<br>
+<strong>B) To connect the home network to the Internet Service Provider (ISP)</strong><br>
+   C) To assign MAC addresses to devices<br>
+   D) To control guest network access</p>
+</li>
+<li>
+<p>Which of the following is an advantage of a wired (Ethernet) connection over wireless?<br>
+   A) Greater mobility<br>
+<strong>B) Higher speed and more stable performance</strong><br>
+   C) Easier to install without cables<br>
+   D) Better for devices that move frequently</p>
+</li>
+<li>
+<p>Which of the following is an advantage of a wireless connection over a wired connection?<br>
+   A) Higher security by default<br>
+<strong>B) Freedom of movement without cables</strong><br>
+   C) Guaranteed higher speed<br>
+   D) No need for a router</p>
+</li>
+<li>
+<p>Which of these devices would most benefit from a wired Ethernet connection due to its stationary nature and need for stability?<br>
+   A) A smartphone<br>
+   B) A tablet<br>
+<strong>C) A desktop gaming PC</strong><br>
+   D) A wireless laptop used on the move</p>
+</li>
+<li>
+<p>Which of the following is NOT listed as a component of a home network?<br>
+   A) Router<br>
+   B) Modem<br>
+<strong>C) Firewall hardware appliance</strong><br>
+   D) Network cables</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-110-wi-fi-security-and-router-configuration">Topic 1.10: Wi-Fi Security and Router Configuration</h3>
+<ol>
+<li>
+<p>What is the primary purpose of Wi-Fi security?<br>
+   A) To increase Internet speed<br>
+<strong>B) To protect the network from unauthorized access</strong><br>
+   C) To reduce the number of connected devices<br>
+   D) To eliminate the need for a router</p>
+</li>
+<li>
+<p>How is a router's web interface typically accessed?<br>
+   A) Through a mobile SIM card<br>
+<strong>B) By entering the router's IP address into a web browser</strong><br>
+   C) Through a USB cable connected directly to the ISP<br>
+   D) Only through the manufacturer's physical store</p>
+</li>
+<li>
+<p>Which of the following is considered the strongest, most modern Wi-Fi encryption standard mentioned in the chapter?<br>
+   A) WEP<br>
+   B) WPA2<br>
+<strong>C) WPA3</strong><br>
+   D) No encryption</p>
+</li>
+<li>
+<p>Why is WEP considered insecure compared to WPA2/WPA3?<br>
+   A) It is too new and untested<br>
+<strong>B) It is an older protocol that can be easily broken/cracked</strong><br>
+   C) It requires too much processing power<br>
+   D) It only works with wired connections</p>
+</li>
+<li>
+<p>What is the function of a default gateway in a home network?<br>
+   A) It stores backup data<br>
+<strong>B) It connects the local network to outside networks, typically acting as the router</strong><br>
+   C) It blocks all outgoing traffic<br>
+   D) It assigns MAC addresses to devices</p>
+</li>
+<li>
+<p>What is the primary purpose of a guest network?<br>
+   A) To give visitors full access to all personal devices<br>
+<strong>B) To allow visitors to use the Internet while staying isolated from personal devices</strong><br>
+   C) To replace the main home network entirely<br>
+   D) To increase the home's total Internet bandwidth</p>
+</li>
+<li>
+<p>Which of the following should be changed immediately after setting up a new router, for security reasons?<br>
+   A) The Wi-Fi frequency band only<br>
+<strong>B) The default admin username and password</strong><br>
+   C) The physical location of the router<br>
+   D) The brand of the router</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-111-network-diagnostic-tools-and-commands">Topic 1.11: Network Diagnostic Tools and Commands</h3>
+<ol>
+<li>
+<p>What is the primary purpose of the <code>ping</code> command?<br>
+   A) To change a device's IP address<br>
+<strong>B) To test whether a device is reachable on the network and measure response time</strong><br>
+   C) To encrypt network traffic<br>
+   D) To install new networking hardware</p>
+</li>
+<li>
+<p>In <code>ping</code> command output, what does "TTL" stand for?<br>
+   A) Total Transfer Load<br>
+<strong>B) Time To Live</strong><br>
+   C) Transmission Test Limit<br>
+   D) Transfer Time Length</p>
+</li>
+<li>
+<p>In <code>ping</code> output, what does the "time" value (e.g., time=25ms) represent?<br>
+   A) The total size of the packet<br>
+<strong>B) The round-trip time for the reply to return</strong><br>
+   C) The device's IP address<br>
+   D) The number of hops taken</p>
+</li>
+<li>
+<p>Which command is used on Windows systems to display network settings?<br>
+   A) ifconfig<br>
+<strong>B) ipconfig</strong><br>
+   C) netstat only<br>
+   D) ping only</p>
+</li>
+<li>
+<p>Which command is used on Linux and macOS systems to display network settings?<br>
+   A) ipconfig<br>
+<strong>B) ifconfig</strong><br>
+   C) winconfig<br>
+   D) netcheck</p>
+</li>
+<li>
+<p>Which piece of information is NOT typically shown by <code>ipconfig</code>/<code>ifconfig</code>?<br>
+   A) IP address<br>
+   B) Subnet mask<br>
+<strong>C) Wi-Fi password in plain text</strong><br>
+   D) Default gateway</p>
+</li>
+<li>
+<p>Why is Telnet considered unsafe for sensitive communication?<br>
+   A) It is too slow to be useful<br>
+<strong>B) It sends data, including passwords, without encryption</strong><br>
+   C) It only works with wireless networks<br>
+   D) It cannot connect to remote devices</p>
+</li>
+<li>
+<p>Which tool/protocol is the modern, encrypted replacement for Telnet?<br>
+   A) PuTTY<br>
+<strong>B) SSH (Secure Shell)</strong><br>
+   C) FTP<br>
+   D) HTTP</p>
+</li>
+<li>
+<p>What is PuTTY primarily used for?<br>
+   A) Encrypting entire hard drives<br>
+<strong>B) Acting as a popular tool for remote login (often with SSH)</strong><br>
+   C) Testing network bandwidth<br>
+   D) Configuring firewalls</p>
+</li>
+<li>
+<p>A network engineer wants to securely and remotely manage a server. Which option should they choose?<br>
+    A) Telnet, because it is simple<br>
+<strong>B) SSH, because it encrypts the session</strong><br>
+    C) Ping, because it tests connectivity<br>
+    D) DNS, because it resolves names</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-112-network-performance">Topic 1.12: Network Performance</h3>
+<ol>
+<li>
+<p>Network bandwidth is best defined as:<br>
+   A) The delay between sending and receiving data<br>
+<strong>B) The amount of data that can be transmitted in a given time</strong><br>
+   C) The physical length of a network cable<br>
+   D) The number of devices connected to a router</p>
+</li>
+<li>
+<p>Network latency is best defined as:<br>
+   A) The total data capacity of a network<br>
+<strong>B) The delay/time taken for data to travel from source to destination</strong><br>
+   C) The number of packets lost during transmission<br>
+   D) The brand of networking hardware used</p>
+</li>
+<li>
+<p>Bandwidth is typically measured in:<br>
+   A) Milliseconds (ms)<br>
+<strong>B) Megabits per second (Mbps)</strong><br>
+   C) Bytes only<br>
+   D) Volts</p>
+</li>
+<li>
+<p>Latency is typically measured in:<br>
+   A) Mbps<br>
+<strong>B) Milliseconds (ms)</strong><br>
+   C) Gigabytes<br>
+   D) Watts</p>
+</li>
+<li>
+<p>Which of the following activities is MOST sensitive to high latency, even with strong bandwidth?<br>
+   A) Downloading a large file overnight<br>
+<strong>B) Playing a competitive real-time online game</strong><br>
+   C) Backing up files to the cloud<br>
+   D) Sending a single text email</p>
+</li>
+<li>
+<p>Which of the following is NOT listed as a cause of network delay?<br>
+   A) Too many users on the network<br>
+   B) Poor-quality cables<br>
+<strong>C) Using a strong Wi-Fi password</strong><br>
+   D) Long distance between devices</p>
+</li>
+<li>
+<p>A user has "full Wi-Fi signal bars" but still experiences lag in an online game. This is most likely because:<br>
+   A) Bandwidth is too low, and latency is not a factor<br>
+<strong>B) Signal strength relates to bandwidth/connection quality, but latency can still be high independently</strong><br>
+   C) The router is broken beyond repair<br>
+   D) The user's device has no NIC</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-113-network-load-balancing">Topic 1.13: Network Load Balancing</h3>
+<ol>
+<li>
+<p>What is the main purpose of network load balancing?<br>
+   A) To slow down network traffic intentionally<br>
+<strong>B) To distribute network traffic across multiple servers or links to prevent overload</strong><br>
+   C) To reduce the number of servers needed to zero<br>
+   D) To increase latency for better security</p>
+</li>
+<li>
+<p>Which of the following is a benefit of load balancing?<br>
+   A) Increased risk of total server failure<br>
+<strong>B) Improved speed, reliability, and reduced risk of server failure</strong><br>
+   C) Elimination of the need for servers<br>
+   D) Guaranteed zero network traffic</p>
+</li>
+<li>
+<p>In the Round Robin load balancing method, requests are:<br>
+   A) Sent only to the least busy server<br>
+<strong>B) Sent to each server in a repeating, rotating order</strong><br>
+   C) Sent based on the user's IP address<br>
+   D) Sent to all servers simultaneously</p>
+</li>
+<li>
+<p>In the Least Connection load balancing method, new traffic is sent to:<br>
+   A) The server with the most active connections<br>
+<strong>B) The server with the fewest active connections</strong><br>
+   C) A randomly chosen server<br>
+   D) The server closest geographically</p>
+</li>
+<li>
+<p>In the IP Hash load balancing method, traffic routing decisions are based on:<br>
+   A) Server processing speed<br>
+<strong>B) The requester's IP address</strong><br>
+   C) Random number generation<br>
+   D) The type of file being requested</p>
+</li>
+<li>
+<p>Which load balancing method would be most useful when a user's session data needs to consistently "stick" to the same server?<br>
+   A) Round Robin<br>
+   B) Least Connection<br>
+<strong>C) IP Hash</strong><br>
+   D) None of these support this</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-114-network-security">Topic 1.14: Network Security</h3>
+<ol>
+<li>
+<p>What is the main purpose of network security?<br>
+   A) To increase Internet speed<br>
+<strong>B) To protect networks, devices, and data from unauthorized access, misuse, or attacks</strong><br>
+   C) To eliminate the need for passwords<br>
+   D) To increase the size of a network</p>
+</li>
+<li>
+<p>What is the primary function of a firewall?<br>
+   A) To physically cool down networking hardware<br>
+<strong>B) To control and filter incoming and outgoing network traffic</strong><br>
+   C) To create backups of data<br>
+   D) To assign IP addresses to devices</p>
+</li>
+<li>
+<p>Which of the following best describes encryption?<br>
+   A) Making data permanently inaccessible<br>
+<strong>B) Converting data into a secret, unreadable form that only authorized users can decode</strong><br>
+   C) Deleting unnecessary data<br>
+   D) Compressing files to save space</p>
+</li>
+<li>
+<p>Access control is primarily used to:<br>
+   A) Increase network bandwidth<br>
+<strong>B) Decide who is authorized to use or access a network's resources</strong><br>
+   C) Encrypt all network traffic automatically<br>
+   D) Replace the need for firewalls entirely</p>
+</li>
+<li>
+<p>Which of the following is an example of a phishing attack?<br>
+   A) A firewall blocking suspicious traffic<br>
+<strong>B) A fake email tricking a user into revealing their password</strong><br>
+   C) A router encrypting Wi-Fi traffic<br>
+   D) A backup being restored after data loss</p>
+</li>
+<li>
+<p>A Denial of Service (DoS) attack primarily works by:<br>
+   A) Encrypting a victim's files and demanding payment<br>
+<strong>B) Flooding a service with excessive traffic so it cannot respond to legitimate users</strong><br>
+   C) Physically damaging networking hardware<br>
+   D) Guessing a user's password repeatedly</p>
+</li>
+<li>
+<p>Which of the following is NOT listed as a common network security threat?<br>
+   A) Viruses and malware<br>
+   B) Phishing<br>
+<strong>C) Network load balancing</strong><br>
+   D) Denial of Service attacks</p>
+</li>
+<li>
+<p>Which network security measure is most directly responsible for preventing unauthorized employees from accessing sensitive financial records within the same organization?<br>
+   A) Firewall<br>
+   B) Encryption<br>
+<strong>C) Access control</strong><br>
+   D) Ping</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-115-data-backup-and-recovery">Topic 1.15: Data Backup and Recovery</h3>
+<ol>
+<li>
+<p>What is the primary purpose of data backup?<br>
+   A) To permanently delete unnecessary files<br>
+<strong>B) To create a copy of important data to protect against loss or damage</strong><br>
+   C) To increase network bandwidth<br>
+   D) To encrypt sensitive files</p>
+</li>
+<li>
+<p>Which type of backup saves ALL data every time it runs?<br>
+   A) Incremental backup<br>
+   B) Differential backup<br>
+<strong>C) Full backup</strong><br>
+   D) Partial backup</p>
+</li>
+<li>
+<p>Which type of backup saves only the data that has changed since the LAST backup of any kind?<br>
+   A) Full backup<br>
+<strong>B) Incremental backup</strong><br>
+   C) Differential backup<br>
+   D) Static backup</p>
+</li>
+<li>
+<p>Which type of backup saves all changes made since the last FULL backup?<br>
+   A) Incremental backup<br>
+<strong>B) Differential backup</strong><br>
+   C) Partial backup<br>
+   D) Mirror backup</p>
+</li>
+<li>
+<p>Which backup type generally requires the LEAST storage space on a daily basis?<br>
+   A) Full backup<br>
+<strong>B) Incremental backup</strong><br>
+   C) Differential backup<br>
+   D) All require equal storage</p>
+</li>
+<li>
+<p>Which of the following is a valid data recovery method?<br>
+   A) Deleting the corrupted files permanently<br>
+<strong>B) Restoring data from previously saved backup files</strong><br>
+   C) Disconnecting the device from all networks<br>
+   D) Ignoring the data loss</p>
+</li>
+<li>
+<p>System restore is best described as:<br>
+   A) A method to permanently delete old backups<br>
+<strong>B) A process that rolls an operating system back to an earlier saved state</strong><br>
+   C) A type of network topology<br>
+   D) A method for encrypting files</p>
+</li>
+<li>
+<p>When might a professional data recovery service be necessary?<br>
+   A) When a Wi-Fi password is forgotten<br>
+<strong>B) When a storage device is physically damaged and data must be extracted directly from the hardware</strong><br>
+   C) When a website is slow to load<br>
+   D) When a firewall blocks legitimate traffic</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-116-usability-and-security-tradeoffs">Topic 1.16: Usability and Security Tradeoffs</h3>
+<ol>
+<li>
+<p>Usability is best defined as:<br>
+   A) How well a system protects data from hackers<br>
+<strong>B) How easy a system is to learn and use</strong><br>
+   C) The encryption strength of a system<br>
+   D) The physical speed of a network</p>
+</li>
+<li>
+<p>Which of the following best illustrates the tradeoff between usability and security?<br>
+   A) A system with no password is both highly secure and highly usable<br>
+<strong>B) A system requiring complex passwords and extra login steps is more secure but less convenient to use</strong><br>
+   C) Security and usability always improve together with no tradeoffs<br>
+   D) Usability has no relationship with security at all</p>
+</li>
+<li>
+<p>Why can forcing employees to frequently change complex passwords sometimes backfire?<br>
+   A) It makes systems completely hack-proof<br>
+<strong>B) It often leads employees to write passwords down or create predictable patterns, weakening real security</strong><br>
+   C) It has no effect on security or usability<br>
+   D) It automatically enables two-factor authentication</p>
+</li>
+<li>
+<p>Which of the following is generally true about extra login steps like two-factor authentication (2FA)?<br>
+   A) They reduce security but increase usability<br>
+<strong>B) They improve security but can slow down the login process</strong><br>
+   C) They have no impact on either usability or security<br>
+   D) They eliminate the need for passwords entirely</p>
+</li>
+<li>
+<p>A system with no password protection at all would be described as having:<br>
+   A) High security, low usability<br>
+<strong>B) High usability, very low security</strong><br>
+   C) High usability, high security<br>
+   D) Low usability, low security</p>
+</li>
+<li>
+<p>Finding the right balance between usability and security mainly depends on:<br>
+   A) Always choosing maximum security regardless of context<br>
+<strong>B) The specific system, its users, and the value of what is being protected</strong><br>
+   C) Always choosing maximum usability regardless of context<br>
+   D) The brand of hardware being used</p>
+</li>
+</ol>
+<hr>
+<h2 id="section-b-short-answer-questions-sqs">Section B: Short Answer Questions (SQs)</h2>
+<h3 id="topic-11-introduction-to-computer-networks_1">Topic 1.1: Introduction to Computer Networks</h3>
+<ol>
+<li>Define a computer network in your own words.</li>
+<li>State two everyday uses of computer networks.</li>
+<li>Explain why computer networks save time and effort compared to not having them.</li>
+<li>List three types of devices, other than computers, that can be part of a network.</li>
+<li>Briefly explain how computer networks are used in the education sector.</li>
+<li>Identify how banks rely on computer networks for daily operations.</li>
+</ol>
+<h3 id="topic-12-network-architecture-and-basic-concepts_1">Topic 1.2: Network Architecture and Basic Concepts</h3>
+<ol>
+<li>Define network architecture.</li>
+<li>List the three main components that make up network architecture.</li>
+<li>Explain briefly why data is broken into packets before being transmitted.</li>
+<li>Describe, in 2–3 sentences, how a receiving device reassembles data from packets.</li>
+<li>Explain why a good network architecture should support future expansion.</li>
+<li>Differentiate between the hardware and software components of network architecture.</li>
+</ol>
+<h3 id="topic-13-types-of-computer-networks_1">Topic 1.3: Types of Computer Networks</h3>
+<ol>
+<li>Define a Local Area Network (LAN).</li>
+<li>Define a Wide Area Network (WAN).</li>
+<li>Differentiate between a LAN and a WAN based on coverage area and cost.</li>
+<li>Explain why the Internet is considered the largest example of a WAN.</li>
+<li>State the meaning of the term ISP.</li>
+<li>Briefly explain what DSL is and how it works.</li>
+<li>Identify two technologies commonly used to build a LAN.</li>
+<li>Predict which network type (LAN or WAN) would be more suitable for connecting computers within a single school building, and justify briefly.</li>
+</ol>
+<h3 id="topic-14-networking-devices_1">Topic 1.4: Networking Devices</h3>
+<ol>
+<li>Define a Network Interface Card (NIC) and state its purpose.</li>
+<li>Differentiate between the functions of a switch and a router.</li>
+<li>Explain the role of a modem in a home network.</li>
+<li>Describe the function of a Wireless Access Point.</li>
+<li>Explain what a MAC address is and which device is associated with it.</li>
+<li>Identify which networking device would be most important for extending Wi-Fi coverage across a large campus.</li>
+<li>Map out, in order, the devices data would pass through when a laptop connects to a website (from laptop to Internet).</li>
+</ol>
+<h3 id="topic-15-network-topologies_1">Topic 1.5: Network Topologies</h3>
+<ol>
+<li>Define network topology.</li>
+<li>Differentiate between physical topology and logical topology.</li>
+<li>Explain how data travels in a bus topology.</li>
+<li>Describe what happens in a star topology if the central hub fails.</li>
+<li>Explain why ring topology is rarely used today.</li>
+<li>Identify the key characteristic that makes mesh topology highly reliable.</li>
+<li>Explain the hierarchical structure of a tree topology.</li>
+<li>State two advantages and two disadvantages of star topology.</li>
+<li>Predict the effect on a bus topology network if the main cable is cut in the middle.</li>
+</ol>
+<h3 id="topic-16-network-models-and-layers_1">Topic 1.6: Network Models and Layers</h3>
+<ol>
+<li>Define the purpose of network layers in general.</li>
+<li>State the full form of OSI and the number of layers it contains.</li>
+<li>Explain the function of the Physical Layer in the OSI model.</li>
+<li>Differentiate between the Network Layer and the Transport Layer.</li>
+<li>Explain the role of the Presentation Layer in the OSI model.</li>
+<li>Describe briefly what happens at the Application Layer.</li>
+<li>List the seven OSI layers in correct order, from Physical to Application.</li>
+<li>Explain why layered communication makes networks easier to troubleshoot.</li>
+</ol>
+<h3 id="topic-17-network-protocols-and-services_1">Topic 1.7: Network Protocols and Services</h3>
+<ol>
+<li>Define a network protocol.</li>
+<li>Explain the difference between the roles of TCP and IP within TCP/IP.</li>
+<li>Differentiate between HTTP and HTTPS.</li>
+<li>Explain the main function of FTP.</li>
+<li>Describe what DNS does and why it is needed.</li>
+<li>Predict what would happen if DNS servers stopped working for a day.</li>
+<li>Explain briefly how SSL/TLS encryption protects users on HTTPS websites.</li>
+</ol>
+<h3 id="topic-18-ip-addressing-and-subnetting_1">Topic 1.8: IP Addressing and Subnetting</h3>
+<ol>
+<li>Define an IP address and explain its purpose.</li>
+<li>Differentiate between IPv4 and IPv6 in terms of address length.</li>
+<li>Explain why IPv6 was developed.</li>
+<li>Define subnetting and state one benefit it provides.</li>
+<li>Explain the purpose of Network Address Translation (NAT).</li>
+<li>Identify which device typically performs NAT.</li>
+<li>In the address <code>192.168.1.0/24</code>, explain what the "/24" represents.</li>
+<li>Differentiate between a network address and a broadcast address within a subnet.</li>
+<li>Predict how many usable host addresses would exist in a <code>/25</code> subnet, and briefly explain your reasoning.</li>
+</ol>
+<h3 id="topic-19-home-network-setup-and-configuration_1">Topic 1.9: Home Network Setup and Configuration</h3>
+<ol>
+<li>Define a home network.</li>
+<li>List three components typically found in a home network.</li>
+<li>Differentiate between wired and wireless network connections.</li>
+<li>Explain one advantage and one disadvantage of a wired connection.</li>
+<li>Explain one advantage and one disadvantage of a wireless connection.</li>
+<li>Identify which type of connection (wired/wireless) would be best for a stationary desktop gaming PC, and justify briefly.</li>
+</ol>
+<h3 id="topic-110-wi-fi-security-and-router-configuration_1">Topic 1.10: Wi-Fi Security and Router Configuration</h3>
+<ol>
+<li>Define Wi-Fi security and explain why it is important.</li>
+<li>Explain how a user can access a router's web interface.</li>
+<li>Differentiate between WPA2/WPA3 and the older WEP encryption standard.</li>
+<li>Define the term "default gateway."</li>
+<li>Explain the purpose of a guest network.</li>
+<li>State one router configuration step that should be changed immediately after setup, for security reasons.</li>
+</ol>
+<h3 id="topic-111-network-diagnostic-tools-and-commands_1">Topic 1.11: Network Diagnostic Tools and Commands</h3>
+<ol>
+<li>Define the purpose of the <code>ping</code> command.</li>
+<li>Explain what "TTL" means in the context of a ping command's output.</li>
+<li>Differentiate between <code>ipconfig</code> and <code>ifconfig</code>, including which operating systems use each.</li>
+<li>Explain why Telnet is considered unsafe for sensitive communication.</li>
+<li>Define SSH and explain how it improves upon Telnet.</li>
+<li>Predict what information you would find by running <code>ipconfig</code> on your own computer.</li>
+</ol>
+<h3 id="topic-112-network-performance_1">Topic 1.12: Network Performance</h3>
+<ol>
+<li>Define network bandwidth.</li>
+<li>Define network latency.</li>
+<li>Differentiate between bandwidth and latency using a real-world analogy.</li>
+<li>Explain why online gaming is especially sensitive to high latency.</li>
+<li>List three possible causes of network delay.</li>
+<li>Predict what would happen to a video call's quality if bandwidth were high but latency were also very high.</li>
+</ol>
+<h3 id="topic-113-network-load-balancing_1">Topic 1.13: Network Load Balancing</h3>
+<ol>
+<li>Define network load balancing.</li>
+<li>State two benefits of load balancing for a large website.</li>
+<li>Explain how the Round Robin load balancing method works.</li>
+<li>Differentiate between the Least Connection and IP Hash load balancing methods.</li>
+<li>Explain why load balancing is especially important during high-traffic events like a big online sale.</li>
+</ol>
+<h3 id="topic-114-network-security_1">Topic 1.14: Network Security</h3>
+<ol>
+<li>Define network security.</li>
+<li>Explain the primary function of a firewall.</li>
+<li>Define encryption and explain why it is important for online banking.</li>
+<li>Differentiate between access control and encryption.</li>
+<li>Explain what a phishing attack is, with a brief example.</li>
+<li>Define a Denial of Service (DoS) attack.</li>
+<li>Identify two common network security threats mentioned in the chapter.</li>
+</ol>
+<h3 id="topic-115-data-backup-and-recovery_1">Topic 1.15: Data Backup and Recovery</h3>
+<ol>
+<li>Define data backup and explain its importance.</li>
+<li>Differentiate between a full backup and an incremental backup.</li>
+<li>Explain what a differential backup is.</li>
+<li>List two methods of data recovery.</li>
+<li>Explain when a professional data recovery service might be necessary.</li>
+<li>Predict which type of backup would restore data fastest after loss, and briefly explain why.</li>
+</ol>
+<h3 id="topic-116-usability-and-security-tradeoffs_1">Topic 1.16: Usability and Security Tradeoffs</h3>
+<ol>
+<li>Define usability in the context of computer systems.</li>
+<li>Explain, in your own words, the tradeoff between usability and security.</li>
+<li>Give one example of a security measure that reduces usability.</li>
+<li>Explain why very strict password policies can sometimes reduce actual security.</li>
+<li>Predict how users might react if a system required an extremely long and complex password with no other login options.</li>
+</ol>
+<hr>
+<h2 id="section-c-long-extensive-questions-lqs">Section C: Long / Extensive Questions (LQs)</h2>
+<h3 id="topic-11-introduction-to-computer-networks_2">Topic 1.1: Introduction to Computer Networks</h3>
+<ol>
+<li>
+<p>Define a computer network in detail and analyze its importance in modern daily life.<br>
+   a) Explain what a computer network is and how devices communicate within one.<br>
+   b) Discuss at least four real-world uses of computer networks across different sectors (education, banking, social media, smart homes).<br>
+   c) Evaluate how daily life would be different without computer networks.</p>
+</li>
+<li>
+<p>Analyze the role of computer networks across at least three different sectors (e.g., education, healthcare, banking), discussing how each sector depends on networking for its core functions.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-12-network-architecture-and-basic-concepts_2">Topic 1.2: Network Architecture and Basic Concepts</h3>
+<ol>
+<li>
+<p>Discuss in detail what network architecture is and how it enables devices to communicate effectively.<br>
+   a) Define network architecture and explain its three main components (hardware, software, communication rules).<br>
+   b) Trace, step by step, how data moves from a sending device to a receiving device across a network, including the role of packet-switching.<br>
+   c) Evaluate why breaking data into packets is more efficient than sending it as one continuous stream, discussing potential failure scenarios for each approach.</p>
+</li>
+<li>
+<p>Design a simple network architecture diagram for a small office with 10 computers, one printer, and one Internet connection. Justify the placement of each major hardware component (router, switch, modem) in your design.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-13-types-of-computer-networks_2">Topic 1.3: Types of Computer Networks</h3>
+<ol>
+<li>
+<p>Compare and contrast LAN, WAN, and the Internet in terms of coverage, cost, speed, and ownership.<br>
+   a) Define each of the three network types individually.<br>
+   b) Construct a detailed comparison table covering coverage area, cost, speed, and typical ownership for each.<br>
+   c) Justify, with reasoning, which network type would be most appropriate for (i) a single classroom, (ii) a national bank with branches in 20 cities, and (iii) a global social media platform.</p>
+</li>
+<li>
+<p>Analyze the relationship between an ISP, a home LAN, and the wider Internet, explaining how data leaving a home network reaches a server on the other side of the world.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-14-networking-devices_2">Topic 1.4: Networking Devices</h3>
+<ol>
+<li>
+<p>Elaborate on the roles of the five major networking devices discussed in this chapter (NIC, Switch, Router, Modem, Wireless Access Point).<br>
+   a) Explain the specific function of each device in detail, using an analogy for at least two of them.<br>
+   b) Construct a step-by-step trace of a data request traveling from a laptop, through each relevant device, out to the Internet, and back.<br>
+   c) Evaluate what would happen to network functionality if each device, one at a time, were removed from a typical home network setup.</p>
+</li>
+<li>
+<p>Design the networking device layout for a two-story house with weak Wi-Fi signal on the upper floor. Justify your choice and placement of devices to solve the connectivity problem.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-15-network-topologies_2">Topic 1.5: Network Topologies</h3>
+<ol>
+<li>
+<p>Analyze all five network topologies discussed in this chapter (bus, star, ring, mesh, tree) in terms of reliability, cost, and scalability.<br>
+   a) Describe how data flows in each of the five topologies.<br>
+   b) Construct a detailed advantages/disadvantages comparison table for all five topologies.<br>
+   c) Evaluate which topology would be most suitable for (i) a small home network, (ii) a hospital's critical care network, and (iii) a large multinational corporation with multiple departments. Justify each choice.</p>
+</li>
+<li>
+<p>Design a fault-tolerance case study: for each of the five topologies, predict what happens to overall network connectivity if exactly one cable/link fails, and rank the topologies from most to least resilient, justifying your ranking.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-16-network-models-and-layers_2">Topic 1.6: Network Models and Layers</h3>
+<ol>
+<li>
+<p>Discuss the OSI model in comprehensive detail as a framework for understanding network communication.<br>
+   a) Explain the purpose of dividing network communication into layers.<br>
+   b) Describe the function of each of the seven OSI layers, from Physical to Application.<br>
+   c) Construct a full trace table showing what happens (encapsulation) as an HTTP request travels down all seven layers on the sender's side, and then back up (decapsulation) on the receiver's side.</p>
+</li>
+<li>
+<p>Evaluate why the OSI model is described as "a conceptual map, not physical hardware." Discuss how this layered thinking helps network engineers troubleshoot problems without needing to understand the entire system at once.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-17-network-protocols-and-services_2">Topic 1.7: Network Protocols and Services</h3>
+<ol>
+<li>
+<p>Explain in detail the role of network protocols in enabling communication between devices.<br>
+   a) Define what a network protocol is and why all devices must agree on the same protocol.<br>
+   b) Discuss TCP/IP, HTTP/HTTPS, FTP, and DNS in detail, explaining the specific role each plays.<br>
+   c) Construct a full step-by-step trace of the DNS resolution process, from a user typing a website name to the browser receiving the final IP address.</p>
+</li>
+<li>
+<p>Analyze the security implications of using HTTP versus HTTPS for an online banking website. Discuss what could go wrong if a bank used plain HTTP instead of HTTPS, and explain how SSL/TLS encryption prevents this.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-18-ip-addressing-and-subnetting_2">Topic 1.8: IP Addressing and Subnetting</h3>
+<ol>
+<li>
+<p>Discuss IP addressing in comprehensive detail, covering both IPv4 and IPv6.<br>
+   a) Define an IP address and explain its role in identifying devices on a network.<br>
+   b) Compare IPv4 and IPv6 in terms of address length, total number of addresses, and the reason IPv6 was created.<br>
+   c) Construct a full worked example: starting with the network <code>192.168.1.0/24</code>, divide it into two equal subnets, and calculate the network address, usable host range, and broadcast address for each subnet.</p>
+</li>
+<li>
+<p>Analyze the role of Network Address Translation (NAT) in home networking.<br>
+   a) Explain what NAT does and which device performs it.<br>
+   b) Discuss how NAT improves both convenience (address sharing) and security (hiding internal devices).<br>
+   c) Evaluate what would happen if NAT did not exist, considering the limited number of available IPv4 addresses.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-19-home-network-setup-and-configuration_2">Topic 1.9: Home Network Setup and Configuration</h3>
+<ol>
+<li>
+<p>Discuss the complete process of setting up a functional home network.<br>
+   a) Identify and explain the role of each major component of a home network (router, modem, devices, cables, wireless signals).<br>
+   b) Compare wired and wireless connections in detail, covering speed, mobility, security, and typical use cases.<br>
+   c) Design a home network plan for a household with a desktop gaming PC, two smartphones, a smart TV, and a laptop, justifying which devices should use wired versus wireless connections.</p>
+</li>
+<li>
+<p>Evaluate the trade-offs a family should consider when choosing between investing in more wired Ethernet points versus relying entirely on Wi-Fi throughout their home.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-110-wi-fi-security-and-router-configuration_2">Topic 1.10: Wi-Fi Security and Router Configuration</h3>
+<ol>
+<li>
+<p>Discuss in detail how a home Wi-Fi network can be properly secured.<br>
+   a) Explain the purpose of the router's web interface and how it is accessed.<br>
+   b) Compare WEP, WPA2, and WPA3 encryption standards, explaining why WEP is no longer considered safe.<br>
+   c) Construct a full step-by-step guide for securing a brand-new router, from first login to enabling a guest network.</p>
+</li>
+<li>
+<p>Evaluate the risks of leaving a home Wi-Fi network with default router credentials and outdated encryption. Discuss what a malicious actor could potentially do if they gained access to such a network.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-111-network-diagnostic-tools-and-commands_2">Topic 1.11: Network Diagnostic Tools and Commands</h3>
+<ol>
+<li>
+<p>Discuss the role of network diagnostic tools in identifying and resolving connectivity problems.<br>
+   a) Explain the purpose and working of the <code>ping</code> command, including the meaning of key output fields like TTL and round-trip time.<br>
+   b) Compare <code>ipconfig</code> and <code>ifconfig</code>, explaining what information each provides and on which operating systems they are used.<br>
+   c) Construct a troubleshooting scenario: a user cannot access any websites. Design a step-by-step diagnostic process using <code>ping</code> and <code>ipconfig</code>/<code>ifconfig</code> to identify where the problem might lie.</p>
+</li>
+<li>
+<p>Analyze the security differences between Telnet and SSH. Discuss why SSH has become the industry standard for remote device management, and what risks remain if an organization continues to use Telnet today.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-112-network-performance_2">Topic 1.12: Network Performance</h3>
+<ol>
+<li>
+<p>Discuss the concepts of bandwidth and latency in detail, and their combined impact on network performance.<br>
+   a) Define bandwidth and latency, and explain how they differ using a real-world analogy.<br>
+   b) Discuss at least four causes of network delay.<br>
+   c) Evaluate three different real-world scenarios (large file download, competitive online gaming, multi-participant video conferencing) in terms of which factor — bandwidth or latency — matters more, and why.</p>
+</li>
+<li>
+<p>Design a troubleshooting plan for a household experiencing "laggy" video calls despite having a high-speed Internet plan. Discuss which network performance factors you would investigate first, and why.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-113-network-load-balancing_2">Topic 1.13: Network Load Balancing</h3>
+<ol>
+<li>
+<p>Discuss the concept of network load balancing and its importance for modern high-traffic websites and services.<br>
+   a) Define load balancing and explain why it is necessary for large-scale systems.<br>
+   b) Compare Round Robin, Least Connection, and IP Hash load balancing methods in detail, including scenarios where each would be the best choice.<br>
+   c) Evaluate how load balancing helps prevent both server overload and complete service failure during high-traffic events.</p>
+</li>
+<li>
+<p>Design a load balancing strategy for an e-commerce website expecting 50 times normal traffic during a one-day sale. Justify your choice of method(s) and explain how it would keep the website responsive.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-114-network-security_2">Topic 1.14: Network Security</h3>
+<ol>
+<li>
+<p>Discuss network security in comprehensive detail, covering its major tools and the threats they defend against.<br>
+   a) Explain the roles of firewalls, encryption, and access control in protecting a network.<br>
+   b) Discuss at least four common network security threats (viruses/malware, hackers, phishing, DoS attacks) and how each specifically endangers users or organizations.<br>
+   c) Construct a mapping of each threat to its most relevant defense mechanism, with justification.</p>
+</li>
+<li>
+<p>Evaluate the network security requirements of a hospital that stores sensitive patient records, including CT scans and prescriptions.<br>
+   a) Discuss why this type of data is especially sensitive.<br>
+   b) Analyze which combination of security measures (firewalls, encryption, access control) would be most critical for protecting this data.<br>
+   c) Discuss the potential real-world consequences if this hospital's network were successfully attacked.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-115-data-backup-and-recovery_2">Topic 1.15: Data Backup and Recovery</h3>
+<ol>
+<li>
+<p>Discuss data backup and recovery in detail, covering all backup types and recovery methods mentioned in the chapter.<br>
+   a) Define data backup and explain why it is essential for individuals and organizations.<br>
+   b) Compare full, incremental, and differential backups in terms of storage requirements and recovery complexity, using a worked weekly example.<br>
+   c) Discuss the available data recovery methods and when each would be most appropriate.</p>
+</li>
+<li>
+<p>Design a backup strategy for a school that must back up all student records nightly, with limited storage budget and a small IT team.<br>
+   a) Recommend a backup type (full, incremental, or differential) and justify your choice.<br>
+   b) Discuss the trade-offs the school is accepting with your recommended approach.<br>
+   c) Propose a recovery plan in case of a sudden hardware failure.</p>
+</li>
+</ol>
+<hr>
+<h3 id="topic-116-usability-and-security-tradeoffs_2">Topic 1.16: Usability and Security Tradeoffs</h3>
+<ol>
+<li>
+<p>Discuss the tradeoff between usability and security in computer systems in detail.<br>
+   a) Define usability and security individually, and explain why they often conflict with each other.<br>
+   b) Discuss at least four real-world design choices (password complexity, two-factor authentication, biometric login, password expiration policies) and analyze their usability versus security impact.<br>
+   c) Evaluate why forcing overly strict security policies can sometimes backfire and reduce overall real-world security.</p>
+</li>
+<li>
+<p>Design a login security policy for a company that balances strong security with reasonable usability for its employees.<br>
+   a) Propose specific measures (e.g., password requirements, 2FA, biometric options) and justify each choice.<br>
+   b) Discuss how your policy avoids the common pitfalls of overly strict security policies (such as employees writing down passwords).<br>
+   c) Evaluate the trade-offs your policy still accepts, and explain why they are acceptable.</p>
+</li>
+</ol>
+<hr>
+<p><em>End of Comprehensive Question Bank — Chapter 1: Computer Networks.</em></p>
+
+</body>
+</html>
